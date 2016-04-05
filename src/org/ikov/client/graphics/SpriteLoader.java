@@ -14,7 +14,7 @@ import org.ikov.client.tools.FileUtilities;
 
 public class SpriteLoader {
 	
-	public static boolean SPRITE_DUMP = false;
+	public static boolean SPRITE_DUMP = true;
 
 	public static SpriteLoader[] cache;
 	public static Sprite[] sprites = null;
