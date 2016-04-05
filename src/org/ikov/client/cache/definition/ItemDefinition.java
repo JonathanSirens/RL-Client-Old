@@ -862,14 +862,20 @@ public final class ItemDefinition {
 			itemDef.actions[1] = "Wear";
 			itemDef.actions[4] = "Drop";
 		break;
-		case 13001:
-			itemDef.setDefaults();
-			itemDef.immitate(get(12458));
-			itemDef.name = "Pet Rock crab";
-			itemDef.groundActions = new String[] { null, null, "Take", null, null };
-			itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
-			itemDef.stackable = false;
-			break;
+			case 13001:
+				itemDef.setDefaults();
+				itemDef.immitate(get(12458));
+				itemDef.name = "Pet Rock crab";
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
+				itemDef.stackable = false;
+				break;
+			case 12487:
+				itemDef.name = "Raccoon";
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
+				itemDef.stackable = false;
+				break;
 		case 13002:
 			itemDef.setDefaults();
 			itemDef.immitate(get(12458));
@@ -5010,15 +5016,40 @@ public final class ItemDefinition {
 
 		switch (itemDef.id) {
 
-		case 20147:
-			itemDef.modifiedModelColors = new int[2];
-			itemDef.originalModelColors = new int[2];
-			itemDef.modifiedModelColors[0] = 4550;
-			itemDef.originalModelColors[0] = 1;
-			itemDef.modifiedModelColors[1] = 4540;
-			itemDef.originalModelColors[1] = 1;
-			break;
-		}
+			case 20147:
+				itemDef.modifiedModelColors = new int[2];
+				itemDef.originalModelColors = new int[2];
+				itemDef.modifiedModelColors[0] = 4550;
+				itemDef.originalModelColors[0] = 1;
+				itemDef.modifiedModelColors[1] = 4540;
+				itemDef.originalModelColors[1] = 1;
+				break;
+
+			case 21089:
+				itemDef.name = "Drygore Longsword";
+				itemDef.actions = new String[5];
+				itemDef.actions[1] = "Wear";
+				itemDef.immitate(get(18351));
+				break;
+			case 21090:
+				itemDef.name = "Drygore Mace";
+				itemDef.actions = new String[5];
+				itemDef.actions[1] = "Wear";
+				itemDef.immitate(get(14679));
+				break;
+			case 21091:
+				itemDef.name = "Drygore Rapier";
+				itemDef.actions = new String[5];
+				itemDef.actions[1] = "Wear";
+				itemDef.immitate(get(18349));
+				break;
+			case 21092:
+				itemDef.name = "Abyssal Dagger";
+				itemDef.actions = new String[5];
+				itemDef.actions[1] = "Wear";
+				itemDef.immitate(get(5698));
+				break;
+	}
 
 		return itemDef;
 	}

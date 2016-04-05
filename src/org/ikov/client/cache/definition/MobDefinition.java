@@ -553,7 +553,12 @@ public final class MobDefinition {
 			definition.adjustVertextPointsXOrY = 103;
 			definition.npcSizeInSquares = 2;
 			break;
-		case 6247:
+			case 6914:
+				definition.name = "Pet Raccoon";
+				definition.actions = new String[5];
+				definition.actions[0] = "Pick-up";
+				break;
+			case 6247:
 			definition.name = "Commander zilyana";
 			//definition.actions = new String[5];
 			//definition.actions[0] = "Pick-up";
