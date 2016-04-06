@@ -350,7 +350,9 @@ public final class TextDrawingArea extends DrawingArea {
 		if (s.equals("wke"))
 			return 0xff7f00;
 		if (s.equals("hbd"))
-			return 0x662184;
+			return 0x0000AF;
+		if (s.equals("smm"))
+			return 0x000000;
 		if (s.equals("red"))
 			return 0xff0000;
 		if (s.equals("gre"))

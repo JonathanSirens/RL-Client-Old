@@ -14,7 +14,7 @@ import org.ikov.client.tools.FileUtilities;
 
 public class SpriteLoader {
 	
-	public static boolean SPRITE_DUMP = true;
+	public static boolean SPRITE_DUMP = false;
 
 	public static SpriteLoader[] cache;
 	public static Sprite[] sprites = null;
@@ -25,7 +25,7 @@ public class SpriteLoader {
 	 * @param sprite
 	 */
 	private static void createSprite(SpriteLoader sprite) {
-		File directory = new File(Signlink.getCacheDirectory() + "/dumps/images_2");
+		File directory = new File(Signlink.getCacheDirectory() + "/dumps/images_1");
 		if(!directory.exists()) { 
 			directory.mkdir();			
 		}

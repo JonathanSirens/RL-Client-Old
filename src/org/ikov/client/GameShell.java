@@ -55,7 +55,7 @@ final class GameShell extends JFrame {
 	
 	public void setClientIcon() {
 			try {
-				BufferedImage localBufferedImage = ImageIO.read(new URL("https://dl.dropboxusercontent.com/u/344464529/SmitePK/icon_client.png"));
+				BufferedImage localBufferedImage = ImageIO.read(new URL("https://dl.dropboxusercontent.com/u/344464529/IKov/ikov_64.png"));
 				setIconImage(localBufferedImage);
 			} catch (Exception exception) {
 			}
