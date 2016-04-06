@@ -10262,7 +10262,8 @@ public class Client extends GameRenderer {
 			}
 		}
 	}
-
+	
+	private long lastSuccesfullLogin;	
 	private void updateNpcAmount(ByteBuffer stream) {
 		stream.initBitAccess();
 		int k = stream.getBits(8);
@@ -10491,7 +10492,30 @@ public class Client extends GameRenderer {
 		if (PlayerHandler.showXP && loggedIn) {
 			mapArea.displayXPCounter(this);
 		}
-
+		
+		if(loggedIn) {
+			if (this.moneyPouchEarningTimer != 0) {
+				int color = this.moneyPouchEarning >= 0L ? 65280 : 16711680;
+				String s = (this.moneyPouchEarning >= 0L ? "+" : "-") + formatAmount(Math.abs(this.moneyPouchEarning));
+				int txtWidth = this.normalText.getTextWidth(s);
+				int x = 0;
+				int y = 0;
+				if (GameFrame.getScreenMode().ordinal() == 0) {
+					x = 510 - txtWidth;
+					if (Configuration.MONEY_POUCH_ENABLED) {
+						y = 121;
+					} else {
+						y = 103;
+					}
+				} else {
+					x = clientWidth - 5 - txtWidth;
+					y = 206;
+				}
+				this.normalText.drawChatInput(color, x, s, y, true);
+				this.moneyPouchEarningTimer -= 1;
+			}
+		}
+		
 		if (loggedIn) {
 			if (!resizing) {
 				gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
@@ -13370,6 +13394,30 @@ public class Client extends GameRenderer {
 					clanMembers.remove(clan_name[1]);
 					pktType = -1;
 					return true;
+				}
+				if (text.contains(":moneypouchearning:")) {
+					try {
+						long l = Long.parseLong(text.substring(19));
+						this.moneyPouchEarning = l;
+						this.moneyPouchEarningTimer = 250;
+						//this.coinActiveHover = this.coinActiveHoverGreen;
+					} catch (NumberFormatException ex) {
+						ex.printStackTrace();
+					}
+					this.pktType = -1;
+				return true;
+				}
+				if (text.contains(":moneypouchloss:")) {
+					try {
+						long l = Long.parseLong(text.substring(16));
+						this.moneyPouchEarning = l;
+						this.moneyPouchEarningTimer = 250;
+						//this.coinActiveHover = this.coinActiveHoverYellow;
+					} catch (NumberFormatException ex) {
+						ex.printStackTrace();
+					}
+					this.pktType = -1;
+				return true;
 				}				
 				updateStrings(text, frame);
 				setInterfaceText(text, frame);
@@ -16898,6 +16946,14 @@ public class Client extends GameRenderer {
 		return amount;
 	}
 
+	private int moneyPouchHoverTrans;
+	private boolean moneyPouchHoverDir = true;
+	private long moneyPouchEarning;
+	private int moneyPouchEarningTimer;
+	public Sprite coinOrb;
+	public Sprite coinPart;
+	public Sprite coinActiveHover;
+	
 	private int[] quickPrayers = new int[28];
 	private int[] quickCurses = new int[20];
 
