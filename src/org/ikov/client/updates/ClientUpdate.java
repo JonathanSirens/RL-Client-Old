@@ -10,7 +10,7 @@ public class ClientUpdate {
 	private static final int BUFFER = 1024;
 
 	public static final String infoBuffer = "https://dl.dropboxusercontent.com/u/344464529/Ikov/update.txt";
-	public static final String clientVersion = "2.31";
+	public static final String clientVersion = "2.32";
 	public static String newVersion;
 	public static String clientLink;
 	public static String pathJarFile;

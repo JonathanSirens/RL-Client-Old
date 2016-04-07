@@ -17,7 +17,7 @@ public class Configuration {
 		public final static int CLIENT_VERSION = 3;
 	public final static boolean JAGCACHED_ENABLED = false;
 	public final static String JAGCACHED_HOST  = "";
-	public final static String SERVER_HOST = "localhost"; //158.69.125.71
+	public final static String SERVER_HOST = "158.69.125.71"; //158.69.125.71
 	public final static int SERVER_PORT = 59018;
 	public final static boolean DISPLAY_GAMEWORLD_ON_LOGIN = false;
 	

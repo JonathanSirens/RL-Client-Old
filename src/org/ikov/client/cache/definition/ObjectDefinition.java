@@ -152,6 +152,9 @@ public final class ObjectDefinition {
 			definition.modifiedModelColors = new int[]{6817, 6697, 6693, 7580};
 			definition.originalModelColors = new int[]{21543, 21547, 45, 7341};
 		}
+		//if(id == 4436)
+			//System.out.println(""+definition.objectModelIDs.length+" "+object.objectModelIDs[0]+"");
+
 		if(id == 11699) {
 			definition.objectModelIDs = new int[]{2};	
 			definition.hasActions = false;
@@ -346,6 +349,9 @@ public final class ObjectDefinition {
 		if (id == 7837) {
 			definition.hasActions = true;
 			definition.actions = new String[5];
+		}
+		if(id == 4908) {
+			//System.out.println(""+adjustToTerrain);
 		}
 		if (id == 26280){
 			definition.hasActions = true;
@@ -1344,6 +1350,14 @@ public final class ObjectDefinition {
             definition.configID = -1;
             definition.configObjectIDs = null;
             break;
+		case 4446:
+	        definition.objectModelIDs = new int[5];
+	        definition.objectModelIDs[0] = 669;
+	        definition.objectModelIDs[1] = 670;
+	        definition.objectModelIDs[2] = 671;
+	        definition.objectModelIDs[3] = 672;
+	        definition.objectModelIDs[4] = 673;
+			break;
         case 11444:
             definition.objectModelIDs = new int[] { 45745 };
             definition.anIntArray776 = null;

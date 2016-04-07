@@ -16031,9 +16031,11 @@ public class Client extends GameRenderer {
 				writer3.close();
 				AnimationsUpdate.REPACK = 0;
 			}
+			//ObjectDefinition.dumpObjectModels();
 			//onDemandFetcher.dump();
 			//repackCacheIndex(4); //Maps
 			//repackCacheIndex(2); //Animations
+			//decompressors[1].dump();
 			isLoading = false;
 			if(Configuration.NEW_CURSORS) {
 				super.setCursor(CursorData.CURSOR_0);

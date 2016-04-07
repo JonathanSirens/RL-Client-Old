@@ -6,6 +6,9 @@ package org.ikov.client;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.File;
+import org.ikov.client.tools.FileUtilities;
+
 // Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3)
@@ -18,6 +21,25 @@ public final class Decompressor {
 		indexFile = randomaccessfile1;
 	}
 
+	/**
+	 * Dumps the files from the cache index.
+	 */
+	public void dump() {
+		File directory = new File(Signlink.getCacheDirectory() + "index" + (anInt311 - 1));
+		if (!directory.exists()) {
+			if (!directory.mkdir()) {
+				System.out.println("Failed to create directory: " + directory.getAbsolutePath());
+				return;
+			}
+		}
+		for (int index = 0; index < getFileCount(); index++) {
+			byte[] data = decompress(index);
+			if (data != null && data.length > 0) {
+				data = FileUtilities.compressGZ(data, 0, data.length);
+				FileUtilities.WriteFile(directory.getAbsolutePath() + System.getProperty("file.separator") + index + ".gz", data);
+			}
+		}
+	}
 	public synchronized byte[] decompress(int i) {
 		try {
 			seekTo(indexFile, i * 6);

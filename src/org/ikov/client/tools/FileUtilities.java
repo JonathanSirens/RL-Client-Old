@@ -17,6 +17,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Static utilities used for assisting with files.
@@ -40,7 +53,22 @@ public final class FileUtilities {
 			return buffer;
 		}
 	}
-
+	public static byte[] compressGZ(byte[] data, int off, int len) {
+		try {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			GZIPOutputStream gzo = new GZIPOutputStream(bos);
+			try {
+				gzo.write(data, off, len);
+			} finally {
+				gzo.close();
+				bos.close();
+			}
+			return bos.toByteArray();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	/**
 	 * Attempts to delete the files within the specified root directory.
 	 *
