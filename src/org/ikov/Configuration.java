@@ -7,19 +7,21 @@ import org.ikov.client.updates.ClientUpdate;
  * @author Gabriel Hannason
  */
 public class Configuration {
+
+	/** CONNECTION **/
+	public final static boolean LOCAL = false;
+	public final static String SERVER_HOST = LOCAL ? "127.0.0.1" : "158.69.125.71"; // 158.69.125.71
+	public final static int SERVER_PORT = 59018;
 	
 	/** LOADS CACHE FROM ./ IF TRUE, OTHERWISE USER.HOME FOLDER**/
 	public static final boolean DROPBOX_MODE = false;
 	
 	/** MAIN CONSTANTS **/
-	public final static String CLIENT_NAME = "Ikov "+ClientUpdate.clientVersion+"";
-	public final static String CACHE_DIRECTORY_NAME = "ikov_cache2"; //Cache folder name
-		public final static int CLIENT_VERSION = 3;
+	public final static String CLIENT_NAME = "Ikov " + ClientUpdate.clientVersion + "";
+	public final static String CACHE_DIRECTORY_NAME = "ikov_cache2"; // Cache folder name
+	public final static int CLIENT_VERSION = 3;
 	public final static boolean JAGCACHED_ENABLED = false;
-	public final static String JAGCACHED_HOST  = "";
-	public final static String SERVER_HOST = "158.69.125.71"; //158.69.125.71
-	public final static int SERVER_PORT = 59018;
-	public final static boolean DISPLAY_GAMEWORLD_ON_LOGIN = false;
+	public final static String JAGCACHED_HOST = "";
 	
 	/** UPDATING **/
 	public final static int NPC_BITS = 18;
