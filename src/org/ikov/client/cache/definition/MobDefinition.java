@@ -558,6 +558,13 @@ public final class MobDefinition {
 				definition.actions = new String[5];
 				definition.actions[0] = "Pick-up";
 				break;
+			case 4906:
+				definition.name = "Wilfred";
+				definition.actions = new String[5];
+				definition.actions[0] = "Trade";
+				definition.actions[1] = "Exchange-Kindling";
+				definition.description = "A master woodcutter.".getBytes();
+				break;
 			case 6247:
 			definition.name = "Commander zilyana";
 			//definition.actions = new String[5];
