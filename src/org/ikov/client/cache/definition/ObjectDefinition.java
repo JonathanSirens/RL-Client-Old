@@ -242,6 +242,9 @@ public final class ObjectDefinition {
 			definition.actions = new String[5];
 			definition.actions[0] = "Steal-from";
 		}
+		if(id == 57258) {
+			definition.actions[1] = null;
+		}
 		if(id == 47180)
 		{
 			definition.name = "Frost Dragon Portal Device";
