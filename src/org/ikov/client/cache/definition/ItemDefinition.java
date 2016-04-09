@@ -175,9 +175,10 @@ public final class ItemDefinition {
 			itemDef.actions = new String[] { null, null, null, null, "Drop"};
 			break;
 		case 6500:
-			itemDef.modelID = 9123;
+			itemDef.setDefaults();
+			itemDef.immitate(get(9952));
 			itemDef.name = "Charming imp";
-			//	itemDef.modelZoom = 672;
+			itemDef.stackable = false;
 			//	itemDef.modelRotation1 = 85;
 			//	itemDef.modelRotation2 = 1867;
 			itemDef.actions = new String[] { null, null, "Check", "Config", "Drop"};
