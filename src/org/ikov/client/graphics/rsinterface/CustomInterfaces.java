@@ -22,6 +22,7 @@ public class CustomInterfaces extends RSInterface {
 	public void loadCustoms() {
 		playersOnline();
 		editClan();
+		capeColor(tda);
 		dungeonInfo();
 		formParty();
 		dungParty();
@@ -159,6 +160,36 @@ public class CustomInterfaces extends RSInterface {
 		}
 	}
 	
+	public static void capeColor(TextDrawingArea[] TDA) {
+		RSInterface Interface = addInterface(14000);
+		addSpriteLoader2(14001, 91);
+		addHoverButtonWSpriteLoader2(14002, 92, 21, 22, "Choose color", -1, 14002, 1);
+		addHoverButtonWSpriteLoader2(14003, 92, 21, 22, "Choose color", -1, 14003, 1);
+		addHoverButtonWSpriteLoader2(14004, 92, 21, 22, "Choose color", -1, 14004, 1);
+		addHoverButtonWSpriteLoader2(14005, 92, 21, 22, "Choose color", -1, 14005, 1);
+		addHoverButtonWSpriteLoader2(14006, 92, 21, 22, "Choose color", -1, 14006, 1);
+		addHoverButtonWSpriteLoader2(14007, 92, 21, 22, "Choose color", -1, 14007, 1);
+		addHoverButtonWSpriteLoader2(14008, 92, 21, 22, "Choose color", -1, 14008, 1);
+		addHoverButtonWSpriteLoader2(14009, 92, 21, 22, "Choose color", -1, 14009, 1);
+		addHoverButtonWSpriteLoader2(14010, 92, 21, 22, "Choose color", -1, 14010, 1);
+		addHoverButtonWSpriteLoader2(14011, 92, 21, 22, "Choose color", -1, 14011, 1);
+		addHoverButtonWSpriteLoader2(14012, 92, 21, 22, "Close", -1, 14012, 1);
+		
+		setChildren(12, Interface);
+		setBounds(14001, 109, 97, 0, Interface);
+		setBounds(14002, 155, 161, 1, Interface);
+		setBounds(14003, 183, 161, 2, Interface);
+		setBounds(14004, 213, 161, 3, Interface);
+		setBounds(14005, 242, 161, 4, Interface);
+		setBounds(14006, 271, 161, 5, Interface);
+		setBounds(14007, 300, 161, 6, Interface);
+		setBounds(14008, 329, 161, 7, Interface);
+		setBounds(14009, 358, 161, 8, Interface);
+		setBounds(14010, 155, 195, 9, Interface);
+		setBounds(14011, 183, 195, 10, Interface);
+		setBounds(14012, 398, 98, 11, Interface);
+	}
+ 
 	public static void vidOptions(TextDrawingArea tda[]) {
 		RSInterface tab = addTabInterface(26000);
 		// RSInterface rsinterface = addTabInterface(40030);

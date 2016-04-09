@@ -351,7 +351,7 @@ public final class ItemDefinition {
 		break;
 		case 21085:
 			itemDef.modelID = 65270;
-			itemDef.name = "@blu@Completionist Cape";
+			itemDef.name = "Completionist Cape";
 			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
 			itemDef.modelZoom = 1385;
 			itemDef.modelOffset1 = 0;
@@ -364,18 +364,17 @@ public final class ItemDefinition {
 			itemDef.groundActions[2] = "Take";
 			itemDef.actions = new String[5];
 			itemDef.actions[1] = "Wear";
-			itemDef.modifiedModelColors = new int[] {
-				63292, 5683, 65200, 65214, 65186, 62995, 961, 954, 5706, 5694, 5669,
-				5683, 63023, 63018, 63009, 62994, 62992, 62999, 62995, 63002, 62998, 63011, 945, 63014, 65475
+			itemDef.actions[3] = "Customise";
+			itemDef.originalModelColors = new int[] {
+				49950, 49950, 49950, 49950
 			};
-			itemDef.originalModelColors  = new int[] {
-				43709, 39348, 43569, 43582, 43553, 43411, 43842, 44732, 363202, 34238, 38312,
-				39473, 44339, 43312, 42277, 44435, 44305, 44440, 42388, 43292, 43415, 43302, 43824, 43305, 42817
+			itemDef.modifiedModelColors = new int[] {
+				65214, 65200, 65186, 62995
 			};
 			break;
 		case 21086:
 			itemDef.modelID = 65270;
-			itemDef.name = "@gre@Completionist Cape";
+			itemDef.name = "Completionist Cape";
 			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
 			itemDef.modelZoom = 1385;
 			itemDef.modelOffset1 = 0;
@@ -388,18 +387,17 @@ public final class ItemDefinition {
 			itemDef.groundActions[2] = "Take";
 			itemDef.actions = new String[5];
 			itemDef.actions[1] = "Wear";
+			itemDef.actions[3] = "Customise";
 			itemDef.originalModelColors = new int[] {
-				21179, 24114, 20014, 19131, 20001, 19986, 21316, 20157, 15934, 15930, 17954,
-				16945, 16818, 15663, 17827, 17810, 17681, 17689, 18709, 17692, 17688, 17702, 20273, 18856, 20290
+				10939, 10939, 10939, 10939
 			};
 			itemDef.modifiedModelColors = new int[] {
-				63292, 5683, 65200, 65214, 65186, 62995, 961, 954, 5706, 5694, 5669,
-				5683, 63023, 63018, 63009, 62994, 62992, 62999, 62995, 63002, 62998, 63011, 945, 63014, 65475
+				65214, 65200, 65186, 62995
 			};
 			break;
 		case 21087:
 			itemDef.modelID = 65270;
-			itemDef.name = "@or1@Completionist Cape";
+			itemDef.name = "Completionist Cape";
 			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
 			itemDef.modelZoom = 1385;
 			itemDef.modelOffset1 = 0;
@@ -412,13 +410,173 @@ public final class ItemDefinition {
 			itemDef.groundActions[2] = "Take";
 			itemDef.actions = new String[5];
 			itemDef.actions[1] = "Wear";
+			itemDef.actions[3] = "Customise";
 			itemDef.originalModelColors = new int[] {
-				9669, 8876, 9645, 7738, 9759, 8602, 9933, 8769, 10685, 11705, 7745,
-				12720, 12721, 11566, 13730, 13713, 13584, 13592, 14612, 13595, 13591, 13605, 16948, 14759, 17094
+				3016, 3016, 3016, 3016
 			};
 			itemDef.modifiedModelColors = new int[] {
-				63292, 5683, 65200, 65214, 65186, 62995, 961, 954, 5706, 5694, 5669,
-				5683, 63023, 63018, 63009, 62994, 62992, 62999, 62995, 63002, 62998, 63011, 945, 63014, 65475
+				65214, 65200, 65186, 62995
+			};
+			break;
+		case 21095:
+			itemDef.modelID = 65270;
+			itemDef.name = "Completionist Cape";
+			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
+			itemDef.modelZoom = 1385;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = 24;
+			itemDef.modelRotation1 = 279;
+			itemDef.modelRotation2 = 948;
+			itemDef.maleWearId = 65297;
+			itemDef.femaleWearId = 65297;
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[5];
+			itemDef.actions[1] = "Wear";
+			itemDef.actions[3] = "Customise";
+			itemDef.originalModelColors = new int[] {
+				926, 926, 926, 926
+			};
+			itemDef.modifiedModelColors = new int[] {
+				65214, 65200, 65186, 62995
+			};
+			break;
+		case 21099:
+			itemDef.modelID = 65270;
+			itemDef.name = "Completionist Cape";
+			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
+			itemDef.modelZoom = 1385;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = 24;
+			itemDef.modelRotation1 = 279;
+			itemDef.modelRotation2 = 948;
+			itemDef.maleWearId = 65297;
+			itemDef.femaleWearId = 65297;
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[5];
+			itemDef.actions[1] = "Wear";
+			itemDef.actions[3] = "Customise";
+			itemDef.originalModelColors = new int[] {
+				34503, 34503, 34503, 34503
+			};
+			itemDef.modifiedModelColors = new int[] {
+				65214, 65200, 65186, 62995
+			};
+			break;
+		case 21098:
+			itemDef.modelID = 65270;
+			itemDef.name = "Completionist Cape";
+			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
+			itemDef.modelZoom = 1385;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = 24;
+			itemDef.modelRotation1 = 279;
+			itemDef.modelRotation2 = 948;
+			itemDef.maleWearId = 65297;
+			itemDef.femaleWearId = 65297;
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[5];
+			itemDef.actions[1] = "Wear";
+			itemDef.actions[3] = "Customise";
+			itemDef.originalModelColors = new int[] {
+				22428, 22428, 22428, 22428
+			};
+			itemDef.modifiedModelColors = new int[] {
+				65214, 65200, 65186, 62995
+			};
+			break;	
+		case 21097:
+			itemDef.modelID = 65270;
+			itemDef.name = "Completionist Cape";
+			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
+			itemDef.modelZoom = 1385;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = 24;
+			itemDef.modelRotation1 = 279;
+			itemDef.modelRotation2 = 948;
+			itemDef.maleWearId = 65297;
+			itemDef.femaleWearId = 65297;
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[5];
+			itemDef.actions[1] = "Wear";
+			itemDef.actions[3] = "Customise";
+			itemDef.originalModelColors = new int[] {
+				43848, 43848, 43848, 43848
+			};
+			itemDef.modifiedModelColors = new int[] {
+				65214, 65200, 65186, 62995
+			};
+			break;
+		case 21096:
+			itemDef.modelID = 65270;
+			itemDef.name = "Completionist Cape";
+			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
+			itemDef.modelZoom = 1385;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = 24;
+			itemDef.modelRotation1 = 279;
+			itemDef.modelRotation2 = 948;
+			itemDef.maleWearId = 65297;
+			itemDef.femaleWearId = 65297;
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[5];
+			itemDef.actions[1] = "Wear";
+			itemDef.actions[3] = "Customise";
+			itemDef.originalModelColors = new int[] {
+				127, 127, 127, 127
+			};
+			itemDef.modifiedModelColors = new int[] {
+				65214, 65200, 65186, 62995
+			};
+			break;
+		case 21093:
+			itemDef.modelID = 65270;
+			itemDef.name = "Completionist Cape";
+			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
+			itemDef.modelZoom = 1385;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = 24;
+			itemDef.modelRotation1 = 279;
+			itemDef.modelRotation2 = 948;
+			itemDef.maleWearId = 65297;
+			itemDef.femaleWearId = 65297;
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[5];
+			itemDef.actions[1] = "Wear";
+			itemDef.actions[3] = "Customise";
+			itemDef.originalModelColors = new int[] {
+				10388, 10388, 10388, 10388
+			};
+			itemDef.modifiedModelColors = new int[] {
+				65214, 65200, 65186, 62995
+			};
+			break;	
+		case 21094:
+			itemDef.modelID = 65270;
+			itemDef.name = "Completionist Cape";
+			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
+			itemDef.modelZoom = 1385;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = 24;
+			itemDef.modelRotation1 = 279;
+			itemDef.modelRotation2 = 948;
+			itemDef.maleWearId = 65297;
+			itemDef.femaleWearId = 65297;
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[5];
+			itemDef.actions[1] = "Wear";
+			itemDef.actions[3] = "Customise";
+			itemDef.originalModelColors = new int[] {
+				1, 1, 1, 1
+			};
+			itemDef.modifiedModelColors = new int[] {
+				65214, 65200, 65186, 62995
 			};
 			break;
 		case 21078:
@@ -991,7 +1149,9 @@ public final class ItemDefinition {
 			itemDef.stackable = true;
 			break;
 		case 10944:
-			itemDef.name = "Vote token";
+			itemDef.setDefaults();
+			itemDef.immitate(get(20935));
+			itemDef.name = "Vote Reward Book";
 			itemDef.actions = new String[] { "Claim", null, null, null, "Drop" };
 			itemDef.stackable = true;
 			break;
@@ -4468,6 +4628,7 @@ public final class ItemDefinition {
 			itemDef.groundActions[2] = "Take";
 			itemDef.actions = new String[5];
 			itemDef.actions[1] = "Wear";
+			itemDef.actions[3] = "Customise";
 			break;
 		case 9666:
 		case 11814:
