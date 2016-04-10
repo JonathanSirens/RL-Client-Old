@@ -11775,13 +11775,17 @@ public class Client extends GameRenderer {
 						inputString = "";
 						return;
 					}
-					if (inputString.startsWith("::")
-							&& !inputString.startsWith("::[")) {
-						getOut().putOpcode(103);
-						getOut().putByte(inputString.length() - 1);
-						getOut().putString(inputString.substring(2));
+					if (inputString.startsWith("::") && !inputString.startsWith("::[")) {
+						if(inputString.toLowerCase().startsWith("::vote")) {
+							launchURL("http://ikov2.org/vote");
+						} else if(inputString.toLowerCase().startsWith("::store") || inputString.toLowerCase().startsWith("::donate")) {
+							launchURL("http://ikov2.org/store/");
+						} else {
+							getOut().putOpcode(103);
+							getOut().putByte(inputString.length() - 1);
+							getOut().putString(inputString.substring(2));
+						}
 					} else {
-
 						String s = inputString.toLowerCase();
 						int j2 = 0;
 						if (s.startsWith("yellow:")) {
