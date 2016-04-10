@@ -17,7 +17,7 @@ public class SpriteUpdate {
 	public static final File sprite_update_file = new File(System.getProperty("user.home") + "/ikov_cache2/versions/sprite_version");
 	public static final File cache_directory = new File(System.getProperty("user.home") + "/ikov_cache2/");
 
-	public static final int sprite_version = 20;
+	public static final int sprite_version = 23;
 	
 	public static boolean checkVersion() {
 		try {
