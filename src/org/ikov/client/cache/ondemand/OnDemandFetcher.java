@@ -852,7 +852,6 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements Runn
 				modelIndices[k1] = 0;
 			}
 		}
-
 		abyte2 = streamLoader.get("map_index");
 		ByteBuffer stream2 = new ByteBuffer(abyte2);
 		int mapCount = stream2.getUnsignedShort();
@@ -874,6 +873,25 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements Runn
 					mapIndices3[i2] = -1;
 			}
 		}
+		/** ZULRAH **/
+		mapIndices1[107] = 8751;
+		mapIndices2[107] = 1946;
+		mapIndices3[107] = 1947;
+		mapIndices1[108] = 8752;
+		mapIndices2[108] = 938;
+		mapIndices3[108] = 939;
+		mapIndices1[129] = 9007;
+		mapIndices2[129] = 1938;
+		mapIndices3[129] = 1939;
+		mapIndices1[130] = 9008;
+		mapIndices2[130] = 946;
+		mapIndices3[130] = 947;
+		mapIndices1[149] = 9263;
+		mapIndices2[149] = 1210;
+		mapIndices3[149] = 1211;
+		mapIndices1[150] = 9264;
+		mapIndices2[150] = 956;
+		mapIndices3[150] = 957;		
 		/*j1 = abyte2.length / 6;
 		int loopVal = j1;
 		mapIndices1 = new int[j1];

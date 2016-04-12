@@ -16037,7 +16037,7 @@ public class Client extends GameRenderer {
 			}
 			//ObjectDefinition.dumpObjectModels();
 			//onDemandFetcher.dump();
-			//repackCacheIndex(4); //Maps
+			repackCacheIndex(4); //Maps
 			//repackCacheIndex(2); //Animations
 			//decompressors[1].dump();
 			isLoading = false;
