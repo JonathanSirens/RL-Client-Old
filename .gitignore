@@ -2,6 +2,12 @@
 Thumbs.db
 ehthumbs.db
 
+/bin
+/.idea
+.classpath
+.project
+.bat
+
 # Folder config file
 Desktop.ini
 
