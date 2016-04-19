@@ -45,7 +45,6 @@ public final class MobDefinition {
 			definition.adjustVertextPointsXOrY = 128;
 			definition.adjustVertextPointZ = 128;
 		break;
-
 		case 5867:
 			definition.name = "Summoned Soul";
 			definition.npcModels = new int[] { 29268 };
@@ -58,7 +57,6 @@ public final class MobDefinition {
 			definition.adjustVertextPointsXOrY = 140;
 			definition.adjustVertextPointZ = 140;
 		break;
-
 		case 5868:
 			definition.name = "Summoned Soul";
 			definition.npcModels = new int[] { 29267 };

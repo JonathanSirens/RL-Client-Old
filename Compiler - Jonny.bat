@@ -1,7 +1,0 @@
-@echo off
-Color 1F
-title Ikov Compiler
-:build
-cls
-"C:\Program Files (x86)\Java\jdk1.8.0_25\bin\javac.exe" -classpath libs/alertify4j.jar;libs/jacob.jar -d bin src\org\ikov\alertify\themes\*.java src\org\ikov\alertify\tween\*.java src\org\ikov\alertify\ui\*.java src\org\ikov\alertify\util\*.java src\org\ikov\*.java src\org\ikov\client\*.java src\org\ikov\client\accounts\*.java src\org\ikov\client\bzip\*.java src\org\ikov\client\cache\*.java src\org\ikov\client\cache\definition\*.java src\org\ikov\client\cache\node\*.java src\org\ikov\client\cache\ondemand\*.java src\org\ikov\client\computer\*.java src\org\ikov\client\constants\*.java src\org\ikov\client\entity\player\*.java src\org\ikov\client\graphics\*.java src\org\ikov\client\graphics\fonts\*.java src\org\ikov\client\graphics\gameframe\*.java src\org\ikov\client\graphics\gameframe\impl\*.java src\org\ikov\client\graphics\rsinterface\*.java src\org\ikov\client\io\*.java src\org\ikov\client\net\*.java src\org\ikov\client\renderable\*.java src\org\ikov\client\tools\*.java src\org\ikov\client\updates\*.java src\org\ikov\client\world\*.java src\org\ikov\client\world\background\*.java src\org\ikov\client\world\music\*.java src\org\ikov\client\world\sound\*.java src\org\ikov\alertify\*.java src\org\ikov\client\util\*.java src\org\ikov\client\particles\*.java
-pause

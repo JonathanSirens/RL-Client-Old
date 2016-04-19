@@ -2230,6 +2230,18 @@ public final class ItemDefinition {
 			itemDef.actions[3] = "Check";    
 			itemDef.actions[4] = "Dissolve";
 			break;
+			case 11975:
+				itemDef.name = "Chinchompa";
+				itemDef.immitate(get(9976));
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
+				break;
+			case 11976:
+				itemDef.name = "Seagull";
+				itemDef.immitate(get(12458));
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
+				break;
 		case 21044:
 			itemDef.setDefaults();
 			itemDef.immitate(get(2503));
