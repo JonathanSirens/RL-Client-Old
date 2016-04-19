@@ -29,7 +29,20 @@ public final class SpotAnimDefinition {
 		cache[2274].animationId = cache[2281].animationId;
 		cache[2274].rotation = 90;
 		cache[2274].animation = cache[2281].animation;
-
+		
+		//Cerberus
+		cache[1242].modelId = 29306;
+		cache[1242].animationId = 4497;
+		cache[1243].modelId = 29306;
+		cache[1243].animationId = 4498;
+		cache[1244].modelId = 29390;
+		cache[1244].animationId = 4499;
+		cache[1245].modelId = 29390;
+		cache[1245].animationId = 4500;
+		cache[1246].modelId = 29311;
+		cache[1246].animationId = 4502;
+		cache[1247].modelId = 29269;
+		cache[1247].animationId = 4501;
 		//Blowpipe
 		//System.out.println("Color codes start ---");
 		//for(int i = 0; i < cache[226].changedModelColours.length; i++) {

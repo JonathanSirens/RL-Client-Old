@@ -32,6 +32,7 @@ public class CustomInterfaces extends RSInterface {
 		pestControlInterfaces();
 		skillTabInterface();
 		killsTracker();
+		//constructionWaiting();
 		friendsTabInterface();
 		ignoreTabInterface();
 		equipmentTab();
@@ -1681,18 +1682,22 @@ public class CustomInterfaces extends RSInterface {
 	private void equipmentScreenInterface() {
 		RSInterface tab = addTabInterface(21172);
 		addSpriteLoader(21173, 696);
-		addCloseButton(15210, 15215, 15216);
+		//addCloseButton(15210, 15215, 15216);
+		
+		addHoverButtonWSpriteLoader(15210, 714, 17, 17, "Close Window", 0, 15215, 1);
+		addHoveredImageWSpriteLoader(15215, 715, 17, 17, 5379);
+		
 		addText(15111, "", tda, 2, 0xe4a146, false, true);
 		int rofl = 3;
 		addText(15112, "Attack bonuses", tda, 2, 0xFF8900, false, true);
 		addText(15113, "Defence bonuses", tda, 2, 0xFF8900, false, true);
 		addText(15114, "Other bonuses", tda, 2, 0xFF8900, false, true);
-		addText(66100, "Summoning: +0", tda, 1, 0xFF8900, false, true);// 19148
-		addText(66101, "Absorb Melee: +0%", tda, 1, 0xFF9200, false, true);// 19149
-		addText(66102, "Absorb Magic: +0%", tda, 1, 0xFF9200, false, true);// 19150
-		addText(66103, "Absorb Ranged: +0%", tda, 1, 0xFF9200, false, true);// 19151
-		addText(66104, "Ranged Strength: +0", tda, 1, 0xFF9200, false, true);// 19152
-		addText(66105, "Magic Damage: +0%", tda, 1, 0xFF9200, false, true);// 19153
+		addText(19148, "Summoning: +0", tda, 1, 0xFF8900, false, true);// 19148
+		addText(19149, "Absorb Melee: +0%", tda, 1, 0xFF9200, false, true);// 19149
+		addText(19150, "Absorb Magic: +0%", tda, 1, 0xFF9200, false, true);// 19150
+		addText(19151, "Absorb Ranged: +0%", tda, 1, 0xFF9200, false, true);// 19151
+		addText(19152, "Ranged Strength: +0", tda, 1, 0xFF9200, false, true);// 19152
+		addText(19153, "Magic Damage: +0%", tda, 1, 0xFF9200, false, true);// 19153
 		for (int i = 1675; i <= 1684; i++) {
 			addText(i, "", tda, 1, 0xFF9200, false, true);
 		}
@@ -1701,7 +1706,7 @@ public class CustomInterfaces extends RSInterface {
 		addChar(15125);
 		tab.totalChildren(51);
 		tab.child(0, 21173, 15, 5);
-		tab.child(1, 15210, 476, 6);
+		tab.child(1, 15210, 478, 9);
 		tab.child(2, 15111, 14, 30);
 		tab.child(3, 15111, 14, 30);
 		int Child = 4;
@@ -1719,18 +1724,18 @@ public class CustomInterfaces extends RSInterface {
 		tab.child(11, 1682, 29, 168 - edit - 3);
 		tab.child(12, 1683, 29, 183 - edit - 3);
 		tab.child(13, 1684, 29, 197 - edit - 3);
-		tab.child(44, 66100, 29, 211 - edit - 3);
-		tab.child(45, 66101, 29, 225 - edit - 3);
-		tab.child(46, 66102, 29, 239 - edit - 3);
-		tab.child(47, 66103, 29, 253 - edit - 3);
+		tab.child(44, 19148, 29, 211 - edit - 3);
+		tab.child(45, 19149, 29, 225 - edit - 3);
+		tab.child(46, 19150, 29, 239 - edit - 3);
+		tab.child(47, 19151, 29, 253 - edit - 3);
 		/* bottom */
 		int edit2 = 33 - rofl, edit3 = 2;
 		tab.child(19, 15114, 24, 223 + edit2);
 		tab.child(14, 1686, 29, 262 - 24 + edit2 - edit3);
-		tab.child(17, 66104, 29, 276 - 24 + edit2 - edit3);
+		tab.child(17, 19152, 29, 276 - 24 + edit2 - edit3);
 		tab.child(48, 1687, 29, 290 - 24 + edit2 - edit3);
-		tab.child(49, 66105, 29, 304 - 24 + edit2 - edit3);
-		tab.child(15, 15125, 170, 200);
+		tab.child(49, 19153, 29, 304 - 24 + edit2 - edit3);
+		tab.child(15, 15125, 191, 200);
 		tab.child(20, 1645, 104 + 295, 149 - 52);
 		tab.child(21, 1646, 399, 163);
 		tab.child(22, 1647, 399, 163);
@@ -1767,9 +1772,18 @@ public class CustomInterfaces extends RSInterface {
 			rsi.textColor = 0xFF9200;
 			rsi.centerText = false;
 		}
-		tab.child(50, 15215, 476, 6);
+		tab.child(50, 15215, 478, 9);
 	}
 
+	public static void constructionWaiting() {
+		RSInterface tab = addTabInterface(28640);
+		addBackground(28641, 0, 0x000000);
+		addHDSprite(28642, 0, -1);
+		setChildren(2, tab);
+		setBoundry(0, 28641, 0, 0, tab);
+		setBoundry(1, 28642, 0, 0, tab);
+	}
+	
 	private void itemsKeptOnDeathInterface() {
 		RSInterface rsinterface = addTabInterface(17100);
 		RSInterface scroll = addTabInterface(17149);
@@ -2353,7 +2367,7 @@ public class CustomInterfaces extends RSInterface {
 	}
 	
 	private void bankInterface() {
-		interfaceCache[5383].message = "     The Bank Of Ikov";
+		interfaceCache[5383].message = "     The Bank of Ikov";
 		RSInterface rsinterface = addTabInterface(5292);
 		setChildren(38, rsinterface);
 		setBounds(5383, 170, 15, 1, rsinterface);

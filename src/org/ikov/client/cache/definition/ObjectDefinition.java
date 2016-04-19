@@ -20,6 +20,8 @@ public final class ObjectDefinition {
 
     private static final int[] showBlack = { 3735, 26346, 26347, 26348, 26358,
             26359, 26360, 26361, 26362, 26363, 26364 };
+			
+	private static final int[] removeObjects = {57264, 23983, 632, 24265, 24271, 24272, 24274, 24273, 24275, 24266, 24267, 24268, 24269, 24270};
 
     public static ObjectDefinition forID(int id) {
         for (int j = 0; j < 20; j++) {
@@ -28,7 +30,7 @@ public final class ObjectDefinition {
             }
         }
         if (id >= streamIndices.length) {
-            // return forID667(id);
+             //return forID667(id);
         }
 
         //cacheIndex = (cacheIndex + 1) % 20;,
@@ -113,6 +115,14 @@ public final class ObjectDefinition {
             definition.isUnwalkable = false;
             return definition;
         }
+		for (int ids = 0; ids < removeObjects.length; ids++) {
+			if(id == removeObjects[ids]) {
+				definition.objectModelIDs = null;
+				definition.hasActions = false;
+				definition.isUnwalkable = false;
+				return definition;
+			}
+		}
         /*if(definition.varbitIndex <= 484 && definition.varbitIndex >= 469) {
             definition.configID = definition.varbitIndex;
             definition.varbitIndex = -1;
@@ -123,6 +133,980 @@ public final class ObjectDefinition {
   
             }
         }
+		switch(id) {
+			
+		case 732: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 2298 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.animationID = 494;
+			definition.brightness = 50;
+			definition.contrast = 25;
+			definition.aBoolean779 = false;
+			definition.hasActions = false;
+		break;
+
+		case 1502: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 782, 783, 784 };
+			definition.anIntArray776 = new int[] { 0, 1, 9 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.originalModelColors = new int[] { 8 };
+			definition.modifiedModelColors = new int[] { 6689 };
+			definition.hasActions = false;
+		break;
+
+		case 4451: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 2214, 4873, 16239, 2215, 16238 };
+			definition.anIntArray776 = new int[] { 0, 2, 4, 9, 22 };
+			definition.name = "null";
+			definition.aBoolean779 = false;
+			definition.mapSceneID = 22;
+			definition.hasActions = false;
+		break;
+
+		case 6926: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 6932, 15553, 15554, 15555, 15556 };
+			definition.anIntArray776 = new int[] { 0, 1, 2, 3, 9 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.hasActions = false;
+		break;
+
+		case 7823: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29377 };
+			definition.anIntArray776 = new int[] { 0 };
+			definition.name = "null";
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 7824: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29368 };
+			definition.anIntArray776 = new int[] { 0 };
+			definition.name = "null";
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 7825: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29364 };
+			definition.anIntArray776 = new int[] { 0 };
+			definition.name = "null";
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 7826: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29369 };
+			definition.anIntArray776 = new int[] { 0 };
+			definition.name = "null";
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 7827: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29370 };
+			definition.anIntArray776 = new int[] { 0 };
+			definition.name = "null";
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 7828: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29367 };
+			definition.anIntArray776 = new int[] { 0 };
+			definition.name = "null";
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 7829: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29375 };
+			definition.anIntArray776 = new int[] { 2 };
+			definition.name = "null";
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 7830: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29365 };
+			definition.anIntArray776 = new int[] { 3 };
+			definition.name = "null";
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 7834: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29376, 29371 };
+			definition.anIntArray776 = new int[] { 10, 0 };
+			definition.name = "null";
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 11853: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 9297 };
+			definition.name = "null";
+			definition.animationID = 2599;
+			definition.brightness = 25;
+			definition.contrast = 15;
+			definition.aBoolean779 = false;
+			definition.hasActions = false;
+		break;
+
+		case 12930: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 1124 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.originalModelColors = new int[] { 20, 20, 20 };
+			definition.modifiedModelColors = new int[] { 4899, 5921, 4892 };
+			definition.hasActions = false;
+		break;
+
+		case 12931: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 1139 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.originalModelColors = new int[] { 20, 20, 20 };
+			definition.modifiedModelColors = new int[] { 4899, 5921, 4892 };
+			definition.hasActions = false;
+		break;
+
+		case 12932: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 1032 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.originalModelColors = new int[] { 20, 20, 20 };
+			definition.modifiedModelColors = new int[] { 4899, 5921, 4892 };
+			definition.hasActions = false;
+		break;
+
+		case 14645: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 1079 };
+			definition.name = "Skeleton";
+			definition.aBoolean757 = false;
+			definition.originalModelColors = new int[] { 24 };
+			definition.modifiedModelColors = new int[] { 6241 };
+			definition.hasActions = false;
+		break;
+
+		case 14674: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 1079 };
+			definition.name = "Skeleton";
+			definition.aBoolean757 = false;
+			definition.originalModelColors = new int[] { 20 };
+			definition.modifiedModelColors = new int[] { 6241 };
+			definition.hasActions = false;
+		break;
+
+		case 14675: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 1080 };
+			definition.name = "Skeleton";
+			definition.sizeX = 2;
+			definition.aBoolean757 = false;
+			definition.originalModelColors = new int[] { 20 };
+			definition.modifiedModelColors = new int[] { 6241 };
+			definition.hasActions = false;
+		break;
+
+		case 17118: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 2297 };
+			definition.name = "Pool of Slime";
+			definition.sizeX = 3;
+			definition.sizeY = 3;
+			definition.isUnwalkable = false;
+			definition.animationID = 493;
+			definition.brightness = 50;
+			definition.contrast = 25;
+			definition.originalModelColors = new int[] { 20797 };
+			definition.modifiedModelColors = new int[] { 5058 };
+			definition.aBoolean779 = false;
+			definition.modelSizeX = 256;
+			definition.modelSizeH = 256;
+			definition.modelSizeY = 256;
+			definition.hasActions = true;
+		break;
+
+		case 20196: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29383 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 20737: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 834 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.originalModelColors = new int[] { 0 };
+			definition.modifiedModelColors = new int[] { 6689 };
+			definition.hasActions = false;
+		break;
+
+		case 21696: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29379 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21697: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29381 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21698: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29387 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21699: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29389 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21700: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29388 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21701: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29384 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21702: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29386 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21703: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29380 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21704: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29308 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.hasActions = false;
+		break;
+
+		case 21705: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29307 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.hasActions = false;
+		break;
+
+		case 21706: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29309 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.hasActions = false;
+		break;
+
+		case 21707: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29310 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.hasActions = false;
+		break;
+
+		case 21708: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29344 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21709: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29348 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21710: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29343 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21711: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29342 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21712: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29345 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21713: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29339 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = true;
+		break;
+
+		case 21714: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29349 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21715: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29340 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21716: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29338 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = true;
+		break;
+
+		case 21717: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29347 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = true;
+		break;
+
+		case 21718: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29346 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21748: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29341 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21749: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29385 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21750: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29378 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21751: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29350 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21752: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29352 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21753: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29359 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21754: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29351 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21755: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29358 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21756: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29353 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21757: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29354 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21758: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29357 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21759: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29355 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21760: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29356 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21761: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29281 };
+			definition.name = "null";
+			definition.sizeX = 2;
+			definition.sizeY = 2;
+			definition.adjustToTerrain = true;
+			definition.hasActions = false;
+		break;
+
+		case 21762: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29282 };
+			definition.name = "null";
+			definition.sizeX = 2;
+			definition.sizeY = 2;
+			definition.adjustToTerrain = true;
+			definition.hasActions = false;
+		break;
+
+		case 21763: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29283 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.hasActions = false;
+		break;
+
+		case 21765: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29284 };
+			definition.name = "null";
+			definition.sizeX = 2;
+			definition.sizeY = 2;
+			definition.hasActions = false;
+		break;
+
+		case 21766: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29275 };
+			definition.name = "null";
+			definition.sizeX = 2;
+			definition.sizeY = 2;
+			definition.hasActions = false;
+		break;
+
+		case 21767: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29276 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.hasActions = false;
+		break;
+
+		case 21768: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29271 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.hasActions = false;
+		break;
+
+		case 21769: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29272 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.hasActions = false;
+		break;
+
+		case 21770: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29273 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.hasActions = false;
+		break;
+
+		case 21772: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29399 };
+			definition.name = "Portcullis";
+			definition.sizeX = 3;
+			definition.aBoolean764 = true;
+			definition.actions = new String[] { "Exit", null, null, null, null };
+			definition.hasActions = true;
+		break;
+
+		case 21773: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29280 };
+			definition.name = "Soul Devourer";
+			definition.sizeX = 5;
+			definition.sizeY = 5;
+			definition.adjustToTerrain = true;
+			definition.animationID = 4517;
+			definition.hasActions = true;
+		break;
+
+		case 21775: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29294 };
+			definition.anIntArray776 = new int[] { 0 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21776: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29305 };
+			definition.anIntArray776 = new int[] { 0 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21777: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29292 };
+			definition.anIntArray776 = new int[] { 0 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21779: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29293 };
+			definition.anIntArray776 = new int[] { 0 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21780: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29299 };
+			definition.anIntArray776 = new int[] { 0 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21946: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29300 };
+			definition.anIntArray776 = new int[] { 0 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 21947: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29296 };
+			definition.anIntArray776 = new int[] { 2 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 22494: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29295 };
+			definition.anIntArray776 = new int[] { 0 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 22495: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29289 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 23100: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29290 };
+			definition.name = "null";
+			definition.sizeX = 3;
+			definition.sizeY = 3;
+			definition.adjustToTerrain = true;
+			definition.animationID = 4516;
+			definition.hasActions = false;
+		break;
+
+		case 23101: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29287 };
+			definition.name = "Soul boat";
+			definition.sizeX = 3;
+			definition.sizeY = 3;
+			definition.actions = new String[] { "Board", null, null, null, null };
+			definition.hasActions = true;
+		break;
+
+		case 23102: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29279 };
+			definition.name = "null";
+			definition.sizeX = 3;
+			definition.sizeY = 3;
+			definition.aBoolean764 = true;
+			definition.hasActions = false;
+		break;
+
+		case 23104: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29285 };
+			definition.name = "Iron Winch";
+			definition.sizeX = 2;
+			definition.sizeY = 2;
+			definition.adjustToTerrain = true;
+			definition.actions = new String[] { "Turn", "Peek", null, null, null };
+			definition.hasActions = true;
+		break;
+
+		case 23106: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29334 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 23107: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29335 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 23108: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29336 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 23109: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29331 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 23112: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29333 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 23610: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29332 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 26294: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29337 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.adjustToTerrain = true;
+			definition.nonFlatShading = true;
+			definition.hasActions = false;
+		break;
+
+		case 26571: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29398 };
+			definition.name = "null";
+			definition.sizeX = 3;
+			definition.aBoolean764 = true;
+			definition.hasActions = false;
+		break;
+
+		case 27059: 
+			definition.setDefaults();
+			definition.objectModelIDs = new int[] { 29602 };
+			definition.anIntArray776 = new int[] { 22 };
+			definition.name = "null";
+			definition.isUnwalkable = false;
+			definition.nonFlatShading = true;
+			definition.aBoolean736 = true;
+			definition.hasActions = false;
+		break;
+
+
+
+
+		}
+		if(definition.anIntArray776 != null) {
+			if(definition.anIntArray776[0] == 22) {
+				definition.hasActions = true;
+				definition.isUnwalkable = false;
+			}
+		}
 		if(id == 57225) {
 			definition.actions = new String[5];
 			definition.actions[0] = "Climb-over";
@@ -588,7 +1572,7 @@ public final class ObjectDefinition {
     private int[] objectModelIDs;
     public int varbitIndex;
     public int anInt775;
-    private int[] anIntArray776;
+    public int[] anIntArray776;
     public byte description[];
     public boolean hasActions;
     public boolean aBoolean779;
@@ -940,7 +1924,53 @@ public final class ObjectDefinition {
         if (anInt760 == -1)
             anInt760 = isUnwalkable ? 1 : 0;
     }
+	public void immitate(ObjectDefinition definition2) {
+		objectModelIDs = definition2.objectModelIDs;
+        anIntArray776 = definition2.anIntArray776;
+		
+        name = definition2.name;
+        description = definition2.description;
+		
+        modifiedModelColors = definition2.modifiedModelColors;
+        originalModelColors = definition2.originalModelColors;
+		
+        sizeX = definition2.sizeX;
+        sizeY = definition2.sizeY;
 
+        isUnwalkable = definition2.isUnwalkable;
+		
+        aBoolean757 = definition2.aBoolean757;
+		
+        hasActions = definition2.hasActions;
+
+        adjustToTerrain = definition2.adjustToTerrain;
+        nonFlatShading = definition2.nonFlatShading;
+        aBoolean764 = definition2.aBoolean764;
+        animationID = definition2.animationID;
+        anInt775 = definition2.anInt775;
+        brightness = definition2.brightness;
+        contrast = definition2.contrast;
+        actions = definition2.actions;
+
+        mapFunctionID = definition2.mapFunctionID;
+        mapSceneID = definition2.mapSceneID;
+        aBoolean751 = definition2.aBoolean751;
+        aBoolean779 = definition2.aBoolean779;
+        modelSizeX = definition2.modelSizeX;
+        modelSizeH = definition2.modelSizeH;
+        modelSizeY = definition2.modelSizeY;
+        plane = definition2.plane;
+        offsetX = definition2.offsetX;
+        offsetH = definition2.offsetH;
+        offsetY = definition2.offsetY;
+        aBoolean736 = definition2.aBoolean736;
+        isSolidObject = definition2.isSolidObject;
+        anInt760 = definition2.anInt760;
+        varbitIndex = definition2.varbitIndex;
+		configID = definition2.configID;
+       configObjectIDs = definition2.configObjectIDs;
+
+	}
     private void setDefaults() {
         objectModelIDs = null;
         anIntArray776 = null;

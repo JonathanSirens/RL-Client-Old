@@ -114,7 +114,7 @@ public final class ItemDefinition {
 			 * //definition.originalModelColors =
 			 * stat.originalModelColors.clone(); definition.modelID =
 			 * stat.modelID; definition.modelOffset1 = stat.modelOffset1;
-			 * definition.modelOffset2 = stat.modelOffset2;
+			 * definition.modelOffsetY = stat.modelOffsetY;
 			 * definition.modelRotation1 = stat.modelRotation1;
 			 * definition.modelRotation2 = stat.modelRotation2;
 			 * definition.groundActions = stat.groundActions; definition.value =
@@ -138,11 +138,11 @@ public final class ItemDefinition {
 			break;
 		case 11211:
 			itemDef.actions = new String[5];
-			itemDef.actions[0] = "Roll";
+			itemDef.actions[0] = "Jiggle";
 			break;
 		case 4142:
 			itemDef.actions = new String[5];
-			itemDef.actions[0] = "Boost";
+			itemDef.actions[0] = "Lick";
 			break;
 		case 4490:
 			itemDef.name = "Poop";
@@ -156,12 +156,189 @@ public final class ItemDefinition {
 			itemDef.actions[0] = "Claim";
 			itemDef.actions[2] = "Claim-All";
 			break;
-		case 15017: 
-			itemDef.name = "Donator Ring";
-			itemDef.description = "A ring that will grant you double xp when worn..".getBytes();
+	case 12703:
+		//itemDef.setDefaults();
+		itemDef.name = "Hellpuppy";
+		itemDef.modelID = 29392;
+		itemDef.modelRotation1 = 0;
+		itemDef.modelRotation2 = 0;
+		itemDef.modelZoom = 3000;
+		itemDef.groundActions = new String[] { null, null, "Take", null, null };
+		itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
+		break;
+	case 21089:
+			itemDef.modelID = 66994;
+			itemDef.name = "Drygore Longsword";
+			itemDef.description2 = "A powerful sword made from the chitlin of the Kalphite King.";		
+			itemDef.modelZoom = 1493;
+			itemDef.modelRotation1 = 618;
+			itemDef.modelRotation2 = 1086;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = -5;
+			itemDef.maleWearId = 66992;
+			itemDef.femaleWearId = 66993;
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
 			itemDef.actions = new String[5];
-			itemDef.actions[1] = "Equip";
-			break;
+			itemDef.actions[1] = "Wield";
+			itemDef.actions[4] = "Drop";
+	break;	
+
+	case 21090:
+			itemDef.modelID = 66998;
+			itemDef.name = "Off-hand Drygore Longsword";
+			itemDef.description2 = "A powerful off-hand sword made from the chitlin of the Kalphite King.";		
+			itemDef.modelZoom = 1493;
+			itemDef.modelRotation1 = 618;
+			itemDef.modelRotation2 = 1407;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = -5;
+			itemDef.maleWearId = 66996;
+			itemDef.femaleWearId = 66997;
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[5];
+			itemDef.actions[1] = "Wield";
+			itemDef.actions[4] = "Drop";
+	break;	
+
+	case 21091:
+			itemDef.modelID = 67000;
+			itemDef.name = "Drygore Rapier";
+			itemDef.description2 = "A powerful rapier made from the chitlin of the Kalphite King.";		
+			itemDef.modelZoom = 1493;
+			itemDef.modelRotation1 = 618;
+			itemDef.modelRotation2 = 996;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = -5;
+			itemDef.maleWearId = 67001;
+			itemDef.femaleWearId = 67002;
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[5];
+			itemDef.actions[1] = "Wield";
+			itemDef.actions[4] = "Drop";
+	break;	
+
+	case 21092:
+			itemDef.modelID = 67004;
+			itemDef.name = "Off-hand Drygore Rapier";
+			itemDef.description2 = "A powerful off-hand rapier made from the chitlin of the Kalphite King.";		
+			itemDef.modelZoom = 1493;
+			itemDef.modelRotation1 = 618;
+			itemDef.modelRotation2 = 1407;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = -5;
+			itemDef.maleWearId = 67005;
+			itemDef.femaleWearId = 67006;
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[5];
+			itemDef.actions[1] = "Wield";
+			itemDef.actions[4] = "Drop";
+	break;
+
+	case 21100:
+			itemDef.modelID = 67007;
+			itemDef.name = "Drygore Mace";
+			itemDef.description2 = "A powerful mace made from the chitlin of the Kalphite King.";		
+			itemDef.modelZoom = 1493;
+			itemDef.modelRotation1 = 618;
+			itemDef.modelRotation2 = 996;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = -5;
+			itemDef.maleWearId = 67008;
+			itemDef.femaleWearId = 67009;
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[5];
+			itemDef.actions[1] = "Wield";
+			itemDef.actions[4] = "Drop";
+	break;	
+
+	case 21101:
+			itemDef.modelID = 67011;
+			itemDef.name = "Off-hand Drygore Mace";
+			itemDef.description2 = "A powerful off-hand mace made from the chitlin of the Kalphite King.";		
+			itemDef.modelZoom = 1493;
+			itemDef.modelRotation1 = 618;
+			itemDef.modelRotation2 = 1407;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = -5;
+			itemDef.maleWearId = 67012;
+			itemDef.femaleWearId = 67013;
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[5];
+			itemDef.actions[1] = "Wield";
+			itemDef.actions[4] = "Drop";
+		break;
+		
+	case 12704:
+		itemDef.name = "Infernal Pickaxe";
+		itemDef.modelID = 29393;
+		itemDef.maleWearId = 29260;
+		itemDef.femaleWearId = 29260;
+		itemDef.modelRotation1 = 224;
+		itemDef.modelRotation2 = 1056;
+		itemDef.modelZoom = 1070;
+		itemDef.groundActions = new String[] { null, null, "Take", null, null };
+		itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+		break;
+		
+	case 12706:
+		itemDef.name = "Infernal axe";
+		itemDef.modelID = 29395;
+		itemDef.maleWearId = 29259;
+		itemDef.femaleWearId = 29259;
+		itemDef.modelRotation1 = 224;
+		itemDef.modelRotation2 = 1056;
+		itemDef.modelZoom = 1070;
+		itemDef.groundActions = new String[] { null, null, "Take", null, null };
+		itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+		break;
+
+	case 12708:
+		itemDef.name = "Pegasian boots";
+		itemDef.modelID = 29396;
+		itemDef.modelZoom = 900;
+		itemDef.modelRotation1 = 165;
+		itemDef.modelRotation2 = 99;
+		itemDef.modelOffset1 = 3;
+		itemDef.modelOffsetY =-7;
+		itemDef.maleWearId = 29252;
+		itemDef.femaleWearId = 29253;
+		itemDef.actions = new String[5];
+		itemDef.actions[1] = "Wear";
+		break;
+
+		case 12710:
+		itemDef.name = "Primordial Boots";
+		itemDef.modelID = 29397;
+		itemDef.modelZoom = 900;
+		itemDef.modelRotation1 = 165;
+		itemDef.modelRotation2 = 99;
+		itemDef.modelOffset1 = 3;
+		itemDef.modelOffsetY =-7;
+		itemDef.maleWearId = 29250;
+		itemDef.femaleWearId = 29255;
+		itemDef.actions = new String[5];
+		itemDef.actions[1] = "Wear";
+		break;
+
+		case 12712:
+		itemDef.name = "Eternal boots";
+		itemDef.modelID = 29394;
+		itemDef.modelZoom = 900;
+		itemDef.modelRotation1 = 165;
+		itemDef.modelRotation2 = 99;
+		itemDef.modelOffset1 = 3;
+		itemDef.modelOffsetY =-7;
+		itemDef.maleWearId = 29249;
+		itemDef.femaleWearId = 29254;
+		itemDef.actions = new String[5];
+		itemDef.actions[1] = "Wear";
+		break;
 		case 691:
 			itemDef.name = "Proof of Kill";
 			itemDef.actions = new String[] { null, null, null, null, "Drop"};
@@ -351,7 +528,7 @@ public final class ItemDefinition {
 		break;
 		case 21085:
 			itemDef.modelID = 65270;
-			itemDef.name = "Completionist Cape";
+			itemDef.name = "Completionist cape";
 			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
 			itemDef.modelZoom = 1385;
 			itemDef.modelOffset1 = 0;
@@ -374,7 +551,7 @@ public final class ItemDefinition {
 			break;
 		case 21086:
 			itemDef.modelID = 65270;
-			itemDef.name = "Completionist Cape";
+			itemDef.name = "Completionist cape";
 			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
 			itemDef.modelZoom = 1385;
 			itemDef.modelOffset1 = 0;
@@ -395,9 +572,10 @@ public final class ItemDefinition {
 				65214, 65200, 65186, 62995
 			};
 			break;
+
 		case 21087:
 			itemDef.modelID = 65270;
-			itemDef.name = "Completionist Cape";
+			itemDef.name = "Completionist cape";
 			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
 			itemDef.modelZoom = 1385;
 			itemDef.modelOffset1 = 0;
@@ -420,7 +598,7 @@ public final class ItemDefinition {
 			break;
 		case 21095:
 			itemDef.modelID = 65270;
-			itemDef.name = "Completionist Cape";
+			itemDef.name = "Completionist cape";
 			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
 			itemDef.modelZoom = 1385;
 			itemDef.modelOffset1 = 0;
@@ -443,7 +621,7 @@ public final class ItemDefinition {
 			break;
 		case 21099:
 			itemDef.modelID = 65270;
-			itemDef.name = "Completionist Cape";
+			itemDef.name = "Completionist cape";
 			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
 			itemDef.modelZoom = 1385;
 			itemDef.modelOffset1 = 0;
@@ -466,7 +644,7 @@ public final class ItemDefinition {
 			break;
 		case 21098:
 			itemDef.modelID = 65270;
-			itemDef.name = "Completionist Cape";
+			itemDef.name = "Completionist cape";
 			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
 			itemDef.modelZoom = 1385;
 			itemDef.modelOffset1 = 0;
@@ -489,7 +667,7 @@ public final class ItemDefinition {
 			break;	
 		case 21097:
 			itemDef.modelID = 65270;
-			itemDef.name = "Completionist Cape";
+			itemDef.name = "Completionist cape";
 			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
 			itemDef.modelZoom = 1385;
 			itemDef.modelOffset1 = 0;
@@ -512,7 +690,7 @@ public final class ItemDefinition {
 			break;
 		case 21096:
 			itemDef.modelID = 65270;
-			itemDef.name = "Completionist Cape";
+			itemDef.name = "Completionist cape";
 			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
 			itemDef.modelZoom = 1385;
 			itemDef.modelOffset1 = 0;
@@ -535,7 +713,7 @@ public final class ItemDefinition {
 			break;
 		case 21093:
 			itemDef.modelID = 65270;
-			itemDef.name = "Completionist Cape";
+			itemDef.name = "Completionist cape";
 			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
 			itemDef.modelZoom = 1385;
 			itemDef.modelOffset1 = 0;
@@ -558,7 +736,7 @@ public final class ItemDefinition {
 			break;	
 		case 21094:
 			itemDef.modelID = 65270;
-			itemDef.name = "Completionist Cape";
+			itemDef.name = "Completionist cape";
 			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
 			itemDef.modelZoom = 1385;
 			itemDef.modelOffset1 = 0;
@@ -2052,6 +2230,18 @@ public final class ItemDefinition {
 			itemDef.actions[3] = "Check";    
 			itemDef.actions[4] = "Dissolve";
 			break;
+			case 11975:
+				itemDef.name = "Chinchompa";
+				itemDef.immitate(get(9976));
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
+				break;
+			case 11976:
+				itemDef.name = "Seagull";
+				itemDef.immitate(get(12458));
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
+				break;
 		case 21044:
 			itemDef.setDefaults();
 			itemDef.immitate(get(2503));
@@ -4615,7 +4805,7 @@ public final class ItemDefinition {
 			break;
 		case 14022:
 			itemDef.modelID = 65270;
-			itemDef.name = "Completionist Cape";
+			itemDef.name = "Completionist cape";
 			itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
 			itemDef.modelZoom = 1385;
 			itemDef.modelOffset1 = 0;
@@ -5185,31 +5375,6 @@ public final class ItemDefinition {
 				itemDef.originalModelColors[0] = 1;
 				itemDef.modifiedModelColors[1] = 4540;
 				itemDef.originalModelColors[1] = 1;
-				break;
-
-			case 21089:
-				itemDef.name = "Drygore Longsword";
-				itemDef.actions = new String[5];
-				itemDef.actions[1] = "Wear";
-				itemDef.immitate(get(18351));
-				break;
-			case 21090:
-				itemDef.name = "Drygore Mace";
-				itemDef.actions = new String[5];
-				itemDef.actions[1] = "Wear";
-				itemDef.immitate(get(14679));
-				break;
-			case 21091:
-				itemDef.name = "Drygore Rapier";
-				itemDef.actions = new String[5];
-				itemDef.actions[1] = "Wear";
-				itemDef.immitate(get(18349));
-				break;
-			case 21092:
-				itemDef.name = "Abyssal Dagger";
-				itemDef.actions = new String[5];
-				itemDef.actions[1] = "Wear";
-				itemDef.immitate(get(5698));
 				break;
 	}
 

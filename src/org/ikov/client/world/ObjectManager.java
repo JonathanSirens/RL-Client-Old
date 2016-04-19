@@ -100,6 +100,9 @@ public final class ObjectManager {
 	}
 
 	private static int method187(int i, int j) {
+		//if(i == 24775 && j != 96) {
+			//return 0x85a68; 
+		//}
 		if (i == -1) {
 			return 0xbc614e;
 		}
@@ -603,7 +606,7 @@ public final class ObjectManager {
 									j23 = method177(flo_2.anInt394, flo_2.anInt395, flo_2.anInt396);
 									mapTexture = Rasterizer.anIntArray1482[method185(flo_2.anInt399, 96)];
 								}
-								// System.out.println("id: " + j23);
+								 //System.out.println("id: " + j23);
 								if (i19 - 1 == 151 && flo_2.rgb == 0xff00ff) { //Lava
 									mapTexture = 0xFBDC26;
 								}
@@ -616,6 +619,7 @@ public final class ObjectManager {
 									j23 = -1;
 									floorTexture = 1;
 								}
+								
 								if (j23 == 111) { // Water
 									mapTexture = Rasterizer.method369(1);
 									j23 = -1;
@@ -674,6 +678,15 @@ public final class ObjectManager {
 									mapTexture = Rasterizer.method369(25);
 									j23 = -1;
 									floorTexture = 25;
+								}
+								if(j23 != 0) {
+									//System.out.println("id: " + j23);
+								}
+								//j23 = -1;
+								if(j23 == 24775) {
+									//System.out.println("J20: "+j20+"");
+									//floorTexture = 25;
+									//j23 = 1;
 								}
 								worldController.method279(l, l6, k17, k22, byte4, floorTexture, 154, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), method185(j23, j20), method185(j23, k20), method185(j23, l20), method185(j23, i21), i22, mapTexture, floorTexture >= 0 && floorTexture <= 50);
 							}
@@ -1398,6 +1411,12 @@ public final class ObjectManager {
 	}
 
 	private int method185(int i, int j) {
+		//if(i == 24775 && j != 96) {
+			//return 0x85a68; 
+		//}
+		//if(i == 148 && j != 96) {
+			//return 0x402A2E; 
+		//}
 		if (i == -2) {
 			return 0xbc614e;
 		}

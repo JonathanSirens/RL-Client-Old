@@ -248,6 +248,7 @@ public class MapArea extends GameFrame {
 		} else {
 			Client.cacheSprite[561].drawSprite(x, fixed ? 85 : 48 + y);
 		}
+		x -= 6;
 		value = ""+client.getMoneyInPouch()+"";
 		client.newRegularFont.drawBasicString(""+client.getMoneyInPouch(), x + 55 - (value != null ? value.length() * 6 : 0), (fixed ? 100 : 64) + y, color, 0);
 		//client.smallText.drawRegularText(true, x + 55 - (value != null ? value.length() * 6 : 0), color, value, (fixed ? 100 : 64) + y);

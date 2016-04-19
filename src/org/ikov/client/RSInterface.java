@@ -67,7 +67,18 @@ public class RSInterface {
 		t.modelZoom = zoom;
 		t.atActionType = (t.contentType = 0);
 	}
-
+	
+	public static void addBackground(int id, int opacity, int color) {
+		RSInterface tab = interfaceCache[id] = new RSInterface();
+		tab.textColor = color;
+		tab.id = id;
+		tab.parentID = id;
+		tab.type = 11;
+		tab.atActionType = 0;
+		tab.contentType = 0;
+		tab.opacity = (byte) opacity;
+	}
+	
 	public static void constructRegularInterface(int id, String title) {
 		RSInterface tab = addTabInterface(id);
 		addHDSprite2(id + 1, 73, 73);

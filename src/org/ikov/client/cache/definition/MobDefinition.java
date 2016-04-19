@@ -33,6 +33,68 @@ public final class MobDefinition {
 		case 1677:
 			System.out.println("Men model id: "+definition.npcModels[0]+"");
 		break;
+		case 5866:
+			definition.name = "Cerberus";
+			definition.npcModels = new int[] { 29270 };
+			definition.npcSizeInSquares = 5;
+			definition.actions = new String[] { null, "Attack", null, null, null };
+			definition.standAnimation = 4484;
+			definition.walkAnimation = 4488;
+			definition.drawYellowDotOnMap = true;
+			definition.combatLevel = 318;
+			definition.adjustVertextPointsXOrY = 128;
+			definition.adjustVertextPointZ = 128;
+		break;
+		case 5867:
+			definition.name = "Summoned Soul";
+			definition.npcModels = new int[] { 29268 };
+			definition.npcSizeInSquares = 1;
+			definition.actions = new String[] { null, null, null, null, null };
+			definition.standAnimation = 4505;
+			definition.walkAnimation = 4505;
+			definition.drawYellowDotOnMap = true;
+			definition.combatLevel = 96;
+			definition.adjustVertextPointsXOrY = 140;
+			definition.adjustVertextPointZ = 140;
+		break;
+		case 5868:
+			definition.name = "Summoned Soul";
+			definition.npcModels = new int[] { 29267 };
+			definition.npcSizeInSquares = 1;
+			definition.actions = new String[] { null, null, null, null, null };
+			definition.standAnimation = 4505;
+			definition.walkAnimation = 4505;
+			definition.drawYellowDotOnMap = true;
+			definition.combatLevel = 96;
+			definition.adjustVertextPointsXOrY = 140;
+			definition.adjustVertextPointZ = 140;
+		break;
+
+		case 5869:
+			definition.name = "Summoned Soul";
+			definition.npcModels = new int[] { 29266 };
+			definition.npcSizeInSquares = 1;
+			definition.actions = new String[] { null, null, null, null, null };
+			definition.standAnimation = 4505;
+			definition.walkAnimation = 4505;
+			definition.drawYellowDotOnMap = true;
+			definition.combatLevel = 79;
+			definition.adjustVertextPointsXOrY = 140;
+			definition.adjustVertextPointZ = 140;
+		break;
+		case 5870:
+				definition.name = "Hell Puppy";
+				definition.npcModels = new int[] { 29270 };
+				definition.npcSizeInSquares = 2;
+				definition.actions = new String[5];
+				definition.actions[0] = "Pick-up";
+				definition.standAnimation = 4484;
+				definition.walkAnimation = 4488;
+				definition.drawYellowDotOnMap = true;
+				definition.combatLevel = 318;
+				definition.adjustVertextPointZ = 40;
+				definition.adjustVertextPointsXOrY = 40;
+				break;
 		case 2000:
 			definition.npcModels = new int[2];
 			definition.npcModels[0] = 28294;

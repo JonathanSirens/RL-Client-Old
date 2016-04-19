@@ -903,6 +903,11 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements Runn
 			mapIndices2[i2] = stream2.getUnsignedShort();
 			mapIndices3[i2] = stream2.getUnsignedShort();
 		}*/
+		
+		//Cerberus
+		mapIndices1[151] = 4883;
+		mapIndices2[151] = 1984;
+		mapIndices3[151] = 1985;
 
 		abyte2 = streamLoader.get("midi_index");
 		stream2 = new ByteBuffer(abyte2);

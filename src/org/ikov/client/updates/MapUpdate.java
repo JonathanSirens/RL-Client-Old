@@ -18,7 +18,7 @@ public class MapUpdate {
 	public static final File map_repack_file = new File(System.getProperty("user.home") + "/ikov_cache2/versions/map_repack");
 	public static final File cache_directory = new File(System.getProperty("user.home") + "/ikov_cache2/");
 
-	public static final int map_version = 31;
+	public static final int map_version = 34;
 	
 	public static int REPACK = 0;
 	

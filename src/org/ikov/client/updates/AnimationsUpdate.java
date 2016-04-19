@@ -18,7 +18,7 @@ public class AnimationsUpdate {
 	public static final File animation_repack_file = new File(System.getProperty("user.home") + "/ikov_cache2/versions/animations_repack");
 	public static final File cache_directory = new File(System.getProperty("user.home") + "/ikov_cache2/");
 
-	public static final int animation_version = 4;
+	public static final int animation_version = 6;
 	
 	public static int REPACK = 0;
 	

@@ -26,32 +26,41 @@ public class CacheDownloader {
 	public static final File cache_version_file = new File(Signlink.getCacheDirectory() + "versions/cache_version");
 	public static final String fileToExtract = Signlink.getCacheDirectory() + "ikov_dl.zip";
 
+	public static void writeVersions() {
+	try {
+		if(!new File(Signlink.getCacheDirectory() +"versions").exists()) {
+			new File(Signlink.getCacheDirectory() +"versions").mkdir();
+		}
+		BufferedWriter writer = new BufferedWriter(new FileWriter(cache_version_file));
+		writer.write(String.valueOf(cache_version));
+		writer.close();	
+		BufferedWriter writer2 = new BufferedWriter(new FileWriter(MapUpdate.map_update_file));
+		writer2.write(String.valueOf(MapUpdate.map_version));
+		writer2.close();
+		BufferedWriter writer3 = new BufferedWriter(new FileWriter(SpriteUpdate.sprite_update_file));
+		writer3.write(String.valueOf(SpriteUpdate.sprite_version));
+		writer3.close();
+		BufferedWriter writer4 = new BufferedWriter(new FileWriter(MapUpdate.map_repack_file));
+		writer4.write(String.valueOf(MapUpdate.REPACK));
+		writer4.close();
+		BufferedWriter writer5 = new BufferedWriter(new FileWriter(AnimationsUpdate.animation_repack_file));
+		writer5.write(String.valueOf(AnimationsUpdate.REPACK));
+		writer5.close();
+		BufferedWriter writer6 = new BufferedWriter(new FileWriter(AnimationsUpdate.animation_update_file));
+		writer6.write(String.valueOf(AnimationsUpdate.animation_version));
+		writer6.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void init() {
 		try {
+			//writeVersions();
 			if(!cache_version_file.exists()) {
 				downloadCache();
 				unZip();
-				if(!new File(Signlink.getCacheDirectory() +"versions").exists()) {
-					new File(Signlink.getCacheDirectory() +"versions").mkdir();
-				}
-				BufferedWriter writer = new BufferedWriter(new FileWriter(cache_version_file));
-				writer.write(String.valueOf(cache_version));
-				writer.close();	
-				BufferedWriter writer2 = new BufferedWriter(new FileWriter(MapUpdate.map_update_file));
-				writer2.write(String.valueOf(MapUpdate.map_version));
-				writer2.close();
-				BufferedWriter writer3 = new BufferedWriter(new FileWriter(SpriteUpdate.sprite_update_file));
-				writer3.write(String.valueOf(SpriteUpdate.sprite_version));
-				writer3.close();
-				BufferedWriter writer4 = new BufferedWriter(new FileWriter(MapUpdate.map_repack_file));
-				writer4.write(String.valueOf(MapUpdate.REPACK));
-				writer4.close();
-				BufferedWriter writer5 = new BufferedWriter(new FileWriter(AnimationsUpdate.animation_repack_file));
-				writer5.write(String.valueOf(AnimationsUpdate.REPACK));
-				writer5.close();
-				BufferedWriter writer6 = new BufferedWriter(new FileWriter(AnimationsUpdate.animation_update_file));
-				writer6.write(String.valueOf(AnimationsUpdate.animation_version));
-				writer6.close();
+				writeVersions();
 				Signlink.startpriv(InetAddress.getLocalHost());
 			}
 		} catch(Exception e) {

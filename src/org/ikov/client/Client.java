@@ -511,6 +511,28 @@ public class Client extends GameRenderer {
 			
 		} catch (IOException e) {
 			file.delete();
+			Configuration.SAVE_ACCOUNTS = true;
+			Configuration.NEW_FUNCTION_KEYS = true;
+			Configuration.NEW_FUNCTION_KEYS = true;
+			Configuration.NEW_HEALTH_BARS = true;
+			Configuration.NEW_HITMARKS = true;
+			Configuration.CONSTITUTION_ENABLED = true;
+			Configuration.NEW_CURSORS = true;
+			Configuration.DISPLAY_HP_ABOVE_HEAD = false;
+			Configuration.DISPLAY_USERNAMES_ABOVE_HEAD = false;
+			GameFrameConstants.gameframeType = GameFrameType.FRAME_554;
+			Configuration.NOTIFICATIONS_ENABLED = true;
+			Configuration.HIGH_DETAIL = false;
+			rememberMe = true;
+			saved_characters_usernames[0] = "Empty";
+			saved_characters_usernames[1] = "Empty";
+			saved_characters_usernames[2] = "Empty";
+			saved_characters_passwords[0] = "none";
+			saved_characters_passwords[1] = "none";
+			saved_characters_passwords[2] = "none";
+			myUsername = "Empty";
+			password = "none";
+			e.printStackTrace();
 		} finally {
 			stream.close();
 		}
@@ -1772,15 +1794,19 @@ public class Client extends GameRenderer {
 				continue;
 			}
 			j = modelData;
-
+			int xx = baseX + x;
+			int yy = baseY + y;
+			//System.out.println(""+face);
 			// objects
 			if (face == 2 && worldController.fetchObjectIDTagForPosition(plane, x, y, modelData) >= 0) {
+				
 				index = Model.mapObjIds[k];
 				ObjectDefinition class46 = ObjectDefinition.forID(index);
+				
 				if (class46.configObjectIDs != null) {
 					class46 = class46.method580();
 				}
-
+				
 				if (baseX + x == 3090 && baseY + y == 3956) {
 					menuActionName[menuActionRow] = "Pull @cya@Lever";
 					menuActionID[menuActionRow] = 502;
@@ -1853,9 +1879,20 @@ public class Client extends GameRenderer {
 					menuActionRow++;
 					return;
 				}
-
-				if (class46 == null) {
+				if(class46 == null) {
 					continue;
+				}
+				if(class46 != null) {
+					if(myRights != 3) {
+						if(class46.name == null) {
+							continue;
+						}
+						if(class46.name != null) {
+							if(class46.name.toLowerCase().equals("null") && myRights != 3) {
+								continue;
+							}
+						} 
+					}
 				}
 				if (itemSelected == 1) {
 					menuActionName[menuActionRow] = "Use " + selectedItemName + " with @cya@" + class46.name;
@@ -5462,7 +5499,25 @@ public class Client extends GameRenderer {
 			
 			if(openInterfaceID == 5292) {
 				if(bankItemDragSprite != null) {
-					bankItemDragSprite.drawSprite(bankItemDragSpriteX, bankItemDragSpriteY);
+					if(GameFrame.getScreenMode() == ScreenMode.FIXED) {
+						if(super.mouseY < 74) {
+							bankItemDragSpriteY -= 14;
+							bankItemDragSpriteX -= 14;
+							
+							bankItemDragSprite.drawSprite(bankItemDragSpriteX, bankItemDragSpriteY);
+						} else {
+							bankItemDragSprite.drawSprite(bankItemDragSpriteX, bankItemDragSpriteY);
+						}
+					} else {
+						if(super.mouseY < 269) {
+							bankItemDragSpriteY -= 14;
+							bankItemDragSpriteX -= 14;
+							
+							bankItemDragSprite.drawSprite(bankItemDragSpriteX, bankItemDragSpriteY);
+						} else {
+							bankItemDragSprite.drawSprite(bankItemDragSpriteX, bankItemDragSpriteY);
+						}
+					}
 				}
 			}
 			getGrandExchange().drawGrandExchange();
@@ -6355,8 +6410,11 @@ public class Client extends GameRenderer {
 
 											selectedItem.drawSprite1(k5 + k6, j6 + j7);
 											int yy = GameFrame.getScreenMode() == ScreenMode.FIXED ? 40 : 40 + (clientHeight / 2) - 167;
+											if(GameFrame.getScreenMode() != ScreenMode.FIXED) {
+												yy = 232;
+											}
 											if(openInterfaceID == 5292) {
-												if(super.mouseY >= yy && super.mouseY <= yy+37) {
+												if(super.mouseY >= yy && super.mouseY <= yy + 37) {
 													bankItemDragSprite = selectedItem;
 													bankItemDragSpriteX = super.mouseX;
 													bankItemDragSpriteY = super.mouseY;
@@ -6664,18 +6722,17 @@ public class Client extends GameRenderer {
 						//childInterface.sprite2 = cacheSprite2[57];
 					}
 					Sprite sprite;
-					
-					if (childInterface.itemSpriteId > 0
-							&& childInterface.sprite1 == null && childInterface.sprite2 == null) {
-						childInterface.sprite1 = ItemDefinition.getSprite(
-								childInterface.itemSpriteId, 1,
-								(childInterface.itemSpriteZoom == -1) ? 0 : -1,
-										childInterface.itemSpriteZoom);
-						childInterface.sprite2 = ItemDefinition.getSprite(
-								childInterface.itemSpriteId, 1,
-								(childInterface.itemSpriteZoom == -1) ? 0 : -1,
-										childInterface.itemSpriteZoom);
-
+					/*
+					if (child.enabledSpriteId != -1 && SpriteCache.spriteCache[child.enabledSpriteId] == null) {
+						onDemandFetcher.requestFileData(IMAGE_IDX - 1, child.enabledSpriteId);
+					}
+					if (child.disabledSpriteId != -1 && SpriteCache.spriteCache[child.disabledSpriteId] == null) {
+						onDemandFetcher.requestFileData(IMAGE_IDX - 1, child.disabledSpriteId);
+					}
+					*/
+					if (childInterface.itemSpriteId > 0 && childInterface.sprite1 == null && childInterface.sprite2 == null) {
+						childInterface.sprite1 = ItemDefinition.getSprite(childInterface.itemSpriteId, 1, (childInterface.itemSpriteZoom == -1) ? 0 : -1, childInterface.itemSpriteZoom);
+						childInterface.sprite2 = ItemDefinition.getSprite(childInterface.itemSpriteId, 1, (childInterface.itemSpriteZoom == -1) ? 0 : -1, childInterface.itemSpriteZoom);
 					}
 					if (interfaceIsSelected(childInterface)) {
 						sprite = childInterface.sprite2;
@@ -8815,8 +8872,12 @@ public class Client extends GameRenderer {
 					bankItemDragSprite = null;
 					int x = GameFrame.getScreenMode().ordinal() == 0 ? 0 : (clientWidth / 2) - 256;
 					int y = GameFrame.getScreenMode().ordinal() == 0 ? 40 : 40 + (clientHeight / 2) - 167;
+					if(GameFrame.getScreenMode() == ScreenMode.FULLSCREEN) {
+						y = 232;
+						x = 254 - 28;
+					}
 					if(anInt1084 == 5382 && super.mouseY >= y && super.mouseY <= y+37){//check if bank interface
-						if (super.mouseX >= 28+x && super.mouseX <= 74+x){// tab 1
+						if (super.mouseX >= 28 + x && super.mouseX <= 74 + x){// tab 1
 							getOut().createFrame(214);
 							getOut().method433(5);//5 = maintab
 							getOut().method424(0);
@@ -10386,6 +10447,7 @@ public class Client extends GameRenderer {
 				ObjectDefinition class46_2 = ObjectDefinition.forID(j2);
 
 				if (class46_2.isUnwalkable && class46_2.hasActions) {
+			
 					clippingPlanes[j].method218(i, i1);
 				}
 			}
@@ -10496,7 +10558,11 @@ public class Client extends GameRenderer {
 		if(loggedIn) {
 			if (this.moneyPouchEarningTimer != 0) {
 				int color = this.moneyPouchEarning >= 0L ? 65280 : 16711680;
-				String s = (this.moneyPouchEarning >= 0L ? "+" : "-") + formatAmount(Math.abs(this.moneyPouchEarning));
+				String s = "+" + formatAmount(Math.abs(this.moneyPouchEarning));
+				if(earnOrLoss) {
+					s = "-" + formatAmount(Math.abs(this.moneyPouchEarning));
+					color = 16711680;
+				}
 				int txtWidth = this.normalText.getTextWidth(s);
 				int x = 0;
 				int y = 0;
@@ -13404,6 +13470,7 @@ public class Client extends GameRenderer {
 						long l = Long.parseLong(text.substring(19));
 						this.moneyPouchEarning = l;
 						this.moneyPouchEarningTimer = 250;
+						this.earnOrLoss = false;
 						//this.coinActiveHover = this.coinActiveHoverGreen;
 					} catch (NumberFormatException ex) {
 						ex.printStackTrace();
@@ -13416,6 +13483,7 @@ public class Client extends GameRenderer {
 						long l = Long.parseLong(text.substring(16));
 						this.moneyPouchEarning = l;
 						this.moneyPouchEarningTimer = 250;
+						this.earnOrLoss = true;
 						//this.coinActiveHover = this.coinActiveHoverYellow;
 					} catch (NumberFormatException ex) {
 						ex.printStackTrace();
@@ -16037,7 +16105,7 @@ public class Client extends GameRenderer {
 			}
 			//ObjectDefinition.dumpObjectModels();
 			//onDemandFetcher.dump();
-			repackCacheIndex(4); //Maps
+			//repackCacheIndex(4); //Maps
 			//repackCacheIndex(2); //Animations
 			//decompressors[1].dump();
 			isLoading = false;
@@ -16955,6 +17023,7 @@ public class Client extends GameRenderer {
 	private int moneyPouchHoverTrans;
 	private boolean moneyPouchHoverDir = true;
 	private long moneyPouchEarning;
+	private boolean earnOrLoss = false;
 	private int moneyPouchEarningTimer;
 	public Sprite coinOrb;
 	public Sprite coinPart;
