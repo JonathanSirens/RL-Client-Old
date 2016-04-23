@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 final class GameWindow extends JFrame {
 
@@ -108,8 +109,14 @@ final class GameWindow extends JFrame {
 
     public void setClientIcon() {
         try {
-            BufferedImage localBufferedImage = ImageIO.read(new URL("https://dl.dropboxusercontent.com/u/344464529/IKov/ikov_64.png"));
-            setIconImage(localBufferedImage);
+            //BufferedImage localBufferedImage = ImageIO.read(new URL("https://dl.dropboxusercontent.com/u/344464529/IKov/ikov_64.png"));
+            //setIconImage(localBufferedImage);
+            java.util.List<Image> images = new ArrayList<>();
+            images.add(ImageIO.read(GameWindow.class.getResourceAsStream("/org/ikov/client/resources/16x16.png")));
+            images.add(ImageIO.read(GameWindow.class.getResourceAsStream("/org/ikov/client/resources/32x32.png")));
+            images.add(ImageIO.read(GameWindow.class.getResourceAsStream("/org/ikov/client/resources/64x64.png")));
+            images.add(ImageIO.read(GameWindow.class.getResourceAsStream("/org/ikov/client/resources/128x128.png")));
+            this.setIconImages(images);
         } catch (Exception exception) {
         }
     }

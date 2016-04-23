@@ -7173,18 +7173,20 @@ public class Client extends GameRenderer {
 		
 		boolean handCursor = false, textCursor = false;
 		if(!isLoading && !(loginMessage1.length() > 0)) {
-			if(super.mouseX >= 260 && super.mouseX <= 503 && super.mouseY >= 307 && super.mouseY <= 333) {
+			if(super.mouseX >= 300 && super.mouseX <= 300 + 167 && super.mouseY >= 328 && super.mouseY <= 328 + 34) {
 				loginButtonHover = handCursor = true;
-			} else if(super.mouseX >= 260 && super.mouseX <= 503 && super.mouseY >= 264 && super.mouseY <= 290) {
+			}
+			/*if(super.mouseX >= 260 && super.mouseX <= 503 && super.mouseY >= 264 && super.mouseY <= 290) {
 				worldButtonHover = handCursor = true;
-			} else if(super.mouseX >= 258 && super.mouseX <= 503) {
-				if(super.mouseY >= 152 && super.mouseY <= 175) {
+			}*/
+			if(super.mouseX >= 235 && super.mouseX <= 532) {
+				if(super.mouseY >= 207 && super.mouseY <= 207 + 30) {
 					input1Hover = textCursor = true;
-				} else if(super.mouseY >= 201 && super.mouseY <= 226) {
+				} else if(super.mouseY >= 207 + 52 && super.mouseY <= 207 + 52 + 30) {
 					input2Hover = textCursor = true;
 				}
 			}
-			if(super.mouseX >= 258 && super.mouseX <= 376 && super.mouseY >= 233 && super.mouseY <= 246) {
+			if(super.mouseX >= 235 && super.mouseX <= 235 + 23 + 100 && super.mouseY >= 295 && super.mouseY <= 295 + 23) {
 				rememberMeButtonHover = handCursor = true;
 			}
 		} else {
@@ -7299,7 +7301,7 @@ public class Client extends GameRenderer {
 				cacheSprite2[31].drawAdvancedSprite(417, 458);
 			}
 		} else {
-			cacheSprite2[0].drawAdvancedSprite(0, 0);
+			/*cacheSprite2[0].drawAdvancedSprite(0, 0);
 
 			if(loginButtonHover) {
 				cacheSprite2[27].drawAdvancedSprite(259, 309);
@@ -7363,12 +7365,46 @@ public class Client extends GameRenderer {
 				chatTextDrawingArea.drawRegularText(true, 265, 14335390, getStars(password)+"|", 221);
 			} else {
 				chatTextDrawingArea.drawRegularText(true, 265, 14335390, getStars(password), 221);
+			}*/
+
+			cacheSprite2[0].drawAdvancedSprite(0, 0);
+			chatTextDrawingArea.drawCenteredText(0xffbb18, 765 / 2, "Welcome to RuneLive", 155, true);
+
+			chatTextDrawingArea.drawCenteredText(0xefefef, 765 / 2, "Please enter your username and password.", 178, true);
+
+			int y = 202;
+			chatTextDrawingArea.drawText(0, "Username:", y + 1, 268);
+			chatTextDrawingArea.drawText(0xffcb18, "Username:", y, 267);
+			cacheSprite2[input1Hover ? 96 : 94].drawCenteredARGBImage(765 / 2, y + 19);
+			if(loginScreenCursorPos == 0 && loopCycle % 45 < 10) {
+				chatTextDrawingArea.drawRegularText(true, 243, 0xefefef, myUsername + "|", y + 24);
+			} else {
+				chatTextDrawingArea.drawRegularText(true, 243, 0xefefef, myUsername, y + 24);
 			}
+
+			y += 52;
+			chatTextDrawingArea.drawText(0, "Password:", y + 1, 268);
+			chatTextDrawingArea.drawText(0xffcb18, "Password:", y, 267);
+			cacheSprite2[input2Hover ? 96 : 94].drawCenteredARGBImage(765 / 2, y + 19);
+
+			if(loginScreenCursorPos == 1 && loopCycle % 45 < 10) {
+				chatTextDrawingArea.drawRegularText(true, 243, 0xefefef, getStars(password)+"|", y + 24);
+			} else {
+				chatTextDrawingArea.drawRegularText(true, 243, 0xefefef, getStars(password), y + 24);
+			}
+
+			cacheSprite2[rememberMeButtonHover ? (rememberMe ? 102 : 98) : (rememberMe ? 101 : 97)].drawARGBImage(234, y + 40);
+			normalText.drawRegularText(true, 261, 0xefefef, "Remember me", y + 56);
+
+			y += 90;
+			cacheSprite2[loginButtonHover ? 95 : 93].drawCenteredARGBImage(765 / 2, y);
+			chatTextDrawingArea.drawCenteredText(0xffbb18, 765 / 2, "Login", y + 5, true);
 			
 		}
+		cacheSprite2[99].drawAdvancedSprite(264, 373);
 		if(profile1hover) {
 			if(!saved_characters_usernames[0].equals("Empty")) {
-				cacheSprite2[33].drawAdvancedSprite(264, 373);
+				cacheSprite2[100].drawAdvancedSprite(264, 373);
 				if(profileclose1hover) {
 					cacheSprite2[26].drawAdvancedSprite(326, 374);
 				} else {
@@ -7376,6 +7412,8 @@ public class Client extends GameRenderer {
 				}
 			}
 		}
+		cacheSprite2[33].drawAdvancedSprite(264 + 22, 373 + 5);
+
 		if(!saved_characters_usernames[0].equals("Empty")) {
 			if(profileclose1hover) {
 				cacheSprite2[26].drawAdvancedSprite(326, 374);
@@ -7383,10 +7421,12 @@ public class Client extends GameRenderer {
 				cacheSprite2[21].drawAdvancedSprite(326, 374);
 			}
 		}
-		smallText.drawCenteredText(14335390, 301, saved_characters_usernames[0], 442, true);
+		smallText.drawCenteredText(0xefefef, 301, saved_characters_usernames[0], 442, true);
+
+		cacheSprite2[99].drawAdvancedSprite(343, 373);
 		if(profile2hover) {
 			if(!saved_characters_usernames[1].equals("Empty")) {
-				cacheSprite2[33].drawAdvancedSprite(343, 373);
+				cacheSprite2[100].drawAdvancedSprite(343, 373);
 			}
 		}
 		if(!saved_characters_usernames[1].equals("Empty")) {
@@ -7396,10 +7436,13 @@ public class Client extends GameRenderer {
 				cacheSprite2[21].drawAdvancedSprite(405, 374);
 			}
 		}
-		smallText.drawCenteredText(14335390, 380, saved_characters_usernames[1], 442, true);
+		cacheSprite2[33].drawAdvancedSprite(343 + 22, 373 + 5);
+		smallText.drawCenteredText(0xefefef, 380, saved_characters_usernames[1], 442, true);
+
+		cacheSprite2[99].drawAdvancedSprite(422, 373);
 		if(profile3hover) {
 			if(!saved_characters_usernames[2].equals("Empty")) {
-				cacheSprite2[33].drawAdvancedSprite(422, 373);
+				cacheSprite2[100].drawAdvancedSprite(422, 373);
 			}
 		}
 		if(!saved_characters_usernames[2].equals("Empty")) {
@@ -7409,7 +7452,8 @@ public class Client extends GameRenderer {
 				cacheSprite2[21].drawAdvancedSprite(485, 374);
 			}
 		}
-		smallText.drawCenteredText(14335390, 459, saved_characters_usernames[2], 442, true);
+		cacheSprite2[33].drawAdvancedSprite(422 + 22, 373 + 5);
+		smallText.drawCenteredText(0xefefef, 459, saved_characters_usernames[2], 442, true);
 		
 		titleScreenIP.drawGraphics(0, super.graphics, 0);
 
@@ -15823,7 +15867,8 @@ public class Client extends GameRenderer {
 				}
 				loadingImages[i - 1] = ImageIO.read(new File(Signlink.getCacheDirectory() + "loading"+i+".png"));
 			}
-			loadingImages[1] = ImageIO.read(new File(Signlink.getCacheDirectory() + "loading2.png"));
+			//loadingImages[1] = ImageIO.read(new File(Signlink.getCacheDirectory() + "loading2.png"));
+			loadingImages[1] = loadingImages[0] = ImageIO.read(Client.class.getResourceAsStream("/org/ikov/client/resources/background.png"));
 			super.graphics.drawImage(loadingImages[0], 0, 0, null);
 			//super.graphics.drawImage(loadingImages[1], 5, clientHeight - 35, null);
 		} catch(Exception e) {

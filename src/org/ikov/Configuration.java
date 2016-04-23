@@ -28,7 +28,7 @@ public class Configuration {
 	public static final boolean DROPBOX_MODE = false;
 	
 	/** MAIN CONSTANTS **/
-	public final static String CLIENT_NAME = "Ikov " + ClientUpdate.clientVersion + "";
+	public final static String CLIENT_NAME = "RuneLive " + ClientUpdate.clientVersion + "";
 	public final static String CACHE_DIRECTORY_NAME = "ikov_cache2"; // Cache folder name
 	public final static int CLIENT_VERSION = 3;
 	public final static boolean JAGCACHED_ENABLED = false;
