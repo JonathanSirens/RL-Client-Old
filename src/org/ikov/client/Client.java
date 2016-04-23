@@ -7190,7 +7190,7 @@ public class Client extends GameRenderer {
 				rememberMeButtonHover = handCursor = true;
 			}
 		} else {
-			if(super.mouseX >= 511 && super.mouseX <= 522 && super.mouseY >= 123 && super.mouseY <= 137) {
+			if(super.mouseX >= 511 + 38 && super.mouseX <= 522 + 38 && super.mouseY >= 123 + 15 && super.mouseY <= 137 + 15) {
 				backButtonHover = handCursor = true;
 			}
 		}
@@ -7269,21 +7269,23 @@ public class Client extends GameRenderer {
 		if(loginMessage1.length() > 0) {
 			
 			cacheSprite2[0].drawAdvancedSprite(0, 0);
-			cacheSprite2[20].drawAdvancedSprite(240, 124);
+			//cacheSprite2[20].drawAdvancedSprite(240, 124);
+
+			DrawingArea.drawAlphaBox(199, 137, 366, 234, 0, 100);
 			
 			if(backButtonHover) {
-				cacheSprite2[26].drawAdvancedSprite(511, 125);
+				cacheSprite2[26].drawAdvancedSprite(511 + 38, 125 + 15);
 			} else {
-				cacheSprite2[21].drawAdvancedSprite(511, 125);
+				cacheSprite2[21].drawAdvancedSprite(511 + 38, 125 + 15);
 			}
 			
 			if(loginMessage1 != null && loginMessage1.length() != 0) {
 				int y_1 = (clientHeight / 2) + 28;
-				chatTextDrawingArea.drawCenteredText(14335390, 381, loginMessage1, y_1 - 45, true);
+				chatTextDrawingArea.drawCenteredText(0xefefef, 381, loginMessage1, y_1 - 30, true);
 			}
 			if(loginMessage2 != null && loginMessage2.length() != 0) {
 				int y_2 = (clientHeight / 2) + (1 * 20) + 28;
-				chatTextDrawingArea.drawCenteredText(14335390, 381, loginMessage2, y_2 - 45, true);
+				chatTextDrawingArea.drawCenteredText(0xefefef, 381, loginMessage2, y_2 - 30, true);
 			}
 			if(ahover) {
 				cacheSprite2[28].drawAdvancedSprite(312, 458);
