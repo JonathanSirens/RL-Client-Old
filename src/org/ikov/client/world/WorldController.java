@@ -972,13 +972,13 @@ public final class WorldController {
 		if (l < 3 || !flag) {
 			return;
 		}
-		for (int k1 = 0; k1 < model.anInt1630; k1++) {
+		for (int k1 = 0; k1 < model.triangleCount; k1++) {
 			if (anIntArray486[model.anIntArray1631[k1]] == anInt488 && anIntArray486[model.anIntArray1632[k1]] == anInt488 && anIntArray486[model.anIntArray1633[k1]] == anInt488) {
 				model.anIntArray1637[k1] = -1;
 			}
 		}
 
-		for (int l1 = 0; l1 < model_1.anInt1630; l1++) {
+		for (int l1 = 0; l1 < model_1.triangleCount; l1++) {
 			if (anIntArray487[model_1.anIntArray1631[l1]] == anInt488 && anIntArray487[model_1.anIntArray1632[l1]] == anInt488 && anIntArray487[model_1.anIntArray1633[l1]] == anInt488) {
 				model_1.anIntArray1637[l1] = -1;
 			}
