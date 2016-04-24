@@ -1,6 +1,7 @@
 package org.ikov.client;
 
 import org.ikov.Configuration;
+import org.ikov.client.graphics.gameframe.GameFrame;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,50 +17,17 @@ final class GameWindow extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
-    private final GameRenderer applet;
+    private static GameRenderer applet;
     private static GameWindow instance;
+    private static Dimension minimumSize;
 
     public static GameWindow getInstance() {
         return instance;
     }
 
-    public static void setFixed() {
-        instance.setSize(instance.getMinimumSize());
-        instance.setResizable(false);
-        instance.setLocationRelativeTo(null);
-    }
-
-    public static void setResizable() {
-        if (instance.isUndecorated()) {
-            instance.setUndecorated(false);
-        }
-        instance.setSize(new Dimension(instance.getMinimumSize().width + 40, instance.getMinimumSize().height + 100));
-        instance.setResizable(true);
-        instance.setLocationRelativeTo(null);
-    }
-
-    public static void setFullscreen() {
-        instance.setResizable(true);
-        instance.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    }
-
     public static void main(String[] args) {
-        instance = new GameWindow(new Client(), 765, 503, false, false);
-        instance.applet.init();
-    }
-
-    private int hoverIndex = -1;
-
-    public GameWindow(GameRenderer applet, int width, int height, boolean undecorative, boolean resizable) {
-        this.applet = applet;
-        setTitle("" + Configuration.CLIENT_NAME + "");
-        setFocusTraversalKeysEnabled(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setUndecorated(undecorative);
-        this.setLayout(new BorderLayout());
-
-        final Image[] images = new Image[2];
-        final Image[] labels = new Image[7];
+        images = new Image[2];
+        labels = new Image[7];
         try {
             images[0] = ImageIO.read(GameWindow.class.getResourceAsStream("/org/ikov/client/resources/nav_button.png"));
             images[1] = ImageIO.read(GameWindow.class.getResourceAsStream("/org/ikov/client/resources/nav_hover.png"));
@@ -69,6 +37,66 @@ final class GameWindow extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        icons = new ArrayList<>();
+        try {
+            icons.add(ImageIO.read(GameWindow.class.getResourceAsStream("/org/ikov/client/resources/16x16.png")));
+            icons.add(ImageIO.read(GameWindow.class.getResourceAsStream("/org/ikov/client/resources/32x32.png")));
+            icons.add(ImageIO.read(GameWindow.class.getResourceAsStream("/org/ikov/client/resources/64x64.png")));
+            icons.add(ImageIO.read(GameWindow.class.getResourceAsStream("/org/ikov/client/resources/128x128.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        instance = new GameWindow(new Client(), 765, 503, false, false);
+        minimumSize = instance.getSize();
+        instance.applet.init();
+    }
+
+    public static void setFixed() {
+        if (instance.isUndecorated()) {
+            instance.dispose();
+            instance = new GameWindow(applet, minimumSize.width, minimumSize.height, false, false);
+        } else {
+            instance.setSize(minimumSize);
+            instance.setResizable(false);
+        }
+        instance.setLocationRelativeTo(null);
+    }
+
+    public static void setResizable() {
+        if (instance.isUndecorated()) {
+            instance.dispose();
+            instance = new GameWindow(applet, minimumSize.width + 40, minimumSize.height + 100, false, true);
+        } else {
+            instance.setSize(new Dimension(minimumSize.width + 40, minimumSize.height + 100));
+            instance.setResizable(true);
+        }
+        instance.setLocationRelativeTo(null);
+    }
+
+    public static void setFullscreen() {
+        instance.dispose();
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        instance = new GameWindow(applet, size.width, size.height, true, false);
+    }
+
+    private static Image[] images;
+    private static Image[] labels;
+    private static java.util.List<Image> icons;
+
+    private int hoverIndex = -1;
+
+    public GameWindow(GameRenderer applet, int width, int height, boolean undecorative, boolean resizable) {
+        this.applet = applet;
+        this.setTitle("" + Configuration.CLIENT_NAME + "");
+        this.setFocusTraversalKeysEnabled(false);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setUndecorated(undecorative);
+        this.setBackground(Color.BLACK);
+        this.setLayout(new BorderLayout());
+        this.setIconImages(icons);
+
         JPanel panel = new JPanel() {
             @Override
             public void paintComponent(Graphics g) {
@@ -88,39 +116,30 @@ final class GameWindow extends JFrame {
         panel.setSize(new Dimension(765, 41));
         panel.setPreferredSize(new Dimension(765, 41));
         panel.setMinimumSize(new Dimension(765, 41));
-        /*JMenuBar bar = new JMenuBar();
-        JMenu menu = new JMenu("File");
-        menu.add(new JMenuItem("Test"));
-        bar.add(menu);*/
         this.add(panel, BorderLayout.NORTH);
 
         this.add(this.applet, BorderLayout.CENTER);
-        setResizable(resizable);
-        setVisible(true);
-        Insets insets = getInsets();
-        setSize(width + insets.left + insets.right, height + insets.top + insets.bottom + 41);
-        setLocationRelativeTo(null);
-        requestFocus();
-        toFront();
-        setBackground(Color.BLACK);
-        setClientIcon();
-        this.setMinimumSize(this.getSize());
-    }
 
-    public void setClientIcon() {
-        try {
-            //BufferedImage localBufferedImage = ImageIO.read(new URL("https://dl.dropboxusercontent.com/u/344464529/IKov/ikov_64.png"));
-            //setIconImage(localBufferedImage);
-            java.util.List<Image> images = new ArrayList<>();
-            images.add(ImageIO.read(GameWindow.class.getResourceAsStream("/org/ikov/client/resources/16x16.png")));
-            images.add(ImageIO.read(GameWindow.class.getResourceAsStream("/org/ikov/client/resources/32x32.png")));
-            images.add(ImageIO.read(GameWindow.class.getResourceAsStream("/org/ikov/client/resources/64x64.png")));
-            images.add(ImageIO.read(GameWindow.class.getResourceAsStream("/org/ikov/client/resources/128x128.png")));
-            this.setIconImages(images);
-        } catch (Exception exception) {
+        this.setResizable(resizable);
+        this.setVisible(true);
+
+        if (undecorative) {
+            this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        } else {
+            if (!this.isResizable()) {
+                Insets insets = getInsets();
+                this.setSize(width + insets.left + insets.right, height + insets.top + insets.bottom + 41);
+                this.setMinimumSize(this.getSize());
+            } else {
+                this.setSize(new Dimension(minimumSize.width + 40, minimumSize.height + 100));
+                this.setMinimumSize(minimumSize);
+            }
+            setLocationRelativeTo(null);
         }
-    }
 
+        this.requestFocus();
+        this.toFront();
+    }
     private final class NavListener extends MouseAdapter {
 
         private final JPanel panel;

@@ -5833,6 +5833,10 @@ public final class Rasterizer extends DrawingArea {
 	}
 
 	public static void setBounds(int offSetX, int offSetY) {
+		if (offSetY < 0) {
+			return;
+		}
+
 		lineOffsets = new int[offSetY];
 
 		for (int l = 0; l < offSetY; l++) {
