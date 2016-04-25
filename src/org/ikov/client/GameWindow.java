@@ -89,6 +89,7 @@ final class GameWindow extends JFrame {
 
     public GameWindow(GameRenderer applet, int width, int height, boolean undecorative, boolean resizable) {
         this.applet = applet;
+        this.applet.setFocusTraversalKeysEnabled(false);
         this.setTitle("" + Configuration.CLIENT_NAME + "");
         this.setFocusTraversalKeysEnabled(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
