@@ -9,19 +9,19 @@ import org.ikov.client.updates.ClientUpdate;
 public class Configuration {
 
 	/** CONNECTION **/
-	public final static boolean LOCAL = false;
+	public final static boolean LOCAL = true;
 	public final static String SERVER_HOST = LOCAL ? "127.0.0.1" : "158.69.125.71"; // 158.69.125.71
 	public final static int SERVER_PORT = 59018;
 
 	/** LINKS FOR NAVBAR **/
 	public static final String[] NAV_LINKS = {
-			"http://www.ikov2.org",
-			"http://www.ikov2.org/forum",
-			"http://www.ikov2.org/vote",
-			"http://www.ikov2.org/hiscores",
-			"http://www.ikov2.org/store",
-			"http://ikov2.org/forum/?app=tickets",
-			"http://ikov-2.wikia.com/wiki/Ikov_2_Wikia",
+			"http://rune.live",
+			"http://rune.live/forum",
+			"http://rune.live/vote",
+			"http://rune.live/hiscores",
+			"http://rune.live/store",
+			"http://rune.live/forum/?app=tickets",
+			"http://rune.live/wiki",
 	};
 	
 	/** LOADS CACHE FROM ./ IF TRUE, OTHERWISE USER.HOME FOLDER**/

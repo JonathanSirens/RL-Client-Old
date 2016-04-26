@@ -1,8 +1,12 @@
 package org.ikov.client;
 
+import java.awt.Toolkit;
 import org.ikov.client.updates.*;
 import java.applet.AppletContext;
 
+import java.awt.image.RGBImageFilter;
+import java.awt.image.ImageProducer;
+import java.awt.image.FilteredImageSource;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
@@ -1619,6 +1623,10 @@ public class Client extends GameRenderer {
 			String[] cmd2 = cmd.split(" ");
 			ItemDefinition.dumpItemModelsForId(Integer.parseInt(cmd2[1]));
 		}
+		if(cmd.contains("itemimages")) {
+			System.out.println("Command process: "+cmd+"");
+			dumpItemImages(false);
+		}
 		switch(cmd) {
 		case "hitmarks":
 			Configuration.NEW_HITMARKS = !Configuration.NEW_HITMARKS;
@@ -1658,7 +1666,74 @@ public class Client extends GameRenderer {
 			getOut().putString(cmd);
 		}
 	}
+	/**
+	 * Dumps the item images for all items in the cache.
+	 * @param dumpByName
+	 */
+	public void dumpItemImages(boolean dumpByName) {
+		for (int id = 0; id < ItemDefinition.totalItems; id++) {
+			Sprite image = ItemDefinition.getSprite(id, id, 0);
+			dumpImage(image, dumpByName ? ItemDefinition.get(id).name : Integer.toString(id));
+		}
+	}
 
+	/**
+	 * Dumps a sprite with the specified name.
+	 * @param id
+	 * @param image
+	 */
+	public void dumpImage(Sprite image, String name) {
+		File directory = new File(Signlink.getCacheDirectory() + "rsimg/dump/");
+		if (!directory.exists()) {
+			directory.mkdir();
+		}
+		if(image == null)
+			return;
+		BufferedImage bi = new BufferedImage(image.myWidth, image.myHeight, BufferedImage.TYPE_INT_RGB);
+		bi.setRGB(0, 0, image.myWidth, image.myHeight, image.myPixels, 0, image.myWidth);
+		Image img = makeColorTransparent(bi, new Color(0, 0, 0));
+		BufferedImage trans = imageToBufferedImage(img);
+		try {
+			File out = new File(Signlink.getCacheDirectory() + "rsimg/dump/" + name + ".png");
+			ImageIO.write(trans, "png", out);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Turns an Image into a BufferedImage.
+	 * @param image
+	 * @return
+	 */
+    private static BufferedImage imageToBufferedImage(Image image) {
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = bufferedImage.createGraphics();
+        g2.drawImage(image, 0, 0, null);
+        g2.dispose();
+        return bufferedImage;
+    }
+
+    /**
+     * Makes the specified color transparent in a buffered image.
+     * @param im
+     * @param color
+     * @return
+     */
+    public static Image makeColorTransparent(BufferedImage im, final Color color) {
+    	RGBImageFilter filter = new RGBImageFilter() {
+    		public int markerRGB = color.getRGB() | 0xFF000000;
+    		public final int filterRGB(int x, int y, int rgb) {
+    			if ((rgb | 0xFF000000) == markerRGB) {
+    				return 0x00FFFFFF & rgb;
+    			} else {
+    				return rgb;
+    			}
+    		}
+    	};
+    	ImageProducer ip = new FilteredImageSource(im.getSource(), filter);
+    	return Toolkit.getDefaultToolkit().createImage(ip);
+    }
 	private void addFriend(long nameAsLong) {
 		try {
 			if (nameAsLong == 0L) {
