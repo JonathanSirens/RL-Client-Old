@@ -7208,12 +7208,12 @@ public class Client extends GameRenderer {
                 percent = 25;
                 int n7 = n6;
                 Image image = loadingImages[2];
-                BufferedImage bufferedImage = new BufferedImage(n7, 13, 2);
+                BufferedImage bufferedImage = new BufferedImage(n7, 12, 2);
                 Graphics2D graphics2D2 = bufferedImage.createGraphics();
-                graphics2D2.drawImage(image, 0, 0, 510, 13, null);
+                graphics2D2.drawImage(image, 0, 0, 193, 13, null);
                 graphics2D2.dispose();
                 image = bufferedImage;
-                super.graphics.drawImage(image, 287, 181, null);
+                super.graphics.drawImage(image, 287, 182, null);
             }
 	}
 	
@@ -15938,7 +15938,7 @@ public class Client extends GameRenderer {
 		System.out.println("Downloading raw cache images...");
 		/** DOWNLOADING LOADING IMAGES **/
 		try {
-			//loadingImages[1] = ImageIO.read(new File(Signlink.getCacheDirectory() + "loading2.png"));
+			loadingImages[2] = ImageIO.read(Client.class.getResourceAsStream("/org/runelive/client/resources/loading_bar.png"));
 			loadingImages[1] = loadingImages[0] = ImageIO.read(Client.class.getResourceAsStream("/org/runelive/client/resources/background.png"));
 			super.graphics.drawImage(loadingImages[0], 0, 0, null);
 			//super.graphics.drawImage(loadingImages[1], 5, clientHeight - 35, null);

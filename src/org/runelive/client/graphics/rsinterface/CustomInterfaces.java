@@ -707,15 +707,15 @@ public class CustomInterfaces extends RSInterface {
 	private static void quest_tab() {
 		RSInterface tab = addTabInterface(55065);
 		RSInterface scroll = addTabInterface(55066);
-		addText(55067, "RuneLive", fonts, 2, 37375, false, true);
+		addText(55067, "RuneLive", fonts, 2, 0x588CD5, false, true);
 		addSpriteLoader(55068, 650);
 		addSpriteLoader(55069, 651);
 		addSpriteLoader(55070, 650);
 		addButtonWSpriteLoader(55071, 530, "Quests", 21, 22);
-		addButtonWSpriteLoader2(55117, 49, "Kills Tracker", 21, 21);
-		addButtonWSpriteLoader2(55118, 50, "Track Target", 21, 22);
+		addButtonWSpriteLoader2(55119, 49, "Kills Tracker", 21, 21);
+		addButtonWSpriteLoader2(55120, 50, "Track Target", 21, 22);
 
-		scroll.totalChildren(45);		
+		scroll.totalChildren(46);		
 		scroll.width = 174; scroll.height = 224; scroll.scrollMax = 760;
 		tab.totalChildren(8);
 
@@ -725,37 +725,37 @@ public class CustomInterfaces extends RSInterface {
 		tab.child(3, 55070, 0, 254);
 		tab.child(4, 55071, 166, 4);
 		tab.child(5, 55066, 0, 30);
-		tab.child(6, 55117, 143, 4);
-		tab.child(7, 55118, 118, 4);
+		tab.child(6, 55119, 143, 4);
+		tab.child(7, 55120, 118, 4);
 
 		int k = 0;
 		int y = 0;
-		for(int i = 55072; i < 55116; i++) {
+		for(int i = 55072; i < 55117; i++) {
 			scroll.child(k, i, 6, y);
 			y += 16;
 			k++;
-			if(i == 55109) {
+			if(i == 55110) {
 				addClickableText(i, "", "Toggle Yell", fonts, 1, 0xff0000, 167, 13);
-			} else if(i == 55110) {
+			} else if(i == 55111) {
 				addClickableText(i, "", "Toggle Music", fonts, 1, 0xff0000, 167, 13);
 			} else if(i == 55073) {
 				addClickableText(i, "", "View all players", fonts, 1, 0xff0000, 167, 13);
-			} else if(i == 55111) {
-				addClickableText(i, "", "Toggle Sounds", fonts, 1, 0xff0000, 167, 13);	
 			} else if(i == 55112) {
-				addClickableText(i, "", "Toggle Familiars", fonts, 1, 0xff0000, 167, 13);
+				addClickableText(i, "", "Toggle Sounds", fonts, 1, 0xff0000, 167, 13);	
 			} else if(i == 55113) {
+				addClickableText(i, "", "Toggle Familiars", fonts, 1, 0xff0000, 167, 13);
+			} else if(i == 55114) {
 				addClickableText(i, "", "Toggle Experience", fonts, 1, 0xff0000, 167, 13);
-			} else if(i >= 55100 && i <= 55106) {
+			} else if(i >= 55101 && i <= 55107) {
 				addClickableText(i, "", "Open", fonts, 1, 0xff0000, 167, 13);
 			} else {
 				addText(i, "", fonts, 1, 0xff0000, false, true);
 			}
 		}
-		scroll.child(k, 55119, 6, y);
+		scroll.child(k, 55121, 6, y);
 		y += 16;
 		k++;	
-		addClickableText(55119, "", "Drop Logs", fonts, 1, 0xff0000, 167, 13);
+		addClickableText(55121, "", "Drop Logs", fonts, 1, 0xff0000, 167, 13);
 	}
 	
 	private void playersOnline() {
