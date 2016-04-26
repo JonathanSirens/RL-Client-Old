@@ -30,6 +30,7 @@ public class RSFontSystem extends DrawingArea {
 	private static String startStrikethrough;
 	private static String endColor;
 	private static String startImage;
+	private static String startIcon;
 	private static String startClanImage;
 	private static String endUnderline;
 	private static String defaultStrikethrough;
@@ -62,6 +63,7 @@ public class RSFontSystem extends DrawingArea {
 		defaultStrikethrough = "str";
 		endUnderline = "/u";
 		startImage = "img=";
+		startIcon = "icon=";
 		startClanImage = "clan=";
 		startShadow = "shad=";
 		startUnderline = "u=";
@@ -406,6 +408,20 @@ public class RSFontSystem extends DrawingArea {
 							} catch (Exception exception) {
 								/* empty */
 							}
+						} else if (effectString.startsWith(startIcon)) {//todo icons
+							try {
+								int imageId = Integer.valueOf(effectString.substring(5));
+								Sprite icon = Client.cacheSprite2[103 + imageId];
+								int iconModY = icon.myHeight + icon.drawOffsetY + 1;
+								if (transparency == 256) {
+									icon.drawSprite(drawX, drawY + baseCharacterHeight - iconModY);
+								} else {
+									icon.drawSprite(drawX, drawY + baseCharacterHeight - iconModY, transparency);
+								}
+								drawX += icon.myWidth + 2;
+							} catch (Exception exception) {
+								/* empty */
+							}
 						} else {
 							setTextEffects(effectString);
 						}
@@ -579,6 +595,13 @@ public class RSFontSystem extends DrawingArea {
 								try {// <img=
 									int iconId = Integer.valueOf(effectString.substring(4));
 									finalWidth += Client.cacheSprite[iconId].myWidth;
+								} catch (Exception exception) {
+									/* empty */
+								}
+							} else if (effectString.startsWith(startIcon)) {//TODO icons
+								try {// <icon=
+									int iconId = Integer.valueOf(effectString.substring(5));
+									finalWidth += Client.cacheSprite2[103 + iconId].myWidth;
 								} catch (Exception exception) {
 									/* empty */
 								}
