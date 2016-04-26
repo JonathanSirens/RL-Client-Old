@@ -16456,7 +16456,7 @@ public class Client extends GameRenderer {
 	private void updateScreen() {
 		gameAreaWidth = GameFrame.isFixed() ? 512 : getScreenWidth();
 		gameAreaHeight = GameFrame.isFixed() ? 334 : getScreenHeight();
-		if (gameScreenIP == null || gameScreenIP.anInt316 != gameAreaWidth || gameScreenIP.anInt317 != gameAreaHeight) {
+		if (gameScreenIP == null || gameScreenIP.anInt316 != gameAreaWidth || gameScreenIP.anInt317 != gameAreaHeight && (gameAreaWidth > 0 && gameAreaHeight > 0)) {
 			gameScreenIP = new RSImageProducer(gameAreaWidth, gameAreaHeight, getGameComponent());
 		}
 		updateGameArea();

@@ -130,7 +130,11 @@ final class GameWindow extends JFrame {
             if (!this.isResizable()) {
                 Insets insets = getInsets();
                 this.setSize(width + insets.left + insets.right, height + insets.top + insets.bottom + 41);
-                this.setMinimumSize(this.getSize());
+                if (minimumSize == null) {
+                    this.setMinimumSize(this.getSize());
+                } else {
+                    this.setMinimumSize(minimumSize);
+                }
             } else {
                 this.setSize(new Dimension(minimumSize.width + 40, minimumSize.height + 100));
                 this.setMinimumSize(minimumSize);
