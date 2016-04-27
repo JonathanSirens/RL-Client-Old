@@ -2,7 +2,15 @@ package org.runelive.client;
 
 import org.runelive.Configuration;
 import org.runelive.client.graphics.gameframe.GameFrame;
-
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import org.runelive.client.updates.*;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +34,21 @@ final class GameWindow extends JFrame {
     }
 
     public static void main(String[] args) {
+		System.out.println("Checking client version...");
+		ClientUpdate.checkVersion();
+		if(new File(Signlink.getCacheDirectory() + "/cache_index_data").exists()) {
+			if(!new File(Signlink.getCacheDirectory() +"versions").exists()) {
+				new File(Signlink.getCacheDirectory() +"versions").mkdir();
+			}
+			System.out.println("Checking map version...");
+			MapUpdate.checkVersion();
+			System.out.println("Checking sprite version...");
+			SpriteUpdate.checkVersion();
+			System.out.println("Checking model version...");
+			ModelsUpdate.checkVersion();
+			System.out.println("Checking animation version...");
+			AnimationsUpdate.checkVersion();
+		}
         images = new Image[2];
         labels = new Image[7];
         try {
