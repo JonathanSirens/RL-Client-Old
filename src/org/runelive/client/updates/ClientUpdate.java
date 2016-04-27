@@ -9,8 +9,8 @@ public class ClientUpdate {
 
 	private static final int BUFFER = 1024;
 
-	public static final String infoBuffer = "https://dl.dropboxusercontent.com/u/344464529/Ikov/update.txt";
-	public static final String clientVersion = "2.35";
+	public static final String infoBuffer = "https://dl.dropboxusercontent.com/u/344464529/RuneLive/update.txt";
+	public static final String clientVersion = "2.36";
 	public static String newVersion;
 	public static String clientLink;
 	public static String pathJarFile;
@@ -129,9 +129,9 @@ public class ClientUpdate {
 			//clientName = clientName.replaceAll("%20", " ");
                         if (desktopLoc.endsWith("/"))
                             desktopLoc += clientName.replaceAll("%20", " ");
-			in = new BufferedInputStream(new URL("https://dl.dropboxusercontent.com/u/344464529/Ikov/IKov.jar").openStream());
+			in = new BufferedInputStream(new URL("https://dl.dropboxusercontent.com/u/344464529/RuneLive/RuneLive.jar").openStream());
 			fout = new FileOutputStream(pathJarFile);
-			URL url = new URL("https://dl.dropboxusercontent.com/u/344464529/Ikov/Ikov.jar");
+			URL url = new URL("https://dl.dropboxusercontent.com/u/344464529/RuneLive/RuneLive.jar");
 			conn = url.openConnection();
 			final byte data[] = new byte[1024];
 			int count;
