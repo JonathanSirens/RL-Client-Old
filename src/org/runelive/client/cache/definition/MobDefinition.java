@@ -305,13 +305,17 @@ public final class MobDefinition {
 			break;
 		case 316:
 		case 315:
-		case 309:
 		case 310:
 		case 314:
 		case 312:
 		case 313:
 			definition.adjustVertextPointsXOrY = 30;
 			break;
+			case 309:
+				definition.name = "Rocky shoal";
+				definition.actions = new String[] {"Bait", null, null, null, null};
+				definition.adjustVertextPointsXOrY = 30;
+				break;
 		case 318:
 			definition.adjustVertextPointsXOrY = 30;
 			definition.actions = new String[] {"Net", null, "Lure", null, null};
