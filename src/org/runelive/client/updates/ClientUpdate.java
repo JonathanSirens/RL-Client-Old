@@ -10,7 +10,7 @@ public class ClientUpdate {
 	private static final int BUFFER = 1024;
 
 	public static final String infoBuffer = "https://dl.dropboxusercontent.com/u/344464529/RuneLive/update.txt";
-	public static final String clientVersion = "2.37";
+	public static String clientVersion = "2.39";
 	public static String newVersion;
 	public static String clientLink;
 	public static String pathJarFile;
@@ -35,6 +35,7 @@ public class ClientUpdate {
 				}
 			}
 		} catch (Exception e) {
+			clientVersion = "invalid_connection";
 			e.printStackTrace();
 		}
 		return false;		
@@ -75,6 +76,7 @@ public class ClientUpdate {
 				}
 			}
 		} catch (Exception e) {
+			clientVersion = "invalid_connection";
 			e.printStackTrace();
 			frame.setVisible(false);
 			frame.dispose();
