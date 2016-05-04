@@ -1,6 +1,5 @@
 package org.runelive.client;
 
-import org.runelive.Configuration;
 import org.runelive.client.accounts.Account;
 import org.runelive.client.cache.Archive;
 import org.runelive.client.cache.definition.ItemDefinition;
@@ -13,7 +12,6 @@ import org.runelive.client.graphics.rsinterface.CustomInterfaces;
 import org.runelive.client.graphics.rsinterface.SummoningInterfaceData;
 import org.runelive.client.io.ByteBuffer;
 import org.runelive.client.world.Model;
-import org.runelive.client.graphics.SpriteLoader2;
 
 public class RSInterface {
 
@@ -3055,7 +3053,7 @@ public class RSInterface {
 		if (model == null) {
 			return null;
 		}
-		if (k == -1 && j == -1 && model.anIntArray1640 == null) {
+		if (k == -1 && j == -1 && model.colors == null) {
 			return model;
 		}
 		Model model_1 = new Model(true, FrameReader.isNullFrame(k) & FrameReader.isNullFrame(j), false, model);

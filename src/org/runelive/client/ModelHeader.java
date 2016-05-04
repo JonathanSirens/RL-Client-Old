@@ -4,9 +4,9 @@ package org.runelive.client;
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3)
 
-public final class Class21 {
+public final class ModelHeader {
 
-	public Class21() {
+	public ModelHeader() {
 	}
 
 	public byte aByteArray368[];

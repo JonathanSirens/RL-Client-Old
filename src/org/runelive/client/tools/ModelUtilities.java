@@ -27,7 +27,7 @@ public final class ModelUtilities {
 	 */
 	public static void loadModels() throws IOException {
 		for (File file : ROOT.listFiles()) {
-			Model.method460(FileUtilities.getBytesFromFile(file), parseInt(file.getName()));
+			Model.decodeModelHeader(FileUtilities.getBytesFromFile(file), parseInt(file.getName()));
 			System.out.println("Loaded model " + file);
 		}
 	}

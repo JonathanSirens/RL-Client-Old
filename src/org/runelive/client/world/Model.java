@@ -1,7 +1,7 @@
 package org.runelive.client.world;
 
 import org.runelive.Configuration;
-import org.runelive.client.Class21;
+import org.runelive.client.ModelHeader;
 import org.runelive.client.Class33;
 import org.runelive.client.Client;
 import org.runelive.client.FrameReader;
@@ -16,7 +16,7 @@ public class Model extends Animable {
 	public static boolean aBoolean1684;
 	private static boolean aBooleanArray1663[] = new boolean[8000];
 	private static boolean outOfReach[] = new boolean[8000];
-	private static Class21 aClass21Array1661[];
+	private static ModelHeader modelHeaderCache[];
 	public static Model aModel_1621 = new Model(true);
 	private static int anInt1681;
 	private static int anInt1682;
@@ -46,12 +46,12 @@ public class Model extends Animable {
 	public static int anIntArray1688[] = new int[1000];
 	private static int faceLists[][] = new int[1500][512];
 	private static int anIntArrayArray1674[][] = new int[12][2000];
-	private static OnDemandFetcherParent aOnDemandFetcherParent_1662;
+	private static OnDemandFetcherParent onDemandRequester;
 	public static int SINE[];
 	public static int COSINE[];
 	private static int[] modelIntArray3;
 	private static int[] modelIntArray4;
-	private static boolean[] newmodel;
+	private static boolean[] isNewModel;
 
 	static {
 		SINE = Rasterizer.SINE;
@@ -60,29 +60,29 @@ public class Model extends Animable {
 		modelIntArray4 = Rasterizer.anIntArray1469;
 	}
 
-	public static void method459(int i, OnDemandFetcherParent onDemandFetcherParent) {
-		aClass21Array1661 = new Class21[80000];
-		newmodel = new boolean[100000];
-		aOnDemandFetcherParent_1662 = onDemandFetcherParent;
+	public static void initialize(int count, OnDemandFetcherParent onDemandFetcherParent) {
+		modelHeaderCache = new ModelHeader[80000];
+		isNewModel = new boolean[100000];
+		onDemandRequester = onDemandFetcherParent;
 	}
 
-	public static void method460(byte[] tmp, int i) {
+	public static void decodeModelHeader(byte[] tmp, int i) {
 		try {
 			if (tmp == null) {
-				Class21 class21 = aClass21Array1661[i] = new Class21();
-				class21.anInt369 = 0;
-				class21.anInt370 = 0;
-				class21.anInt371 = 0;
+				ModelHeader modelHeader = modelHeaderCache[i] = new ModelHeader();
+				modelHeader.anInt369 = 0;
+				modelHeader.anInt370 = 0;
+				modelHeader.anInt371 = 0;
 				return;
 			}
 
 			ByteBuffer buffer = new ByteBuffer(tmp);
 			buffer.position = tmp.length - 18;
-			Class21 class21_1 = aClass21Array1661[i] = new Class21();
-			class21_1.aByteArray368 = tmp;
-			class21_1.anInt369 = buffer.getUnsignedShort();
-			class21_1.anInt370 = buffer.getUnsignedShort();
-			class21_1.anInt371 = buffer.getUnsignedByte();
+			ModelHeader modelHeader_1 = modelHeaderCache[i] = new ModelHeader();
+			modelHeader_1.aByteArray368 = tmp;
+			modelHeader_1.anInt369 = buffer.getUnsignedShort();
+			modelHeader_1.anInt370 = buffer.getUnsignedShort();
+			modelHeader_1.anInt371 = buffer.getUnsignedByte();
 			int k = buffer.getUnsignedByte();
 			int l = buffer.getUnsignedByte();
 			int i1 = buffer.getUnsignedByte();
@@ -93,76 +93,76 @@ public class Model extends Animable {
 			int j2 = buffer.getUnsignedShort();
 			int k2 = buffer.getUnsignedShort();
 			int l2 = 0;
-			class21_1.anInt372 = l2;
-			l2 += class21_1.anInt369;
-			class21_1.anInt378 = l2;
-			l2 += class21_1.anInt370;
-			class21_1.anInt381 = l2;
+			modelHeader_1.anInt372 = l2;
+			l2 += modelHeader_1.anInt369;
+			modelHeader_1.anInt378 = l2;
+			l2 += modelHeader_1.anInt370;
+			modelHeader_1.anInt381 = l2;
 
 			if (l == 255) {
-				l2 += class21_1.anInt370;
+				l2 += modelHeader_1.anInt370;
 			} else {
-				class21_1.anInt381 = -l - 1;
+				modelHeader_1.anInt381 = -l - 1;
 			}
 
-			class21_1.anInt383 = l2;
+			modelHeader_1.anInt383 = l2;
 
 			if (j1 == 1) {
-				l2 += class21_1.anInt370;
+				l2 += modelHeader_1.anInt370;
 			} else {
-				class21_1.anInt383 = -1;
+				modelHeader_1.anInt383 = -1;
 			}
 
-			class21_1.anInt380 = l2;
+			modelHeader_1.anInt380 = l2;
 
 			if (k == 1) {
-				l2 += class21_1.anInt370;
+				l2 += modelHeader_1.anInt370;
 			} else {
-				class21_1.anInt380 = -1;
+				modelHeader_1.anInt380 = -1;
 			}
 
-			class21_1.anInt376 = l2;
+			modelHeader_1.anInt376 = l2;
 
 			if (k1 == 1) {
-				l2 += class21_1.anInt369;
+				l2 += modelHeader_1.anInt369;
 			} else {
-				class21_1.anInt376 = -1;
+				modelHeader_1.anInt376 = -1;
 			}
 
-			class21_1.anInt382 = l2;
+			modelHeader_1.anInt382 = l2;
 
 			if (i1 == 1) {
-				l2 += class21_1.anInt370;
+				l2 += modelHeader_1.anInt370;
 			} else {
-				class21_1.anInt382 = -1;
+				modelHeader_1.anInt382 = -1;
 			}
 
-			class21_1.anInt377 = l2;
+			modelHeader_1.anInt377 = l2;
 			l2 += k2;
-			class21_1.anInt379 = l2;
-			l2 += class21_1.anInt370 * 2;
-			class21_1.anInt384 = l2;
-			l2 += class21_1.anInt371 * 6;
-			class21_1.anInt373 = l2;
+			modelHeader_1.anInt379 = l2;
+			l2 += modelHeader_1.anInt370 * 2;
+			modelHeader_1.anInt384 = l2;
+			l2 += modelHeader_1.anInt371 * 6;
+			modelHeader_1.anInt373 = l2;
 			l2 += l1;
-			class21_1.anInt374 = l2;
+			modelHeader_1.anInt374 = l2;
 			l2 += i2;
-			class21_1.anInt375 = l2;
+			modelHeader_1.anInt375 = l2;
 			l2 += j2;
 		} catch (Exception _ex) {
 		}
 	}
 
 	public static Model fetchModel(int j) {
-		if (aClass21Array1661 == null) {
+		if (modelHeaderCache == null) {
 			return null;
 		}
 		if(j == 0)
 			return null;
-		Class21 class21 = aClass21Array1661[j];
+		ModelHeader modelHeader = modelHeaderCache[j];
 
-		if (class21 == null) {
-			aOnDemandFetcherParent_1662.get(j);
+		if (modelHeader == null) {
+			onDemandRequester.get(j);
 			return null;
 		} else {
 			return new Model(j);
@@ -170,14 +170,14 @@ public class Model extends Animable {
 	}
 
 	public static boolean method463(int i) {
-		if (aClass21Array1661 == null) {
+		if (modelHeaderCache == null) {
 			return false;
 		}
 
-		Class21 class21 = aClass21Array1661[i];
+		ModelHeader modelHeader = modelHeaderCache[i];
 
-		if (class21 == null) {
-			aOnDemandFetcherParent_1662.get(i);
+		if (modelHeader == null) {
+			onDemandRequester.get(i);
 			return false;
 		} else {
 			return true;
@@ -212,7 +212,7 @@ public class Model extends Animable {
 	}
 
 	public static void nullify() {
-		aClass21Array1661 = null;
+		modelHeaderCache = null;
 		aBooleanArray1663 = null;
 		outOfReach = null;
 		anIntArray1666 = null;
@@ -261,7 +261,7 @@ public class Model extends Animable {
 	public int anIntArray1637[];
 	private int face_render_priorities[];
 	private int anIntArray1639[];
-	public int anIntArray1640[];
+	public int colors[];
 	private int anIntArray1643[];
 	private int anIntArray1644[];
 	private int anIntArray1645[];
@@ -303,12 +303,12 @@ public class Model extends Animable {
 		}
 
 		if (flag) {
-			anIntArray1640 = model.anIntArray1640;
+			colors = model.colors;
 		} else {
-			anIntArray1640 = new int[triangleCount];
+			colors = new int[triangleCount];
 
 			for (int k = 0; k < triangleCount; k++) {
-				anIntArray1640[k] = model.anIntArray1640[k];
+				colors[k] = model.colors[k];
 			}
 		}
 
@@ -402,7 +402,7 @@ public class Model extends Animable {
 
 		verticesXCoordinate = model.verticesXCoordinate;
 		verticesZCoordinate = model.verticesZCoordinate;
-		anIntArray1640 = model.anIntArray1640;
+		colors = model.colors;
 		anIntArray1639 = model.anIntArray1639;
 		face_render_priorities = model.face_render_priorities;
 		anInt1641 = model.anInt1641;
@@ -423,7 +423,7 @@ public class Model extends Animable {
 	}
 
 	private Model(int modelId) {
-		byte[] is = aClass21Array1661[modelId].aByteArray368;
+		byte[] is = modelHeaderCache[modelId].aByteArray368;
 
 		if (is[is.length - 1] == -1 && is[is.length - 2] == -1) {
 			read622Model(is, modelId);
@@ -505,7 +505,7 @@ public class Model extends Animable {
 			anIntArray1656 = new int[triangleCount];
 		}
 
-		anIntArray1640 = new int[triangleCount];
+		colors = new int[triangleCount];
 		numberOfVerticeCoordinates = 0;
 		triangleCount = 0;
 		anInt1642 = 0;
@@ -550,7 +550,7 @@ public class Model extends Animable {
 						anIntArray1656[triangleCount] = model_1.anIntArray1656[j1];
 					}
 
-					anIntArray1640[triangleCount] = model_1.anIntArray1640[j1];
+					colors[triangleCount] = model_1.colors[j1];
 					anIntArray1631[triangleCount] = method465(model_1, model_1.anIntArray1631[j1]);
 					anIntArray1632[triangleCount] = method465(model_1, model_1.anIntArray1632[j1]);
 					anIntArray1633[triangleCount] = method465(model_1, model_1.anIntArray1633[j1]);
@@ -600,7 +600,7 @@ public class Model extends Animable {
 					}
 				}
 				flag3 |= model.anIntArray1639 != null;
-				flag4 |= model.anIntArray1640 != null;
+				flag4 |= model.colors != null;
 			}
 		}
 
@@ -626,7 +626,7 @@ public class Model extends Animable {
 			anIntArray1639 = new int[triangleCount];
 		}
 		if (flag4) {
-			anIntArray1640 = new int[triangleCount];
+			colors = new int[triangleCount];
 		}
 		numberOfVerticeCoordinates = 0;
 		triangleCount = 0;
@@ -675,8 +675,8 @@ public class Model extends Animable {
 							anIntArray1639[triangleCount] = model_1.anIntArray1639[i2];
 						}
 					}
-					if (flag4 && model_1.anIntArray1640 != null) {
-						anIntArray1640[triangleCount] = model_1.anIntArray1640[i2];
+					if (flag4 && model_1.colors != null) {
+						colors[triangleCount] = model_1.colors[i2];
 					}
 
 					triangleCount++;
@@ -734,7 +734,7 @@ public class Model extends Animable {
 			}
 		}
 		anIntArray1637 = model.anIntArray1637;
-		anIntArray1640 = model.anIntArray1640;
+		colors = model.colors;
 		face_render_priorities = model.face_render_priorities;
 		anInt1641 = model.anInt1641;
 		triangleSkin = model.triangleSkin;
@@ -1260,8 +1260,8 @@ public class Model extends Animable {
 
 	public void method476(int i, int j) {
 		for (int k = 0; k < triangleCount; k++) {
-			if (anIntArray1640[k] == i) {
-				anIntArray1640[k] = j;
+			if (colors[k] == i) {
+				colors[k] = j;
 			}
 		}
 	}
@@ -1287,10 +1287,10 @@ public class Model extends Animable {
 	}
 
 	private final void removeColor(int color) {
-		if (anIntArray1640 != null) {
+		if (colors != null) {
 			for (int triangle = 0; triangle < triangleCount; triangle++) {
-				if (triangle < anIntArray1640.length) {
-					if (anIntArray1640[triangle] == color) {
+				if (triangle < colors.length) {
+					if (colors[triangle] == color) {
 						anIntArray1631[triangle] = 0;
 						anIntArray1632[triangle] = 0;
 						anIntArray1633[triangle] = 0;
@@ -1317,12 +1317,12 @@ public class Model extends Animable {
 		}
 		removeColor(37798);
 		for (int i2 = 0; i2 < triangleCount; i2++) {
-			if (anIntArray1640 != null && anIntArray1639 != null) {
-				if (anIntArray1640[i2] == 65535
+			if (colors != null && anIntArray1639 != null) {
+				if (colors[i2] == 65535
 						/*
-						 * || (anIntArray1640[i2] == 0 // Black Triangles 633 // Models
+						 * || (colors[i2] == 0 // Black Triangles 633 // Models
 						 * - Fixes Gwd walls // & Black models )
-						 */|| anIntArray1640[i2] == 16705) {
+						 */|| colors[i2] == 16705) {
 					anIntArray1639[i2] = 255;
 				}
 			}
@@ -1372,7 +1372,7 @@ public class Model extends Animable {
 			} else {
 
 				int l5 = i + (k * l4 + l * i5 + i1 * j5) / (k1 + k1 / 2);
-				anIntArray1634[i2] = method481(anIntArray1640[i2], l5, anIntArray1637[i2]);
+				anIntArray1634[i2] = method481(colors[i2], l5, anIntArray1637[i2]);
 
 			}
 		}
@@ -1406,7 +1406,7 @@ public class Model extends Animable {
 			int i2 = anIntArray1632[j1];
 			int j2 = anIntArray1633[j1];
 			if (anIntArray1637 == null) {
-				int i3 = anIntArray1640[j1];
+				int i3 = colors[j1];
 				Class33 class33 = super.aClass33Array1425[k1];
 				int k2 = i + (k * class33.anInt602 + l * class33.anInt603 + i1 * class33.anInt604) / (j * class33.anInt605);
 				anIntArray1634[j1] = method481(i3, k2, 0);
@@ -1417,7 +1417,7 @@ public class Model extends Animable {
 				k2 = i + (k * class33.anInt602 + l * class33.anInt603 + i1 * class33.anInt604) / (j * class33.anInt605);
 				anIntArray1636[j1] = method481(i3, k2, 0);
 			} else if ((anIntArray1637[j1] & 1) == 0) {
-				int j3 = anIntArray1640[j1];
+				int j3 = colors[j1];
 				int k3 = anIntArray1637[j1];
 				Class33 class33_1 = super.aClass33Array1425[k1];
 				int l2 = i + (k * class33_1.anInt602 + l * class33_1.anInt603 + i1 * class33_1.anInt604) / (j * class33_1.anInt605);
@@ -1443,7 +1443,7 @@ public class Model extends Animable {
 			}
 
 		}
-		anIntArray1640 = null;
+		colors = null;
 	}
 
 	public final void renderSingle(int j, int k, int l, int i1, int j1, int k1) {
@@ -1830,25 +1830,25 @@ public class Model extends Animable {
 			int l1 = anIntArray1643[j1];
 			int j2 = anIntArray1644[j1];
 			int l2 = anIntArray1645[j1];
-			Rasterizer.method378(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l], anIntArray1665[j], anIntArray1665[k], anIntArray1665[l], anIntArray1634[i], anIntArray1635[i], anIntArray1636[i], anIntArray1668[l1], anIntArray1668[j2], anIntArray1668[l2], anIntArray1669[l1], anIntArray1669[j2], anIntArray1669[l2], anIntArray1670[l1], anIntArray1670[j2], anIntArray1670[l2], anIntArray1640[i]);
+			Rasterizer.method378(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l], anIntArray1665[j], anIntArray1665[k], anIntArray1665[l], anIntArray1634[i], anIntArray1635[i], anIntArray1636[i], anIntArray1668[l1], anIntArray1668[j2], anIntArray1668[l2], anIntArray1669[l1], anIntArray1669[j2], anIntArray1669[l2], anIntArray1670[l1], anIntArray1670[j2], anIntArray1670[l2], colors[i]);
 			if (fog) {
-				Rasterizer.drawTexturedFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l], anIntArray1665[j], anIntArray1665[k], anIntArray1665[l], anIntArray1670[j], anIntArray1670[k], anIntArray1670[l], anIntArray1668[l1], anIntArray1668[j2], anIntArray1668[l2], anIntArray1669[l1], anIntArray1669[j2], anIntArray1669[l2], anIntArray1670[l1], anIntArray1670[j2], anIntArray1670[l2], anIntArray1640[i]);
+				Rasterizer.drawTexturedFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l], anIntArray1665[j], anIntArray1665[k], anIntArray1665[l], anIntArray1670[j], anIntArray1670[k], anIntArray1670[l], anIntArray1668[l1], anIntArray1668[j2], anIntArray1668[l2], anIntArray1669[l1], anIntArray1669[j2], anIntArray1669[l2], anIntArray1670[l1], anIntArray1670[j2], anIntArray1670[l2], colors[i]);
 			}
 		} else if (i1 == 3) {
 			int k1 = anIntArray1637[i] >> 2;
 				int i2 = anIntArray1643[k1];
 				int k2 = anIntArray1644[k1];
 				int i3 = anIntArray1645[k1];
-				Rasterizer.method378(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l], anIntArray1665[j], anIntArray1665[k], anIntArray1665[l], anIntArray1634[i], anIntArray1634[i], anIntArray1634[i], anIntArray1668[i2], anIntArray1668[k2], anIntArray1668[i3], anIntArray1669[i2], anIntArray1669[k2], anIntArray1669[i3], anIntArray1670[i2], anIntArray1670[k2], anIntArray1670[i3], anIntArray1640[i]);
+				Rasterizer.method378(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l], anIntArray1665[j], anIntArray1665[k], anIntArray1665[l], anIntArray1634[i], anIntArray1634[i], anIntArray1634[i], anIntArray1668[i2], anIntArray1668[k2], anIntArray1668[i3], anIntArray1669[i2], anIntArray1669[k2], anIntArray1669[i3], anIntArray1670[i2], anIntArray1670[k2], anIntArray1670[i3], colors[i]);
 				if (fog) {
-					Rasterizer.drawTexturedFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l], anIntArray1665[j], anIntArray1665[k], anIntArray1665[l], anIntArray1670[j], anIntArray1670[k], anIntArray1670[l], anIntArray1668[i2], anIntArray1668[k2], anIntArray1668[i3], anIntArray1669[i2], anIntArray1669[k2], anIntArray1669[i3], anIntArray1670[i2], anIntArray1670[k2], anIntArray1670[i3], anIntArray1640[i]);
+					Rasterizer.drawTexturedFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l], anIntArray1665[j], anIntArray1665[k], anIntArray1665[l], anIntArray1670[j], anIntArray1670[k], anIntArray1670[l], anIntArray1668[i2], anIntArray1668[k2], anIntArray1668[i3], anIntArray1669[i2], anIntArray1669[k2], anIntArray1669[i3], anIntArray1670[i2], anIntArray1670[k2], anIntArray1670[i3], colors[i]);
 				}
 		}
 	}
 
 	private final void method485(int i) {
-		if (anIntArray1640 != null) {
-			if (anIntArray1640[i] == 65535) {
+		if (colors != null) {
+			if (colors[i] == 65535) {
 				return;
 			}
 		}
@@ -1952,13 +1952,13 @@ public class Model extends Animable {
 					int k9 = anIntArray1643[j8];
 					int k10 = anIntArray1644[j8];
 					int k11 = anIntArray1645[j8];
-					Rasterizer.method378(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1], anIntArray1680[2], anIntArray1668[k9], anIntArray1668[k10], anIntArray1668[k11], anIntArray1669[k9], anIntArray1669[k10], anIntArray1669[k11], anIntArray1670[k9], anIntArray1670[k10], anIntArray1670[k11], anIntArray1640[i]);
+					Rasterizer.method378(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1], anIntArray1680[2], anIntArray1668[k9], anIntArray1668[k10], anIntArray1668[k11], anIntArray1669[k9], anIntArray1669[k10], anIntArray1669[k11], anIntArray1670[k9], anIntArray1670[k10], anIntArray1670[k11], colors[i]);
 				} else if (l7 == 3) {
 					int k8 = anIntArray1637[i] >> 2;
 					int l9 = anIntArray1643[k8];
 					int l10 = anIntArray1644[k8];
 					int l11 = anIntArray1645[k8];
-					Rasterizer.method378(i7, j7, k7, j3, j4, j5, anIntArray1634[i], anIntArray1634[i], anIntArray1634[i], anIntArray1668[l9], anIntArray1668[l10], anIntArray1668[l11], anIntArray1669[l9], anIntArray1669[l10], anIntArray1669[l11], anIntArray1670[l9], anIntArray1670[l10], anIntArray1670[l11], anIntArray1640[i]);
+					Rasterizer.method378(i7, j7, k7, j3, j4, j5, anIntArray1634[i], anIntArray1634[i], anIntArray1634[i], anIntArray1668[l9], anIntArray1668[l10], anIntArray1668[l11], anIntArray1669[l9], anIntArray1669[l10], anIntArray1669[l11], anIntArray1670[l9], anIntArray1670[l10], anIntArray1670[l11], colors[i]);
 				}
 			}
 			if (l == 4) {
@@ -1987,8 +1987,8 @@ public class Model extends Animable {
 					int i10 = anIntArray1643[i9];
 					int i11 = anIntArray1644[i9];
 					int i12 = anIntArray1645[i9];
-					Rasterizer.method378(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1], anIntArray1680[2], anIntArray1668[i10], anIntArray1668[i11], anIntArray1668[i12], anIntArray1669[i10], anIntArray1669[i11], anIntArray1669[i12], anIntArray1670[i10], anIntArray1670[i11], anIntArray1670[i12], anIntArray1640[i]);
-					Rasterizer.method378(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1680[0], anIntArray1680[2], anIntArray1680[3], anIntArray1668[i10], anIntArray1668[i11], anIntArray1668[i12], anIntArray1669[i10], anIntArray1669[i11], anIntArray1669[i12], anIntArray1670[i10], anIntArray1670[i11], anIntArray1670[i12], anIntArray1640[i]);
+					Rasterizer.method378(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1], anIntArray1680[2], anIntArray1668[i10], anIntArray1668[i11], anIntArray1668[i12], anIntArray1669[i10], anIntArray1669[i11], anIntArray1669[i12], anIntArray1670[i10], anIntArray1670[i11], anIntArray1670[i12], colors[i]);
+					Rasterizer.method378(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1680[0], anIntArray1680[2], anIntArray1680[3], anIntArray1668[i10], anIntArray1668[i11], anIntArray1668[i12], anIntArray1669[i10], anIntArray1669[i11], anIntArray1669[i12], anIntArray1670[i10], anIntArray1670[i11], anIntArray1670[i12], colors[i]);
 					return;
 				}
 				if (i8 == 3) {
@@ -1996,8 +1996,8 @@ public class Model extends Animable {
 					int j10 = anIntArray1643[j9];
 					int j11 = anIntArray1644[j9];
 					int j12 = anIntArray1645[j9];
-					Rasterizer.method378(i7, j7, k7, j3, j4, j5, anIntArray1634[i], anIntArray1634[i], anIntArray1634[i], anIntArray1668[j10], anIntArray1668[j11], anIntArray1668[j12], anIntArray1669[j10], anIntArray1669[j11], anIntArray1669[j12], anIntArray1670[j10], anIntArray1670[j11], anIntArray1670[j12], anIntArray1640[i]);
-					Rasterizer.method378(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1634[i], anIntArray1634[i], anIntArray1634[i], anIntArray1668[j10], anIntArray1668[j11], anIntArray1668[j12], anIntArray1669[j10], anIntArray1669[j11], anIntArray1669[j12], anIntArray1670[j10], anIntArray1670[j11], anIntArray1670[j12], anIntArray1640[i]);
+					Rasterizer.method378(i7, j7, k7, j3, j4, j5, anIntArray1634[i], anIntArray1634[i], anIntArray1634[i], anIntArray1668[j10], anIntArray1668[j11], anIntArray1668[j12], anIntArray1669[j10], anIntArray1669[j11], anIntArray1669[j12], anIntArray1670[j10], anIntArray1670[j11], anIntArray1670[j12], colors[i]);
+					Rasterizer.method378(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1634[i], anIntArray1634[i], anIntArray1634[i], anIntArray1668[j10], anIntArray1668[j11], anIntArray1668[j12], anIntArray1669[j10], anIntArray1669[j11], anIntArray1669[j12], anIntArray1670[j10], anIntArray1670[j11], anIntArray1670[j12], colors[i]);
 				}
 			}
 		}
@@ -2208,7 +2208,7 @@ public class Model extends Animable {
 		int numVertices = nc1.getUnsignedShort();
 		int numTriangles = nc1.getUnsignedShort();
 		int numTextureTriangles = nc1.getUnsignedByte();
-		Class21 ModelDef_1 = aClass21Array1661[modelID] = new Class21();
+		ModelHeader ModelDef_1 = modelHeaderCache[modelID] = new ModelHeader();
 		ModelDef_1.aByteArray368 = abyte0;
 		ModelDef_1.anInt369 = numVertices;
 		ModelDef_1.anInt370 = numTriangles;
@@ -2548,7 +2548,7 @@ public class Model extends Animable {
 				face_render_priorities[i12] = i2;
 			}
 		}
-		anIntArray1640 = triangleColours2;
+		colors = triangleColours2;
 		numberOfVerticeCoordinates = numVertices;
 		triangleCount = numTriangles;
 		verticesXCoordinate = vertexX;
@@ -2571,7 +2571,7 @@ public class Model extends Animable {
 		int numVertices = nc1.getUnsignedShort();
 		int numTriangles = nc1.getUnsignedShort();
 		int numTexTriangles = nc1.getUnsignedByte();
-		Class21 ModelDef_1 = aClass21Array1661[modelID] = new Class21();
+		ModelHeader ModelDef_1 = modelHeaderCache[modelID] = new ModelHeader();
 		ModelDef_1.aByteArray368 = abyte0;
 		ModelDef_1.anInt369 = numVertices;
 		ModelDef_1.anInt370 = numTriangles;
@@ -2590,7 +2590,7 @@ public class Model extends Animable {
 			nc1.position += 6;
 		}
 		if (newformat == 15) {
-			newmodel[modelID] = true;
+			isNewModel[modelID] = true;
 		}
 		int i2 = nc1.getUnsignedByte();
 		int j2 = nc1.getUnsignedByte();
@@ -2957,7 +2957,7 @@ public class Model extends Animable {
 				face_render_priorities[i12] = i2;
 			}
 		}
-		anIntArray1640 = triangleColours2;
+		colors = triangleColours2;
 		numberOfVerticeCoordinates = numVertices;
 		triangleCount = numTriangles;
 		verticesXCoordinate = vertexX;
@@ -2978,10 +2978,10 @@ public class Model extends Animable {
 		int j = -870;
 		aBoolean1618 = true;
 		aBoolean1659 = false;
-		Class21 class21 = aClass21Array1661[i];
-		numberOfVerticeCoordinates = class21.anInt369;
-		triangleCount = class21.anInt370;
-		anInt1642 = class21.anInt371;
+		ModelHeader modelHeader = modelHeaderCache[i];
+		numberOfVerticeCoordinates = modelHeader.anInt369;
+		triangleCount = modelHeader.anInt370;
+		anInt1642 = modelHeader.anInt371;
 		verticesXCoordinate = new int[numberOfVerticeCoordinates];
 		verticesYCoordinate = new int[numberOfVerticeCoordinates];
 		verticesZCoordinate = new int[numberOfVerticeCoordinates];
@@ -2994,34 +2994,34 @@ public class Model extends Animable {
 		anIntArray1643 = new int[anInt1642];
 		anIntArray1644 = new int[anInt1642];
 		anIntArray1645 = new int[anInt1642];
-		if (class21.anInt376 >= 0) {
+		if (modelHeader.anInt376 >= 0) {
 			anIntArray1655 = new int[numberOfVerticeCoordinates];
 		}
-		if (class21.anInt380 >= 0) {
+		if (modelHeader.anInt380 >= 0) {
 			anIntArray1637 = new int[triangleCount];
 		}
-		if (class21.anInt381 >= 0) {
+		if (modelHeader.anInt381 >= 0) {
 			face_render_priorities = new int[triangleCount];
 		} else {
-			anInt1641 = -class21.anInt381 - 1;
+			anInt1641 = -modelHeader.anInt381 - 1;
 		}
-		if (class21.anInt382 >= 0) {
+		if (modelHeader.anInt382 >= 0) {
 			anIntArray1639 = new int[triangleCount];
 		}
-		if (class21.anInt383 >= 0) {
+		if (modelHeader.anInt383 >= 0) {
 			anIntArray1656 = new int[triangleCount];
 		}
-		anIntArray1640 = new int[triangleCount];
-		ByteBuffer stream = new ByteBuffer(class21.aByteArray368);
-		stream.position = class21.anInt372;
-		ByteBuffer stream_1 = new ByteBuffer(class21.aByteArray368);
-		stream_1.position = class21.anInt373;
-		ByteBuffer stream_2 = new ByteBuffer(class21.aByteArray368);
-		stream_2.position = class21.anInt374;
-		ByteBuffer stream_3 = new ByteBuffer(class21.aByteArray368);
-		stream_3.position = class21.anInt375;
-		ByteBuffer stream_4 = new ByteBuffer(class21.aByteArray368);
-		stream_4.position = class21.anInt376;
+		colors = new int[triangleCount];
+		ByteBuffer stream = new ByteBuffer(modelHeader.aByteArray368);
+		stream.position = modelHeader.anInt372;
+		ByteBuffer stream_1 = new ByteBuffer(modelHeader.aByteArray368);
+		stream_1.position = modelHeader.anInt373;
+		ByteBuffer stream_2 = new ByteBuffer(modelHeader.aByteArray368);
+		stream_2.position = modelHeader.anInt374;
+		ByteBuffer stream_3 = new ByteBuffer(modelHeader.aByteArray368);
+		stream_3.position = modelHeader.anInt375;
+		ByteBuffer stream_4 = new ByteBuffer(modelHeader.aByteArray368);
+		stream_4.position = modelHeader.anInt376;
 		int k = 0;
 		int l = 0;
 		int i1 = 0;
@@ -3049,13 +3049,13 @@ public class Model extends Animable {
 				anIntArray1655[j1] = stream_4.getUnsignedByte();
 			}
 		}
-		stream.position = class21.anInt379;
-		stream_1.position = class21.anInt380;
-		stream_2.position = class21.anInt381;
-		stream_3.position = class21.anInt382;
-		stream_4.position = class21.anInt383;
+		stream.position = modelHeader.anInt379;
+		stream_1.position = modelHeader.anInt380;
+		stream_2.position = modelHeader.anInt381;
+		stream_3.position = modelHeader.anInt382;
+		stream_4.position = modelHeader.anInt383;
 		for (int l1 = 0; l1 < triangleCount; l1++) {
-			anIntArray1640[l1] = stream.getUnsignedShort();
+			colors[l1] = stream.getUnsignedShort();
 			if (anIntArray1637 != null) {
 				anIntArray1637[l1] = stream_1.getUnsignedByte();
 			}
@@ -3069,8 +3069,8 @@ public class Model extends Animable {
 				anIntArray1656[l1] = stream_4.getUnsignedByte();
 			}
 		}
-		stream.position = class21.anInt377;
-		stream_1.position = class21.anInt378;
+		stream.position = modelHeader.anInt377;
+		stream_1.position = modelHeader.anInt378;
 		int j2 = 0;
 		int l2 = 0;
 		int j3 = 0;
@@ -3115,7 +3115,7 @@ public class Model extends Animable {
 				anIntArray1633[l3] = j3;
 			}
 		}
-		stream.position = class21.anInt384;
+		stream.position = modelHeader.anInt384;
 		for (int j4 = 0; j4 < anInt1642; j4++) {
 			anIntArray1643[j4] = stream.getUnsignedShort();
 			anIntArray1644[j4] = stream.getUnsignedShort();

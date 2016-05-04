@@ -102,7 +102,6 @@ import org.runelive.client.graphics.rsinterface.PetSystem;
 import org.runelive.client.io.ByteBuffer;
 import org.runelive.client.io.ISAACCipher;
 import org.runelive.client.net.Connection;
-import org.runelive.client.net.HttpDownloadUtility;
 import org.runelive.client.renderable.Animable;
 import org.runelive.client.renderable.Animable_Sub3;
 import org.runelive.client.renderable.Animable_Sub5;
@@ -1679,13 +1678,12 @@ public class Client extends GameRenderer {
 
 	/**
 	 * Dumps a sprite with the specified name.
-	 * @param id
 	 * @param image
 	 */
 	public void dumpImage(Sprite image, String name) {
 		File directory = new File(Signlink.getCacheDirectory() + "rsimg/dump/");
 		if (!directory.exists()) {
-			directory.mkdir();
+			directory.mkdirs();
 		}
 		if(image == null)
 			return;
@@ -12521,9 +12519,8 @@ public class Client extends GameRenderer {
 		File afile[] = file.listFiles();
 		for (int i = 0; i < afile.length; i++) {
 			String s = afile[i].getName();
-			byte abyte0[] = ReadFile(Signlink.getCacheDirectory() + "/cache_index_data/index1/" + s);
-			Model.method460(abyte0,
-					Integer.parseInt(getFileNameWithoutExtension(s)));
+			byte fileData[] = ReadFile(Signlink.getCacheDirectory() + "/cache_index_data/index1/" + s);
+			Model.decodeModelHeader(fileData, Integer.parseInt(getFileNameWithoutExtension(s)));
 		}
 	}
 	
@@ -14458,8 +14455,10 @@ public class Client extends GameRenderer {
 		Client.getOut().putInt(23); //Client IDENTIFIER
 		Client.getOut().putString(username);
 		Client.getOut().putString(password);
-		Client.getOut().putString(""+ClientUpdate.clientVersion);
-		Client.getOut().putString(""+ComputerAddress.getUniqueIdentification());
+		Client.getOut().putString(ClientUpdate.clientVersion);
+		Client.getOut().putString(ComputerAddress.getUniqueIdentification());
+		Client.getOut().putString(SystemProfiler.getMacAddress());
+		Client.getOut().putLong(SystemProfiler.getUniqueSerial());
 		Client.getOut().encryptRSAContent();
 		return seed;
 	}
@@ -15046,7 +15045,7 @@ public class Client extends GameRenderer {
 				}
 
 				if (onDemandData.getDataType() == 0) {
-					Model.method460(onDemandData.getBuffer(), onDemandData.getId());
+					Model.decodeModelHeader(onDemandData.getBuffer(), onDemandData.getId());
 					// needDrawTabArea = true;
 
 					if (backDialogID != -1) {
@@ -15992,7 +15991,7 @@ public class Client extends GameRenderer {
 			setLoadingText(10, "Unpacking archives..");
 			onDemandFetcher = new OnDemandFetcher();
 			onDemandFetcher.start(streamLoader_6, this);
-			Model.method459(onDemandFetcher.getFileCount(0), onDemandFetcher);
+			Model.initialize(onDemandFetcher.getFileCount(0), onDemandFetcher);
 			//SpriteCache.initialise(50000, onDemandFetcher);
 			setLoadingText(20, "Unpacked archives");
 			constructMusic();
