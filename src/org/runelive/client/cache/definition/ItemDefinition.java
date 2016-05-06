@@ -131,6 +131,9 @@ public final class ItemDefinition {
 		case 11907:
 			itemDef.name = "Gold-trimmed wizard set";
 			break;
+		case 15355:
+			itemDef.name = "Wilderness scroll";
+			break;
 		case 11906:
 			itemDef.name = "Gold-trimmed wizard set";
 			itemDef.actions = new String[5];
