@@ -619,8 +619,8 @@ public final class ObjectManager {
 									j23 = -1;
 									floorTexture = 1;
 								}
-								
-								if (j23 == 111) { // Water
+									
+								if (j23 == 111 || j23 == -2)  { // Water
 									mapTexture = Rasterizer.method369(1);
 									j23 = -1;
 									floorTexture = 1;
@@ -687,6 +687,12 @@ public final class ObjectManager {
 									//System.out.println("J20: "+j20+"");
 									//floorTexture = 25;
 									//j23 = 1;
+								}
+								System.out.println(""+floorTexture);
+								if(floorTexture == 137) {
+									mapTexture = Rasterizer.method369(25);
+									floorTexture = 25;
+									j23 = -1;
 								}
 								worldController.method279(l, l6, k17, k22, byte4, floorTexture, 154, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), method185(j23, j20), method185(j23, k20), method185(j23, l20), method185(j23, i21), i22, mapTexture, floorTexture >= 0 && floorTexture <= 50);
 							}
