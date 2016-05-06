@@ -59,6 +59,9 @@ public final class MobDefinition {
 			definition.adjustVertextPointZ = spot2.adjustVertextPointZ;
 			definition.actions = new String[] { "Bait", null, null, null, null };
 			break;
+		case 501:
+			definition.name = "Queen Revenant";
+			break;
 		case 3019:
 			MobDefinition spot3 = get(318);
 			definition.npcSizeInSquares = spot3.npcSizeInSquares;
