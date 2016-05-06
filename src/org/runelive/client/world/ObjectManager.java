@@ -620,7 +620,7 @@ public final class ObjectManager {
 									floorTexture = 1;
 								}
 									
-								if (j23 == 111 || j23 == -2)  { // Water
+								if (j23 == 111)  { // Water
 									mapTexture = Rasterizer.method369(1);
 									j23 = -1;
 									floorTexture = 1;
@@ -688,7 +688,6 @@ public final class ObjectManager {
 									//floorTexture = 25;
 									//j23 = 1;
 								}
-								System.out.println(""+floorTexture);
 								if(floorTexture == 137) {
 									mapTexture = Rasterizer.method369(25);
 									floorTexture = 25;
