@@ -45,6 +45,27 @@ public final class MobDefinition {
 			definition.adjustVertextPointsXOrY = 128;
 			definition.adjustVertextPointZ = 128;
 		break;
+		case 2722:
+			MobDefinition spot1 = get(318);
+			definition.npcSizeInSquares = spot1.npcSizeInSquares;
+			definition.adjustVertextPointsXOrY = spot1.adjustVertextPointsXOrY;
+			definition.adjustVertextPointZ = spot1.adjustVertextPointZ;
+			definition.actions = new String[] { "Net", null, null, null, null };
+			break;
+		case 2724:
+			MobDefinition spot2 = get(318);
+			definition.npcSizeInSquares = spot2.npcSizeInSquares;
+			definition.adjustVertextPointsXOrY = spot2.adjustVertextPointsXOrY;
+			definition.adjustVertextPointZ = spot2.adjustVertextPointZ;
+			definition.actions = new String[] { "Bait", null, null, null, null };
+			break;
+		case 3019:
+			MobDefinition spot3 = get(318);
+			definition.npcSizeInSquares = spot3.npcSizeInSquares;
+			definition.adjustVertextPointsXOrY = spot3.adjustVertextPointsXOrY;
+			definition.adjustVertextPointZ = spot3.adjustVertextPointZ;
+			definition.actions = new String[] { "Net", null, null, null, null };
+			break;
 		case 5867:
 			definition.name = "Summoned Soul";
 			definition.npcModels = new int[] { 29268 };
