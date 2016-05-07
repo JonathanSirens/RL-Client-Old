@@ -128,9 +128,6 @@ public final class ItemDefinition {
 		}
 		ItemDefinition itemDef2;
 		switch (customId) {
-			case 7500:
-				itemDef.name = "Jonny";
-				break;
 		case 11907:
 			itemDef.name = "Gold-trimmed wizard set";
 			break;
@@ -1239,6 +1236,13 @@ public final class ItemDefinition {
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				itemDef.stackable = false;
+				break;
+			case 7500:
+				itemDef.name = "Jonny";
+				itemDef.actions = new String[5];
+				itemDef.actions[4] = "Drop";
+				itemDef.actions[0] = "Roast";
+				itemDef.actions[2] = "Shave head";
 				break;
 		case 13002:
 			itemDef.setDefaults();
