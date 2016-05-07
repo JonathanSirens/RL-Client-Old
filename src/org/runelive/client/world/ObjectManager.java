@@ -591,7 +591,6 @@ public final class ObjectManager {
 								int floorTexture = flo_2.textureId;
 								int j23;
 								int mapTexture;
-								System.out.println(""+floorTexture);
 								if (floorTexture >= 0 && floorTexture <= 50) {
 									mapTexture = Rasterizer.method369(floorTexture);
 									j23 = -1;
