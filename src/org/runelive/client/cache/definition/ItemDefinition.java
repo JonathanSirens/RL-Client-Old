@@ -286,6 +286,18 @@ public final class ItemDefinition {
 			40
 		};
 		break;
+	case 13576:
+		itemDef.setDefaults();
+		itemDef.name = "Dragon Warhammer";
+		itemDef.modelID = 70010;
+		itemDef.modelRotation1 = 1510;
+		itemDef.modelRotation2 = 1785;
+		itemDef.modelZoom = 1600;
+		itemDef.groundActions = new String[] { null, null, "Take", null, null };
+		itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
+		itemDef.maleWearId = 70008;
+		itemDef.femaleWearId = 70009;
+	break;
 	case 12704:
 		itemDef.name = "Infernal Pickaxe";
 		itemDef.modelID = 29393;

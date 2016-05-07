@@ -1887,6 +1887,42 @@ public class Client extends GameRenderer {
 					menuActionCmd4[menuActionRow] = 5959;
 					menuActionRow++;
 					return;
+				}	
+				if (baseX + x == 3067 && baseY + y == 10253) {
+					menuActionName[menuActionRow] = "Pull @cya@Lever";
+					menuActionID[menuActionRow] = 502;
+					menuActionCmd1[menuActionRow] = modelData;
+					menuActionCmd2[menuActionRow] = x;
+					menuActionCmd3[menuActionRow] = y;
+					menuActionCmd4[menuActionRow] = 5960;
+					menuActionRow++;
+
+					menuActionName[menuActionRow] = "Examine @cya@ Lever";
+					menuActionID[menuActionRow] = 1226;
+					menuActionCmd1[menuActionRow] = 950;
+					menuActionCmd2[menuActionRow] = x;
+					menuActionCmd3[menuActionRow] = y;
+					menuActionCmd4[menuActionRow] = 5960;
+					menuActionRow++;
+					return;
+				}
+				if (baseX + x == 2272 && baseY + y == 4680) {
+					menuActionName[menuActionRow] = "Pull @cya@Lever";
+					menuActionID[menuActionRow] = 502;
+					menuActionCmd1[menuActionRow] = modelData;
+					menuActionCmd2[menuActionRow] = x;
+					menuActionCmd3[menuActionRow] = y;
+					menuActionCmd4[menuActionRow] = 5960;
+					menuActionRow++;
+
+					menuActionName[menuActionRow] = "Examine @cya@ Lever";
+					menuActionID[menuActionRow] = 1226;
+					menuActionCmd1[menuActionRow] = 950;
+					menuActionCmd2[menuActionRow] = x;
+					menuActionCmd3[menuActionRow] = y;
+					menuActionCmd4[menuActionRow] = 5960;
+					menuActionRow++;
+					return;
 				}
 				if (baseX + x == 3153 && baseY + y == 3923) {
 					menuActionName[menuActionRow] = "Pull @cya@Lever";
