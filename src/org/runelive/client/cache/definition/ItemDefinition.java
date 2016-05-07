@@ -147,6 +147,7 @@ public final class ItemDefinition {
 			itemDef.actions = new String[5];
 			itemDef.actions[0] = "Lick";
 			break;
+		
 		case 4490:
 			itemDef.name = "Poop";
 			itemDef.actions = new String[5];
@@ -276,7 +277,15 @@ public final class ItemDefinition {
 			itemDef.actions[1] = "Wield";
 			itemDef.actions[4] = "Drop";
 		break;
-		
+	case 21102:
+		itemDef.immitate(get(6570));
+		itemDef.originalModelColors = new int[] {
+			1
+		};
+		itemDef.modifiedModelColors  = new int[] {
+			40
+		};
+		break;
 	case 12704:
 		itemDef.name = "Infernal Pickaxe";
 		itemDef.modelID = 29393;
