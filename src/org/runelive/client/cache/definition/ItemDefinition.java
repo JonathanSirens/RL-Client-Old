@@ -128,6 +128,9 @@ public final class ItemDefinition {
 		}
 		ItemDefinition itemDef2;
 		switch (customId) {
+			case 7500:
+				itemDef.name = "Jonny";
+				break;
 		case 11907:
 			itemDef.name = "Gold-trimmed wizard set";
 			break;
