@@ -497,6 +497,84 @@ public final class ItemDefinition {
 			itemDef.groundActions[2] = "Take";
 			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
 		break;
+		case 11525:
+			itemDef.setDefaults();
+			itemDef.modelID = 2789;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = -1;
+			itemDef.modelRotation1 = 84;
+			itemDef.modelRotation2 = 1996;
+			itemDef.modelZoom = 550;
+			itemDef.originalModelColors = new int[] {
+				26772
+			};
+ 			itemDef.modifiedModelColors = new int[] {
+				61
+			}; 
+			itemDef.name = "Anti-venom (4)";
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
+		break;
+		case 11527:
+			itemDef.setDefaults();
+			itemDef.modelID = 2697;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = -1;
+			itemDef.modelRotation1 = 84;
+			itemDef.modelRotation2 = 1996;
+			itemDef.modelZoom = 550;
+			itemDef.originalModelColors = new int[] {
+				26772
+			};
+ 			itemDef.modifiedModelColors = new int[] {
+				61
+			}; 
+			itemDef.name = "Anti-venom (3)";
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
+		break;
+		
+		case 11529:
+			itemDef.setDefaults();
+			itemDef.modelID = 2384;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = -1;
+			itemDef.modelRotation1 = 84;
+			itemDef.modelRotation2 = 1996;
+			itemDef.modelZoom = 550;
+			itemDef.originalModelColors = new int[] {
+				26772
+			};
+ 			itemDef.modifiedModelColors = new int[] {
+				61
+			}; 
+			itemDef.name = "Anti-venom (2)";
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
+		break;
+		
+		case 11531:
+			itemDef.setDefaults();
+			itemDef.modelID = 2621;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = -1;
+			itemDef.modelRotation1 = 84;
+			itemDef.modelRotation2 = 1996;
+			itemDef.modelZoom = 550;
+			itemDef.originalModelColors = new int[] {
+				26772
+			};
+ 			itemDef.modifiedModelColors = new int[] {
+				61
+			}; 
+			itemDef.name = "Anti-venom (1)";
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
+		break;
 		case 21077:
 			itemDef.setDefaults();
 		   itemDef.name = "Toxic staff of the dead";
