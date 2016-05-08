@@ -21,7 +21,7 @@ public final class ObjectDefinition {
     private static final int[] showBlack = { 3735, 26346, 26347, 26348, 26358,
             26359, 26360, 26361, 26362, 26363, 26364 };
 			
-	private static final int[] removeObjects = {57264, 23983, 632, 24265, 24271, 24272, 24274, 24273, 24275, 24266, 24267, 24268, 24269, 24270};
+	private static final int[] removeObjects = {8985, 57264, 23983, 632, 24265, 24271, 24272, 24274, 24273, 24275, 24266, 24267, 24268, 24269, 24270};
 
     public static ObjectDefinition forID(int id) {
         for (int j = 0; j < 20; j++) {
@@ -134,7 +134,9 @@ public final class ObjectDefinition {
             }
         }
 		switch(id) {
-			
+		case 398:
+			definition.name = "Wilderness coffin";
+			break;
 		case 732: 
 			definition.setDefaults();
 			definition.objectModelIDs = new int[] { 2298 };

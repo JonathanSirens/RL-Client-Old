@@ -131,7 +131,7 @@ public final class MobDefinition {
 			definition.standAnimation = ven.standAnimation;
 			definition.walkAnimation = ven.walkAnimation;
 			definition.combatLevel = 464;
-			definition.npcSizeInSquares = 3;
+			definition.npcSizeInSquares = 5;
 			break;
 		case 2127:
 			definition.name = "Player Owned Shop Trader";
@@ -971,6 +971,9 @@ public final class MobDefinition {
 			definition.copy(get(1265));
 			definition.originalModelColours = new int[] {10396};
 			definition.changedModelColours = new int[] {100};
+			break;
+		case 5030:
+			definition.actions[2] = "Travel";
 			break;
 		case 5512:
 			definition.copy(get(1265));

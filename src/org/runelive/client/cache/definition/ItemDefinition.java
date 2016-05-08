@@ -279,8 +279,9 @@ public final class ItemDefinition {
 		break;
 	case 21102:
 		itemDef.immitate(get(6570));
+		itemDef.name = "Water cape";
 		itemDef.originalModelColors = new int[] {
-			1
+			55
 		};
 		itemDef.modifiedModelColors  = new int[] {
 			40
@@ -403,7 +404,7 @@ public final class ItemDefinition {
 			itemDef.name = "Black gold-trim set (sk)";
 			break;
 		case 21074:
-			itemDef.setDefaults();
+		   itemDef.setDefaults();
 		   itemDef.name = "Staff of the dead";
 		   itemDef.actions = new String[5];
 		   itemDef.actions[1] = "Wield";
@@ -417,7 +418,85 @@ public final class ItemDefinition {
 		   itemDef.modelOffset1 = -5;
 		   itemDef.modelOffsetY = 2;
 		break;
+		case 11517:
+			itemDef.setDefaults();
+			itemDef.modelID = 2789;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = -1;
+			itemDef.modelRotation1 = 84;
+			itemDef.modelRotation2 = 1996;
+			itemDef.modelZoom = 550;
+			itemDef.originalModelColors = new int[] {
+				22418
+			};
+ 			itemDef.modifiedModelColors = new int[] {
+				61
+			}; 
+			itemDef.name = "Super combat potion (4)";
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
+		break;
 		
+		case 11519:
+			itemDef.setDefaults();
+			itemDef.modelID = 2697;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = -1;
+			itemDef.modelRotation1 = 84;
+			itemDef.modelRotation2 = 1996;
+			itemDef.modelZoom = 550;
+			itemDef.originalModelColors = new int[] {
+				22418
+			};
+ 			itemDef.modifiedModelColors = new int[] {
+				61
+			}; 
+			itemDef.name = "Super combat potion (3)";
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
+		break;
+		
+		case 11521:
+			itemDef.setDefaults();
+			itemDef.modelID = 2384;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = -1;
+			itemDef.modelRotation1 = 84;
+			itemDef.modelRotation2 = 1996;
+			itemDef.modelZoom = 550;
+			itemDef.originalModelColors = new int[] {
+				22418
+			};
+ 			itemDef.modifiedModelColors = new int[] {
+				61
+			}; 
+			itemDef.name = "Super combat potion (2)";
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
+		break;
+		
+		case 11523:
+			itemDef.setDefaults();
+			itemDef.modelID = 2621;
+			itemDef.modelOffset1 = 0;
+			itemDef.modelOffsetY = -1;
+			itemDef.modelRotation1 = 84;
+			itemDef.modelRotation2 = 1996;
+			itemDef.modelZoom = 550;
+			itemDef.originalModelColors = new int[] {
+				22418
+			};
+ 			itemDef.modifiedModelColors = new int[] {
+				61
+			}; 
+			itemDef.name = "Super combat potion (1)";
+			itemDef.groundActions = new String[5];
+			itemDef.groundActions[2] = "Take";
+			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
+		break;
 		case 21077:
 			itemDef.setDefaults();
 		   itemDef.name = "Toxic staff of the dead";
