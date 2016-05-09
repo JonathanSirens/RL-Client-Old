@@ -202,6 +202,21 @@ public final class MobDefinition {
             definition.walkAnimation = eld.walkAnimation;
             definition.adjustVertextPointsXOrY = definition.adjustVertextPointZ = 84;
             break;
+		case 2005:
+			definition.npcModels = new int[2];
+			definition.npcModels[0] = 28294;
+			definition.npcModels[1] = 28295;
+			definition.name = "Venenatis";
+			definition.actions = new String[] {"Pick-up", null, null, null, null};
+			MobDefinition ven2 = get(60);
+			definition.standAnimation = ven2.standAnimation;
+			definition.walkAnimation = ven2.walkAnimation;
+			definition.combatLevel = 464;
+			definition.actions[0] = "Pick-up";
+			definition.adjustVertextPointZ = 63;
+			definition.adjustVertextPointsXOrY = 63;
+			definition.npcSizeInSquares = 3;
+			break;			
 		case 2004:
 			definition.npcModels = new int[1];
 			definition.npcModels[0] = 28231;
@@ -219,8 +234,8 @@ public final class MobDefinition {
 			definition.name = "Ghost Town Citizen";
 			definition.actions = new String[]{"Talk-to", null, "Teleport", null, null};
 			break;
-		case 4375:
-			definition.name = "Boss Master";
+		case 198:
+			definition.name = "Master Chief";
 			definition.actions = new String[]{"Talk-to", null, "Spawn Last Boss", null, null};
 			break;
 		case 1093:

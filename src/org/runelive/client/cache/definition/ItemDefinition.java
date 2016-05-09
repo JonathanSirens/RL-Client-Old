@@ -287,6 +287,18 @@ public final class ItemDefinition {
 			40
 		};
 		break;
+	case 21103:
+		itemDef.setDefaults();
+		itemDef.modelID = 70011;
+		itemDef.modelZoom = 1380;
+		itemDef.modelRotation1 = 67;
+		itemDef.modelRotation2 = 67;
+		itemDef.modelOffset1 = 9;
+		itemDef.modelOffsetY = -4;
+		itemDef.name = "Pet Venenatis";
+		itemDef.groundActions = new String[] { null, null, "Take", null, null };
+		itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
+		break;
 	case 13576:
 		itemDef.setDefaults();
 		itemDef.name = "Dragon Warhammer";
