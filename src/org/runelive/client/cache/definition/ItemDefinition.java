@@ -3334,6 +3334,8 @@ public final class ItemDefinition {
 			itemDef.groundActions[2] = "Take";
 			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
 			itemDef.modelID = 61732;
+			itemDef.anInt184 = 200;
+			itemDef.anInt196 = 40;
 			break;
 		case 14426:
 			itemDef.setDefaults();
@@ -3364,8 +3366,8 @@ public final class ItemDefinition {
 			itemDef.groundActions[2] = "Take";
 			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
 			itemDef.modelID = 61729;
-			/*	itemDef.anInt196 = 40;
-			itemDef.anInt184 = 200;*/
+			itemDef.anInt184 = 200;
+			itemDef.anInt196 = 40;
 			break;
 		case 14424:
 			itemDef.setDefaults();
@@ -3396,8 +3398,8 @@ public final class ItemDefinition {
 			itemDef.groundActions[2] = "Take";
 			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
 			itemDef.modelID = 61764;
-			/*	itemDef.anInt196 = 40;
-			itemDef.anInt184 = 200;*/
+			itemDef.anInt184 = 200;
+			itemDef.anInt196 = 40;
 			break;
 		case 14422:
 			itemDef.setDefaults();
@@ -3428,8 +3430,8 @@ public final class ItemDefinition {
 			itemDef.groundActions[2] = "Take";
 			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
 			itemDef.modelID = 61727;
-			/*	itemDef.anInt196 = 40;
-			itemDef.anInt184 = 200;*/
+			itemDef.anInt184 = 200;
+			itemDef.anInt196 = 40;
 			break;
 		case 14420:
 			itemDef.setDefaults();
@@ -3460,8 +3462,8 @@ public final class ItemDefinition {
 			itemDef.groundActions[2] = "Take";
 			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
 			itemDef.modelID = 61731;
-			/*	itemDef.anInt196 = 40;
-			itemDef.anInt184 = 200;*/
+			itemDef.anInt184 = 200;
+			itemDef.anInt196 = 40;
 			break;
 		case 14418:
 			itemDef.setDefaults();
@@ -3492,8 +3494,8 @@ public final class ItemDefinition {
 			itemDef.groundActions[2] = "Take";
 			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
 			itemDef.modelID = 61812;
-			/*	itemDef.anInt196 = 40;
-			itemDef.anInt184 = 200;*/
+			itemDef.anInt184 = 200;
+			itemDef.anInt196 = 40;
 			break;
 		case 14416:
 			itemDef.setDefaults();
