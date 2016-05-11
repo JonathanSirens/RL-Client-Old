@@ -718,7 +718,7 @@ public class GrandExchange {
 						for (int i = 0; i <= 20; i++)
 							if (n.contains("<img=" + i + ">"))
 								n = n.replaceAll("<img=" + i + ">", "");
-						Client.getClient().chatTextDrawingArea.method591(Client.capitalizeFirstChar(n), 78,
+						Client.getClient().boldText.method591(Client.capitalizeFirstChar(n), 78,
 								0xA05A00, yPos + yPosOffset
 								+ (totalItemResults < 8 ? 6 : 0));
 						if (x > 74
@@ -755,7 +755,7 @@ public class GrandExchange {
 				boolean showMatches = true;
 				showMatches = true;
 				if (Client.getClient().amountOrNameInput.length() == 0) {
-					Client.getClient().chatTextDrawingArea.drawCenteredText(0xA05A00, 259,
+					Client.getClient().boldText.drawCenteredText(0xA05A00, 259,
 							"Grand Exchange Item Search", 30 + yPosOffset, false);
 					Client.getClient().smallText.drawCenteredText(0xA05A00, 259, "To search for an item, start by typing part of it's name.", 80 + yPosOffset, false);
 					Client.getClient().smallText
@@ -764,7 +764,7 @@ public class GrandExchange {
 							259,
 							"Then, simply select the item you want from the results on the display.",
 							80 + 15 + yPosOffset, false);
-					// chatTextDrawingArea.drawText(0xffffff, amountOrNameInput +
+					// boldText.drawText(0xffffff, amountOrNameInput +
 					// "*", 32, 133);
 					showMatches = false;
 				}
@@ -774,10 +774,10 @@ public class GrandExchange {
 				}
 				DrawingArea.fillRect(0x807660, 121 + yPosOffset, 506, 15, 120,
 						7);// box
-				// chatTextDrawingArea.drawText(0, "<img=8>", 133, 12);
-				Client.getClient().chatTextDrawingArea.method591(Client.getClient().amountOrNameInput + "*",
+				// boldText.drawText(0, "<img=8>", 133, 12);
+				Client.getClient().boldText.method591(Client.getClient().amountOrNameInput + "*",
 						28 + xPosOffset, 0xffffff, 133 + yPosOffset);
-				// chatTextDrawingArea.drawText(0xffffff, amountOrNameInput + "*",
+				// boldText.drawText(0xffffff, amountOrNameInput + "*",
 				// 133, 122);
 				DrawingArea.drawLine(121 + yPosOffset, 0x807660, 506, 7);// line
 				// drawClose(496, 122, 496, 345 + 112, 496 + 19, 361 + 112);

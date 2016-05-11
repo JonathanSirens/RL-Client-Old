@@ -3750,7 +3750,7 @@ public class CustomInterfaces extends RSInterface {
 		addText(26002, "Settings", 0xe4a146, true, true, 52, 2);
 		// addInAreaHover(26003, 427, 428, 16, 16, "Close", 250, 3);
 		addButton(26003, 4, -1, 427, 427, 15, 15, "Close", 427, 1);
-		addText(26004, "New function keys", 0xe4a146, false, true, 52, 0);
+		addText(26004, "New Function Keys", 0xe4a146, false, true, 52, 0);
 		addSprite(26005, 494);
 		addSprite(26011, 495);
 		addText(26006, "New Health Bars", 0xe4a146, false, true, 52, 0);
@@ -3774,175 +3774,185 @@ public class CustomInterfaces extends RSInterface {
 		addCheckmarkHover(26054, 4, 26055, 576, 577, 57, 35, SETTING_CONFIGS[15], 1, "Low Detail", 26056, 577, 577, 26057, "", "", 12, 20);
 		addCheckmarkHover(26058, 4, 26059, 578, 579, 57, 35, SETTING_CONFIGS[16], 1, "High Detail", 26060, 579, 579, 26061, "", "", 12, 20);
 		
-		addText(26050, "If the game runs slowly on your computer, try reducing these settings.", tda, 1, 0xeb981f, true, true);
-		addText(26051, "@yel@Resizable", tda, 0, 0xeb981f, false, true);
-		addText(26052, "@yel@Fullscreen", tda, 0, 0xeb981f, false, true);
-		addText(26053, "@yel@Fixed", tda, 0, 0xeb981f, false, true);
+		addText(26050, "If the game runs slowly on your computer try fixed mode and low detail.", tda, 1, 0xe4a146, true, true);
+		addText(26051, "Resizable", tda, 0, 0xffffff, false, true);
+		addText(26052, "Fullscreen", tda, 0, 0xffffff, false, true);
+		addText(26053, "Fixed", tda, 0, 0xffffff, false, true);
 		
-		addText(26062, "@yel@Low Detail", tda, 0, 0xeb981f, false, true);
-		addText(26063, "@yel@High Detail", tda, 0, 0xeb981f, false, true);
+		addText(26062, "Low Detail", tda, 0, 0xffffff, false, true);
+		addText(26063, "High Detail", tda, 0, 0xffffff, false, true);
 		
 		/**
 		 * Fixed buttons
 		 */
-		addHoverButton(26016, 486, 50, 39, "Fixed Mode", -1, 26017, 1);
-		addHoveredButton(26017, 487, 50, 39, 26018);
+		addHoverButton(26016, 486, 54, 46, "Fixed Mode", -1, 26017, 1);
+		addHoveredButton(26017, 487, 54, 46, 26018);
 		/**
 		 * Resizable buttons
 		 */
-		addHoverButton(26019, 488, 50, 39, "Resizable Mode", -1, 26020, 1);
-		addHoveredButton(26020, 489, 50, 39, 26021);
+		addHoverButton(26019, 488, 54, 46, "Resizable Mode", -1, 26020, 1);
+		addHoveredButton(26020, 489, 54, 46, 26021);
 		/**
 		 * Fullscreen buttons
 		 */
-		addHoverButton(26022, 490, 50, 39, "Fullscreen Mode", -1, 26023, 1);
-		addHoveredButton(26023, 491, 50, 39, 26024);
+		addHoverButton(26022, 490, 54, 46, "Fullscreen Mode", -1, 26023, 1);
+		addHoveredButton(26023, 491, 54, 46, 26024);
 
-		setChildren(55, rsinterface);
+		setChildren(59, rsinterface);
 		int i = 0;
 		// background
 		setBounds(26001, x + 0, y + 0, i, rsinterface);
 		i++;
 		// more options text
-		setBounds(26002, x + 230, y + 3, i, rsinterface);
+		setBounds(26002, x + 230, y + 4, i, rsinterface);
 		i++;
 		// close button
 		setBounds(26003, x + 427, y + 3, i, rsinterface);
 		i++;
 		// use new function key text
-		setBounds(26004, x + 9, y + 107, i, rsinterface);
+		setBounds(26004, x + 9, y + 108, i, rsinterface);
 		i++;
 		// new health bars text
-		setBounds(26006, x + 9, y + 127, i, rsinterface);
+		setBounds(26006, x + 9, y + 131, i, rsinterface);
 		i++;
 		// toggle function keys
-		setBounds(26007, x + 154, y + 104, i, rsinterface);
+		setBounds(26007, x + 154, y + 106, i, rsinterface);
 		i++;
 		// display fog toggle
-		setBounds(26014, x + 154, y + 148, i, rsinterface);
+		setBounds(26014, x + 154, y + 152, i, rsinterface);
 		i++;
 		// toggle health bars
-		setBounds(26008, x + 154, y + 124, i, rsinterface);
+		setBounds(26008, x + 154, y + 129, i, rsinterface);
 		i++;
-		// display damage text
-		setBounds(26009, x + 175, y + 110, i, rsinterface);
+		// new cursors text
+		setBounds(26009, x + 175, y + 108, i, rsinterface);
 		i++;
-		// enable tweening text
-		setBounds(26030, x + 9, y + 171, i, rsinterface);
+		// x10 damage text
+		setBounds(26030, x + 9, y + 177, i, rsinterface);
 		i++;
-		setBounds(26032, x + 339, y + 110, i, rsinterface);
+		setBounds(26032, x + 336, y + 108, i, rsinterface);
 		i++;
-		setBounds(26034, x + 339, y + 135, i, rsinterface);
+		setBounds(26034, x + 175, y + 177, i, rsinterface);
 		i++;
 		// gameframe button
-		setBounds(26031, x + 425, y + 110, i, rsinterface);
+		setBounds(26031, x + 426, y + 106, i, rsinterface);
 		i++;
-		// hitmarks
-		setBounds(26033, x + 425, y + 159, i, rsinterface);
+		// toggle pm notifications
+		setBounds(26033, x + 315, y + 175, i, rsinterface);
 		i++;
 		// display health above heads
-		setBounds(26028, x + 175, y + 135, i, rsinterface);
+		setBounds(26028, x + 175, y + 131, i, rsinterface);
 		i++;
 		// display titles above heads
-		setBounds(26025, x + 175, y + 167, i, rsinterface);
+		setBounds(26025, x + 175, y + 154, i, rsinterface);
 		i++;
 		// toggle health above heads
-		setBounds(26026, x + 315, y + 138, i, rsinterface);
+		setBounds(26026, x + 315, y + 129, i, rsinterface);
 		i++;
 		// toggle title above heads
-		setBounds(26027, x + 315, y + 170, i, rsinterface);
+		setBounds(26027, x + 315, y + 152, i, rsinterface);
 		i++;
-		// display fog text
-		setBounds(26015, x + 9, y + 152, i, rsinterface);
+		// new hitmarks text
+		setBounds(26015, x + 9, y + 154, i, rsinterface);
 		i++;
 		// toggle damage
-		setBounds(26010, x + 315, y + 110, i, rsinterface);
+		setBounds(26010, x + 315, y + 106, i, rsinterface);
 		i++;
 		// toggle tweening
-		setBounds(26029, x + 154, y + 172, i, rsinterface);
+		setBounds(26029, x + 154, y + 175, i, rsinterface);
 		i++;
 		// first row horizontal line
-		setBounds(26005, x + 7, y + 120, i, rsinterface);
+		setBounds(26005, x + 7, y + 124, i, rsinterface);
 		i++;
-		setBounds(26005, x + 7, y + 144, i, rsinterface);
+		setBounds(26005, x + 7, y + 147, i, rsinterface);
 		i++;
-		setBounds(26005, x + 7, y + 168, i, rsinterface);
+		setBounds(26005, x + 7, y + 170, i, rsinterface);
 		i++;
 		// second row horizontal line
-		setBounds(26005, x + 170, y + 161, i, rsinterface);
+		setBounds(26005, x + 170, y + 124, i, rsinterface);
 		i++;
-		setBounds(26005, x + 170, y + 130, i, rsinterface);
+		setBounds(26005, x + 170, y + 147, i, rsinterface);
+		i++;
+		setBounds(26005, x + 170, y + 170, i, rsinterface);
+		i++;
+		//last horizontal line
+		setBounds(26005, x + 280, y + 124, i, rsinterface);
 		i++;
 		// first row vertical line
-		setBounds(26011, x + 151, y + 105, i, rsinterface);
+		setBounds(26011, x + 151, y + 104, i, rsinterface);
 		i++;
 		setBounds(26011, x + 151, y + 134, i, rsinterface);
 		i++;
-		setBounds(26011, x + 151, y + 161, i, rsinterface);
+		setBounds(26011, x + 151, y + 163, i, rsinterface);
 		i++;
 		// second row vertical line
-		setBounds(26011, x + 170, y + 161, i, rsinterface);
+		setBounds(26011, x + 170, y + 163, i, rsinterface);
 		i++;
 		setBounds(26011, x + 170, y + 134, i, rsinterface);
 		i++;
-		setBounds(26011, x + 170, y + 105, i, rsinterface);
+		setBounds(26011, x + 170, y + 104, i, rsinterface);
 		i++;
 		// third row vertical line
-		setBounds(26011, x + 312, y + 105, i, rsinterface);
+		setBounds(26011, x + 312, y + 104, i, rsinterface);
 		i++;
 		setBounds(26011, x + 312, y + 134, i, rsinterface);
 		i++;
-		setBounds(26011, x + 312, y + 161, i, rsinterface);
+		setBounds(26011, x + 312, y + 163, i, rsinterface);
 		i++;
 		// fourth row vertical line
-		setBounds(26011, x + 331, y + 105, i, rsinterface);
+		setBounds(26011, x + 331, y + 104, i, rsinterface);
 		i++;
 		setBounds(26011, x + 331, y + 134, i, rsinterface);
 		i++;
-		setBounds(26011, x + 331, y + 161, i, rsinterface);
+		setBounds(26011, x + 331, y + 163, i, rsinterface);
+		i++;
+		//last vertical lines
+		setBounds(26011, x + 423, y + 104, i, rsinterface);
+		i++;
+		setBounds(26011, x + 423, y + 134, i, rsinterface);
+		i++;
+		setBounds(26011, x + 423, y + 163, i, rsinterface);
 		i++;
 		/**
 		 * Fixed
 		 */
-		setBounds(26016, x + 30, y + 38, i, rsinterface);
+		setBounds(26016, x + 30, y + 41, i, rsinterface);
 		i++;
-		setBounds(26017, x + 30, y + 38, i, rsinterface);
+		setBounds(26017, x + 30, y + 41, i, rsinterface);
 		i++;
 		/**
 		 * Resizable
 		 */
-		setBounds(26019, x + 110, y + 38, i, rsinterface);
+		setBounds(26019, x + 110, y + 41, i, rsinterface);
 		i++;
-		setBounds(26020, x + 110, y + 38, i, rsinterface);
+		setBounds(26020, x + 110, y + 41, i, rsinterface);
 		i++;
 		/**
 		 * Fullscreen
 		 */
-		setBounds(26022, x + 190, y + 38, i, rsinterface);
+		setBounds(26022, x + 190, y + 41, i, rsinterface);
 		i++;
-		setBounds(26023, x + 190, y + 38, i, rsinterface);
+		setBounds(26023, x + 190, y + 41, i, rsinterface);
 		i++;
-		setBounds(26005, x + 280, y + 130, i, rsinterface);
+		setBounds(26050, 253, 72, i, rsinterface);
 		i++;
-		setBounds(26050, 250, 133, i, rsinterface);
+		setBounds(26051, 143, 137, i, rsinterface);
 		i++;
-		setBounds(26051, 142, 74, i, rsinterface);
+		setBounds(26052, 221, 137, i, rsinterface);
 		i++;
-		setBounds(26052, 220, 74, i, rsinterface);
+		setBounds(26053, 73, 137, i, rsinterface);
 		i++;
-		setBounds(26053, 70, 74, i, rsinterface);
+		setBounds(26054, 314, 94, i, rsinterface);
 		i++;
-		setBounds(26054, 314, 88, i, rsinterface);
+		setBounds(26055, 314, 94, i, rsinterface);
 		i++;
-		setBounds(26055, 314, 88, i, rsinterface);
+		setBounds(26058, 384, 94, i, rsinterface);
 		i++;
-		setBounds(26058, 384, 88, i, rsinterface);
+		setBounds(26059, 384, 94, i, rsinterface);
 		i++;
-		setBounds(26059, 384, 88, i, rsinterface);
+		setBounds(26062, 316, 137, i, rsinterface);
 		i++;
-		setBounds(26062, 316, 75, i, rsinterface);
-		i++;
-		setBounds(26063, 385, 75, i, rsinterface);
+		setBounds(26063, 385, 137, i, rsinterface);
 	}
 	
 	private void mainGe() {

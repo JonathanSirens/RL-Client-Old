@@ -374,9 +374,9 @@ public class Client extends GameRenderer {
 		System.out.println("Finished repacking " + cacheIndex + ".");
 	}
 	
-	public void updateSetting(int settingI, boolean b) {
-		int l2 = RSInterface.interfaceCache[settingI].valueIndexArray[0][1];
-		variousSettings[l2] = b ? 1 : 0;
+	public void updateSetting(int widgetId, boolean b) {
+		int configId = RSInterface.interfaceCache[widgetId].valueIndexArray[0][1];
+		variousSettings[configId] = b ? 1 : 0;
 	}
 
 	public void updateSettingsInterface() {
@@ -1218,8 +1218,8 @@ public class Client extends GameRenderer {
 	public String[] chatTitles;
 	public int[] chatPosition;
 	public final int[] chatRights;
-	public TextDrawingArea chatTextDrawingArea;
-	public TextDrawingArea aTextDrawingArea_1273;
+	public TextDrawingArea boldText;
+	public TextDrawingArea fancyText;
 	public int[] chatTypes;
 	public int chatTypeView;
 	public ArrayList<String> clanMembers = new ArrayList<String>();
@@ -1627,6 +1627,16 @@ public class Client extends GameRenderer {
 			dumpItemImages(false);
 		}
 		switch(cmd) {
+			case "reloaditf":
+				try {
+					TextDrawingArea[] fonts = { smallText, normalText, boldText, fancyText};
+					Archive interfaceArchive = getArchive(3, "interface", "interface", expectedCRCs[3], 35);
+					Archive mediaArchive = getArchive(4, "2d graphics", "media", expectedCRCs[4], 40);
+					RSInterface.unpack(interfaceArchive, fonts, mediaArchive);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				break;
 		case "hitmarks":
 			Configuration.NEW_HITMARKS = !Configuration.NEW_HITMARKS;
 			break;
@@ -1654,7 +1664,7 @@ public class Client extends GameRenderer {
 		case "rsi":
 			Archive streamLoader_1 = getArchive(3, "interface", "interface", expectedCRCs[3], 35);
 			Archive mediaArchive = getArchive(4, "2d graphics", "media", expectedCRCs[4], 40); 
-			TextDrawingArea[] aclass30_sub2_sub1_sub4s = { smallText, normalText, chatTextDrawingArea, aTextDrawingArea_1273 };
+			TextDrawingArea[] aclass30_sub2_sub1_sub4s = { smallText, normalText, boldText, fancyText};
 			RSInterface.unpack(streamLoader_1, aclass30_sub2_sub1_sub4s, mediaArchive);
 			break;
 		}
@@ -6383,10 +6393,10 @@ public class Client extends GameRenderer {
 		String[] results = text.split("\n");
 		int height = (results.length * 16) + 6;
 		int width;
-		width = chatTextDrawingArea.getTextWidth(results[0]) - 3;
+		width = boldText.getTextWidth(results[0]) - 3;
 		for (int i = 1; i < results.length; i++) {
-			if (width <= chatTextDrawingArea.getTextWidth(results[i]) + 6)
-				width = chatTextDrawingArea.getTextWidth(results[i]) + 2;
+			if (width <= boldText.getTextWidth(results[i]) + 6)
+				width = boldText.getTextWidth(results[i]) + 2;
 		}
 		DrawingArea.drawPixels(height, yPos, xPos, 0xFFFFA0, width);
 		DrawingArea.fillPixels(xPos, width, height, 0, yPos);
@@ -7390,11 +7400,11 @@ public class Client extends GameRenderer {
 			
 			if(loginMessage1 != null && loginMessage1.length() != 0) {
 				int y_1 = (clientHeight / 2) + 28;
-				chatTextDrawingArea.drawCenteredText(0xefefef, 381, loginMessage1, y_1 - 30, true);
+				boldText.drawCenteredText(0xefefef, 381, loginMessage1, y_1 - 30, true);
 			}
 			if(loginMessage2 != null && loginMessage2.length() != 0) {
 				int y_2 = (clientHeight / 2) + (1 * 20) + 28;
-				chatTextDrawingArea.drawCenteredText(0xefefef, 381, loginMessage2, y_2 - 30, true);
+				boldText.drawCenteredText(0xefefef, 381, loginMessage2, y_2 - 30, true);
 			}
 			if(ahover) {
 				cacheSprite2[28].drawAdvancedSprite(312, 458);
@@ -7467,41 +7477,41 @@ public class Client extends GameRenderer {
 			}
 			
 			if(loginScreenCursorPos == 0 && loopCycle % 45 < 10) {
-				chatTextDrawingArea.drawRegularText(true, 265, 14335390, myUsername + "|", 169);
+				boldText.drawRegularText(true, 265, 14335390, myUsername + "|", 169);
 			} else {
-				chatTextDrawingArea.drawRegularText(true, 265, 14335390, myUsername, 169);
+				boldText.drawRegularText(true, 265, 14335390, myUsername, 169);
 			}
 			
 			if(loginScreenCursorPos == 1 && loopCycle % 45 < 10) {
-				chatTextDrawingArea.drawRegularText(true, 265, 14335390, getStars(password)+"|", 221);
+				boldText.drawRegularText(true, 265, 14335390, getStars(password)+"|", 221);
 			} else {
-				chatTextDrawingArea.drawRegularText(true, 265, 14335390, getStars(password), 221);
+				boldText.drawRegularText(true, 265, 14335390, getStars(password), 221);
 			}*/
 
 			cacheSprite2[0].drawAdvancedSprite(0, 0);
-			chatTextDrawingArea.drawCenteredText(0xffbb18, 765 / 2, "Welcome to RuneLive", 155, true);
+			boldText.drawCenteredText(0xffbb18, 765 / 2, "Welcome to RuneLive", 155, true);
 
-			chatTextDrawingArea.drawCenteredText(0xefefef, 765 / 2, "Please enter your username and password.", 178, true);
+			boldText.drawCenteredText(0xefefef, 765 / 2, "Please enter your username and password.", 178, true);
 
 			int y = 202;
-			chatTextDrawingArea.drawText(0, "Username:", y + 1, 268);
-			chatTextDrawingArea.drawText(0xffcb18, "Username:", y, 267);
+			boldText.drawText(0, "Username:", y + 1, 268);
+			boldText.drawText(0xffcb18, "Username:", y, 267);
 			cacheSprite2[input1Hover ? 96 : 94].drawCenteredARGBImage(765 / 2, y + 19);
 			if(loginScreenCursorPos == 0 && loopCycle % 45 < 10) {
-				chatTextDrawingArea.drawRegularText(true, 243, 0xefefef, myUsername + "|", y + 24);
+				boldText.drawRegularText(true, 243, 0xefefef, myUsername + "|", y + 24);
 			} else {
-				chatTextDrawingArea.drawRegularText(true, 243, 0xefefef, myUsername, y + 24);
+				boldText.drawRegularText(true, 243, 0xefefef, myUsername, y + 24);
 			}
 
 			y += 52;
-			chatTextDrawingArea.drawText(0, "Password:", y + 1, 268);
-			chatTextDrawingArea.drawText(0xffcb18, "Password:", y, 267);
+			boldText.drawText(0, "Password:", y + 1, 268);
+			boldText.drawText(0xffcb18, "Password:", y, 267);
 			cacheSprite2[input2Hover ? 96 : 94].drawCenteredARGBImage(765 / 2, y + 19);
 
 			if(loginScreenCursorPos == 1 && loopCycle % 45 < 10) {
-				chatTextDrawingArea.drawRegularText(true, 243, 0xefefef, getStars(password)+"|", y + 24);
+				boldText.drawRegularText(true, 243, 0xefefef, getStars(password)+"|", y + 24);
 			} else {
-				chatTextDrawingArea.drawRegularText(true, 243, 0xefefef, getStars(password), y + 24);
+				boldText.drawRegularText(true, 243, 0xefefef, getStars(password), y + 24);
 			}
 
 			cacheSprite2[rememberMeButtonHover ? (rememberMe ? 102 : 98) : (rememberMe ? 101 : 97)].drawARGBImage(234, y + 40);
@@ -7509,7 +7519,7 @@ public class Client extends GameRenderer {
 
 			y += 90;
 			cacheSprite2[loginButtonHover ? 95 : 93].drawCenteredARGBImage(765 / 2, y);
-			chatTextDrawingArea.drawCenteredText(0xffbb18, 765 / 2, "Login", y + 5, true);
+			boldText.drawCenteredText(0xffbb18, 765 / 2, "Login", y + 5, true);
 			
 		}
 		cacheSprite2[99].drawAdvancedSprite(264, 373);
@@ -7706,9 +7716,9 @@ public class Client extends GameRenderer {
 			DrawingArea.fillRectangle(0, j + 1, k - 2, 16, 150, i + 1);
 			DrawingArea.fillPixels(i + 1, k - 2, l - 19, 0, j + 18);
 			DrawingArea.drawRectangle(j + 18, l - 19, 150, 0, k - 2, i + 1);
-			chatTextDrawingArea.method385(0xc6b895, "Choose Option", j + 14,
+			boldText.method385(0xc6b895, "Choose Option", j + 14,
 					i + 3);
-			chatTextDrawingArea.method385(0xc6b895, "Choose Option", j + 14,
+			boldText.method385(0xc6b895, "Choose Option", j + 14,
 					i + 3);
 			for (int l1 = 0; l1 < menuActionRow; l1++) {
 				int i2 = j + 31 + (menuActionRow - 1 - l1) * 15;
@@ -7716,7 +7726,7 @@ public class Client extends GameRenderer {
 				if (j1 > i && j1 < i + k && k1 > i2 - 13 && k1 < i2 + 3)
 					j2 = 0xffff00;
 				//Right click options here!
-				chatTextDrawingArea.drawRegularText(true, i + 3, j2, menuActionName[l1], i2);
+				boldText.drawRegularText(true, i + 3, j2, menuActionName[l1], i2);
 			}
 		} else if (menuToggle == true) {
 			// DrawingArea.drawPixels(height, yPos, xPos, color, width);
@@ -7747,7 +7757,7 @@ public class Client extends GameRenderer {
 			DrawingArea.fillPixels(i + 2, k - 4, 1, 592388, j + 17);
 			DrawingArea.fillPixels(i + 2, k - 4, 1, 2763035, j + 18);
 			DrawingArea.fillPixels(i + 3, k - 6, 1, 5654851, j + 19);
-			chatTextDrawingArea.method385(0xc6b895, "Choose Option", j + 14,
+			boldText.method385(0xc6b895, "Choose Option", j + 14,
 					i + 3);
 			for (int l1 = 0; l1 < menuActionRow; l1++) {
 				int i2 = j + 31 + (menuActionRow - 1 - l1) * 15;
@@ -7757,7 +7767,7 @@ public class Client extends GameRenderer {
 					j2 = 0xeee5c6;
 					currentActionMenu = l1;
 				}
-				chatTextDrawingArea.drawRegularText(true, i + 4, j2, menuActionName[l1], i2 + 1);
+				boldText.drawRegularText(true, i + 4, j2, menuActionName[l1], i2 + 1);
 			}
 		}
 	}
@@ -7835,7 +7845,7 @@ public class Client extends GameRenderer {
 			DrawingArea.fillPixels(i + 2, k - 4, 1, 592388, j + 17);
 			DrawingArea.fillPixels(i + 2, k - 4, 1, 2763035, j + 18);
 			DrawingArea.fillPixels(i + 3, k - 6, 1, 5654851, j + 19);
-			chatTextDrawingArea.method385(0xc6b895, "Choose Option", j + 14,
+			boldText.method385(0xc6b895, "Choose Option", j + 14,
 					i + 3);
 		int beforeX = xPos;
 			for (int l1 = 0; l1 < menuActionRow; l1++) {
@@ -7846,7 +7856,7 @@ public class Client extends GameRenderer {
 					j2 = 0xeee5c6;
 					currentActionMenu = l1;
 				}
-				chatTextDrawingArea.drawRegularText(true, i + 4, j2, menuActionName[l1], i2 + 1);
+				boldText.drawRegularText(true, i + 4, j2, menuActionName[l1], i2 + 1);
 			}
 	}
 	*/
@@ -8098,7 +8108,7 @@ public class Client extends GameRenderer {
 			tooltip = tooltip + "@whi@ / " + (menuActionRow - 2) + " more options";
 		}
 		newBoldFont.drawBasicString(tooltip, 4, 15, 0xFFFFFF, 0, true);
-		// chatTextDrawingArea.method390(4, 0xffffff, tooltip, loopCycle / 1000,
+		// boldText.method390(4, 0xffffff, tooltip, loopCycle / 1000,
 		// 15);
 		if(Configuration.NEW_CURSORS) {
 			detectCursor(menuActionName[menuActionRow - 1]);
@@ -15999,8 +16009,8 @@ public class Client extends GameRenderer {
 			normalText = new TextDrawingArea(false, "p12_full", titleStreamLoader);
 			smallHit = new TextDrawingArea(false, "hit_full", titleStreamLoader);
 			bigHit = new TextDrawingArea(true, "critical_full", titleStreamLoader);
-			chatTextDrawingArea = new TextDrawingArea(false, "b12_full", titleStreamLoader);
-			aTextDrawingArea_1273 = new TextDrawingArea(true, "q8_full", titleStreamLoader);
+			boldText = new TextDrawingArea(false, "b12_full", titleStreamLoader);
+			fancyText = new TextDrawingArea(true, "q8_full", titleStreamLoader);
 			newSmallFont = new RSFontSystem(false, "p11_full", titleStreamLoader);
 			newRegularFont = new RSFontSystem(false, "p12_full", titleStreamLoader);
 			newBoldFont = new RSFontSystem(false, "b12_full", titleStreamLoader);
@@ -16009,7 +16019,7 @@ public class Client extends GameRenderer {
 			aClass3_Sub7_Sub1_1493 = method407(instance);
 			aClass25_1948 = new Class25(22050, anInt197);
 			Archive streamLoader = getArchive(2, "config", "config", expectedCRCs[2], 30);
-			Archive streamLoader_1 = getArchive(3, "interface", "interface", expectedCRCs[3], 35);
+			Archive interfaceArchive = getArchive(3, "interface", "interface", expectedCRCs[3], 35);
 			Archive mediaArchive = getArchive(4, "2d graphics", "media", expectedCRCs[4], 40);
 			Archive streamLoader_3 = getArchive(6, "textures", "textures", expectedCRCs[6], 45);
 			Archive streamLoader_4 = getArchive(7, "chat system", "wordenc", expectedCRCs[7], 50);
@@ -16149,11 +16159,11 @@ public class Client extends GameRenderer {
 			}
 
 			setLoadingText(95, "Unpacking interfaces");
-			TextDrawingArea[] aclass30_sub2_sub1_sub4s = { smallText,
-					normalText, chatTextDrawingArea, aTextDrawingArea_1273 };
+			TextDrawingArea[] fonts = { smallText,
+					normalText, boldText, fancyText};
 
 			try {
-				RSInterface.unpack(streamLoader_1, aclass30_sub2_sub1_sub4s, mediaArchive);
+				RSInterface.unpack(interfaceArchive, fonts, mediaArchive);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -16250,6 +16260,7 @@ public class Client extends GameRenderer {
 			//repackCacheIndex(2); //Animations
 			//decompressors[1].dump();
 			isLoading = false;
+			updateSettingsInterface();
 			if(Configuration.NEW_CURSORS) {
 				super.setCursor(CursorData.CURSOR_0);
 			}
@@ -16734,8 +16745,8 @@ public class Client extends GameRenderer {
 				if (((Entity) obj).textSpoken != null && (j >= playerCount || publicChatMode == 0 || publicChatMode == 3 || publicChatMode == 1 && isFriendOrSelf(((Player) obj).name))) {
 					npcScreenPos((Entity) obj, ((Entity) obj).height);
 					if (spriteDrawX > -1 && anInt974 < anInt975) {
-						anIntArray979[anInt974] = chatTextDrawingArea.method384(((Entity) obj).textSpoken) / 2;
-						anIntArray978[anInt974] = chatTextDrawingArea.anInt1497;
+						anIntArray979[anInt974] = boldText.method384(((Entity) obj).textSpoken) / 2;
+						anIntArray978[anInt974] = boldText.anInt1497;
 						anIntArray976[anInt974] = spriteDrawX;
 						anIntArray977[anInt974] = spriteDrawY;
 						anIntArray980[anInt974] = ((Entity) obj).anInt1513;
@@ -16926,31 +16937,31 @@ public class Client extends GameRenderer {
 					}
 
 					if (anIntArray981[k] == 0) {
-						chatTextDrawingArea.drawText(0, s, spriteDrawY + 1, spriteDrawX + 1);
-						chatTextDrawingArea.drawText(i3, s, spriteDrawY, spriteDrawX);
+						boldText.drawText(0, s, spriteDrawY + 1, spriteDrawX + 1);
+						boldText.drawText(i3, s, spriteDrawY, spriteDrawX);
 					}
 
 					if (anIntArray981[k] == 1) {
-						chatTextDrawingArea.method386(0, s, spriteDrawX + 1, anInt1265, spriteDrawY + 1);
-						chatTextDrawingArea.method386(i3, s, spriteDrawX, anInt1265, spriteDrawY);
+						boldText.method386(0, s, spriteDrawX + 1, anInt1265, spriteDrawY + 1);
+						boldText.method386(i3, s, spriteDrawX, anInt1265, spriteDrawY);
 					}
 
 					if (anIntArray981[k] == 2) {
-						chatTextDrawingArea.method387(spriteDrawX + 1, s, anInt1265, spriteDrawY + 1, 0);
-						chatTextDrawingArea.method387(spriteDrawX, s, anInt1265, spriteDrawY, i3);
+						boldText.method387(spriteDrawX + 1, s, anInt1265, spriteDrawY + 1, 0);
+						boldText.method387(spriteDrawX, s, anInt1265, spriteDrawY, i3);
 					}
 
 					if (anIntArray981[k] == 3) {
-						chatTextDrawingArea.method388(150 - anIntArray982[k], s, anInt1265, spriteDrawY + 1, spriteDrawX + 1, 0);
-						chatTextDrawingArea.method388(150 - anIntArray982[k], s, anInt1265, spriteDrawY, spriteDrawX, i3);
+						boldText.method388(150 - anIntArray982[k], s, anInt1265, spriteDrawY + 1, spriteDrawX + 1, 0);
+						boldText.method388(150 - anIntArray982[k], s, anInt1265, spriteDrawY, spriteDrawX, i3);
 					}
 
 					if (anIntArray981[k] == 4) {
-						int i4 = chatTextDrawingArea.method384(s);
+						int i4 = boldText.method384(s);
 						int k4 = (150 - anIntArray982[k]) * (i4 + 100) / 150;
 						DrawingArea.setBounds(spriteDrawX - 50, 0, spriteDrawX + 50, 334);
-						chatTextDrawingArea.method385(0, s, spriteDrawY + 1, spriteDrawX + 51 - k4);
-						chatTextDrawingArea.method385(i3, s, spriteDrawY, spriteDrawX + 50 - k4);
+						boldText.method385(0, s, spriteDrawY + 1, spriteDrawX + 51 - k4);
+						boldText.method385(i3, s, spriteDrawY, spriteDrawX + 50 - k4);
 						DrawingArea.defaultDrawingAreaSize();
 					}
 
@@ -16964,14 +16975,14 @@ public class Client extends GameRenderer {
 							l4 = j4 - 125;
 						}
 
-						DrawingArea.setBounds(0, spriteDrawY - chatTextDrawingArea.anInt1497 - 1, 512, spriteDrawY + 5);
-						chatTextDrawingArea.drawText(0, s, spriteDrawY + 1 + l4, spriteDrawX + 1);
-						chatTextDrawingArea.drawText(i3, s, spriteDrawY + l4, spriteDrawX);
+						DrawingArea.setBounds(0, spriteDrawY - boldText.anInt1497 - 1, 512, spriteDrawY + 5);
+						boldText.drawText(0, s, spriteDrawY + 1 + l4, spriteDrawX + 1);
+						boldText.drawText(i3, s, spriteDrawY + l4, spriteDrawX);
 						DrawingArea.defaultDrawingAreaSize();
 					}
 				} else {
-					chatTextDrawingArea.drawText(0, s, spriteDrawY + 1, spriteDrawX + 1);
-					chatTextDrawingArea.drawText(0xffff00, s, spriteDrawY, spriteDrawX);
+					boldText.drawText(0, s, spriteDrawY + 1, spriteDrawX + 1);
+					boldText.drawText(0xffff00, s, spriteDrawY, spriteDrawX);
 				}
 			}
 		} catch (Exception e) {
