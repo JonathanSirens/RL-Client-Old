@@ -1,5 +1,7 @@
 package org.runelive.client.updates;
 
+import org.runelive.Configuration;
+
 import java.net.*;
 import java.io.*;
 import java.awt.*;
@@ -35,7 +37,6 @@ public class ClientUpdate {
 				}
 			}
 		} catch (Exception e) {
-			clientVersion = "invalid_connection";
 			e.printStackTrace();
 		}
 		return false;		
@@ -76,7 +77,7 @@ public class ClientUpdate {
 				}
 			}
 		} catch (Exception e) {
-			clientVersion = "invalid_connection";
+			//clientVersion = "invalid_connection";
 			e.printStackTrace();
 			frame.setVisible(false);
 			frame.dispose();
