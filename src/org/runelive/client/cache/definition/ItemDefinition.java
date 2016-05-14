@@ -1381,6 +1381,18 @@ public final class ItemDefinition {
 			itemDef.actions[1] = "Wear";
 			itemDef.actions[4] = "Drop";
 		break;
+			case 6349:
+				itemDef.name = "Paiman's Sandals";
+				break;
+			case 1844:
+				itemDef.name = "Paiman's robe top";
+				break;
+			case 1845:
+				itemDef.name = "Paiman's robe legs";
+				break;
+			case 4611:
+				itemDef.name = "Paiman's Turban";
+				break;
 		case 21072:
 			itemDef.setDefaults();
 			itemDef.name = "Hunter master cape";
