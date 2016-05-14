@@ -223,7 +223,11 @@ public final class ItemDefinition {
 			itemDef.actions[1] = "Wield";
 			itemDef.actions[4] = "Drop";
 	break;	
-
+	case 13740:
+		System.out.println("male: "+itemDef.maleWearId);
+		System.out.println("female: "+itemDef.femaleWearId);
+		System.out.println("inventory: "+itemDef.modelID);
+		break;
 	case 21092:
 			itemDef.modelID = 67004;
 			itemDef.name = "Off-hand Drygore Rapier";
@@ -281,11 +285,26 @@ public final class ItemDefinition {
 		itemDef.immitate(get(6570));
 		itemDef.name = "Water cape";
 		itemDef.originalModelColors = new int[] {
-			55
+			1
 		};
 		itemDef.modifiedModelColors  = new int[] {
 			40
 		};
+		break;
+	case 21104:
+		itemDef.setDefaults();
+		itemDef.name = "Bloodbone spirit shield";
+		itemDef.modelZoom = 1616; //Model Zoom
+		itemDef.maleWearId = 70013; //Male Equip 1
+		itemDef.femaleWearId = 70013; //Male Equip 2
+		itemDef.modelID = 70014; //Model ID
+		itemDef.modelRotation1 = 396; //Model Rotation 1
+		itemDef.modelRotation2 = 1050; //Model Rotation 2
+		itemDef.modelOffset1 = -3; //Model Offset 1
+		itemDef.modelOffsetY = 16; //Model Offset 2
+		itemDef.actions = new String[5];
+		itemDef.actions[1] = "Wear";
+		itemDef.actions[4] = "Drop";
 		break;
 	case 21103:
 		itemDef.setDefaults();
