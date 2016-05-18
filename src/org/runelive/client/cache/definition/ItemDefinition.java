@@ -188,6 +188,9 @@ public final class ItemDefinition {
 			itemDef.actions[4] = "Drop";
 	break;	
 
+	case 6666:
+		System.out.println(""+itemDef.maleWearId);
+		break;
 	case 21090:
 			itemDef.modelID = 66998;
 			itemDef.name = "Off-hand Drygore Longsword";
@@ -291,6 +294,16 @@ public final class ItemDefinition {
 			40
 		};
 		break;
+	case 21105:
+		itemDef.setDefaults();
+		itemDef.immitate(get(6666));
+		itemDef.originalModelColors = new int[] {
+			22418
+		};
+		itemDef.modifiedModelColors = new int[] {
+			11175, 11171
+		}; 
+		break;
 	case 21104:
 		itemDef.setDefaults();
 		itemDef.name = "Bloodbone spirit shield";
@@ -306,6 +319,7 @@ public final class ItemDefinition {
 		itemDef.actions[1] = "Wear";
 		itemDef.actions[4] = "Drop";
 		break;
+		
 	case 21103:
 		itemDef.setDefaults();
 		itemDef.modelID = 70011;
