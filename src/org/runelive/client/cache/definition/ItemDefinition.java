@@ -1881,7 +1881,20 @@ public final class ItemDefinition {
 			itemDef.modelOffsetY = -1;
 			itemDef.groundActions[2] = "Take";
 			itemDef.modelID = 61741;
-			itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
+			itemDef.actions = new String[]{null, null, null, null, null, "Drop"};
+			break;
+		case 14208:
+			itemDef.setDefaults();
+			itemDef.modelID = 2429;
+			itemDef.name = "Potion flask";
+			itemDef.actions = new String[]{null, null, null, null, null, null};
+			itemDef.modelZoom = 760;
+			itemDef.modelRotation2 = 28;
+			itemDef.modelRotation1 = 552;
+			itemDef.modelOffsetX = itemDef.modelOffset1 = 0;
+			itemDef.stackable = true;
+			itemDef.certID = 14207;
+			itemDef.certTemplateID = 799;
 			break;
 		case 14200:
 			itemDef.setDefaults();
