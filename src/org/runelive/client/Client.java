@@ -11908,23 +11908,22 @@ public class Client extends GameRenderer {
 									"b", "000000000");
 						}
 						long l = Long.valueOf(amountOrNameInput);
-
-						if (l > 2147483647) {
-							amountOrNameInput = "2147483647";
-						}
 						
-						int amount = 0;
-						amount = Integer.parseInt(amountOrNameInput);
+						long amount = 0;
+						amount = Long.parseLong(amountOrNameInput);
 						if(interfaceButtonAction == 557 && withdrawingMoneyFromPouch) {
+							if(amount > Integer.MAX_VALUE) {
+								amount = Integer.MAX_VALUE;
+							}
 							getOut().putOpcode(7);
-							getOut().putInt(amount);
+							getOut().putInt((int) amount);
 							inputDialogState = 0;
 							inputTaken = true;
 							withdrawingMoneyFromPouch = false;
 							return;
 						}
 						getOut().putOpcode(208);
-						getOut().putInt(amount);
+						getOut().putLong(amount);
 					}
 
 					inputDialogState = 0;
@@ -13106,6 +13105,7 @@ public class Client extends GameRenderer {
 
 			case 208:				
 				int i3 = getInputBuffer().getUnsignedShort();
+				System.out.println(""+i3);
 				if(i3 == 65535)
 					i3 = -1;
 				if (i3 >= 0)
