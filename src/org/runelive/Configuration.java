@@ -9,8 +9,8 @@ import org.runelive.client.updates.ClientUpdate;
 public class Configuration {
 
 	/** CONNECTION **/
-	public final static boolean LOCAL = true;
-	public final static String SERVER_HOST = LOCAL ? "127.0.0.1" : "192.169.82.170"; // 158.69.125.71
+	public final static boolean LOCAL = false;
+	public final static String SERVER_HOST = LOCAL ? "127.0.0.1" : "localhost"; // 158.69.125.71
 	public final static int SERVER_PORT = 59018;
 
 	/** LINKS FOR NAVBAR **/

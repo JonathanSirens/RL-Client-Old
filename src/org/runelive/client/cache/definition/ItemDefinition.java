@@ -191,6 +191,7 @@ public final class ItemDefinition {
 	case 6666:
 		System.out.println(""+itemDef.maleWearId);
 		break;
+
 	case 21090:
 			itemDef.modelID = 66998;
 			itemDef.name = "Off-hand Drygore Longsword";
@@ -302,6 +303,17 @@ public final class ItemDefinition {
 		};
 		itemDef.modifiedModelColors = new int[] {
 			11175, 11171
+		}; 
+		break;
+	case 21106:
+		itemDef.setDefaults();
+		itemDef.immitate(get(1450));
+		itemDef.name = "Astral talisman";
+		itemDef.originalModelColors = new int[] {
+			54503
+		};
+		itemDef.modifiedModelColors = new int[] {
+			926
 		}; 
 		break;
 	case 21104:

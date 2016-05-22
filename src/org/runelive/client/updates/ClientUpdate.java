@@ -12,7 +12,7 @@ public class ClientUpdate {
 	private static final int BUFFER = 1024;
 
 	public static final String infoBuffer = "https://dl.dropboxusercontent.com/u/344464529/RuneLive/update.txt";
-	public static String clientVersion = "2.44";
+	public static String clientVersion = "2.45";
 	public static String newVersion;
 	public static String clientLink;
 	public static String pathJarFile;

@@ -10935,8 +10935,8 @@ public class Client extends GameRenderer {
 		}
 
 		ObjectDefinition.mruNodes1.unlinkAll();
-
-		if (super.mainFrame != null && loggedIn) {
+		
+		if (loggedIn) {
 			getOut().putOpcode(210);
 			getOut().putInt(0x3f008edd);
 		}
