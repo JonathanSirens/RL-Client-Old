@@ -1529,7 +1529,31 @@ public class RSInterface {
 		tab.hoverType = -1;// Int 230
 		return tab;
 	}
-
+	/* 3204:     */   public static void addClickableText(int id, String text, String tooltip, TextDrawingArea[] tda, int idx, int color, boolean center, boolean shadow, int width)
+	/* 3205:     */   {
+	/* 3206:3144 */     RSInterface tab = addTabInterface(id);
+	/* 3207:3145 */     tab.parentID = id;
+	/* 3208:3146 */     tab.id = id;
+	/* 3209:3147 */     tab.type = 4;
+	/* 3210:3148 */     tab.atActionType = 1;
+	/* 3211:3149 */     tab.width = width;
+	/* 3212:3150 */     tab.height = 11;
+	/* 3213:3151 */     tab.contentType = 0;
+	/* 3214:3152 */     tab.opacity = 0;
+	/* 3215:3153 */     tab.hoverType = -1;
+	/* 3216:3154 */     tab.centerText = center;
+	/* 3217:3155 */     tab.textShadow = shadow;
+	/* 3218:3156 */     tab.textDrawingAreas = tda[idx];
+	/* 3219:3157 */     tab.message = text;
+	/* 3220:3158 */     tab.aString228 = "";
+						tab.textColor = color;
+	/* 3221:3159 */     tab.anInt219 = 0;
+	
+	/* 3223:3161 */     tab.anInt216 = 16777215;
+	
+	/* 3224:3162 */     tab.anInt239 = 0;
+	/* 3225:3163 */     tab.tooltip = tooltip;
+	/* 3226:     */   }
 	public static void addClickableText(int id, String text, String tooltip, TextDrawingArea tda[], int idx, int color, int width, int height)
 	{
 		RSInterface Tab = addTabInterface(id);

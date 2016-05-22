@@ -75,6 +75,7 @@ public class CustomInterfaces extends RSInterface {
 		settingsInterface2();
 		//optionsInterface();
 		mainGe();
+		duelArena();
 		buyGe();
 		collectBuyGe();
 		sellGe();
@@ -3044,7 +3045,26 @@ public class CustomInterfaces extends RSInterface {
 		tab.child(28, 25841, 135, 208);
 		tab.child(29, 950, 140, 213);
 	}
-
+	
+	/* 7612:     */   private static void duelArena()
+	/* 7613:     */   {
+	/* 7614:7458 */     addClickableText(41400, "Restore previous duel settings", "Select", fonts, 0, 16750623, true, true, 155);
+	/* 7615:     */     
+	/* 7616:7460 */     RSInterface duel = interfaceCache[6575];
+	/* 7617:7461 */     int[] tempChildIds = new int[duel.children.length + 1];
+	/* 7618:7462 */     int[] tempChildX = new int[duel.childX.length + 1];
+	/* 7619:7463 */     int[] tempChildY = new int[duel.childY.length + 1];
+	/* 7620:7464 */     System.arraycopy(duel.children, 0, tempChildIds, 0, duel.children.length);
+	/* 7621:7465 */     System.arraycopy(duel.childX, 0, tempChildX, 0, duel.childX.length);
+	/* 7622:7466 */     System.arraycopy(duel.childY, 0, tempChildY, 0, duel.childY.length);
+	/* 7623:     */     
+	/* 7624:7468 */     duel.children = tempChildIds;
+	/* 7625:7469 */     duel.childX = tempChildX;
+	/* 7626:7470 */     duel.childY = tempChildY;
+	/* 7627:     */     
+	/* 7628:7472 */     setBounds(41400, 184, 31, duel.childX.length - 1, duel);
+	/* 7629:     */   }
+	
 	private void settingsInterface() {
 		RSInterface tab = addTabInterface(24000);
 		addSprite(24001, 571, 571, -1, -1);
