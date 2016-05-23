@@ -1554,26 +1554,31 @@ public class RSInterface {
 	/* 3224:3162 */     tab.anInt239 = 0;
 	/* 3225:3163 */     tab.tooltip = tooltip;
 	/* 3226:     */   }
-	public static void addClickableText(int id, String text, String tooltip, TextDrawingArea tda[], int idx, int color, int width, int height)
-	{
-		RSInterface Tab = addTabInterface(id);
-		Tab.parentID = id;
-		Tab.id = id;
-		Tab.type = 4;
-		Tab.atActionType = 1;
-		Tab.width = width;
-		Tab.height = height;
-		Tab.contentType = 0;
-		Tab.hoverType = 0;
-		// Tab.mOverInterToTrigger = -1;
-		Tab.centerText = false;
-		// Tab.enabledText = true;
-		Tab.textDrawingAreas = tda[idx];
-		Tab.message = text;
-		Tab.tooltip = tooltip;
-		//Tab.aString228 = "";
-		Tab.textColor = color;
-	}
+	
+	
+	/*  982:     */   public static void addClickableText(int id, String text, String tooltip, TextDrawingArea[] tda, int idx, int color, int width, int height)
+	/*  983:     */   {
+	/*  984: 942 */     RSInterface Tab = addTabInterface(id);
+	/*  985: 943 */     Tab.parentID = id;
+	/*  986: 944 */     Tab.id = id;
+	/*  987: 945 */     Tab.type = 4;
+	/*  988: 946 */     Tab.atActionType = 1;
+	/*  989: 947 */     Tab.width = width;
+	/*  990: 948 */     Tab.height = height;
+	/*  991: 949 */     Tab.contentType = 0;
+	/*  992: 950 */     Tab.opacity = 0;
+	/*  993: 951 */     Tab.hoverType = -1;
+	/*  994: 952 */     Tab.centerText = false;
+	/*  995: 953 */     Tab.textShadow = true;
+	/*  996: 954 */     Tab.textDrawingAreas = tda[idx];
+	/*  997: 955 */     Tab.message = text;
+	/*  998: 956 */     Tab.tooltip = tooltip;
+	/*  999: 957 */     Tab.aString228 = "";
+	/* 1000: 958 */     Tab.textColor = color;
+	/* 1001: 959 */     Tab.anInt219 = 0;
+	/* 1002: 960 */     Tab.anInt216 = 16777215;
+	/* 1003: 961 */     Tab.anInt239 = 0;
+	/* 1004:     */   }
 	
 	public static void addSkillButton(int id, String skillGuide) {
 		RSInterface button = addTabInterface(id);
@@ -3019,17 +3024,17 @@ public class RSInterface {
 	
 	public static void addRectangleClickable(int id, int opacity, int color, boolean filled, int width, int height) {
 		RSInterface tab = interfaceCache[id]  = new RSInterface();
-		tab.anInt219 = color;
-		tab.filled = filled;
-		tab.id = id;
-		tab.parentID = id;
-		tab.type = 3;
-		tab.atActionType = 5;
-		tab.contentType = 0;
-		tab.opacity = ((byte)opacity);
-		tab.width = width;
-		tab.height = height;
-		tab.tooltip = "Select";
+		/* 6525:6377 */     tab.textColor = color;
+		/* 6526:6378 */     tab.filled = filled;
+		/* 6527:6379 */     tab.id = id;
+		/* 6528:6380 */     tab.parentID = id;
+		/* 6529:6381 */     tab.type = 3;
+		/* 6530:6382 */     tab.atActionType = 5;
+		/* 6531:6383 */     tab.contentType = 0;
+		/* 6532:6384 */     tab.opacity = ((byte)opacity);
+		/* 6533:6385 */     tab.width = width;
+		/* 6534:6386 */     tab.height = height;
+		/* 6535:6387 */     tab.tooltip = "Select";
 	}
 
 	private Model getMediaModel(int i, int j) {

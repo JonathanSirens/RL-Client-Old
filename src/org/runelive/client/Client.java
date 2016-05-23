@@ -391,6 +391,7 @@ public class Client extends GameRenderer {
 		updateSetting(26033, Configuration.NOTIFICATIONS_ENABLED);
 		updateSetting(26054, !Configuration.HIGH_DETAIL);
 		updateSetting(26058, Configuration.HIGH_DETAIL);
+		updateSetting(26035, Configuration.FOG_ENABLED);
 	}
 	
 	/**
@@ -5172,6 +5173,12 @@ public class Client extends GameRenderer {
 						savePlayerData();
 						updateSetting(interfaceId, GameFrameConstants.gameframeType == GameFrameType.FRAME_525);
 						break;
+					case 26035:
+						Configuration.FOG_ENABLED = !Configuration.FOG_ENABLED;
+						pushMessage("HD Fog toggled.", 0, "");
+						savePlayerData();
+						updateSetting(interfaceId, !Configuration.FOG_ENABLED);
+						break;
 					case 26014:
 						Configuration.NEW_HITMARKS = !Configuration.NEW_HITMARKS;
 						pushMessage("New hitmarks turned " + (Configuration.NEW_HITMARKS ? "on" : "off") + ".", 0, "");
@@ -6636,6 +6643,7 @@ public class Client extends GameRenderer {
 						}
 						opacity = childInterface.opacity;
 					}
+					
 					if (opacity != 256) {
 						if (opacity == 0) {
 							if (childInterface.filled) {
@@ -16159,8 +16167,7 @@ public class Client extends GameRenderer {
 			}
 
 			setLoadingText(95, "Unpacking interfaces");
-			TextDrawingArea[] fonts = { smallText,
-					normalText, boldText, fancyText};
+			TextDrawingArea[] fonts = { smallText, normalText, boldText, fancyText};
 
 			try {
 				RSInterface.unpack(interfaceArchive, fonts, mediaArchive);

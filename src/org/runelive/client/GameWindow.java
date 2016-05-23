@@ -207,11 +207,13 @@ final class GameWindow extends JFrame {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            int x = (panel.getWidth() / 2 - (765 / 2));
-            int tab = (e.getX() - x) / 109;
-            if (tab > -1 && tab < Configuration.NAV_LINKS.length) {
-                Client.launchURL(Configuration.NAV_LINKS[tab]);
-            }
+        	if(SwingUtilities.isLeftMouseButton(e)) {
+	            int x = (panel.getWidth() / 2 - (765 / 2));
+	            int tab = (e.getX() - x) / 109;
+	            if (tab > -1 && tab < Configuration.NAV_LINKS.length) {
+	                Client.launchURL(Configuration.NAV_LINKS[tab]);
+	            }
+        	}
         }
     }
 

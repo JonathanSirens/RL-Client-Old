@@ -25,6 +25,7 @@ public class CustomInterfaces extends RSInterface {
 		capeColor(tda);
 		dungeonInfo();
 		formParty();
+		addToShop();
 		dungParty();
 		expRewardInterface();
 		slayerBuyInterface();
@@ -69,6 +70,7 @@ public class CustomInterfaces extends RSInterface {
 		//settingsInterface();
 		wildernessInterface();
 		sidebarInterfaces();
+		addToTrade();
 		ancientMagicTab(tda);
 		//box();
 		pouchCreation();
@@ -138,7 +140,7 @@ public class CustomInterfaces extends RSInterface {
 		setBounds(j++, BASEX + 220, BASEY + 168, j1++, rsi);
 		setBounds(j++, BASEX + 25, BASEY + 164 + 24, j1++, rsi);
 		RSInterface inner = addInterface(j - 1);
-		inner.scrollMax = 2500;
+		inner.scrollMax = 2450;
 		inner.height = 81;
 		inner.width = 373;
 		y = 0;
@@ -3781,6 +3783,7 @@ public class CustomInterfaces extends RSInterface {
 		addText(26030, "Use X10 Damage", 0xe4a146, false, true, 52, 0);
 		addText(26032, "554 Gameframe", 0xe4a146, false, true, 52, 0);
 		addText(26034, "PM Notifications", 0xe4a146, false, true, 52, 0);
+		addText(26036, "HD Fog", 0xe4a146, false, true, 52, 0);
 		addButton(26007, 4, -1, 484, 485, 15, 15, "Toggle function keys", 650, 1);
 		addButton(26008, 4, -1, 484, 485, 15, 15, "Toggle health bars", 651, 1);
 		addButton(26010, 4, -1, 484, 485, 15, 15, "Toggle cursors", 652, 1);
@@ -3790,6 +3793,7 @@ public class CustomInterfaces extends RSInterface {
 		addButton(26029, 4, -1, 484, 485, 15, 15, "Toggle constitution", 657, 1);
 		addButton(26031, 4, -1, 484, 485, 15, 15, "Toggle gameframe", 658, 1);
 		addButton(26033, 4, -1, 484, 485, 15, 15, "Toggle pm notifications", 659, 1);
+		addButton(26035, 4, -1, 484, 485, 15, 15, "Toggle fog", 660, 1);
 
 		addCheckmarkHover(26054, 4, 26055, 576, 577, 57, 35, SETTING_CONFIGS[15], 1, "Low Detail", 26056, 577, 577, 26057, "", "", 12, 20);
 		addCheckmarkHover(26058, 4, 26059, 578, 579, 57, 35, SETTING_CONFIGS[16], 1, "High Detail", 26060, 579, 579, 26061, "", "", 12, 20);
@@ -3818,7 +3822,7 @@ public class CustomInterfaces extends RSInterface {
 		addHoverButton(26022, 490, 54, 46, "Fullscreen Mode", -1, 26023, 1);
 		addHoveredButton(26023, 491, 54, 46, 26024);
 
-		setChildren(59, rsinterface);
+		setChildren(62, rsinterface);
 		int i = 0;
 		// background
 		setBounds(26001, x + 0, y + 0, i, rsinterface);
@@ -3852,10 +3856,15 @@ public class CustomInterfaces extends RSInterface {
 		i++;
 		setBounds(26032, x + 336, y + 108, i, rsinterface);
 		i++;
+		setBounds(26036, x + 336, y + 131, i, rsinterface);
+		i++;
 		setBounds(26034, x + 175, y + 177, i, rsinterface);
 		i++;
 		// gameframe button
 		setBounds(26031, x + 426, y + 106, i, rsinterface);
+		i++;
+		// gameframe button
+		setBounds(26035, x + 426, y + 129, i, rsinterface);
 		i++;
 		// toggle pm notifications
 		setBounds(26033, x + 315, y + 175, i, rsinterface);
@@ -3897,6 +3906,8 @@ public class CustomInterfaces extends RSInterface {
 		i++;
 		//last horizontal line
 		setBounds(26005, x + 280, y + 124, i, rsinterface);
+		i++;
+		setBounds(26005, x + 280, y + 147, i, rsinterface);
 		i++;
 		// first row vertical line
 		setBounds(26011, x + 151, y + 104, i, rsinterface);
@@ -4576,4 +4587,45 @@ public class CustomInterfaces extends RSInterface {
 		setBounds(17231, 0, 237, frame++, tab);
 		setBounds(17232, 0, 237, frame++, tab);
 	}
+	
+	/* 7631:     */   private static void addToShop()
+	/* 7632:     */   {
+	/* 7633:7478 */     addClickableText(41900, "Back to Search Selection", "Select", fonts, 0, 16750623, true, true, 155);
+	/* 7634:     */     
+	/* 7635:7480 */     RSInterface trade = interfaceCache[3824];
+	/* 7636:7481 */     int[] tempChildIds = new int[trade.children.length + 1];
+	/* 7637:7482 */     int[] tempChildX = new int[trade.childX.length + 1];
+	/* 7638:7483 */     int[] tempChildY = new int[trade.childY.length + 1];
+	/* 7639:7484 */     System.arraycopy(trade.children, 0, tempChildIds, 0, trade.children.length);
+	/* 7640:7485 */     System.arraycopy(trade.childX, 0, tempChildX, 0, trade.childX.length);
+	/* 7641:7486 */     System.arraycopy(trade.childY, 0, tempChildY, 0, trade.childY.length);
+	/* 7642:     */     
+	/* 7643:7488 */     trade.children = tempChildIds;
+	/* 7644:7489 */     trade.childX = tempChildX;
+	/* 7645:7490 */     trade.childY = tempChildY;
+	/* 7646:     */     
+	/* 7647:7492 */     setBounds(41900, 22, 31, trade.childX.length - 1, trade);
+	/* 7648:     */   }
+	
+	/* 7631:     */   private static void addToTrade()
+	/* 7632:     */   {
+						addHoverButtonWSpriteLoader(45384, 724, 35, 25, "Add carried items to trade", -1, 45385, 1);
+						addHoveredImageWSpriteLoader(45385, 725, 35, 25, 45386);
+						
+	/* 7635:7480 */     RSInterface trade = interfaceCache[3323];
+	/* 7636:7481 */     int[] tempChildIds = new int[trade.children.length + 1];
+	/* 7637:7482 */     int[] tempChildX = new int[trade.childX.length + 1];
+	/* 7638:7483 */     int[] tempChildY = new int[trade.childY.length + 1];
+	/* 7639:7484 */     System.arraycopy(trade.children, 0, tempChildIds, 0, trade.children.length);
+	/* 7640:7485 */     System.arraycopy(trade.childX, 0, tempChildX, 0, trade.childX.length);
+	/* 7641:7486 */     System.arraycopy(trade.childY, 0, tempChildY, 0, trade.childY.length);
+	/* 7642:     */     
+	/* 7643:7488 */     trade.children = tempChildIds;
+	/* 7644:7489 */     trade.childX = tempChildX;
+	/* 7645:7490 */     trade.childY = tempChildY;
+	/* 7646:     */    // System.out.println(""+trade.children.length);
+	/* 7647:7492 */     setBounds(45384, 206, 66, trade.childX.length - 2, trade);
+						setBounds(45385, 206, 66, trade.childX.length - 1, trade);
+	/* 7648:     */   }
+	
 }
