@@ -2660,6 +2660,7 @@ public class RSInterface {
 		try {
 			customInterfaces = new CustomInterfaces(textDrawingAreas);
 			customInterfaces.loadCustoms();
+			interfaceCache[3983].textDrawingAreas = fonts[1];
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

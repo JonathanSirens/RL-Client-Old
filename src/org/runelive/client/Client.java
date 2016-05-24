@@ -6828,6 +6828,7 @@ public class Client extends GameRenderer {
 							}
 							newRegularFont.drawBasicString("<img="+imageDraw+">", childX, drawImageY, true);
 						}
+						//s1 = String.valueOf (childInterface.id);
 						if (childInterface.centerText) {
 							textDrawingArea.drawCenteredText(i4, childX + childInterface.width / 2 + xOffset, s1, l6, childInterface.textShadow);
 						} else {
