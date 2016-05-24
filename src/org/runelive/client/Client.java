@@ -441,7 +441,9 @@ public class Client extends GameRenderer {
 					stringSave = stringSave + quickCurses[i];
 				}
 				stream.writeUTF(stringSave);
-				
+
+				stream.writeBoolean(Configuration.FOG_ENABLED);
+
 				stream.close();
 			}
 		} catch (IOException e) {
@@ -500,9 +502,12 @@ public class Client extends GameRenderer {
 			for (int i = 0; i < q.length(); i++)
 				quickPrayers[i] = Integer.parseInt(q.substring(i, i+1));
 			q = stream.readUTF();
-			for (int i = 0; i < q.length(); i++)
-				quickCurses[i] = Integer.parseInt(q.substring(i, i+1));
-			
+			for (int i = 0; i < q.length(); i++) {
+				quickCurses[i] = Integer.parseInt(q.substring(i, i + 1));
+			}
+			if (stream.available() >= 1) {
+				Configuration.FOG_ENABLED = stream.readBoolean();
+			}
 		} catch (IOException e) {
 			file.delete();
 			Configuration.SAVE_ACCOUNTS = true;
