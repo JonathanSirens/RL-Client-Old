@@ -1167,6 +1167,51 @@ public final class ItemDefinition {
 			itemDef.actions[1] = "Wear";
 			itemDef.actions[4] = "Drop";
 		break;
+		case 21107:
+			itemDef.setDefaults();
+			itemDef.name = "Serpentine helm";
+			itemDef.modelZoom = 700;
+			itemDef.modelRotation1 = 215;
+			itemDef.modelRotation2 = 1724;
+			itemDef.modelOffsetY = -17;
+			itemDef.groundActions = new String[] { null, null, "Take", null, null };
+			itemDef.actions = new String[] { null, "Wear", "Check", null, "Uncharge" };
+			itemDef.modelID = 19220;
+			itemDef.maleWearId = 14395;
+			itemDef.femaleWearId = 14398;
+			break;
+        case 21108:
+        	itemDef.setDefaults();
+		     itemDef.name = "Trident of the seas";
+		     itemDef.description = "A weapon from the deep.".getBytes();
+		     itemDef.maleWearId = 28230;
+		     itemDef.femaleWearId = 28230;
+		     itemDef.modelID = 28232;
+		     itemDef.modelRotation1 = 420;
+		     itemDef.modelRotation2 = 1130;
+		     itemDef.modelZoom = 2755;
+		     itemDef.modelOffset1 = 0;
+		     itemDef.modelOffsetY = 0;
+		     itemDef.actions = new String[5];
+		     itemDef.actions[1] = "Wield";
+		     itemDef.actions[3] = "Check";	
+	     break;
+        case 21109:
+        	itemDef.setDefaults();
+		     itemDef.name = "Partyhat & specs";
+		     itemDef.description = "A very special partyhat.".getBytes();
+		     itemDef.maleWearId = 28505;
+		     itemDef.femaleWearId = 28576;
+		     itemDef.modelID = 28693;
+		     itemDef.modelRotation1 = 242;
+		     itemDef.modelRotation2 = 0;
+		     itemDef.modelZoom = 653;
+		     itemDef.modelOffset1 = 0;
+		     itemDef.modelOffsetY = -1;
+		     itemDef.actions = new String[5];
+		     itemDef.actions[1] = "Wield";
+		     itemDef.actions[3] = "Check";	
+	     break;
 		case 21056:
 			itemDef.setDefaults();
 			itemDef.name = "Magic master cape";

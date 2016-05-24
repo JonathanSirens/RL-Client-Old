@@ -89,50 +89,28 @@ public class CustomInterfaces extends RSInterface {
 	public static void posSearch() {
 		RSInterface rsi = addInterface(41409);
 		constructRegularInterface(41410, "Player Owner Shops");
-		setChildren(53, rsi);
+		setChildren(11, rsi);
 		int BASEX = 22;
-		int BASEY = 37;
-		addText(41419, "Featured Shops", fonts, 2, 16750623, true, true);
-		addRectangle(41420, 0, 16777215, false, 391, 65);
+		int BASEY = 37 - 110;
 		setBounds(41410, 0, 0, 0, rsi);
-		setBounds(41419, BASEX + 196 + 23, BASEY + 7, 1, rsi);
-		setBounds(41420, BASEX + 23, BASEY + 27, 2, rsi);
 		int j = 41421;
-		int j1 = 3;
+		int j1 = 1;
 		int x = BASEX + 27 - 4;
 		int y = BASEY - 2;
-		for (int i = 0; i < 10; i++) {
-			addRectangleClickable(j, 0, 16777215, false, 79, 33);
-			setBounds(j++, x, y + 29, j1++, rsi);
-			addText(j, "Shop Owner", fonts, 1, 16750623, true);
-			setBounds(j++, x + 35 + 4, y + 28 + 2, j1++, rsi);
-			addText(j, "Lasts:", fonts, 0, 16750623, false);
-			setBounds(j++, x + 3, y + 28 + 18 + 2, j1++, rsi);
-			addRectangle(j, 255, 16777215, true, 77, 31);
-			interfaceCache[j].hovers = true;
-			interfaceCache[j].enabledOpacity = (byte) 150;
-			interfaceCache[j].hoverType = j;
-			interfaceCache[j].anInt219 = 16777215;
-			setBounds(j++, x + 1, y + 30, j1++, rsi);
-			x += 78;
-			if (i == 4) {
-				y += 32;
-				x = BASEX + 27 - 4;
-			}
-		}
+
 		addText(j, "Search Shops", fonts, 2, 16750623, true, true);
 		setBounds(j++, BASEX + 196 + 23, BASEY + 123, j1++, rsi);
 		addClickableText(j, "Search by Name", "Search by name", fonts, 1, 16750623, fonts[1].getTextWidth("search by Name"), 25);
 		setBounds(j++, BASEX + 110, BASEY + 143, j1++, rsi);
 		addClickableText(j, "Search by Item", "Search by item", fonts, 1, 16750623, fonts[1].getTextWidth("search by Item"), 25);
 		setBounds(j++, BASEX + 240, BASEY + 143, j1++, rsi);
-		addRectangle(j, 0, 16777215, false, 392, 107);
+		addRectangle(j, 0, 16777215, false, 392, 197);
 		setBounds(j++, BASEX + 23, BASEY + 163, j1++, rsi);
-		addRectangle(j, 0, 4603186, true, 390, 105);
+		addRectangle(j, 0, 4603186, true, 390, 195);
 		setBounds(j++, BASEX + 24, BASEY + 164, j1++, rsi);
 		addRectangle(j, 0, 16777215, false, 392, 25);
 		setBounds(j++, BASEX + 23, BASEY + 163, j1++, rsi);
-		addRectangle(j, 0, 16777215, false, 100, 107);
+		addRectangle(j, 0, 16777215, false, 100, 197);
 		setBounds(j++, BASEX + 23, BASEY + 163, j1++, rsi); 
 		addText(j, "Store Owner", fonts, 2, 16750623);
 		setBounds(j++, BASEX + 31, BASEY + 168, j1++, rsi);
@@ -141,7 +119,7 @@ public class CustomInterfaces extends RSInterface {
 		setBounds(j++, BASEX + 25, BASEY + 164 + 24, j1++, rsi);
 		RSInterface inner = addInterface(j - 1);
 		inner.scrollMax = 2450;
-		inner.height = 81;
+		inner.height = 171;
 		inner.width = 373;
 		y = 0;
 		j1 = 0;
@@ -149,9 +127,9 @@ public class CustomInterfaces extends RSInterface {
 		for (int i = 0; i < 100; i++) {
 			addRectangle(j, 0, 16777215, false, 393, 25);
 			setBounds(j++, -2, y, j1++, inner);
-			addText(j, "store owner", fonts, 1, 16750623);
+			addText(j, "", fonts, 1, 16750623);
 			setBounds(j++, 2, y + 5, j1++, inner);
-			addText(j, "store caption", fonts, 1, 16750623);
+			addText(j, "", fonts, 1, 16750623);
 			setBounds(j++, 102, y + 5, j1++, inner);
 			addRectangleClickable(j, 255, 16777215, false, 392, 24);
 			interfaceCache[j].hovers = true;

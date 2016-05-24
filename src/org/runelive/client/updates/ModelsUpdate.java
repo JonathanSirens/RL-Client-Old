@@ -17,7 +17,7 @@ public class ModelsUpdate {
 	public static final File models_update_file = new File(System.getProperty("user.home") + "/ikov_cache2/versions/models_version");
 	public static final File cache_directory = new File(System.getProperty("user.home") + "/ikov_cache2/");
 
-	public static final int model_version = 23;
+	public static final int model_version = 24;
 	
 	public static boolean checkVersion() {
 		try {
