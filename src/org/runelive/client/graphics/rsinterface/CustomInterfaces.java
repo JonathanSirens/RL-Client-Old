@@ -117,7 +117,7 @@ public class CustomInterfaces extends RSInterface {
 		setBounds(j++, BASEX + 220, BASEY + 168, j1++, rsi);
 		setBounds(j++, BASEX + 25, BASEY + 164 + 24, j1++, rsi);
 		RSInterface inner = addInterface(j - 1);
-		inner.scrollMax = 2450;
+		inner.scrollMax = 2400;
 		inner.height = 171;
 		inner.width = 373;
 		y = 0;
@@ -1588,7 +1588,7 @@ public class CustomInterfaces extends RSInterface {
 	private void friendsTabInterface() {
 		RSInterface tab = addTabInterface(5065);
 		RSInterface list = interfaceCache[5066];
-		addText(5067, "Friends List", tda, 1, 0xff9933, true, true);
+		addText(5067, "Friends List (0/200)", tda, 1, 0xff9933, true, true);
 		addText(5070, "Add Friend", tda, 0, 0xff9933, false, true);
 		addText(5071, "Delete Friend", tda, 0, 0xff9933, false, true);
 		addSpriteLoader(16126, 692);
@@ -1612,8 +1612,9 @@ public class CustomInterfaces extends RSInterface {
 		list.height = 196;
 		list.width = 174;
 		int id = 5092;
+
+		
 		for (int i = 0; id <= 5191 && i <= 99; i++) {
-			list.children[i] = id;
 			list.childX[i] = 3;
 			list.childY[i] = list.childY[i] - 7;
 			id++;
@@ -1621,11 +1622,50 @@ public class CustomInterfaces extends RSInterface {
 
 		id = 5192;
 		for (int i = 100; id <= 5291 && i <= 199; i++) {
-			list.children[i] = id;
 			list.childX[i] = 131;
 			list.childY[i] = list.childY[i] - 7;
 			id++;
 		}
+		id = 5292;
+		for (int i = 200; id <= 5391 && i <= 299; i++) {
+			list.childX[i] = 3;
+			list.childY[i] = list.childY[i] - 7;
+			id++;
+		}
+
+		id = 5392;
+		for (int i = 300; id <= 5491 && i <= 399; i++) {
+			list.childX[i] = 131;
+			list.childY[i] = list.childY[i] - 7;
+			id++;
+		}
+		/*
+		int nameY = 2986;
+		id = 5492;
+		for (int i = 400; id <= 5591 && i <= 499; i++) {
+			addText(id, "", 0xffffff, false, true, -1, 1);
+			interfaceCache[id].contentType = i + 4001;
+			interfaceCache[id].atActionType = 1;
+			//interfaceCache[id].type = 0;
+			nameY += 15;
+			list.insertNewChild(list, id, 3, nameY);
+			id++;
+		}
+		
+		int statusY = 2986;
+		id = 5592;
+		for (int i = 500; id <= 5691 && i <= 599; i++) {
+			addText(id, "Offline", 0xff0000, false, true, -1, 1);
+			statusY += 15;
+			list.insertNewChild(list, id, 131, statusY);
+			id++;
+		}
+		
+		//list.setChildren(800, list);
+		//list.childX[400] = 3;
+		//list.childY[400] = list.childY[i] - 7;
+		 * 
+		 */
 	}
 
 	private void ignoreTabInterface() {
@@ -2793,7 +2833,7 @@ public class CustomInterfaces extends RSInterface {
 		RSInterface agil = interfaceCache[4277];
 		RSInterface thie = interfaceCache[4261];
 		RSInterface slay = interfaceCache[12122];
-		RSInterface farm = addTabInterface(5267);
+		RSInterface farm = addTabInterface(9318);
 		RSInterface rune = interfaceCache[4267];
 		RSInterface cons = interfaceCache[7267];
 		RSInterface hunt = addTabInterface(8267);

@@ -1212,6 +1212,13 @@ public final class ItemDefinition {
 		     itemDef.actions[1] = "Wield";
 		     itemDef.actions[3] = "Check";	
 	     break;
+        case 21110:
+        	itemDef.setDefaults();
+        	itemDef.immitate(get(2572));
+        	itemDef.name = "Ring of wealth (i)";
+    		itemDef.anInt184 = 200;
+			itemDef.anInt196 = 40;
+        	break;
 		case 21056:
 			itemDef.setDefaults();
 			itemDef.name = "Magic master cape";
