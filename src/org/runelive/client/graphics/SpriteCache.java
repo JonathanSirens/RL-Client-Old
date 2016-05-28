@@ -1,15 +1,15 @@
 package org.runelive.client.graphics;
 
 import org.runelive.client.Client;
-import org.runelive.client.cache.ondemand.OnDemandFetcher;
+import org.runelive.client.cache.ondemand.CacheFileRequester;
 
 public class SpriteCache {
 	
 	public static Sprite[] spriteCache;
 	public static Sprite[] spriteLink;
-	private static OnDemandFetcher onDemandFetcher;
+	private static CacheFileRequester onDemandFetcher;
 	
-	public static void initialise(int total, OnDemandFetcher onDemandFetcher_) {
+	public static void initialise(int total, CacheFileRequester onDemandFetcher_) {
 		spriteCache = new Sprite[total+100];
 		spriteLink = new Sprite[total+100];
 		onDemandFetcher = onDemandFetcher_;

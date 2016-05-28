@@ -6,7 +6,7 @@ import org.runelive.client.Class33;
 import org.runelive.client.Client;
 import org.runelive.client.FrameReader;
 import org.runelive.client.SkinList;
-import org.runelive.client.cache.ondemand.OnDemandFetcher;
+import org.runelive.client.cache.ondemand.CacheFileRequester;
 import org.runelive.client.graphics.DrawingArea;
 import org.runelive.client.io.ByteBuffer;
 import org.runelive.client.renderable.Animable;
@@ -46,7 +46,7 @@ public class Model extends Animable {
 	public static int anIntArray1688[] = new int[1000];
 	private static int faceLists[][] = new int[1500][512];
 	private static int anIntArrayArray1674[][] = new int[12][2000];
-	private static OnDemandFetcher onDemandRequester;
+	private static CacheFileRequester onDemandRequester;
 	public static int SINE[];
 	public static int COSINE[];
 	private static int[] modelIntArray3;
@@ -60,7 +60,7 @@ public class Model extends Animable {
 		modelIntArray4 = Rasterizer.anIntArray1469;
 	}
 
-	public static void initialize(int count, OnDemandFetcher onDemandFetcherParent) {
+	public static void initialize(int count, CacheFileRequester onDemandFetcherParent) {
 		modelHeaderCache = new ModelHeader[80000];
 		isNewModel = new boolean[100000];
 		onDemandRequester = onDemandFetcherParent;

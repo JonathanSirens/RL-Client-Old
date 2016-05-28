@@ -5,7 +5,7 @@ import org.runelive.client.Class4;
 import org.runelive.client.cache.definition.FloorUnderlay;
 import org.runelive.client.cache.definition.ObjectDefinition;
 import org.runelive.client.cache.definition.FloorOverlay;
-import org.runelive.client.cache.ondemand.OnDemandFetcher;
+import org.runelive.client.cache.ondemand.CacheFileRequester;
 import org.runelive.client.io.ByteBuffer;
 import org.runelive.client.renderable.Animable;
 import org.runelive.client.renderable.Animable_Sub5;
@@ -40,7 +40,7 @@ public final class ObjectManager {
 		return k;
 	}
 
-	public static void method173(ByteBuffer stream, OnDemandFetcher class42_sub1) {
+	public static void method173(ByteBuffer stream, CacheFileRequester class42_sub1) {
 		label0: {
 		int i = -1;
 		do {

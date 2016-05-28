@@ -8,7 +8,7 @@ import org.runelive.client.FrameReader;
 import org.runelive.client.List;
 import org.runelive.client.Signlink;
 import org.runelive.client.cache.Archive;
-import org.runelive.client.cache.ondemand.OnDemandFetcher;
+import org.runelive.client.cache.ondemand.CacheFileRequester;
 import org.runelive.client.io.ByteBuffer;
 import org.runelive.client.world.Model;
 
@@ -1586,7 +1586,7 @@ public final class ObjectDefinition {
     public static List mruNodes1 = new List(500);
     public String actions[];
 
-    public void method574(OnDemandFetcher class42_sub1) {
+    public void method574(CacheFileRequester class42_sub1) {
         if (objectModelIDs == null) {
             return;
         }

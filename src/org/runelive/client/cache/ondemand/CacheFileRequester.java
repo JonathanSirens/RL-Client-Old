@@ -19,7 +19,7 @@ import org.runelive.client.cache.node.Deque;
 import org.runelive.client.cache.node.NodeSubList;
 import org.runelive.client.io.ByteBuffer;
 
-public final class OnDemandFetcher implements Runnable {
+public final class CacheFileRequester implements Runnable {
 
 	public void dump() {
 		int exceptions = 0;
@@ -105,7 +105,7 @@ public final class OnDemandFetcher implements Runnable {
 	private byte[] modelIndices;
 	public int errorCount;
 
-	public OnDemandFetcher() {
+	public CacheFileRequester() {
 		requested = new Deque();
 		statusString = "";
 		crc32 = new CRC32();
@@ -324,8 +324,8 @@ public final class OnDemandFetcher implements Runnable {
 	 * @return: Amount of files that contains the cache at index
 	 *          {@code cacheIndex}
 	 */
-	public int getFileCount(int j) {
-		return checksums[j].length;
+	public int getFileCount(int index) {
+		return checksums[index].length;
 	}
 
 	/*public int getMapCount(int arg0, int arg1, int arg2) {

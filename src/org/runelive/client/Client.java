@@ -69,7 +69,7 @@ import org.runelive.client.cache.definition.VarBit;
 import org.runelive.client.cache.definition.Varp;
 import org.runelive.client.cache.node.Deque;
 import org.runelive.client.cache.node.Node;
-import org.runelive.client.cache.ondemand.OnDemandFetcher;
+import org.runelive.client.cache.ondemand.CacheFileRequester;
 import org.runelive.client.cache.ondemand.CacheFileRequest;
 import org.runelive.client.constants.GameFrameConstants;
 import org.runelive.client.constants.SizeConstants;
@@ -1193,7 +1193,7 @@ public class Client extends GameRenderer {
 	public int[] npcIndices;
 	private int[] objectMap;
 	private String objectMaps = "";
-	public OnDemandFetcher onDemandFetcher;
+	public CacheFileRequester onDemandFetcher;
 	String password;
 	public int pktSize;
 	public int pktType;
@@ -15909,7 +15909,7 @@ public class Client extends GameRenderer {
 			miniMapRegions = new Sprite(512, 512);
 			Archive streamLoader_6 = getArchive(5, "update list", "versionlist", expectedCRCs[5], 60);
 			setLoadingText(10, "Unpacking archives..");
-			onDemandFetcher = new OnDemandFetcher();
+			onDemandFetcher = new CacheFileRequester();
 			onDemandFetcher.start(streamLoader_6, this);
 			Model.initialize(onDemandFetcher.getFileCount(0), onDemandFetcher);
 			//SpriteCache.initialise(50000, onDemandFetcher);
