@@ -12,29 +12,10 @@ public final class CacheIndex {
 	public static final boolean READ_24BIT_FILE_HEADER = FILE_HEADER_SIZE == 9;
 	private static final int BLOCK_SIZE = 512 + FILE_HEADER_SIZE;
 
-	public CacheIndex(RandomAccessFile randomaccessfile, RandomAccessFile randomaccessfile1, int j) {
-		id = j;
-		dataFile = randomaccessfile;
-		indexFile = randomaccessfile1;
-	}
-
-	/**
-	 * Dumps the files from the cache index.
-	 */
-	public void dump() {
-		File directory = new File(Signlink.getCacheDirectory() + "index" + (id - 1));
-		if (!directory.exists()) {
-			if (!directory.mkdir()) {
-				System.out.println("Failed to create directory: " + directory.getAbsolutePath());
-				return;
-			}
-		}
-		for (int index = 0; index < getFileCount(); index++) {
-			byte[] data = get(index);
-			if (data != null && data.length > 0) {
-				FileUtilities.WriteFile(directory.getAbsolutePath() + System.getProperty("file.separator") + index + ".gz", data);
-			}
-		}
+	public CacheIndex(RandomAccessFile data, RandomAccessFile index, int id) {
+		this.id = id;
+		dataFile = data;
+		indexFile = index;
 	}
 
 	public synchronized byte[] get(int id) {

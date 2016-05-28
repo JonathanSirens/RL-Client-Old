@@ -77,12 +77,7 @@ public final class Signlink implements Runnable {
 		if(Configuration.DROPBOX_MODE) {
 			cacheLoc = "./";
 		}
-		cacheLoc += "ikov_cache2" + File.separator;
-		File cacheDir = new File(cacheLoc);
-		if(!cacheDir.exists()) {
-			cacheDir.mkdir();
-		}
-		return cacheLoc;
+		return cacheLoc += "ikov_cache2" + File.separator;
 	}
 
 	public static String getIdentifierFile() {

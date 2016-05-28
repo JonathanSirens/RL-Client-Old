@@ -426,7 +426,7 @@ public final class CacheFileRequester implements Runnable {
 			}
 			totalFiles++;
 		} catch (Exception e) {
-			// e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 

@@ -3347,6 +3347,7 @@ public class Client extends GameRenderer {
 
 		while (expectedCRCs[9] == 0) {
 			String error = "Unknown problem";
+			setLoadingText(20, "Connecting to web server");
 			////drawSmoothLoading(20, "Connecting to web server");
 
 			try {
@@ -3391,10 +3392,11 @@ public class Client extends GameRenderer {
 
 				for (int seconds = secondsToWait; seconds > 0; seconds--) {
 					if (checksumCount >= 10) {
+						setLoadingText(10, "Game updated - please reload the client");
 						//drawSmoothLoading(10, "Game updated - please reload page");
 						seconds = 10;
 					} else {
-						System.out.println(error + " - Will retry in " + seconds + " secs.");
+						setLoadingText(10, error + " - Will retry in " + seconds + " secs.");
 						//drawSmoothLoading(10, error + " - Will retry in " + seconds + " secs.");
 					}
 
@@ -5548,6 +5550,8 @@ public class Client extends GameRenderer {
 			normalText.method385(textColor, "MouseX:" + super.mouseX + "", textY, textX);
 			textY += 15;
 			normalText.method385(textColor, "MouseY:" + super.mouseY + "", textY, textX);
+			textY += 15;
+			normalText.method385(textColor, "File queue:" + onDemandFetcher.getRemaining() + "", textY, textX);
 			textY += 15;
 			normalText.method385(0xffff00, "Object Maps: " + objectMaps + ";", textY, 5);
 			textY += 15;
@@ -8316,6 +8320,7 @@ public class Client extends GameRenderer {
 
 		while (buffer == null) {
 			String error = "Unknown error";
+			setLoadingText(loadingBarValue, "Requesting " + fileName);
 			//drawSmoothLoading(loadingBarValue, "Requesting " + fileName);
 
 			try {
@@ -8348,7 +8353,7 @@ public class Client extends GameRenderer {
 					int percentage = currentLength * 100 / totalLength;
 
 					if (percentage != lastPercentage) {
-						System.out.println("Loading " + fileName + " - " + percentage + "%");
+						setLoadingText(loadingBarValue, "Loading " + fileName + " - " + percentage + "%");
 						//drawSmoothLoading(loadingBarValue, "Loading " + fileName + " - " + percentage + "%");
 					}
 
@@ -8409,6 +8414,7 @@ public class Client extends GameRenderer {
 			if (buffer == null) {
 				for (int seconds = timeToWait; seconds > 0; seconds--) {
 					if (errorCount >= 3) {
+						setLoadingText(loadingBarValue, "Game updated - please reload page");
 						//drawSmoothLoading(loadingBarValue, "Game updated - please reload page");
 						seconds = 10;
 					} else {
@@ -15874,9 +15880,10 @@ public class Client extends GameRenderer {
 			connectToFileServer();
 		}
 
+		setLoadingText(10, "Getting archives...");
+
 		try {
 			ComputerAddress.setUniqueIdentification();
-			setLoadingText(10, "Getting archives...");
 			titleStreamLoader = getArchive(1, "title screen", "title", expectedCRCs[1], 25);
 			smallText = new TextDrawingArea(false, "p11_full", titleStreamLoader);
 			normalText = new TextDrawingArea(false, "p12_full", titleStreamLoader);
@@ -16143,6 +16150,7 @@ public class Client extends GameRenderer {
 				System.out.println("Cache files in index " + index + ": " + cacheIndices[index].getFileCount());
 				//cacheIndices[index].dump();
 			}*/
+			System.gc();
 			isLoading = false;
 			updateSettingsInterface();
 			if(Configuration.NEW_CURSORS) {
