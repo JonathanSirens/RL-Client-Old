@@ -5538,6 +5538,10 @@ public class Client extends GameRenderer {
 			if (super.fps < 15) {
 				textColor = 0xff0000;
 			}
+			newRegularFont.drawRightAlignedString("Object Maps: " + objectMaps, textX + 75, textY, 0xffff00, 0);
+			textY += 15;
+			newRegularFont.drawRightAlignedString("Floor Maps: " + floorMaps, textX + 75, textY, 0xffff00, 0);
+			textY += 15;
 			normalText.method385(textColor, "Fps:" + super.fps, textY, textX);
 			textY += 15;
 			Runtime runtime = Runtime.getRuntime();
@@ -5552,10 +5556,6 @@ public class Client extends GameRenderer {
 			normalText.method385(textColor, "MouseY:" + super.mouseY + "", textY, textX);
 			textY += 15;
 			normalText.method385(textColor, "File queue:" + onDemandFetcher.getRemaining() + "", textY, textX);
-			textY += 15;
-			normalText.method385(0xffff00, "Object Maps: " + objectMaps + ";", textY, 5);
-			textY += 15;
-			normalText.method385(0xffff00, "Floor Maps: " + floorMaps + ";", textY, 5);
 		}
 
 		if (systemUpdateTimer != 0) {
@@ -7989,13 +7989,6 @@ public class Client extends GameRenderer {
 		if (gameScreenIP != null) {
 			gameScreenIP.initDrawingArea();
 		}
-		//DrawingArea.fillPixels(2, 229, 39, 0xffffff, 2); // white box around
-		//DrawingArea.drawPixels(37, 3, 3, 0, 227); // black fill
-		//normalText.drawText(0, "Connection lost.", 19, 120);
-		//normalText.drawText(0xffffff, "Connection lost.", 18, 119);
-		//normalText.drawText(0, "Please wait - attempting to reestablish.", 34, 117);
-		//normalText.drawText(0xffffff, "Please wait - attempting to reestablish.", 34, 116);
-		//CacheSpriteLoader.getCacheSprite(1106).drawSprite(7, 4);
 		drawLoadingMessages("Connection lost. Please wait - attempting to reestablish.");
 		if (!resizing && gameScreenIP != null) {
 			gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
@@ -13985,10 +13978,12 @@ public class Client extends GameRenderer {
 
 	private void drawLoadingMessages(String s) {
 		int x = 5, y = 5;
-		int width = 10 + newRegularFont.getTextWidth(s), height = 22;
+		int width = 200;//10 + newRegularFont.getTextWidth(s);
+		int height = 22;
+		//DrawingArea.drawFilledPixels(0, 0, GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 512 : getScreenWidth(), GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 334 : getScreenHeight(), 0);
 		DrawingArea.drawFilledPixels(x, y, width, height, 0xffffff);
 		DrawingArea.drawFilledPixels(x + 1, y + 1, width - 2, height - 2, 0);
-		newRegularFont.drawBasicString(s, x + 5, y + 15, 0xffffff, 0);
+		newRegularFont.drawCenteredString(s, x + 5 + width / 2, y + 15, 0xffffff, 0);
 	}
 
 	private int showClanOptions;
@@ -14388,7 +14383,7 @@ public class Client extends GameRenderer {
 		Client.getOut().putInt(23); //Client IDENTIFIER
 		Client.getOut().putString(username);
 		Client.getOut().putString(password);
-		Client.getOut().putString(ClientUpdate.clientVersion);
+		Client.getOut().putString(Configuration.CLIENT_VERSION);
 		Client.getOut().putString(ComputerAddress.getUniqueIdentification());
 		Client.getOut().putString(SystemProfiler.getMacAddress());
 		Client.getOut().putLong(SystemProfiler.getUniqueSerial());
@@ -14401,7 +14396,7 @@ public class Client extends GameRenderer {
 		client.getLoginBuffer().putByte(reconnecting ? 18 : 16); //login type
 		client.getLoginBuffer().putByte(Client.getOut().position + 1 + 1 + 2);
 		client.getLoginBuffer().putByte(255);
-		client.getLoginBuffer().putShort(Configuration.CLIENT_VERSION);
+		client.getLoginBuffer().putShort(Configuration.USELESS_VERSION);
 		client.getLoginBuffer().putByte(Client.isLowDetail() ? 1 : 0);
 		client.getLoginBuffer().putBytes(Client.getOut().buffer, Client.getOut().position, 0);
 	}
