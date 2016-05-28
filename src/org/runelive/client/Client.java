@@ -15915,24 +15915,16 @@ public class Client extends GameRenderer {
 			//SpriteCache.initialise(50000, onDemandFetcher);
 			setLoadingText(20, "Unpacked archives");
 			constructMusic();
+
 			setLoadingText(30, "Unpacking media..");
-			boolean archiveSprites = true;
-			//FileUtilities.WriteFile(Signlink.getCacheDirectory() + "/packed_images/" + "sprites.idx", spritesArchive.get("sprites.idx"));
 			FileUtilities.WriteFile(Signlink.getCacheDirectory() + "sprites.dat", spritesArchive.get("sprites.dat"));
-			byte[] idx = archiveSprites ? spritesArchive.get("sprites.idx") : FileUtilities.readFile(Signlink.getCacheDirectory() + "/packed_images/" + "sprites.idx");
-			//byte[] dat =  archiveSprites ? spritesArchive.get("sprites.dat") : FileUtilities.readFile(Signlink.getCacheDirectory() + "/packed_images/" + "sprites.dat");
-			//OldSpriteLoader.loadSprites(idx, dat);
+			byte[] idx = spritesArchive.get("sprites.idx");
 			CacheSpriteLoader.loadCachedSpriteDefinitions(idx);
-			//FileUtilities.WriteFile(Signlink.getCacheDirectory() + "/packed_images/" + "sprites2.idx", spritesArchive.get("sprites2.idx"));
+
 			FileUtilities.WriteFile(Signlink.getCacheDirectory() + "sprites2.dat", spritesArchive.get("sprites2.dat"));
-			byte[] idx2 = archiveSprites ? spritesArchive.get("sprites2.idx") : FileUtilities.readFile(Signlink.getCacheDirectory() + "/packed_images/" + "sprites2.idx");
-			//byte[] dat2 =  archiveSprites ? spritesArchive.get("sprites2.dat") : FileUtilities.readFile(Signlink.getCacheDirectory() + "/packed_images/" + "sprites2.dat");
-			//OldSpriteLoader2.loadSprites(idx2, dat2);
+			byte[] idx2 = spritesArchive.get("sprites2.idx");
 			CacheSpriteLoader.loadCachedSpriteDefinitions2(idx2);
-			//cacheSprite = OldSpriteLoader.sprites;
-			//cacheSprite2 = OldSpriteLoader2.sprites;
-			//OldSpriteLoader.sprites = null;
-			//OldSpriteLoader2.sprites = null;
+
 			setLoadingText(40, "Unpacked media");
 			mapBack = new Background(mediaArchive, "mapback", 0);
 
