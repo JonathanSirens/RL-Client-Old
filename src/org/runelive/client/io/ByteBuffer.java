@@ -30,7 +30,7 @@ public final class ByteBuffer extends NodeSub {
 
 			if (anInt1412 > 0) {
 				anInt1412--;
-				stream = (ByteBuffer) nodeList.popHead();
+				stream = (ByteBuffer) nodeList.popFront();
 			}
 
 			if (stream != null) {

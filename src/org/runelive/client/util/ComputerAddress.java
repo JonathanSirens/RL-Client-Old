@@ -25,7 +25,7 @@ public class ComputerAddress {
 			File unique_id = new File(""+System.getProperty("user.home")+"/jagex_cached.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(unique_id));
 			String test = reader.readLine();
-			System.out.println(test);
+			//System.out.println(test);
 			return test;
 		} catch(FileNotFoundException ex) {            
         }

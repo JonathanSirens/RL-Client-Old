@@ -1,4 +1,4 @@
-package org.runelive.client.tools;
+package org.runelive.client.util;
 
 import static java.lang.Integer.parseInt;
 

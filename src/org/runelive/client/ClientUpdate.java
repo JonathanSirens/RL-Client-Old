@@ -1,6 +1,4 @@
-package org.runelive.client.updates;
-
-import org.runelive.Configuration;
+package org.runelive.client;
 
 import java.net.*;
 import java.io.*;

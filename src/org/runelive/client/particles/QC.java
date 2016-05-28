@@ -1,6 +1,5 @@
 package org.runelive.client.particles;
 
-import org.runelive.client.graphics.SpriteLoader2;
 import org.runelive.client.graphics.Sprite;
 
 import java.util.Random;

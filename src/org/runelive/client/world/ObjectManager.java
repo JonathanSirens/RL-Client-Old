@@ -2,9 +2,9 @@ package org.runelive.client.world;
 
 import org.runelive.Configuration;
 import org.runelive.client.Class4;
-import org.runelive.client.cache.definition.Flo;
+import org.runelive.client.cache.definition.FloorUnderlay;
 import org.runelive.client.cache.definition.ObjectDefinition;
-import org.runelive.client.cache.definition.OverLayFlo317;
+import org.runelive.client.cache.definition.FloorOverlay;
 import org.runelive.client.cache.ondemand.OnDemandFetcher;
 import org.runelive.client.io.ByteBuffer;
 import org.runelive.client.renderable.Animable;
@@ -481,14 +481,14 @@ public final class ObjectManager {
 				if (k9 >= 0 && k9 < anInt146) {
 					int l12 = aByteArrayArrayArray142[l][k9][i8] & 0xff;
 					if (l12 > 0) {
-						if (l12 >= Flo.cache.length) {
-							l12 = Flo.cache.length;
+						if (l12 >= FloorUnderlay.cache.length) {
+							l12 = FloorUnderlay.cache.length;
 						}
-						Flo flo = Flo.cache[l12 - 1];
-						anIntArray124[i8] += flo.anInt397;
-						anIntArray125[i8] += flo.anInt395;
-						anIntArray126[i8] += flo.anInt396;
-						anIntArray127[i8] += flo.anInt398;
+						FloorUnderlay floorUnderlay = FloorUnderlay.cache[l12 - 1];
+						anIntArray124[i8] += floorUnderlay.anInt397;
+						anIntArray125[i8] += floorUnderlay.anInt395;
+						anIntArray126[i8] += floorUnderlay.anInt396;
+						anIntArray127[i8] += floorUnderlay.anInt398;
 						anIntArray128[i8]++;
 					}
 				}
@@ -496,13 +496,13 @@ public final class ObjectManager {
 				if (i13 >= 0 && i13 < anInt146) {
 					int i14 = aByteArrayArrayArray142[l][i13][i8] & 0xff;
 					if (i14 > 0) {
-						if(i14 >= Flo.cache.length)
-							i14 = Flo.cache.length;
-						Flo flo_1 = Flo.cache[i14 - 1];
-						anIntArray124[i8] -= flo_1.anInt397;
-						anIntArray125[i8] -= flo_1.anInt395;
-						anIntArray126[i8] -= flo_1.anInt396;
-						anIntArray127[i8] -= flo_1.anInt398;
+						if(i14 >= FloorUnderlay.cache.length)
+							i14 = FloorUnderlay.cache.length;
+						FloorUnderlay floorUnderlay_1 = FloorUnderlay.cache[i14 - 1];
+						anIntArray124[i8] -= floorUnderlay_1.anInt397;
+						anIntArray125[i8] -= floorUnderlay_1.anInt395;
+						anIntArray126[i8] -= floorUnderlay_1.anInt396;
+						anIntArray127[i8] -= floorUnderlay_1.anInt398;
 						anIntArray128[i8]--;
 					}
 				}
@@ -565,10 +565,10 @@ public final class ObjectManager {
 								if (l18 == 0 && aByteArrayArrayArray136[l][l6][k17] != 0) {
 									flag = false;
 								}
-								if (i19 > OverLayFlo317.overLayFlo317s.length) {
-									i19 = OverLayFlo317.overLayFlo317s.length - 1;
+								if (i19 > FloorOverlay.floorOverlays.length) {
+									i19 = FloorOverlay.floorOverlays.length - 1;
 								}
-								if (i19 > 0 && !OverLayFlo317.overLayFlo317s[i19 - 1].aBoolean393) {
+								if (i19 > 0 && !FloorOverlay.floorOverlays[i19 - 1].aBoolean393) {
 									flag = false;
 								}
 								if (flag && j19 == k19 && j19 == l19 && j19 == i20) {
@@ -584,10 +584,10 @@ public final class ObjectManager {
 							} else {
 								int k22 = aByteArrayArrayArray136[l][l6][k17] + 1;
 								byte byte4 = aByteArrayArrayArray148[l][l6][k17];
-								if (i19 > OverLayFlo317.overLayFlo317s.length) {
-									i19 = OverLayFlo317.overLayFlo317s.length - 1;
+								if (i19 > FloorOverlay.floorOverlays.length) {
+									i19 = FloorOverlay.floorOverlays.length - 1;
 								}
-								OverLayFlo317 flo_2 = OverLayFlo317.overLayFlo317s[i19 - 1];
+								FloorOverlay flo_2 = FloorOverlay.floorOverlays[i19 - 1];
 								int floorTexture = flo_2.textureId;
 								int j23;
 								int mapTexture;

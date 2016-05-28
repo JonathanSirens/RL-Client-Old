@@ -5,6 +5,7 @@ import org.runelive.client.cache.Archive;
 import org.runelive.client.cache.definition.ItemDefinition;
 import org.runelive.client.cache.definition.MobDefinition;
 import org.runelive.client.entity.player.Player;
+import org.runelive.client.graphics.CacheSpriteLoader;
 import org.runelive.client.graphics.Sprite;
 import org.runelive.client.graphics.fonts.TextClass;
 import org.runelive.client.graphics.fonts.TextDrawingArea;
@@ -31,10 +32,10 @@ public class RSInterface {
 
 	private static void addActionButton(int id, int sprite, int sprite2, int width, int height, String s) {
 		RSInterface rsi = interfaceCache[id] = new RSInterface();
-		rsi.sprite1 = Client.cacheSprite[sprite];
+		rsi.sprite1 = CacheSpriteLoader.getCacheSprite(sprite);
 
 		if (sprite2 != -1) {
-			rsi.sprite2 = Client.cacheSprite[sprite == sprite2 ? sprite + 1 : sprite2];
+			rsi.sprite2 = CacheSpriteLoader.getCacheSprite(sprite == sprite2 ? sprite + 1 : sprite2);
 		}
 
 		rsi.tooltip = s;
@@ -176,7 +177,7 @@ public class RSInterface {
 		Interface.contentType = 0;
 		Interface.opacity = 0;
 		Interface.hoverType = Hover;
-		Interface.sprite1 = Client.cacheSprite[927];
+		Interface.sprite1 = CacheSpriteLoader.getCacheSprite(927);
 		Interface.width = 34;
 		Interface.height = 34;
 		Interface.valueCompareType = new int[1];
@@ -195,12 +196,12 @@ public class RSInterface {
 		Interface.atActionType = 0;
 		Interface.contentType = 0;
 		Interface.opacity = 0;
-		Interface.sprite1 = Client.cacheSprite[899 + prayerSpriteID];
-		Interface.sprite2 = Client.cacheSprite[873 + prayerSpriteID];
+		Interface.sprite1 = CacheSpriteLoader.getCacheSprite(899 + prayerSpriteID);
+		Interface.sprite2 = CacheSpriteLoader.getCacheSprite(873 + prayerSpriteID);
 		if(prayerSpriteID == 26) {
-			Interface.sprite2 = Client.cacheSprite[892];
+			Interface.sprite2 = CacheSpriteLoader.getCacheSprite(892);
 		} else if(prayerSpriteID == 27) {
-			Interface.sprite2 = Client.cacheSprite[893];
+			Interface.sprite2 = CacheSpriteLoader.getCacheSprite(893);
 		}
 		Interface.width = 34;
 		Interface.height = 34;
@@ -224,7 +225,7 @@ public class RSInterface {
 		Interface.contentType = 0;
 		Interface.opacity = 0;
 		Interface.hoverType = Hover;
-		Interface.sprite1 = Client.cacheSprite[927];
+		Interface.sprite1 = CacheSpriteLoader.getCacheSprite(927);
 		Interface.width = 34;
 		Interface.height = 34;
 		Interface.valueCompareType = new int[1];
@@ -243,8 +244,8 @@ public class RSInterface {
 		Interface.atActionType = 0;
 		Interface.contentType = 0;
 		Interface.opacity = 0;
-		Interface.sprite1 = Client.cacheSprite[947 + prayerSpriteID];
-		Interface.sprite2 = Client.cacheSprite[927 + prayerSpriteID];
+		Interface.sprite1 = CacheSpriteLoader.getCacheSprite(947 + prayerSpriteID);
+		Interface.sprite2 = CacheSpriteLoader.getCacheSprite(927 + prayerSpriteID);
 		
 		Interface.width = 34;
 		Interface.height = 34;
@@ -279,8 +280,8 @@ public class RSInterface {
 		hover.contentType = 0;
 		hover.opacity = 0;
 		hover.hoverType = hoverid;
-		hover.sprite1 = Client.cacheSprite[spriteId];
-		hover.sprite2 = Client.cacheSprite[spriteId2];
+		hover.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
+		hover.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId2);
 		hover.width = Width;
 		hover.tooltip = Tooltip;
 		hover.height = Height;
@@ -327,8 +328,8 @@ public class RSInterface {
 		hover.contentType = 0;
 		hover.opacity = 0;
 		hover.hoverType = hoverid;
-		hover.sprite1 = Client.cacheSprite[spriteId];
-		hover.sprite2 = Client.cacheSprite[spriteId2];
+		hover.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
+		hover.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId2);
 		hover.width = Width;
 		hover.tooltip = Tooltip;
 		hover.height = Height;
@@ -371,8 +372,8 @@ public class RSInterface {
 		hover.atActionType = actionType;
 		hover.contentType = 0;
 		hover.hoverType = hoverid;
-		hover.sprite2 = Client.cacheSprite[sprite1];
-		hover.sprite1 = Client.cacheSprite[sprite2];
+		hover.sprite2 = CacheSpriteLoader.getCacheSprite(sprite1);
+		hover.sprite1 = CacheSpriteLoader.getCacheSprite(sprite2);
 		hover.width = Width;
 		hover.tooltip = Tooltip;
 		hover.height = Height;
@@ -429,8 +430,8 @@ public class RSInterface {
 		} else {
 			//	Tab.disabledSprite = imageLoader(i, name);
 			//Tab.enabledSprite = imageLoader(i2, name);
-			Tab.sprite2 = Client.cacheSprite[sprite1];
-			Tab.sprite1 = Client.cacheSprite[sprite2];
+			Tab.sprite2 = CacheSpriteLoader.getCacheSprite(sprite1);
+			Tab.sprite1 = CacheSpriteLoader.getCacheSprite(sprite2);
 		}
 	}
 	
@@ -509,7 +510,7 @@ public class RSInterface {
 		tab.contentType = 0;
 		tab.opacity = (byte) 0;
 		tab.hoverType = 52;
-		tab.sprite1 = Client.cacheSprite[sid];
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite(sid);
 		tab.width = w;
 		tab.height = h;
 		tab.tooltip = tooltip;
@@ -524,7 +525,7 @@ public class RSInterface {
 		tab.contentType = 0;
 		tab.opacity = (byte) 0;
 		tab.hoverType = 52;
-		tab.sprite1 = Client.cacheSprite2[sid];
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite2(sid);
 		tab.width = w;
 		tab.height = h;
 		tab.tooltip = tooltip;
@@ -594,7 +595,7 @@ public class RSInterface {
 		RSInterface.contentType = 0;
 		RSInterface.opacity = 0;
 		RSInterface.hoverType = 52;
-		RSInterface.sprite1 = Client.cacheSprite2[sprite_id];
+		RSInterface.sprite1 = CacheSpriteLoader.getCacheSprite2(sprite_id);
 		RSInterface.width = 500;
 		RSInterface.height = 500;
 		RSInterface.tooltip = "";
@@ -610,8 +611,8 @@ public class RSInterface {
 		tab.opacity = (byte) 0;
 		tab.hoverType = 52;
 		if(sprite != -1) {
-			tab.sprite1 = Client.cacheSprite[sprite];
-			tab.sprite2 = Client.cacheSprite[sprite];
+			tab.sprite1 = CacheSpriteLoader.getCacheSprite(sprite);
+			tab.sprite2 = CacheSpriteLoader.getCacheSprite(sprite);
 		}
 		tab.width = w;
 		tab.height = h;
@@ -631,8 +632,8 @@ public class RSInterface {
 		tab.contentType = contentType;
 		tab.opacity = 0;
 		tab.hoverType = hoverOver;
-		tab.sprite2 = Client.cacheSprite[spriteId];
-		tab.sprite1 = Client.cacheSprite[spriteId];
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId);
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
 		tab.width = width;
 		tab.height = height;
 		tab.tooltip = text;
@@ -650,8 +651,8 @@ public class RSInterface {
 		tab.contentType = contentType;
 		tab.opacity = 0;
 		tab.hoverType = hoverOver;
-		tab.sprite2 = Client.cacheSprite2[spriteId];
-		tab.sprite1 = Client.cacheSprite2[spriteId];
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite2(spriteId);
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite2(spriteId);
 		tab.width = width;
 		tab.height = height;
 		tab.tooltip = text;
@@ -714,10 +715,10 @@ public class RSInterface {
 		rsinterface.opacity = 0;
 		rsinterface.hoverType = hoverID;
 		if (dS >= 0) {
-			rsinterface.sprite1 = Client.cacheSprite[dS];
+			rsinterface.sprite1 = CacheSpriteLoader.getCacheSprite(dS);
 		}
 		if (eS >= 0) {
-			rsinterface.sprite2 =Client.cacheSprite[eS];
+			rsinterface.sprite2 = CacheSpriteLoader.getCacheSprite(eS);
 		}
 		rsinterface.width = W;
 		rsinterface.height = H;
@@ -802,8 +803,8 @@ public class RSInterface {
 		Tab.valueIndexArray[0][0] = 5;
 		Tab.valueIndexArray[0][1] = configFrame;
 		Tab.valueIndexArray[0][2] = 0;
-		Tab.sprite1 = Client.cacheSprite[bID];
-		Tab.sprite2 = Client.cacheSprite[bID2];
+		Tab.sprite1 = CacheSpriteLoader.getCacheSprite(bID);
+		Tab.sprite2 = CacheSpriteLoader.getCacheSprite(bID2);
 		Tab.tooltip = tT;
 	}
 	
@@ -879,7 +880,7 @@ public class RSInterface {
 		rsinterfaceHover.atActionType = actionType;
 		rsinterfaceHover.contentType = contentType;
 		rsinterfaceHover.hoverType = hoverid;
-		rsinterfaceHover.sprite1 = rsinterfaceHover.sprite2 = Client.cacheSprite[spriteId];
+		rsinterfaceHover.sprite1 = rsinterfaceHover.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId);
 		rsinterfaceHover.width = W;
 		rsinterfaceHover.height = H;
 		rsinterfaceHover.tooltip = tip;
@@ -968,8 +969,8 @@ public class RSInterface {
 		tab.hoverType = hoverOver;
 
 		if (spriteId >= 0) {
-			tab.sprite1 = Client.cacheSprite[spriteId];
-			tab.sprite2 = Client.cacheSprite[spriteId];
+			tab.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
+			tab.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId);
 		}
 
 		tab.width = width;
@@ -989,8 +990,8 @@ public class RSInterface {
 		tab.hoverType = hoverOver;
 
 		if (spriteId >= 0) {
-			tab.sprite1 = Client.cacheSprite2[spriteId];
-			tab.sprite2 = Client.cacheSprite2[spriteId];
+			tab.sprite1 = CacheSpriteLoader.getCacheSprite2(spriteId);
+			tab.sprite2 = CacheSpriteLoader.getCacheSprite2(spriteId);
 		}
 
 		tab.width = width;
@@ -1010,8 +1011,8 @@ public class RSInterface {
 		tab.contentType = contentType;
 		tab.opacity = 0;
 		tab.hoverType = hoverOver;
-		tab.sprite1 = Client.cacheSprite[disabledSprite];
-		tab.sprite2 = Client.cacheSprite[enabledSprite];
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite(disabledSprite);
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite(enabledSprite);
 		tab.width = width;
 		tab.height = height;
 		tab.tooltip = text;
@@ -1029,8 +1030,8 @@ public class RSInterface {
 		tab.contentType = contentType;
 		tab.opacity = 0;
 		tab.hoverType = hoverOver;
-		tab.sprite1 = Client.cacheSprite2[disabledSprite];
-		tab.sprite2 = Client.cacheSprite2[enabledSprite];
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite2(disabledSprite);
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite2(enabledSprite);
 		tab.width = width;
 		tab.height = height;
 		tab.tooltip = text;
@@ -1101,8 +1102,8 @@ public class RSInterface {
 		tab.height = 334;
 		tab.opacity = 0;
 		tab.hoverType = 52;
-		tab.sprite1 = Client.cacheSprite[j];
-		tab.sprite2 = Client.cacheSprite[k];
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite(j);
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite(k);
 	}
 	
 	private static void addHoverImage2(int i, int j, int k) {
@@ -1116,8 +1117,8 @@ public class RSInterface {
 		tab.height = 334;
 		tab.opacity = 0;
 		tab.hoverType = 52;
-		tab.sprite1 = Client.cacheSprite2[j];
-		tab.sprite2 = Client.cacheSprite2[k];
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite2(j);
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite2(k);
 	}
 
 	public static RSInterface addInterface(int id) {
@@ -1168,8 +1169,8 @@ public class RSInterface {
 		rsInterface.valueIndexArray[2][0] = 1;
 		rsInterface.valueIndexArray[2][1] = 6;
 		rsInterface.valueIndexArray[2][2] = 0;
-		rsInterface.sprite1 = Client.cacheSprite[sid];
-		rsInterface.sprite2 = Client.cacheSprite[sid + 39];
+		rsInterface.sprite1 = CacheSpriteLoader.getCacheSprite(sid);
+		rsInterface.sprite2 = CacheSpriteLoader.getCacheSprite(sid + 39);
 		RSInterface INT = addInterface(ID + 1);
 		INT.interfaceShown = true;
 		INT.hoverType = -1;
@@ -1246,8 +1247,8 @@ public class RSInterface {
 		rsInterface.valueIndexArray[3][0] = 1;
 		rsInterface.valueIndexArray[3][1] = 6;
 		rsInterface.valueIndexArray[3][2] = 0;
-		rsInterface.sprite1 = Client.cacheSprite[sid];
-		rsInterface.sprite2 = Client.cacheSprite[sid + 39];
+		rsInterface.sprite1 = CacheSpriteLoader.getCacheSprite(sid);
+		rsInterface.sprite2 = CacheSpriteLoader.getCacheSprite(sid + 39);
 		RSInterface INT = addInterface(ID + 1);
 		INT.interfaceShown = true;
 		INT.hoverType = -1;
@@ -1314,8 +1315,8 @@ public class RSInterface {
 		rsInterface.valueIndexArray[3][0] = 1;
 		rsInterface.valueIndexArray[3][1] = 6;
 		rsInterface.valueIndexArray[3][2] = 0;
-		rsInterface.sprite1 = Client.cacheSprite[sid];
-		rsInterface.sprite2 = Client.cacheSprite[sid + 39];
+		rsInterface.sprite1 = CacheSpriteLoader.getCacheSprite(sid);
+		rsInterface.sprite2 = CacheSpriteLoader.getCacheSprite(sid + 39);
 		RSInterface INT = addInterface(ID + 1);
 		INT.interfaceShown = true;
 		INT.hoverType = -1;
@@ -1382,8 +1383,8 @@ public class RSInterface {
 		rsInterface.valueIndexArray[3][0] = 1;
 		rsInterface.valueIndexArray[3][1] = 6;
 		rsInterface.valueIndexArray[3][2] = 0;
-		rsInterface.sprite1 = Client.cacheSprite[sid];
-		rsInterface.sprite2 = Client.cacheSprite[sid + 39];
+		rsInterface.sprite1 = CacheSpriteLoader.getCacheSprite(sid);
+		rsInterface.sprite2 = CacheSpriteLoader.getCacheSprite(sid + 39);
 		RSInterface INT = addInterface(ID + 1);
 		INT.interfaceShown = true;
 		INT.hoverType = -1;
@@ -1422,7 +1423,7 @@ public class RSInterface {
 		RSInterface.contentType = 0;
 		RSInterface.opacity = 0;
 		RSInterface.hoverType = 52;
-		RSInterface.sprite1 = Client.cacheSprite[j];
+		RSInterface.sprite1 = CacheSpriteLoader.getCacheSprite(j);
 		RSInterface.width = 500;
 		RSInterface.height = 500;
 		RSInterface.tooltip = "";
@@ -1469,8 +1470,8 @@ public class RSInterface {
 		tab.hoverType = 52;
 
 		if (spriteId != -1) {
-			tab.sprite1 = Client.cacheSprite[spriteId];
-			tab.sprite2 = Client.cacheSprite[spriteId];
+			tab.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
+			tab.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId);
 		}
 
 		tab.width = 512;
@@ -1485,8 +1486,8 @@ public class RSInterface {
 		tab.atActionType = 0;
 		tab.contentType = 0;
 		tab.hoverType = 52;
-		tab.sprite1 = Client.cacheSprite[spriteId];
-		tab.sprite2 = Client.cacheSprite[spriteId2];
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId2);
 		tab.width = 512;
 		tab.height = 334;
 		tab.opacity = (byte) op;
@@ -1512,8 +1513,8 @@ public class RSInterface {
 		Tab.valueIndexArray[0][0] = 5;
 		Tab.valueIndexArray[0][1] = configFrame;
 		Tab.valueIndexArray[0][2] = 0;
-		Tab.sprite1 = Client.cacheSprite[i];
-		Tab.sprite2 = Client.cacheSprite[i2];
+		Tab.sprite1 = CacheSpriteLoader.getCacheSprite(i);
+		Tab.sprite2 = CacheSpriteLoader.getCacheSprite(i2);
 	}
 
 	public static RSInterface addTabInterface(int id) {
@@ -1674,8 +1675,8 @@ public class RSInterface {
 		tab.contentType = 0;
 		tab.opacity = (byte) opacity;
 		tab.hoverType = 52;
-		tab.sprite2 = Client.cacheSprite[spriteId];
-		tab.sprite1 = Client.cacheSprite[spriteId];
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId);
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
 		tab.width = 512;
 		tab.height = 334;
 		//tab.drawsTransparent = true;
@@ -1691,8 +1692,8 @@ public class RSInterface {
 		tab.opacity = (byte) opacity;
 		tab.customOpacity = opacity;
 		tab.hoverType = 52;
-		tab.sprite1 = Client.cacheSprite2[spriteId];
-		tab.sprite2 = Client.cacheSprite2[spriteId];
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite2(spriteId);
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite2(spriteId);
 		tab.width = 512;
 		tab.height = 334;
 		tab.drawsTransparent = true;
@@ -1717,8 +1718,8 @@ public class RSInterface {
 		Tab.valueIndexArray[0][0] = 5;
 		Tab.valueIndexArray[0][1] = configFrame;
 		Tab.valueIndexArray[0][2] = 0;
-		Tab.sprite1 = Client.cacheSprite[bID];
-		Tab.sprite2 = Client.cacheSprite[bID2];
+		Tab.sprite1 = CacheSpriteLoader.getCacheSprite(bID);
+		Tab.sprite2 = CacheSpriteLoader.getCacheSprite(bID2);
 		Tab.tooltip = tT;
 	}
 	
@@ -1732,8 +1733,8 @@ public class RSInterface {
 		tab.opacity = (byte) 0;
 		tab.hoverType = 52;
 		if(sprite != -1) {
-			tab.sprite2 = Client.cacheSprite2[sprite];
-			tab.sprite1 = Client.cacheSprite2[sprite];
+			tab.sprite2 = CacheSpriteLoader.getCacheSprite2(sprite);
+			tab.sprite1 = CacheSpriteLoader.getCacheSprite2(sprite);
 		}
 		tab.width = w;
 		tab.height = h;
@@ -1749,8 +1750,8 @@ public class RSInterface {
 		tab.contentType = 0;
 		tab.opacity = (byte) 0;
 		tab.hoverType = 52;
-		tab.sprite2 = Client.cacheSprite[spriteId];
-		tab.sprite1 = Client.cacheSprite[spriteId];
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId);
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
 		tab.width = tab.sprite2.myWidth;
 		tab.height = tab.sprite1.myHeight - 2;
 		tab.tooltip = tooltip;
@@ -1758,8 +1759,8 @@ public class RSInterface {
 
 	public static void addToggleButton(int id, int sprite, int setconfig, int width, int height, String s) {
 		RSInterface rsi = addInterface(id);
-		rsi.sprite1 = Client.cacheSprite[sprite];
-		rsi.sprite2 = Client.cacheSprite[sprite + 1];
+		rsi.sprite1 = CacheSpriteLoader.getCacheSprite(sprite);
+		rsi.sprite2 = CacheSpriteLoader.getCacheSprite(sprite + 1);
 		rsi.requiredValues = new int[1];
 		rsi.requiredValues[0] = 1;
 		rsi.valueCompareType = new int[1];
@@ -1780,8 +1781,8 @@ public class RSInterface {
 
 	public static void addToggleButton2(int id, int sprite, int setconfig, int width, int height, String s) {
 		RSInterface rsi = addInterface(id);
-		rsi.sprite1 = Client.cacheSprite2[sprite];
-		rsi.sprite2 = Client.cacheSprite2[sprite + 1];
+		rsi.sprite1 = CacheSpriteLoader.getCacheSprite2(sprite);
+		rsi.sprite2 = CacheSpriteLoader.getCacheSprite2(sprite + 1);
 		rsi.requiredValues = new int[1];
 		rsi.requiredValues[0] = 1;
 		rsi.valueCompareType = new int[1];
@@ -1850,7 +1851,7 @@ public class RSInterface {
 		RSInterface.contentType = 0;
 		RSInterface.opacity = 0;
 		RSInterface.hoverType = 52;
-		RSInterface.sprite1 = Client.cacheSprite[id];
+		RSInterface.sprite1 = CacheSpriteLoader.getCacheSprite(id);
 		RSInterface.width = 500;
 		RSInterface.height = 500;
 	}
@@ -1919,8 +1920,8 @@ public class RSInterface {
 		rsi.opacity = (byte) opacity;
 		rsi.customOpacity = opacity;
 		rsi.hoverType = 52;
-		rsi.sprite1 = Client.cacheSprite2[spriteId];
-		rsi.sprite2 = Client.cacheSprite2[spriteId];
+		rsi.sprite1 = CacheSpriteLoader.getCacheSprite2(spriteId);
+		rsi.sprite2 = CacheSpriteLoader.getCacheSprite2(spriteId);
 		rsi.sprite1ID = rsi.sprite2ID = spriteId;
 		rsi.width = rsi.sprite1.myWidth;
 		rsi.height = rsi.sprite1.myHeight;
@@ -1946,8 +1947,8 @@ public class RSInterface {
 		rsi.valueIndexArray[0][0] = 5;
 		rsi.valueIndexArray[0][1] = configId;
 		rsi.valueIndexArray[0][2] = 0;
-		rsi.sprite1 = imageId == -1 ? null : Client.cacheSprite2[imageId];
-		rsi.sprite2 = secondImageId == -1 ? null : Client.cacheSprite2[secondImageId];
+		rsi.sprite1 = imageId == -1 ? null : CacheSpriteLoader.getCacheSprite2(imageId);
+		rsi.sprite2 = secondImageId == -1 ? null : CacheSpriteLoader.getCacheSprite2(secondImageId);
 		rsi.width = rsi.sprite1 != null ? rsi.sprite1.myWidth : rsi.sprite2.myWidth;
 		rsi.height = rsi.sprite1 != null ? rsi.sprite1.myHeight : rsi.sprite2.myHeight;
 		rsi.tooltip = tooltip;
@@ -1961,8 +1962,8 @@ public class RSInterface {
 		rsi.atActionType = 1;
 		rsi.contentType = 0;
 		rsi.hoverType = tooltipBoxChildId;
-		rsi.sprite2 = Client.cacheSprite[spriteId];
-		rsi.sprite1 = Client.cacheSprite[spriteId];
+		rsi.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId);
+		rsi.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
 		rsi.width = rsi.sprite2.myWidth;
 		rsi.height = rsi.sprite1.myHeight - 2;
 		rsi.tooltip = tooltip;
@@ -1996,13 +1997,13 @@ public class RSInterface {
 		rsi.type = 5;
 		rsi.atActionType = 0;
 		rsi.contentType = 0;
-		rsi.sprite2 = Client.cacheSprite[spriteId];
-		rsi.sprite1 = Client.cacheSprite[spriteId];
+		rsi.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId);
+		rsi.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
 
 
 		//rsi.sprite1.spriteLoader = rsi.sprite2.spriteLoader = true;
-		//rsi.hoverSprite1 = Client.cacheSprite[hoverSpriteId];
-		//rsi.hoverSprite2 = Client.cacheSprite[hoverSpriteId];
+		//rsi.hoverSprite1 = CacheSpriteLoader.getCacheSprite(hoverSpriteId];
+		//rsi.hoverSprite2 = CacheSpriteLoader.getCacheSprite(hoverSpriteId];
 		//rsi.hoverSprite1.spriteLoader = rsi.hoverSprite2.spriteLoader = true;
 		//rsi.sprite1 = rsi.sprite2 = spriteId;
 		//rsi.hoverSprite1Id = rsi.hoverSprite2Id = hoverSpriteId;
@@ -2018,13 +2019,13 @@ public class RSInterface {
 		rsi.type = 5;
 		rsi.atActionType = 0;
 		rsi.contentType = 0;
-		rsi.sprite2 = Client.cacheSprite2[spriteId];
-		rsi.sprite1 = Client.cacheSprite2[spriteId];
+		rsi.sprite2 = CacheSpriteLoader.getCacheSprite2(spriteId);
+		rsi.sprite1 = CacheSpriteLoader.getCacheSprite2(spriteId);
 
 
 		//rsi.sprite1.spriteLoader = rsi.sprite2.spriteLoader = true;
-		//rsi.hoverSprite1 = Client.cacheSprite[hoverSpriteId];
-		//rsi.hoverSprite2 = Client.cacheSprite[hoverSpriteId];
+		//rsi.hoverSprite1 = CacheSpriteLoader.getCacheSprite(hoverSpriteId];
+		//rsi.hoverSprite2 = CacheSpriteLoader.getCacheSprite(hoverSpriteId];
 		//rsi.hoverSprite1.spriteLoader = rsi.hoverSprite2.spriteLoader = true;
 		//rsi.sprite1 = rsi.sprite2 = spriteId;
 		//rsi.hoverSprite1Id = rsi.hoverSprite2Id = hoverSpriteId;
@@ -2064,8 +2065,8 @@ public class RSInterface {
 		rsi.contentType = 0;
 		rsi.opacity = 0;
 		rsi.hoverType = 52;
-		rsi.sprite1 = Client.cacheSprite2[spriteId];
-		rsi.sprite2 = Client.cacheSprite2[spriteId];
+		rsi.sprite1 = CacheSpriteLoader.getCacheSprite2(spriteId);
+		rsi.sprite2 = CacheSpriteLoader.getCacheSprite2(spriteId);
 		rsi.sprite1ID = rsi.sprite2ID = spriteId;
 		rsi.width = rsi.sprite1.myWidth;
 		rsi.height = rsi.sprite1.myHeight;
@@ -2080,8 +2081,8 @@ public class RSInterface {
 		rsi.contentType = 0;
 		rsi.opacity = 0;
 		rsi.hoverType = 52;
-		rsi.sprite1 = Client.cacheSprite[spriteId];
-		rsi.sprite2 = Client.cacheSprite[spriteId];
+		rsi.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
+		rsi.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId);
 		rsi.sprite1ID = rsi.sprite2ID = spriteId;
 		rsi.width = rsi.sprite1.myWidth;
 		rsi.height = rsi.sprite1.myHeight;
@@ -2098,8 +2099,8 @@ public class RSInterface {
 		tab.height = 334;
 		tab.opacity = 0;
 		tab.hoverType = 52;
-		tab.sprite2 = Client.cacheSprite[spriteId];
-		tab.sprite1 = Client.cacheSprite[spriteId];
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId);
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
 	}
 	
 	public static void addHoverSpriteLoaderButton(int i, int spriteId,
@@ -2114,8 +2115,8 @@ public class RSInterface {
 		tab.contentType = contentType;
 		tab.opacity = 0;
 		tab.hoverType = hoverOver;
-		tab.sprite2 = Client.cacheSprite[spriteId];
-		tab.sprite1 = Client.cacheSprite[spriteId];
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId);
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
 		tab.width = width;
 		tab.height = height;
 		tab.tooltip = text;
@@ -2134,8 +2135,8 @@ public class RSInterface {
 		tab.opacity = 0;
 		tab.hoverType = -1;
 		tab.scrollMax = 0;
-		tab.sprite2 = Client.cacheSprite[spriteId];
-		tab.sprite1 = Client.cacheSprite[spriteId];
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId);
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
 		tab.totalChildren(1);
 		tab.child(0, IMAGEID, 0, 0);
 	}
@@ -2197,8 +2198,8 @@ public class RSInterface {
 
 		for (int i = id2 + 3; i < id2 + 7; i++) { // 2429 - 2433
 			rsi = interfaceCache[i];
-			rsi.sprite1 = Client.cacheSprite[82];
-			rsi.sprite2 = Client.cacheSprite[83];
+			rsi.sprite1 = CacheSpriteLoader.getCacheSprite(82);
+			rsi.sprite2 = CacheSpriteLoader.getCacheSprite(83);
 			rsi.width = 68;
 			rsi.height = 44;
 		}
@@ -2256,8 +2257,8 @@ public class RSInterface {
 
 		for (int i = id2 + 3; i < id2 + 7; i++) { // 2429 - 2433
 			rsi = interfaceCache[i];
-			rsi.sprite1 = Client.cacheSprite[82];
-			rsi.sprite2 = Client.cacheSprite[83];
+			rsi.sprite1 = CacheSpriteLoader.getCacheSprite(82);
+			rsi.sprite2 = CacheSpriteLoader.getCacheSprite(83);
 			rsi.width = 68;
 			rsi.height = 44;
 		}
@@ -2312,8 +2313,8 @@ public class RSInterface {
 
 		for (int i = id2 + 3; i < id2 + 6; i++) {
 			rsi = interfaceCache[i];
-			rsi.sprite1 = Client.cacheSprite[82];
-			rsi.sprite2 = Client.cacheSprite[83];
+			rsi.sprite1 = CacheSpriteLoader.getCacheSprite(82);
+			rsi.sprite2 = CacheSpriteLoader.getCacheSprite(83);
 			rsi.width = 68;
 			rsi.height = 44;
 		}
@@ -2386,7 +2387,7 @@ public class RSInterface {
 
 	private static void sprite1(int id, int sprite) {
 		RSInterface class9 = interfaceCache[id];
-		class9.sprite1 = Client.cacheSprite[sprite];
+		class9.sprite1 = CacheSpriteLoader.getCacheSprite(sprite);
 	}
 
 	public static void textSize(int id, TextDrawingArea tda[], int idx) {
@@ -2698,7 +2699,7 @@ public class RSInterface {
 		tab.atActionType = actionType;
 		tab.contentType = contentType;
 		tab.hoverType = i;
-		tab.sprite1 = Client.cacheSprite[sprite];
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite(sprite);
 		tab.width = w;
 		tab.height = h;
 		tab.tooltip = text;
@@ -2798,8 +2799,8 @@ public class RSInterface {
 		tab.opacity = (byte) 0;
 		tab.hoverType = 52;
 		if(spriteId > 0) {
-			tab.sprite1 = Client.cacheSprite[spriteId];
-			tab.sprite2 = Client.cacheSprite[spriteId];
+			tab.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
+			tab.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId);
 		}
 		tab.width = 512;
 		tab.height = 334;
@@ -2877,8 +2878,8 @@ public class RSInterface {
 		tab.contentType = 0;
 		tab.opacity = (byte) 0;
 		tab.hoverType = 52;
-		tab.sprite1 = Client.cacheSprite[spriteId];
-		tab.sprite2 = Client.cacheSprite[sprite2];
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite(sprite2);
 		tab.width = 512;
 		tab.height = 1024;
 	}
@@ -2893,8 +2894,8 @@ public class RSInterface {
 		tab.contentType = 0;
 		tab.opacity = (byte) 0;
 		tab.hoverType = 52;
-		tab.sprite1 = Client.cacheSprite2[spriteId];
-		tab.sprite2 = Client.cacheSprite2[sprite2];
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite2(spriteId);
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite2(sprite2);
 		tab.width = 512;
 		tab.height = 1024;
 	}
@@ -2909,8 +2910,8 @@ public class RSInterface {
 		tab.contentType = 0;
 		tab.opacity = (byte) 0;
 		tab.hoverType = 52;
-		tab.sprite1 = Client.cacheSprite2[spriteId];
-		tab.sprite2 = Client.cacheSprite2[spriteId];
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite2(spriteId);
+		tab.sprite2 = CacheSpriteLoader.getCacheSprite2(spriteId);
 		tab.width = 512;
 		tab.height = 1024;
 	}
@@ -3124,7 +3125,7 @@ public class RSInterface {
 
 		rsi = interfaceCache[id + 1];
 		rsi.type = 5;
-		rsi.sprite1 = Client.cacheSprite[71];
+		rsi.sprite1 = CacheSpriteLoader.getCacheSprite(71);
 
 		for (int i = id + 2; i < id + 12; i++) {
 			rsi = interfaceCache[i];

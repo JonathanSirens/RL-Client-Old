@@ -35,7 +35,7 @@ public final class Deque {
 		return node;
 	}
 
-	public void insertHead(Node node) {
+	public void pushFront(Node node) {
 		if (node.next != null) {
 			node.unlink();
 		}
@@ -68,7 +68,7 @@ public final class Deque {
 		class3.next.prev = class3;
 	}
 
-	public Node popHead() {
+	public Node popFront() {
 		Node node = head.prev;
 
 		if (node == head) {
@@ -94,7 +94,7 @@ public final class Deque {
 		} while (true);
 	}
 
-	public Node reverseGetFirst() {
+	public Node getTail() {
 		Node node = head.prev;
 
 		if (node == head) {
@@ -106,7 +106,7 @@ public final class Deque {
 		}
 	}
 
-	public Node reverseGetNext() {
+	public Node next() {
 		Node node = current;
 
 		if (node == head) {

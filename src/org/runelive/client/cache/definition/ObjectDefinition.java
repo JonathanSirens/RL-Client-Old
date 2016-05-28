@@ -1605,14 +1605,14 @@ public final class ObjectDefinition {
             }
             boolean flag1 = true;
             for (int objectModelID : objectModelIDs) {
-                flag1 &= Model.method463(objectModelID & 0xffff);
+                flag1 &= Model.isModelLoaded(objectModelID & 0xffff);
             }
 
             return flag1;
         }
         for (int j = 0; j < anIntArray776.length; j++) {
             if (anIntArray776[j] == i) {
-                return Model.method463(objectModelIDs[j] & 0xffff);
+                return Model.isModelLoaded(objectModelIDs[j] & 0xffff);
             }
         }
 
@@ -1649,7 +1649,7 @@ public final class ObjectDefinition {
         }
         boolean flag1 = true;
         for (int objectModelID : objectModelIDs) {
-            flag1 &= Model.method463(objectModelID & 0xffff);
+            flag1 &= Model.isModelLoaded(objectModelID & 0xffff);
         }
         return flag1;
     }
@@ -2856,7 +2856,7 @@ public final class ObjectDefinition {
                 continue;
             for(int model : object.objectModelIDs) {
                 try {
-                    byte abyte[] = clientInstance.decompressors[1].decompress(model);
+                    byte abyte[] = clientInstance.cacheIndices[1].get(model);
                     File modelFile = new File(Signlink.getCacheDirectory().toString() + "/objectModels/" + model + ".gz");
                     FileOutputStream fos = new FileOutputStream(modelFile);
                     fos.write(abyte);

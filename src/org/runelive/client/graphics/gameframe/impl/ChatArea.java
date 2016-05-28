@@ -22,7 +22,9 @@ import javax.imageio.ImageIO;
 
 import org.runelive.client.Client;
 import org.runelive.client.RSInterface;
+import org.runelive.client.Settings;
 import org.runelive.client.Signlink;
+import org.runelive.client.graphics.CacheSpriteLoader;
 import org.runelive.client.graphics.DrawingArea;
 import org.runelive.client.graphics.fonts.RSFontSystem;
 import org.runelive.client.graphics.gameframe.GameFrame;
@@ -63,7 +65,7 @@ public class ChatArea extends GameFrame {
 
 		public void drawChannelButtons(Client client, ScreenMode screenMode) {
 			if (screenMode != ScreenMode.FIXED) {
-				Client.cacheSprite[4].drawSprite(getOffSetX() + 5, getOffSetY() + 143);
+				CacheSpriteLoader.getCacheSprite(4).drawSprite(getOffSetX() + 5, getOffSetY() + 143);
 			}
 
 			switch (client.cButtonCPos) {
@@ -74,7 +76,7 @@ public class ChatArea extends GameFrame {
 			case 4:
 			case 5:
 			case 6:
-				Client.cacheSprite[1].drawSprite(getOffSetX() + channelXCoords[client.cButtonCPos], getOffSetY() + 143);
+				CacheSpriteLoader.getCacheSprite(1).drawSprite(getOffSetX() + channelXCoords[client.cButtonCPos], getOffSetY() + 143);
 				break;
 			}
 			if (client.cButtonHPos == client.cButtonCPos) {
@@ -86,7 +88,7 @@ public class ChatArea extends GameFrame {
 				case 4:
 				case 5:
 				case 6:
-					Client.cacheSprite[2].drawSprite(getOffSetX() + channelXCoords[client.cButtonHPos], getOffSetY() + 143);
+					CacheSpriteLoader.getCacheSprite(2).drawSprite(getOffSetX() + channelXCoords[client.cButtonHPos], getOffSetY() + 143);
 					break;
 				case 7:
 					break;
@@ -100,15 +102,15 @@ public class ChatArea extends GameFrame {
 				case 4:
 				case 5:
 				case 6:
-					Client.cacheSprite[0].drawSprite(getOffSetX() + channelXCoords[client.cButtonHPos], getOffSetY() + 143);
+					CacheSpriteLoader.getCacheSprite(0).drawSprite(getOffSetX() + channelXCoords[client.cButtonHPos], getOffSetY() + 143);
 					break;
 				case 7:
 					break;
 				}
 			}
 
-			if (client.inSprite(false, Client.cacheSprite[17], getxPos() + 404, getyPos() + 143)) {
-				Client.cacheSprite[17].drawSprite(getOffSetX() + 404, getOffSetY() + 143);
+			if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(17), getxPos() + 404, getyPos() + 143)) {
+				CacheSpriteLoader.getCacheSprite(17).drawSprite(getOffSetX() + 404, getOffSetY() + 143);
 			}
 
 			for (int i = 0; i < channelText.length; i++) {
@@ -143,7 +145,7 @@ public class ChatArea extends GameFrame {
 		public void processChatModeActions(final Client client, ScreenMode screenMode) {
 			if (isVisible()) {
 				for (int i = 0; i < channelXCoords.length - 1; i++) {
-					if (client.inSprite(false, Client.cacheSprite[0], getxPos() + channelXCoords[i], getyPos() + 143)) {
+					if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(0), getxPos() + channelXCoords[i], getyPos() + 143)) {
 
 						client.cButtonHPos = i;
 						client.setInputTaken(true);
@@ -158,7 +160,7 @@ public class ChatArea extends GameFrame {
 					return;
 				}
 				*/
-				if (client.inSprite(true, Client.cacheSprite[17], getxPos() + 404, getyPos() + 143)) {
+				if (client.inSprite(true, CacheSpriteLoader.getCacheSprite(17), getxPos() + 404, getyPos() + 143)) {
 					SERVICE.execute(new Runnable() {
 						@Override
 						public void run() {
@@ -185,7 +187,7 @@ public class ChatArea extends GameFrame {
 				}
 
 				for (int i = 0; i < chatMenuText.length; i++) {
-					if (client.inSprite(false, Client.cacheSprite[0], getxPos() + channelXCoords[i], getyPos() + 143)) {
+					if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(0), getxPos() + channelXCoords[i], getyPos() + 143)) {
 						for (int id = 0; id < chatMenuText[i].length; id++) {
 							client.menuActionName[client.menuActionRow] = chatMenuText[i][id];
 							client.menuActionID[client.menuActionRow] = actions[i][id];
@@ -215,13 +217,13 @@ public class ChatArea extends GameFrame {
 		if (screenMode != ScreenMode.FIXED && client.mouseX > getxPos() + 478 && client.mouseX < getxPos() + 512 && client.mouseY > getyPos() + 4 && client.mouseY < getyPos() + 121) {
 			return true;
 		}
-		if (screenMode != ScreenMode.FIXED && client.inSprite(false, Client.cacheSprite[3], getxPos(), getyPos()) && (client.messagePromptRaised || client.aString844 != null || client.backDialogID != -1 || client.dialogID != -1 | client.inputDialogState != 0)) {
+		if (screenMode != ScreenMode.FIXED && client.inSprite(false, CacheSpriteLoader.getCacheSprite(3), getxPos(), getyPos()) && (client.messagePromptRaised || client.aString844 != null || client.backDialogID != -1 || client.dialogID != -1 | client.inputDialogState != 0)) {
 			return true;
 		}
-		if (client.inSprite(false, Client.cacheSprite[17], getxPos() + 404, getyPos() + 143)) {
+		if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(17), getxPos() + 404, getyPos() + 143)) {
 			return true;
 		}
-		if (screenMode == ScreenMode.FIXED && client.inSprite(false, Client.cacheSprite[3], getOffSetX(), getOffSetY())) {
+		if (screenMode == ScreenMode.FIXED && client.inSprite(false, CacheSpriteLoader.getCacheSprite(3), getOffSetX(), getOffSetY())) {
 			return true;
 		}
 		return false;
@@ -264,7 +266,7 @@ public class ChatArea extends GameFrame {
 			 */
 
 			if (screenMode == ScreenMode.FIXED) {
-				Client.cacheSprite[3].drawSprite(getOffSetX(), getOffSetY());
+				CacheSpriteLoader.getCacheSprite(3).drawSprite(getOffSetX(), getOffSetY());
 			} else {
 				if (!componentHidden()) {
 					if (!client.messagePromptRaised && client.aString844 == null && client.backDialogID == -1 && client.dialogID == -1 && client.inputDialogState == 0) {
@@ -279,7 +281,7 @@ public class ChatArea extends GameFrame {
 
 						DrawingArea.drawAlphaGradient(getOffSetX() + 5, getOffSetY() + 5, getWidth() - 10, 1, 0xb4aea1, 0, 250);
 					} else {
-						Client.cacheSprite[3].drawTransparentSprite(getOffSetX(), getOffSetY(), 255);
+						CacheSpriteLoader.getCacheSprite(3).drawTransparentSprite(getOffSetX(), getOffSetY(), 255);
 					}
 
 					// for(int i = 0; i < getWidth)
@@ -628,7 +630,7 @@ public class ChatArea extends GameFrame {
 		if (client.getClickMode2() == 1 && client.mouseX >= splitBoxX && client.mouseX <= splitBoxX + 16 && client.mouseY >= getyPos() + splitBoxY && client.mouseY <= getyPos() + splitBoxY + 13) {
 			client.setClickMode2(0);
 			client.splitChatColor = client.splitChatColor + 1 == SPLIT_CHAT_COLORS.length ? 0 : client.splitChatColor + 1;
-			client.savePlayerData();
+			Settings.save();
 			client.pushMessage("You've changed your private split-chat color.", 0, "");
 			return true;
 		}

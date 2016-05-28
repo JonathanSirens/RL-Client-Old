@@ -48,7 +48,7 @@ public final class IdentityKit {
 		boolean flag = true;
 
 		for (int j = 0; j < anIntArray658.length; j++) {
-			if (!Model.method463(anIntArray658[j])) {
+			if (!Model.isModelLoaded(anIntArray658[j])) {
 				flag = false;
 			}
 		}
@@ -89,7 +89,7 @@ public final class IdentityKit {
 		boolean flag1 = true;
 
 		for (int i = 0; i < 5; i++) {
-			if (anIntArray661[i] != -1 && !Model.method463(anIntArray661[i])) {
+			if (anIntArray661[i] != -1 && !Model.isModelLoaded(anIntArray661[i])) {
 				flag1 = false;
 			}
 		}

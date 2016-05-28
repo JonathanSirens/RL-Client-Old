@@ -5,6 +5,7 @@ import java.awt.Color;
 import org.runelive.Configuration;
 import org.runelive.client.Client;
 import org.runelive.client.cache.Archive;
+import org.runelive.client.graphics.CacheSpriteLoader;
 import org.runelive.client.graphics.DrawingArea;
 import org.runelive.client.graphics.Sprite;
 import org.runelive.client.io.ByteBuffer;
@@ -371,7 +372,7 @@ public class RSFontSystem extends DrawingArea {
 								if(imageId <= 17) {
 									spriteVersion = 2;
 								}
-								Sprite icon = Client.cacheSprite[imageId];
+								Sprite icon = CacheSpriteLoader.getCacheSprite(imageId);
 								if(spriteVersion == 2) {
 									icon = Client.modIcons[imageId];
 								}
@@ -397,7 +398,7 @@ public class RSFontSystem extends DrawingArea {
 						} else if (effectString.startsWith(startClanImage)) {
 							try {
 								int imageId = Integer.valueOf(effectString.substring(5));
-								Sprite icon = Client.cacheSprite[imageId];
+								Sprite icon = CacheSpriteLoader.getCacheSprite(imageId);
 								int iconModY = icon.myHeight + icon.drawOffsetY + 1;
 								if (transparency == 256) {
 									icon.drawSprite(drawX, drawY + baseCharacterHeight - iconModY);
@@ -411,7 +412,7 @@ public class RSFontSystem extends DrawingArea {
 						} else if (effectString.startsWith(startIcon)) {//todo icons
 							try {
 								int imageId = Integer.valueOf(effectString.substring(5));
-								Sprite icon = Client.cacheSprite2[103 + imageId];
+								Sprite icon = CacheSpriteLoader.getCacheSprite2(103 + imageId);
 								int iconModY = icon.myHeight + icon.drawOffsetY + 1;
 								if (transparency == 256) {
 									icon.drawSprite(drawX, drawY + baseCharacterHeight - iconModY);
@@ -594,14 +595,14 @@ public class RSFontSystem extends DrawingArea {
 							if (effectString.startsWith(startImage)) {
 								try {// <img=
 									int iconId = Integer.valueOf(effectString.substring(4));
-									finalWidth += Client.cacheSprite[iconId].myWidth;
+									finalWidth += CacheSpriteLoader.getCacheSprite(iconId).myWidth;
 								} catch (Exception exception) {
 									/* empty */
 								}
 							} else if (effectString.startsWith(startIcon)) {//TODO icons
 								try {// <icon=
 									int iconId = Integer.valueOf(effectString.substring(5));
-									finalWidth += Client.cacheSprite2[103 + iconId].myWidth;
+									finalWidth += CacheSpriteLoader.getCacheSprite2(103 + iconId).myWidth;
 								} catch (Exception exception) {
 									/* empty */
 								}

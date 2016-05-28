@@ -20,7 +20,7 @@ public class SpriteCache {
 			spriteLink[spriteId] = sprite;
 		}
 		if(spriteCache[spriteId] == null) {
-			onDemandFetcher.requestFileData(Client.IMAGE_IDX-1, spriteId);
+			onDemandFetcher.pushRequest(Client.IMAGE_IDX-1, spriteId);
 		}
 	}
 	
@@ -31,7 +31,7 @@ public class SpriteCache {
 	public static void fetchIfNeeded(int spriteId) {
 		if(spriteCache[spriteId] != null)
 			return;
-		onDemandFetcher.requestFileData(Client.IMAGE_IDX-1, spriteId);
+		onDemandFetcher.pushRequest(Client.IMAGE_IDX-1, spriteId);
 	}
 	
 	public static Sprite get(int spriteId) {

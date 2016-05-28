@@ -6,7 +6,7 @@ import org.runelive.client.Class33;
 import org.runelive.client.Client;
 import org.runelive.client.FrameReader;
 import org.runelive.client.SkinList;
-import org.runelive.client.cache.ondemand.OnDemandFetcherParent;
+import org.runelive.client.cache.ondemand.OnDemandFetcher;
 import org.runelive.client.graphics.DrawingArea;
 import org.runelive.client.io.ByteBuffer;
 import org.runelive.client.renderable.Animable;
@@ -46,7 +46,7 @@ public class Model extends Animable {
 	public static int anIntArray1688[] = new int[1000];
 	private static int faceLists[][] = new int[1500][512];
 	private static int anIntArrayArray1674[][] = new int[12][2000];
-	private static OnDemandFetcherParent onDemandRequester;
+	private static OnDemandFetcher onDemandRequester;
 	public static int SINE[];
 	public static int COSINE[];
 	private static int[] modelIntArray3;
@@ -60,16 +60,16 @@ public class Model extends Animable {
 		modelIntArray4 = Rasterizer.anIntArray1469;
 	}
 
-	public static void initialize(int count, OnDemandFetcherParent onDemandFetcherParent) {
+	public static void initialize(int count, OnDemandFetcher onDemandFetcherParent) {
 		modelHeaderCache = new ModelHeader[80000];
 		isNewModel = new boolean[100000];
 		onDemandRequester = onDemandFetcherParent;
 	}
 
-	public static void decodeModelHeader(byte[] tmp, int i) {
+	public static void decodeModelHeader(byte[] tmp, int fileId) {
 		try {
 			if (tmp == null) {
-				ModelHeader modelHeader = modelHeaderCache[i] = new ModelHeader();
+				ModelHeader modelHeader = modelHeaderCache[fileId] = new ModelHeader();
 				modelHeader.anInt369 = 0;
 				modelHeader.anInt370 = 0;
 				modelHeader.anInt371 = 0;
@@ -78,7 +78,7 @@ public class Model extends Animable {
 
 			ByteBuffer buffer = new ByteBuffer(tmp);
 			buffer.position = tmp.length - 18;
-			ModelHeader modelHeader_1 = modelHeaderCache[i] = new ModelHeader();
+			ModelHeader modelHeader_1 = modelHeaderCache[fileId] = new ModelHeader();
 			modelHeader_1.aByteArray368 = tmp;
 			modelHeader_1.anInt369 = buffer.getUnsignedShort();
 			modelHeader_1.anInt370 = buffer.getUnsignedShort();
@@ -153,31 +153,39 @@ public class Model extends Animable {
 		}
 	}
 
-	public static Model fetchModel(int j) {
+	public static Model fetchModel(int fileId) {
 		if (modelHeaderCache == null) {
 			return null;
 		}
-		if(j == 0)
+		if(fileId == 0) {
 			return null;
-		ModelHeader modelHeader = modelHeaderCache[j];
-
+		}
+		ModelHeader modelHeader = modelHeaderCache[fileId];
 		if (modelHeader == null) {
-			onDemandRequester.get(j);
+			int cacheIndex = 0;//default model index
+			if (fileId >= 65535) {
+				fileId -= 65535;
+				cacheIndex = 5;//model_extended index
+			}
+			onDemandRequester.pushRequest(cacheIndex, fileId);
 			return null;
 		} else {
-			return new Model(j);
+			return new Model(fileId);
 		}
 	}
 
-	public static boolean method463(int i) {
+	public static boolean isModelLoaded(int fileId) {
 		if (modelHeaderCache == null) {
 			return false;
 		}
-
-		ModelHeader modelHeader = modelHeaderCache[i];
-
+		ModelHeader modelHeader = modelHeaderCache[fileId];
 		if (modelHeader == null) {
-			onDemandRequester.get(i);
+			int cacheIndex = 0;//default model index
+			if (fileId >= 65535) {
+				fileId -= 65535;
+				cacheIndex = 5;//model_extended index
+			}
+			onDemandRequester.pushRequest(cacheIndex, fileId);
 			return false;
 		} else {
 			return true;
@@ -428,7 +436,12 @@ public class Model extends Animable {
 		if (is[is.length - 1] == -1 && is[is.length - 2] == -1) {
 			read622Model(is, modelId);
 		} else {
-			readOldModel(modelId);
+			try {
+				readOldModel(modelId);
+			} catch (Exception e) {
+				System.err.println("Error decoding old model: " + modelId);
+				e.printStackTrace();
+			}
 		}
 		if((modelId >= 53347 && modelId <= 53370) || (modelId >= 76001 && modelId <= 76047))
 		{

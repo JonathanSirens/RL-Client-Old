@@ -1,13 +1,14 @@
 package org.runelive.client.entity.player;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Locale;
 
 import org.runelive.Configuration;
 import org.runelive.client.Client;
 import org.runelive.client.RSInterface;
+import org.runelive.client.Settings;
+import org.runelive.client.graphics.CacheSpriteLoader;
 import org.runelive.client.graphics.gameframe.impl.MapArea.XPGain;
 
 public class PlayerHandler {
@@ -77,12 +78,12 @@ public class PlayerHandler {
 			RSInterface icons = RSInterface.interfaceCache[i];
 
 			if (icons != null) {
-				icons.sprite1 = icons.sprite2 = Client.cacheSprite[93];
+				icons.sprite1 = icons.sprite2 = CacheSpriteLoader.getCacheSprite(93);
 			}
 		}
 
 		if (Configuration.SAVE_ACCOUNTS) {
-			client.savePlayerData();
+			Settings.save();
 		}
 		canGainXP = true;
 		totalXP = 0;

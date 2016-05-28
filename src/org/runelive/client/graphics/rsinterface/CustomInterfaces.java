@@ -2,12 +2,11 @@ package org.runelive.client.graphics.rsinterface;
 
 import java.util.ArrayList;
 
-import org.runelive.Configuration;
 import org.runelive.client.cache.definition.ItemDefinition;
-import org.runelive.client.Client;
 import org.runelive.client.RSInterface;
 import org.runelive.client.Skills;
 import org.runelive.client.accounts.Account;
+import org.runelive.client.graphics.CacheSpriteLoader;
 import org.runelive.client.graphics.fonts.TextDrawingArea;
 
 public class CustomInterfaces extends RSInterface {
@@ -1971,7 +1970,7 @@ public class CustomInterfaces extends RSInterface {
 		RSInterface.contentType = 0;
 		RSInterface.opacity = 0;
 		RSInterface.hoverType = 30001;
-		RSInterface.sprite1 = Client.cacheSprite2[78];
+		RSInterface.sprite1 = CacheSpriteLoader.getCacheSprite2(78);
 		RSInterface.width = 20;
 		RSInterface.height = 20;
 		RSInterface hover = addTabInterface(30001);
@@ -1987,8 +1986,8 @@ public class CustomInterfaces extends RSInterface {
 		interfaceCache[32600] = new RSInterface();
 		interfaceCache[32600].hoverType = 32601;
 		interfaceCache[32600].id = 32600;
-		interfaceCache[32600].sprite1 = Client.cacheSprite2[79];
-		interfaceCache[32600].sprite2 = Client.cacheSprite2[83];
+		interfaceCache[32600].sprite1 = CacheSpriteLoader.getCacheSprite2(79);
+		interfaceCache[32600].sprite2 = CacheSpriteLoader.getCacheSprite2(83);
 		interfaceCache[32600].atActionType = 2;
 		interfaceCache[32600].width = 20;
 		interfaceCache[32600].height = 20;
@@ -2003,8 +2002,8 @@ public class CustomInterfaces extends RSInterface {
 		interfaceCache[32620] = new RSInterface();
 		interfaceCache[32620].hoverType = 32621;
 		interfaceCache[32620].id = 32620;
-		interfaceCache[32620].sprite1 = Client.cacheSprite2[80];
-		interfaceCache[32620].sprite2 = Client.cacheSprite2[84];
+		interfaceCache[32620].sprite1 = CacheSpriteLoader.getCacheSprite2(80);
+		interfaceCache[32620].sprite2 = CacheSpriteLoader.getCacheSprite2(84);
 		interfaceCache[32620].atActionType = 2;
 		interfaceCache[32620].width = 20;
 		interfaceCache[32620].height = 20;
@@ -2019,8 +2018,8 @@ public class CustomInterfaces extends RSInterface {
 		interfaceCache[32640] = new RSInterface();
 		interfaceCache[32640].hoverType = 32641;
 		interfaceCache[32640].id = 32640;
-		interfaceCache[32640].sprite1 = Client.cacheSprite2[81];
-		interfaceCache[32640].sprite2 = Client.cacheSprite2[85];
+		interfaceCache[32640].sprite1 = CacheSpriteLoader.getCacheSprite2(81);
+		interfaceCache[32640].sprite2 = CacheSpriteLoader.getCacheSprite2(85);
 		interfaceCache[32640].atActionType = 2;
 		interfaceCache[32640].width = 20;
 		interfaceCache[32640].height = 20;
@@ -2035,8 +2034,8 @@ public class CustomInterfaces extends RSInterface {
 		interfaceCache[32660] = new RSInterface();
 		interfaceCache[32660].hoverType = 32661;
 		interfaceCache[32660].id = 32660;
-		interfaceCache[32660].sprite1 = Client.cacheSprite2[82];
-		interfaceCache[32660].sprite2 = Client.cacheSprite2[86];
+		interfaceCache[32660].sprite1 = CacheSpriteLoader.getCacheSprite2(82);
+		interfaceCache[32660].sprite2 = CacheSpriteLoader.getCacheSprite2(86);
 		interfaceCache[32660].atActionType = 2;
 		interfaceCache[32660].width = 20;
 		interfaceCache[32660].height = 20;

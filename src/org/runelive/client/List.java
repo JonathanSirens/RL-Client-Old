@@ -25,11 +25,11 @@ public final class List {
 			if (this.spaceLeft == 0) {
 				NodeSub nodeSub_1 = this.nodeSubList.popTail();
 				nodeSub_1.unlink();
-				nodeSub_1.unlinkSub();
+				nodeSub_1.unlinkCacheable();
 				if (nodeSub_1 == this.emptyNodeSub) {
 					NodeSub nodeSub_2 = this.nodeSubList.popTail();
 					nodeSub_2.unlink();
-					nodeSub_2.unlinkSub();
+					nodeSub_2.unlinkCacheable();
 				}
 			} else {
 				this.spaceLeft -= 1;
@@ -65,12 +65,12 @@ public final class List {
 			if (spaceLeft == 0) {
 				NodeSub nodeSub_1 = nodeSubList.popTail();
 				nodeSub_1.unlink();
-				nodeSub_1.unlinkSub();
+				nodeSub_1.unlinkCacheable();
 
 				if (nodeSub_1 == emptyNodeSub) {
 					NodeSub nodeSub_2 = nodeSubList.popTail();
 					nodeSub_2.unlink();
-					nodeSub_2.unlinkSub();
+					nodeSub_2.unlinkCacheable();
 				}
 			} else {
 				spaceLeft--;
@@ -92,7 +92,7 @@ public final class List {
 
 			if (nodeSub != null) {
 				nodeSub.unlink();
-				nodeSub.unlinkSub();
+				nodeSub.unlinkCacheable();
 			} else {
 				spaceLeft = initialCount;
 				return;

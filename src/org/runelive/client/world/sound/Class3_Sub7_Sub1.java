@@ -123,7 +123,7 @@ public final class Class3_Sub7_Sub1 extends Class3_Sub7 {
 
 	public final synchronized void method384(Class3_Sub7 class3_sub7) {
 		Deque class60 = aClass60Array1810[method386(class3_sub7)];
-		class60.insertHead(class3_sub7);
+		class60.pushFront(class3_sub7);
 	}
 
 	private final void method385(Class3_Sub5 class3_sub5) {
@@ -146,7 +146,7 @@ public final class Class3_Sub7_Sub1 extends Class3_Sub7 {
 			for (Class3_Sub7 class3_sub7 = (Class3_Sub7) class60.getFirst(); class3_sub7 != null; class3_sub7 = (Class3_Sub7) class60.getNext()) {
 				int i_9_ = method386(class3_sub7);
 				if (i_9_ != i_8_) {
-					aClass60Array1810[i_9_].insertHead(class3_sub7);
+					aClass60Array1810[i_9_].pushFront(class3_sub7);
 				}
 			}
 		}

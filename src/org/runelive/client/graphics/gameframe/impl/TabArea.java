@@ -4,6 +4,7 @@ import org.runelive.client.Client;
 import org.runelive.client.RSInterface;
 import org.runelive.client.constants.GameFrameConstants;
 import org.runelive.client.constants.GameFrameConstants.GameFrameType;
+import org.runelive.client.graphics.CacheSpriteLoader;
 import org.runelive.client.graphics.Sprite;
 import org.runelive.client.graphics.gameframe.GameFrame;
 import org.runelive.client.world.Rasterizer;
@@ -37,7 +38,7 @@ public class TabArea extends GameFrame {
 							tabID = 15;
 						}
 						if (Client.tabID == tabID) {
-							Client.cacheSprite[screenMode == ScreenMode.FIXED ? i == 0 ? 8 : i == 6 ? 9 : i == 7 ? 10 : i == 13 ? 11 : 12 : 12].drawSprite(getOffSetX() + 6 + (i > 6 ? i - 7 : Client.clientWidth <= GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED ? i : screenMode == ScreenMode.FIXED ? i : i - 7) * Client.cacheSprite[screenMode == ScreenMode.FIXED ? i == 1 || i == 8 ? 8 : 12 : 12].myWidth + (screenMode != ScreenMode.FIXED || i == 1 || i == 8 || i == 0 || i == 7 ? 0 : 5), i > 6 || screenMode != ScreenMode.FIXED ? getOffSetY() + getHeight() - 2 - Client.cacheSprite[12].myHeight * (i < 7 && Client.clientWidth <= GameFrameConstants.smallTabs ? 2 : 1) - 1 : getOffSetY());
+							CacheSpriteLoader.getCacheSprite(screenMode == ScreenMode.FIXED ? i == 0 ? 8 : i == 6 ? 9 : i == 7 ? 10 : i == 13 ? 11 : 12 : 12).drawSprite(getOffSetX() + 6 + (i > 6 ? i - 7 : Client.clientWidth <= GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED ? i : screenMode == ScreenMode.FIXED ? i : i - 7) * CacheSpriteLoader.getCacheSprite(screenMode == ScreenMode.FIXED ? i == 1 || i == 8 ? 8 : 12 : 12).myWidth + (screenMode != ScreenMode.FIXED || i == 1 || i == 8 || i == 0 || i == 7 ? 0 : 5), i > 6 || screenMode != ScreenMode.FIXED ? getOffSetY() + getHeight() - 2 - CacheSpriteLoader.getCacheSprite(12).myHeight * (i < 7 && Client.clientWidth <= GameFrameConstants.smallTabs ? 2 : 1) - 1 : getOffSetY());
 						}
 					}
 				} else if (GameFrameConstants.gameframeType == GameFrameType.FRAME_554) {
@@ -59,7 +60,7 @@ public class TabArea extends GameFrame {
 						}
 						if (i < 8) {
 							if (Client.clientWidth > GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED) {
-								offsetX = offsetX - Client.cacheSprite[527].myWidth / 2 - 10;
+								offsetX = offsetX - CacheSpriteLoader.getCacheSprite(527).myWidth / 2 - 10;
 								offsetY = offsetY + 297;
 							} else if (screenMode != ScreenMode.FIXED) {
 								offsetY = offsetY + 261;
@@ -68,12 +69,12 @@ public class TabArea extends GameFrame {
 						}
 						int tabID = i == 3 ? 15 : i > 3 ? i - 1 : i;
 						if (Client.tabID == tabID) {
-							Client.cacheSprite[525].drawAdvancedSprite(offsetX, offsetY);
+							CacheSpriteLoader.getCacheSprite(525).drawAdvancedSprite(offsetX, offsetY);
 						} else {
 							int x = offsetX + (screenMode == ScreenMode.FIXED ? getxPos() : 0);
 							int y = offsetY + (screenMode == ScreenMode.FIXED ? getyPos() - 1 : 0);
 							if (Client.tabInterfaceIDs[tabID] != -1 && client.mouseX >= x + (screenMode == ScreenMode.FIXED ? 5 : 5) && client.mouseX <= x + 30 + 4 && client.mouseY >= y && client.mouseY <= y + 34) {
-								Client.cacheSprite[524].drawAdvancedSprite(offsetX + (screenMode == ScreenMode.FIXED ? 5 : 5), offsetY);
+								CacheSpriteLoader.getCacheSprite(524).drawAdvancedSprite(offsetX + (screenMode == ScreenMode.FIXED ? 5 : 5), offsetY);
 							}
 						}
 					}
@@ -93,7 +94,7 @@ public class TabArea extends GameFrame {
 			if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
 				for (int i = 0; i < 14; i++) {
 					if (client.invOverlayInterfaceID == -1) {
-						//	client.sideIcons[i].drawSprite(getOffSetX() + (screenMode == ScreenMode.FIXED ? 13 : 8) + (i > 6 ? i - 7 : screenMode != ScreenMode.FIXED && Client.clientWidth > GameFrameConstants.smallTabs ? i - 7 : i) * Client.cacheSprite[12].myWidth, getOffSetY() + (i > 6 || screenMode != ScreenMode.FIXED ? getHeight() - client.sideIcons[i < 7 ? 0 : i].myHeight - (screenMode != ScreenMode.FIXED && Client.clientWidth <= GameFrameConstants.smallTabs && i < 7 ? 53 : screenMode != ScreenMode.FIXED && Client.clientWidth > GameFrameConstants.smallTabs && i < 7 ? 17 : 9) : 0) + 2);
+						//	client.sideIcons[i].drawSprite(getOffSetX() + (screenMode == ScreenMode.FIXED ? 13 : 8) + (i > 6 ? i - 7 : screenMode != ScreenMode.FIXED && Client.clientWidth > GameFrameConstants.smallTabs ? i - 7 : i) * CacheSpriteLoader.getCacheSprite(12].myWidth, getOffSetY() + (i > 6 || screenMode != ScreenMode.FIXED ? getHeight() - client.sideIcons[i < 7 ? 0 : i].myHeight - (screenMode != ScreenMode.FIXED && Client.clientWidth <= GameFrameConstants.smallTabs && i < 7 ? 53 : screenMode != ScreenMode.FIXED && Client.clientWidth > GameFrameConstants.smallTabs && i < 7 ? 17 : 9) : 0) + 2);
 						Sprite sideIcon = getSideIconForOldFrame(i);
 						if(sideIcon != null) {
 							int[] xx = getSideIconPosForOldFrame(screenMode, sideIcon, i);
@@ -139,7 +140,7 @@ public class TabArea extends GameFrame {
 						}
 						if (i < 8) {
 							if (Client.clientWidth > GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED) {
-								offsetX = offsetX - Client.cacheSprite[527].myWidth / 2 - 10;
+								offsetX = offsetX - CacheSpriteLoader.getCacheSprite(527).myWidth / 2 - 10;
 								offsetY = offsetY + 297;
 							} else if (screenMode != ScreenMode.FIXED) {
 								offsetY = offsetY + 261;
@@ -158,13 +159,13 @@ public class TabArea extends GameFrame {
 								offsetX--;
 							}
 							if(spriteIndex == 530) {
-								Client.cacheSprite2[48].drawSprite(offsetX, offsetY + 3);
+								CacheSpriteLoader.getCacheSprite2(48).drawSprite(offsetX, offsetY + 3);
 							} else if(spriteIndex == 781) {
-								Client.cacheSprite2[56].drawSprite(offsetX - 1, offsetY + 1);
+								CacheSpriteLoader.getCacheSprite2(56).drawSprite(offsetX - 1, offsetY + 1);
 							} else if(spriteIndex == 1000) {
-								Client.cacheSprite2[57].drawSprite(offsetX - 2, offsetY - 1);
+								CacheSpriteLoader.getCacheSprite2(57).drawSprite(offsetX - 2, offsetY - 1);
 							} else {
-								Client.cacheSprite[spriteIndex].drawSprite(offsetX, offsetY);
+								CacheSpriteLoader.getCacheSprite(spriteIndex).drawSprite(offsetX, offsetY);
 							}
 						}
 					}
@@ -184,16 +185,16 @@ public class TabArea extends GameFrame {
 		}
 		if (screenMode != ScreenMode.FIXED) {
 			if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
-				if (client.inSprite(false, Client.cacheSprite[7], getOffSetX() + 33, getOffSetY() - (Client.clientWidth <= GameFrameConstants.smallTabs ? 13 : -23)) && !componentHidden()) {
+				if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(7), getOffSetX() + 33, getOffSetY() - (Client.clientWidth <= GameFrameConstants.smallTabs ? 13 : -23)) && !componentHidden()) {
 					return true;
 				}
 				for (int i = 0; i < 14; i++) {
-					if (client.inSprite(false, Client.cacheSprite[screenMode == ScreenMode.FIXED && (i == 0) ? 8 : 12], getxPos() + 6 + (i > 6 ? i - 7 : Client.clientWidth <= GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED ? i : screenMode == ScreenMode.FIXED ? i : i - 7) * Client.cacheSprite[screenMode == ScreenMode.FIXED ? i == 1 || i == 8 ? 8 : 12 : 12].myWidth + (screenMode != ScreenMode.FIXED || i == 1 || i == 8 || i == 0 ? 0 : 5), i > 6 || screenMode != ScreenMode.FIXED ? getyPos() + getHeight() - Client.cacheSprite[12].myHeight * (i < 7 && Client.clientWidth <= GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED ? 2 : 1) - 1 : getyPos())) {
+					if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(screenMode == ScreenMode.FIXED && (i == 0) ? 8 : 12), getxPos() + 6 + (i > 6 ? i - 7 : Client.clientWidth <= GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED ? i : screenMode == ScreenMode.FIXED ? i : i - 7) * CacheSpriteLoader.getCacheSprite(screenMode == ScreenMode.FIXED ? i == 1 || i == 8 ? 8 : 12 : 12).myWidth + (screenMode != ScreenMode.FIXED || i == 1 || i == 8 || i == 0 ? 0 : 5), i > 6 || screenMode != ScreenMode.FIXED ? getyPos() + getHeight() - CacheSpriteLoader.getCacheSprite(12).myHeight * (i < 7 && Client.clientWidth <= GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED ? 2 : 1) - 1 : getyPos())) {
 						return true;
 					}
 				}
 			} else if (GameFrameConstants.gameframeType == GameFrameType.FRAME_554) {
-				if (client.inSprite(false, Client.cacheSprite[7], getOffSetX() + 33, getOffSetY() - (Client.clientWidth <= GameFrameConstants.smallTabs ? 13 : -23)) && !componentHidden()) {
+				if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(7), getOffSetX() + 33, getOffSetY() - (Client.clientWidth <= GameFrameConstants.smallTabs ? 13 : -23)) && !componentHidden()) {
 					return true;
 				}
 				for (int i = 0; i < Client.tabInterfaceIDs.length; i++) {
@@ -216,7 +217,7 @@ public class TabArea extends GameFrame {
 					}
 					if (i < 8) {
 						if (Client.clientWidth > GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED) {
-							offsetX = offsetX - Client.cacheSprite[527].myWidth / 2 - 10;
+							offsetX = offsetX - CacheSpriteLoader.getCacheSprite(527).myWidth / 2 - 10;
 							offsetY = offsetY + 297;
 						} else if (screenMode != ScreenMode.FIXED) {
 							offsetY = offsetY + 262;
@@ -250,7 +251,7 @@ public class TabArea extends GameFrame {
 							tabID = 15;
 						}
 						//System.out.println(""+tabID);
-						if (client.inSprite(true, Client.cacheSprite[screenMode == ScreenMode.FIXED && (i == 0 || i == 7) ? 8 : 12], getxPos() + 6 + (i > 6 ? i - 7 : Client.clientWidth <= GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED ? i : screenMode == ScreenMode.FIXED ? i : i - 7) * Client.cacheSprite[screenMode == ScreenMode.FIXED ? i == 1 || i == 8 ? 8 : 12 : 12].myWidth + (screenMode != ScreenMode.FIXED || i == 1 || i == 8 || i == 0 || i == 7 ? 0 : 5), i > 6 || screenMode != ScreenMode.FIXED ? getyPos() + getHeight() - Client.cacheSprite[12].myHeight * (i < 7 && Client.clientWidth <= GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED ? 2 : 1) - 1 : getyPos())) {
+						if (client.inSprite(true, CacheSpriteLoader.getCacheSprite(screenMode == ScreenMode.FIXED && (i == 0 || i == 7) ? 8 : 12), getxPos() + 6 + (i > 6 ? i - 7 : Client.clientWidth <= GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED ? i : screenMode == ScreenMode.FIXED ? i : i - 7) * CacheSpriteLoader.getCacheSprite(screenMode == ScreenMode.FIXED ? i == 1 || i == 8 ? 8 : 12 : 12).myWidth + (screenMode != ScreenMode.FIXED || i == 1 || i == 8 || i == 0 || i == 7 ? 0 : 5), i > 6 || screenMode != ScreenMode.FIXED ? getyPos() + getHeight() - CacheSpriteLoader.getCacheSprite(12).myHeight * (i < 7 && Client.clientWidth <= GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED ? 2 : 1) - 1 : getyPos())) {
 							if (screenMode != ScreenMode.FIXED) {
 								setHideComponent(Client.tabID != i ? false : componentHidden() ? false : true);
 							}
@@ -282,7 +283,7 @@ public class TabArea extends GameFrame {
 						}
 						if (i < 8) {
 							if (Client.clientWidth > GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED) {
-								offsetX = offsetX - Client.cacheSprite[527].myWidth / 2 - 10;
+								offsetX = offsetX - CacheSpriteLoader.getCacheSprite(527).myWidth / 2 - 10;
 								offsetY = offsetY - 2;
 								offsetY = offsetY + 300;
 							} else if (screenMode != ScreenMode.FIXED) {
@@ -324,27 +325,27 @@ public class TabArea extends GameFrame {
 
 			if (screenMode == ScreenMode.FIXED) {
 				if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
-					Client.cacheSprite[5].drawSprite(getOffSetX(), getOffSetY());
+					CacheSpriteLoader.getCacheSprite(5).drawSprite(getOffSetX(), getOffSetY());
 				} else if (GameFrameConstants.gameframeType == GameFrameType.FRAME_554) {
-					Client.cacheSprite[522].drawSprite(getOffSetX(), getOffSetY());
+					CacheSpriteLoader.getCacheSprite(522).drawSprite(getOffSetX(), getOffSetY());
 				}
 			} else {
 				if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
 					for (int i = 0; i < 14; i++) {
-						Client.cacheSprite[6].drawSprite(getOffSetX() + 6 + (i > 6 ? i - (Client.clientWidth <= GameFrameConstants.smallTabs ? 7 : 14) : i) * Client.cacheSprite[6].myWidth, getOffSetY() + getHeight() - 2 - Client.cacheSprite[6].myHeight * (i > 6 && Client.clientWidth <= 1000 ? 2 : 1) - 1);
+						CacheSpriteLoader.getCacheSprite(6).drawSprite(getOffSetX() + 6 + (i > 6 ? i - (Client.clientWidth <= GameFrameConstants.smallTabs ? 7 : 14) : i) * CacheSpriteLoader.getCacheSprite(6).myWidth, getOffSetY() + getHeight() - 2 - CacheSpriteLoader.getCacheSprite(6).myHeight * (i > 6 && Client.clientWidth <= 1000 ? 2 : 1) - 1);
 					}
 				} else if (GameFrameConstants.gameframeType == GameFrameType.FRAME_554) {
 					if (Client.clientWidth <= GameFrameConstants.smallTabs) {
-						Client.cacheSprite[526].drawSprite(getOffSetX() - 2, getOffSetY() + 262);
+						CacheSpriteLoader.getCacheSprite(526).drawSprite(getOffSetX() - 2, getOffSetY() + 262);
 					} else {
-						Client.cacheSprite[527].drawSprite(getOffSetX() - Client.cacheSprite[527].myWidth / 2 - 5, getOffSetY() + 298);
+						CacheSpriteLoader.getCacheSprite(527).drawSprite(getOffSetX() - CacheSpriteLoader.getCacheSprite(527).myWidth / 2 - 5, getOffSetY() + 298);
 					}
 				}
 			}
 
 			if (!componentHidden() && screenMode != ScreenMode.FIXED) {
-				Client.cacheSprite[18].drawTransparentSprite(getOffSetX() + 39, getOffSetY() + (Client.clientWidth <= GameFrameConstants.smallTabs ? -7 : 29), 100);
-				Client.cacheSprite[7].drawSprite(getOffSetX() + 33, getOffSetY() - (Client.clientWidth <= GameFrameConstants.smallTabs ? 13 : -23));
+				CacheSpriteLoader.getCacheSprite(18).drawTransparentSprite(getOffSetX() + 39, getOffSetY() + (Client.clientWidth <= GameFrameConstants.smallTabs ? -7 : 29), 100);
+				CacheSpriteLoader.getCacheSprite(7).drawSprite(getOffSetX() + 33, getOffSetY() - (Client.clientWidth <= GameFrameConstants.smallTabs ? 13 : -23));
 
 			}
 
@@ -406,11 +407,11 @@ public class TabArea extends GameFrame {
 				spriteIndex = 1031;
 			}
 		}
-		return Client.cacheSprite[spriteIndex];
+		return CacheSpriteLoader.getCacheSprite(spriteIndex);
 	}
 
 	private int[] getSideIconPosForOldFrame(ScreenMode screenMode, Sprite sideIcon, int i) {
-		int x = getOffSetX() + (screenMode == ScreenMode.FIXED ? 13 : 8) + (i > 6 ? i - 7 : screenMode != ScreenMode.FIXED && Client.clientWidth > GameFrameConstants.smallTabs ? i - 7 : i) * Client.cacheSprite[12].myWidth;
+		int x = getOffSetX() + (screenMode == ScreenMode.FIXED ? 13 : 8) + (i > 6 ? i - 7 : screenMode != ScreenMode.FIXED && Client.clientWidth > GameFrameConstants.smallTabs ? i - 7 : i) * CacheSpriteLoader.getCacheSprite(12).myWidth;
 		int y = getOffSetY() + (i > 6 || screenMode != ScreenMode.FIXED ? getHeight() - sideIcon.myHeight - (screenMode != ScreenMode.FIXED && Client.clientWidth <= GameFrameConstants.smallTabs && i < 7 ? 53 : screenMode != ScreenMode.FIXED && Client.clientWidth > GameFrameConstants.smallTabs && i < 7 ? 17 : 9) : 0) + 2;
 		x += 3;
 		if(!(i >= 7)) {

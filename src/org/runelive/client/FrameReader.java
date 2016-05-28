@@ -97,7 +97,7 @@ public final class FrameReader {
 			k = Integer.parseInt(s.substring(s.length() - 4), 16);
 			//System.out.println("Animation file: "+file+".gz");
 			if (animationlist[file].length == 0) {
-				Client.instance.onDemandFetcher.requestFileData(1, file);
+				Client.instance.onDemandFetcher.pushRequest(1, file);
 				return null;
 			}
 			return animationlist[file][k];

@@ -1,24 +1,13 @@
 package org.runelive.client;
 
 import org.runelive.Configuration;
-import org.runelive.client.graphics.gameframe.GameFrame;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import org.runelive.client.updates.*;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
 final class GameWindow extends JFrame {
@@ -34,9 +23,9 @@ final class GameWindow extends JFrame {
     }
 
     public static void main(String[] args) {
-		System.out.println("Checking client version...");
+		/*System.out.println("Checking client version...");
 		ClientUpdate.checkVersion();
-		if(new File(Signlink.getCacheDirectory() + "/cache_index_data").exists()) {
+		if(new File(Signlink.getCacheDirectory()).exists()) {
 			if(!new File(Signlink.getCacheDirectory() +"versions").exists()) {
 				new File(Signlink.getCacheDirectory() +"versions").mkdir();
 			}
@@ -48,7 +37,7 @@ final class GameWindow extends JFrame {
 			ModelsUpdate.checkVersion();
 			System.out.println("Checking animation version...");
 			AnimationsUpdate.checkVersion();
-		}
+		}*/
         images = new Image[2];
         labels = new Image[7];
         try {

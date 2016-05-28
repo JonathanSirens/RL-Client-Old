@@ -5,76 +5,87 @@ import org.runelive.client.io.ByteBuffer;
 
 public final class Archive {
 
-	private final byte[] payload;
-	private final int[] anIntArray730;
-	private final int[] indiceTable;
-	private final int dataSize;
-	private final int[] hashTable;
-	private final boolean isCompressed;
-	private final int[] sizeTable;
+	private final byte[] archiveData;
+	private final int[] entryCompressedSizes;
+	private final int[] entryPositions;
+	private final int entryCount;
+	private final int[] entryHashes;
+	private final boolean decompressed;
+	private final int[] entrySizes;
 
 	public Archive(byte[] data) {
 		ByteBuffer buffer = new ByteBuffer(data);
 		int decompressed = buffer.getTribyte();
 		int compressed = buffer.getTribyte();
-		isCompressed = decompressed != compressed;
+		this.decompressed = decompressed != compressed;
 
-		if (isCompressed) {
+		if (this.decompressed) {
 			byte[] tmp = new byte[decompressed];
 			BZIPDecompressor.decompress(tmp, decompressed, data, compressed, 6);
-			payload = tmp;
-			buffer = new ByteBuffer(payload);
+			archiveData = tmp;
+			buffer = new ByteBuffer(archiveData);
 		} else {
-			payload = data;
+			archiveData = data;
 		}
 
-		dataSize = buffer.getUnsignedShort();
-		hashTable = new int[dataSize];
-		sizeTable = new int[dataSize];
-		anIntArray730 = new int[dataSize];
-		indiceTable = new int[dataSize];
-		int position = buffer.position + dataSize * 10;
+		entryCount = buffer.getUnsignedShort();
+		entryHashes = new int[entryCount];
+		entrySizes = new int[entryCount];
+		entryCompressedSizes = new int[entryCount];
+		entryPositions = new int[entryCount];
+		int position = buffer.position + entryCount * 10;
 
-		for (int i = 0; i < dataSize; i++) {
-			hashTable[i] = buffer.getIntLittleEndian();
-			sizeTable[i] = buffer.getTribyte();
-			anIntArray730[i] = buffer.getTribyte();
-			indiceTable[i] = position;
-			position += anIntArray730[i];
+		for (int i = 0; i < entryCount; i++) {
+			entryHashes[i] = buffer.getIntLittleEndian();
+			entrySizes[i] = buffer.getTribyte();
+			entryCompressedSizes[i] = buffer.getTribyte();
+			entryPositions[i] = position;
+			position += entryCompressedSizes[i];
 		}
 	}
 
 	public byte[] get(String name) {
-		byte[] data = null;
+		/*byte[] data = null;
 		int hash = getHash(name);
-		for (int i = 0; i < dataSize; i++) {
-			if (hashTable[i] == hash) {
+		for (int i = 0; i < entryCount; i++) {
+			if (entryHashes[i] == hash) {
 				if (data == null) {
-					data = new byte[sizeTable[i]];
+					data = new byte[entrySizes[i]];
 				}
 
-				if (!isCompressed) {
-					BZIPDecompressor.decompress(data, sizeTable[i], payload, anIntArray730[i], indiceTable[i]);
+				if (!decompressed) {
+					BZIPDecompressor.decompress(data, entrySizes[i], archiveData, entryCompressedSizes[i], entryPositions[i]);
 				} else {
-					System.arraycopy(payload, indiceTable[i], data, 0, sizeTable[i]);
+					System.arraycopy(archiveData, entryPositions[i], data, 0, entrySizes[i]);
 				}
 
 				return data;
 			}
 		}
 
-		return null;
+		return null;*/
+		byte[] entryData = null;
+		int hash = getHash(name);
+		for (int index = 0; index < this.entryCount; index++) {
+			if (this.entryHashes[index] == hash) {
+				entryData = new byte[this.entrySizes[index]];
+				if (!this.decompressed) {
+					BZIPDecompressor.decompress(entryData, this.entrySizes[index], this.archiveData, this.entryCompressedSizes[index], this.entryPositions[index]);
+				} else {
+					System.arraycopy(this.archiveData, this.entryPositions[index], entryData, 0, this.entrySizes[index]);
+				}
+			}
+		}
+		return entryData;
 	}
 
-	private int getHash(String name) {
-		int hash = 0;
-		name = name.toUpperCase();
-
-		for (int i = 0; i < name.length(); i++) {
-			hash = hash * 61 + name.charAt(i) - 32;
+	public static int getHash(String string) {
+		int identifier = 0;
+		string = string.toUpperCase();
+		for (int index = 0; index < string.length(); index++) {
+			identifier = (identifier * 61 + string.charAt(index)) - 32;
 		}
-
-		return hash;
+		return identifier;
 	}
 
 }

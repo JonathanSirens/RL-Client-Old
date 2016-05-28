@@ -40,7 +40,7 @@ public final class ItemDefinition {
 					if (ids > 0) {
 						try {
 							System.out.println("Dumping item model: " + ids);
-							byte abyte[] = Client.instance.decompressors[1].decompress(ids);
+							byte abyte[] = Client.instance.cacheIndices[1].get(ids);
 							File map = new File(Signlink.getCacheDirectory() + "models/" + ids + ".gz");
 							FileOutputStream fos = new FileOutputStream(map);
 							fos.write(abyte);
@@ -228,9 +228,9 @@ public final class ItemDefinition {
 			itemDef.actions[4] = "Drop";
 	break;	
 	case 13740:
-		System.out.println("male: "+itemDef.maleWearId);
-		System.out.println("female: "+itemDef.femaleWearId);
-		System.out.println("inventory: "+itemDef.modelID);
+//		System.out.println("male: "+itemDef.maleWearId);
+//		System.out.println("female: "+itemDef.femaleWearId);
+//		System.out.println("inventory: "+itemDef.modelID);
 		break;
 	case 21092:
 			itemDef.modelID = 67004;
@@ -6180,11 +6180,11 @@ public final class ItemDefinition {
 
 		boolean flag = true;
 
-		if (!Model.method463(k)) {
+		if (!Model.isModelLoaded(k)) {
 			flag = false;
 		}
 
-		if (l != -1 && !Model.method463(l)) {
+		if (l != -1 && !Model.isModelLoaded(l)) {
 			flag = false;
 		}
 
@@ -6238,15 +6238,15 @@ public final class ItemDefinition {
 
 		boolean flag = true;
 
-		if (!Model.method463(k)) {
+		if (!Model.isModelLoaded(k)) {
 			flag = false;
 		}
 
-		if (l != -1 && !Model.method463(l)) {
+		if (l != -1 && !Model.isModelLoaded(l)) {
 			flag = false;
 		}
 
-		if (i1 != -1 && !Model.method463(i1)) {
+		if (i1 != -1 && !Model.isModelLoaded(i1)) {
 			flag = false;
 		}
 

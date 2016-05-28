@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -25,6 +24,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import org.runelive.Configuration;
+import org.runelive.client.graphics.CacheSpriteLoader;
 import org.runelive.client.graphics.CursorData;
 import org.runelive.client.graphics.RSImageProducer;
 import org.runelive.client.graphics.Sprite;
@@ -1091,7 +1091,7 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 	public void setCursor(CursorData cursor) {
 		if(Client.getClient().oldCursor != null && Client.getClient().oldCursor == cursor)
 			return;
-		Sprite sprite = Client.cacheSprite[cursor.sprite];
+		Sprite sprite = CacheSpriteLoader.getCacheSprite(cursor.sprite);
 		Image image = sprite.getImage();
 		//Image image = getGameComponent().getToolkit().createImage(FileOperations.ReadFile(signlink.findcachedir() + "Sprites/Cursors/Cursor " + id + ".PNG"));
 		getGameComponent().setCursor(getGameComponent().getToolkit().createCustomCursor(image, new Point(0, 0), null));

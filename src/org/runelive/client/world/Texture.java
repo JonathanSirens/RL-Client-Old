@@ -17,7 +17,7 @@ public final class Texture {
 			return null;
 		}
 		if (cache[index] == null) {
-			Client.instance.onDemandFetcher.requestFileData(4, index);
+			Client.instance.onDemandFetcher.pushRequest(4, index);
 			return null;
 		}
 		return cache[index];

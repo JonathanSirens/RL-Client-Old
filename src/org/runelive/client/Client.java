@@ -1,7 +1,10 @@
 package org.runelive.client;
 
 import java.awt.Toolkit;
-import org.runelive.client.updates.*;
+
+import org.runelive.client.cache.CacheIndex;
+import org.runelive.client.graphics.*;
+
 import java.applet.AppletContext;
 
 import java.awt.image.RGBImageFilter;
@@ -30,16 +33,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.OutputStream;
-import org.runelive.client.graphics.ResourceLoader;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -60,31 +58,24 @@ import org.runelive.Configuration;
 import org.runelive.client.accounts.AccountManager;
 import org.runelive.client.cache.Archive;
 import org.runelive.client.cache.definition.Animation;
-import org.runelive.client.cache.definition.Flo;
+import org.runelive.client.cache.definition.FloorUnderlay;
 import org.runelive.client.cache.definition.IdentityKit;
 import org.runelive.client.cache.definition.ItemDefinition;
 import org.runelive.client.cache.definition.MobDefinition;
 import org.runelive.client.cache.definition.ObjectDefinition;
-import org.runelive.client.cache.definition.OverLayFlo317;
+import org.runelive.client.cache.definition.FloorOverlay;
 import org.runelive.client.cache.definition.SpotAnimDefinition;
 import org.runelive.client.cache.definition.VarBit;
 import org.runelive.client.cache.definition.Varp;
 import org.runelive.client.cache.node.Deque;
 import org.runelive.client.cache.node.Node;
 import org.runelive.client.cache.ondemand.OnDemandFetcher;
-import org.runelive.client.cache.ondemand.OnDemandRequest;
+import org.runelive.client.cache.ondemand.CacheFileRequest;
 import org.runelive.client.constants.GameFrameConstants;
 import org.runelive.client.constants.SizeConstants;
 import org.runelive.client.constants.GameFrameConstants.GameFrameType;
 import org.runelive.client.entity.player.Player;
 import org.runelive.client.entity.player.PlayerHandler;
-import org.runelive.client.graphics.Background;
-import org.runelive.client.graphics.CursorData;
-import org.runelive.client.graphics.DrawingArea;
-import org.runelive.client.graphics.RSImageProducer;
-import org.runelive.client.graphics.Sprite;
-import org.runelive.client.graphics.SpriteLoader;
-import org.runelive.client.graphics.SpriteLoader2;
 import org.runelive.client.graphics.fonts.Censor;
 import org.runelive.client.graphics.fonts.RSFontSystem;
 import org.runelive.client.graphics.fonts.TextClass;
@@ -109,7 +100,7 @@ import org.runelive.client.renderable.Entity;
 import org.runelive.client.renderable.Item;
 import org.runelive.client.renderable.NPC;
 import org.runelive.client.renderable.PlayerProjectile;
-import org.runelive.client.tools.FileUtilities;
+import org.runelive.client.util.FileUtilities;
 import org.runelive.client.world.CollisionMap;
 import org.runelive.client.world.CustomObjects;
 import org.runelive.client.world.Model;
@@ -162,8 +153,6 @@ public class Client extends GameRenderer {
 	}
 	
 	public static int clientZoom = 0;
-	
-	public static final int CACHE_INDEX_COUNT = 6;
 
 	/**
 	 * The split chat color, by default its 65535
@@ -234,8 +223,8 @@ public class Client extends GameRenderer {
 					10153, 56621, 4783, 1341, 16578, 35003 },
 					{ 4626, 11146, 6439, 12, 4758, 10270 },
 					{ 4550, 4537, 5681, 5673, 5790, 6806, 8076, 4574 } };
-	public static Sprite[] cacheSprite;
-	public static Sprite[] cacheSprite2;
+	//public static Sprite[] cacheSprite;
+	//public static Sprite[] cacheSprite2;
 	public static int clientHeight = 503;
 	public static int clientWidth = 765;
 	private static boolean fetchMusic = false;
@@ -260,7 +249,7 @@ public class Client extends GameRenderer {
 	private static byte[] musicData;
 	private static int musicVolume2;
 	public static Player myPlayer;
-	private static String myUsername;
+	static String myUsername;
 	private static final Pattern NAME_PATTERN = Pattern.compile("@.+@");
 	private static int nodeID = 10;
 	public static int openInterfaceID;
@@ -346,7 +335,7 @@ public class Client extends GameRenderer {
 	}
 
 	public String indexLocation(int cacheIndex, int index) {
-		return Signlink.getCacheDirectory() + "/cache_index_data/index" + cacheIndex + "/"
+		return Signlink.getCacheDirectory() + "/index" + cacheIndex + "/"
 				+ (index != -1 ? index + ".gz" : "");
 	}
 
@@ -361,7 +350,7 @@ public class Client extends GameRenderer {
 								.toString()));
 				byte[] data = fileToByteArray(cacheIndex, fileIndex);
 				if (data != null && data.length > 0) {
-					decompressors[cacheIndex].method234(data.length, data, fileIndex);
+					cacheIndices[cacheIndex].put(data.length, data, fileIndex);
 					System.out.println("Repacked " + fileIndex + ".");
 				} else {
 					System.out.println("Unable to locate index " + fileIndex
@@ -392,149 +381,6 @@ public class Client extends GameRenderer {
 		updateSetting(26054, !Configuration.HIGH_DETAIL);
 		updateSetting(26058, Configuration.HIGH_DETAIL);
 		updateSetting(26035, Configuration.FOG_ENABLED);
-	}
-	
-	/**
-	 * Saves the players data
-	 *
-	 * @throws IOException
-	 */
-	public void savePlayerData() {
-		try {
-			File file = new File(Signlink.getCacheDirectory() + "/settings.dat");
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-			DataOutputStream stream = new DataOutputStream(new FileOutputStream(file));
-			if (stream != null) {
-				stream.writeBoolean(Configuration.SAVE_ACCOUNTS);
-				stream.writeBoolean(Configuration.NEW_FUNCTION_KEYS);
-				stream.writeBoolean(Configuration.NEW_HEALTH_BARS);
-				stream.writeBoolean(Configuration.NEW_HITMARKS);
-				stream.writeBoolean(Configuration.CONSTITUTION_ENABLED);
-				stream.writeBoolean(Configuration.NEW_CURSORS);
-				stream.writeBoolean(Configuration.DISPLAY_HP_ABOVE_HEAD);
-				stream.writeBoolean(Configuration.DISPLAY_USERNAMES_ABOVE_HEAD);
-				stream.writeBoolean(GameFrameConstants.gameframeType == GameFrameType.FRAME_525 ? false : true);
-				stream.writeBoolean(Configuration.NOTIFICATIONS_ENABLED);
-				stream.writeBoolean(Configuration.HIGH_DETAIL);
-				stream.writeBoolean(rememberMe);
-				stream.writeUTF(saved_characters_usernames[0]);
-				stream.writeUTF(saved_characters_usernames[1]);
-				stream.writeUTF(saved_characters_usernames[2]);
-				stream.writeUTF(saved_characters_passwords[0]);
-				stream.writeUTF(saved_characters_passwords[1]);
-				stream.writeUTF(saved_characters_passwords[2]);
-				stream.writeInt(splitChatColor);
-				stream.writeByte(variousSettings[502]); //Split private chat?
-				
-				/*
-				 * Quick prayers & curses saving
-				 */
-				String stringSave = "";
-				for(int i = 0; i < quickPrayers.length; i++)	{
-					stringSave = stringSave + quickPrayers[i];
-				}
-				stream.writeUTF(stringSave);
-				stringSave = "";
-				for(int i = 0; i < quickCurses.length; i++)	{
-					stringSave = stringSave + quickCurses[i];
-				}
-				stream.writeUTF(stringSave);
-
-				stream.writeBoolean(Configuration.FOG_ENABLED);
-
-				stream.close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Loads the players data
-	 *
-	 * @throws IOException
-	 */
-	private void loadPlayerData() throws IOException {
-		File file = new File(Signlink.getCacheDirectory() + "/settings.dat");
-
-		if (!file.exists()) {
-			return;
-		}
-
-		DataInputStream stream = new DataInputStream(new FileInputStream(file));
-
-		try {
-			Configuration.SAVE_ACCOUNTS = stream.readBoolean();
-			Configuration.NEW_FUNCTION_KEYS = stream.readBoolean();
-			Configuration.NEW_HEALTH_BARS = stream.readBoolean();
-			Configuration.NEW_HITMARKS = stream.readBoolean();
-			Configuration.CONSTITUTION_ENABLED = stream.readBoolean();
-			Configuration.NEW_CURSORS = stream.readBoolean();
-			Configuration.DISPLAY_HP_ABOVE_HEAD = stream.readBoolean();
-			Configuration.DISPLAY_USERNAMES_ABOVE_HEAD = stream.readBoolean();
-			GameFrameConstants.gameframeType = stream.readBoolean() ? GameFrameType.FRAME_554 : GameFrameType.FRAME_525;
-			Configuration.NOTIFICATIONS_ENABLED = stream.readBoolean();
-			Configuration.HIGH_DETAIL = stream.readBoolean();
-			rememberMe = stream.readBoolean();
-			saved_characters_usernames[0] = stream.readUTF();
-			saved_characters_usernames[1] = stream.readUTF();
-			saved_characters_usernames[2] = stream.readUTF();
-			saved_characters_passwords[0] = stream.readUTF();
-			saved_characters_passwords[1] = stream.readUTF();
-			saved_characters_passwords[2] = stream.readUTF();
-			myUsername = saved_characters_usernames[0];
-			password = saved_characters_passwords[0];
-			splitChatColor = stream.readInt();
-			variousSettings[287] = variousSettings[502] = stream.readByte();
-			updateConfig(287);
-			if (!Configuration.HIGH_DETAIL) {
-				setLowDetail();
-			} else {
-				setHighDetail();
-			}
-			
-			/*
-			 * Quick prayers / curses
-			 */
-			String q = stream.readUTF();
-			for (int i = 0; i < q.length(); i++)
-				quickPrayers[i] = Integer.parseInt(q.substring(i, i+1));
-			q = stream.readUTF();
-			for (int i = 0; i < q.length(); i++) {
-				quickCurses[i] = Integer.parseInt(q.substring(i, i + 1));
-			}
-			if (stream.available() >= 1) {
-				Configuration.FOG_ENABLED = stream.readBoolean();
-			}
-		} catch (IOException e) {
-			file.delete();
-			Configuration.SAVE_ACCOUNTS = true;
-			Configuration.NEW_FUNCTION_KEYS = true;
-			Configuration.NEW_FUNCTION_KEYS = true;
-			Configuration.NEW_HEALTH_BARS = true;
-			Configuration.NEW_HITMARKS = true;
-			Configuration.CONSTITUTION_ENABLED = true;
-			Configuration.NEW_CURSORS = true;
-			Configuration.DISPLAY_HP_ABOVE_HEAD = false;
-			Configuration.DISPLAY_USERNAMES_ABOVE_HEAD = false;
-			GameFrameConstants.gameframeType = GameFrameType.FRAME_554;
-			Configuration.NOTIFICATIONS_ENABLED = true;
-			Configuration.HIGH_DETAIL = false;
-			rememberMe = true;
-			saved_characters_usernames[0] = "Empty";
-			saved_characters_usernames[1] = "Empty";
-			saved_characters_usernames[2] = "Empty";
-			saved_characters_passwords[0] = "none";
-			saved_characters_passwords[1] = "none";
-			saved_characters_passwords[2] = "none";
-			myUsername = "Empty";
-			password = "none";
-			e.printStackTrace();
-		} finally {
-			stream.close();
-		}
 	}
 	
 	private boolean hovered(RSInterface rsi) {
@@ -670,9 +516,9 @@ public class Client extends GameRenderer {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("Checking client version...");
-		ClientUpdate.checkVersion();
-		if(new File(Signlink.getCacheDirectory() + "/cache_index_data").exists()) {
+		//System.out.println("Checking client version...");
+		/*ClientUpdate.checkVersion();
+		if(new File(Signlink.getCacheDirectory()).exists()) {
 			if(!new File(Signlink.getCacheDirectory() +"versions").exists()) {
 				new File(Signlink.getCacheDirectory() +"versions").mkdir();
 			}
@@ -684,7 +530,7 @@ public class Client extends GameRenderer {
 			ModelsUpdate.checkVersion();
 			System.out.println("Checking animation version...");
 			AnimationsUpdate.checkVersion();
-		}
+		}*/
 		portOff = 0;
 		if (!Configuration.HIGH_DETAIL) {
 			setLowDetail();
@@ -998,7 +844,7 @@ public class Client extends GameRenderer {
 		return aClass56_749 != null;
 	}
 
-	private static void setLowDetail() {
+	static void setLowDetail() {
 		setLowDetail(true);
 		WorldController.lowDetail = true;
 		Rasterizer.lowDetail = false;
@@ -1010,7 +856,7 @@ public class Client extends GameRenderer {
 		Configuration.hdShading = true;
 	}
 
-	private static void setHighDetail() {
+	static void setHighDetail() {
 		setLowDetail(false);
 		WorldController.lowDetail = false;
 		Rasterizer.lowDetail = false;
@@ -1196,7 +1042,7 @@ public class Client extends GameRenderer {
 	private final int[][][] anIntArrayArrayArray1129;
 	private RSImageProducer aRSImageProducer_1107;
 	private RSImageProducer aRSImageProducer_1125;
-	private Socket aSocket832;
+	private Socket jaggrabSocket;
 	private ByteBuffer aStream_834;
 	private ByteBuffer[] aStreamArray895s;
 	public String aString844;
@@ -1246,7 +1092,7 @@ public class Client extends GameRenderer {
 	public final int[] currentStats;
 	private int daysSinceLastLogin;
 	private int daysSinceRecovChange;
-	public final Decompressor[] decompressors;
+	public final CacheIndex[] cacheIndices;
 	public int destX;
 	public int destY;
 	public int dialogID;
@@ -1348,7 +1194,7 @@ public class Client extends GameRenderer {
 	private int[] objectMap;
 	private String objectMaps = "";
 	public OnDemandFetcher onDemandFetcher;
-	private String password;
+	String password;
 	public int pktSize;
 	public int pktType;
 	public int plane;
@@ -1480,7 +1326,7 @@ public class Client extends GameRenderer {
 		spriteDrawX = -1;
 		spriteDrawY = -1;
 		compassArray1 = new int[33];
-		decompressors = new Decompressor[CACHE_INDEX_COUNT];
+		cacheIndices = new CacheIndex[Configuration.CACHE_INDEX_COUNT];
 		variousSettings = new int[2000];
 		aBoolean972 = false;
 		anInt975 = 50;
@@ -1517,7 +1363,7 @@ public class Client extends GameRenderer {
 		anIntArray1073 = new int[1000];
 		aBoolean1080 = false;
 		setInputBuffer(ByteBuffer.create());
-		expectedCRCs = new int[9];
+		expectedCRCs = new int[10];
 		menuActionCmd2 = new int[500];
 		menuActionCmd3 = new int[500];
 		menuActionID = new int[500];
@@ -3370,7 +3216,7 @@ public class Client extends GameRenderer {
 		} catch (Exception _ex) {
 		}
 
-		cacheSprite = null;
+		//cacheSprite = null;
 		setConnection(null);
 		stopMidi();
 
@@ -3459,7 +3305,7 @@ public class Client extends GameRenderer {
 		MobDefinition.nullify();
 		ItemDefinition.nullify();
 		FrameReader.nullify();
-		Flo.cache = null;
+		FloorUnderlay.cache = null;
 		IdentityKit.cache = null;
 		RSInterface.interfaceCache = null;
 		Animation.cache = null;
@@ -3494,52 +3340,53 @@ public class Client extends GameRenderer {
 		setFullscreenInterfaceID(-1);
 	}
 
-	private void compareCrcValues() {
+	private void connectToFileServer() {
 		int secondsToWait = 5;
-		expectedCRCs[8] = 0;
+		expectedCRCs[9] = 0;
 		int checksumCount = 0;
 
-		while (expectedCRCs[8] == 0) {
+		while (expectedCRCs[9] == 0) {
 			String error = "Unknown problem";
 			////drawSmoothLoading(20, "Connecting to web server");
 
 			try {
 				DataInputStream in = openJagGrabInputStream("crc" + (int) (Math.random() * 99999999D) + "-" + 317);
-				ByteBuffer buffer = new ByteBuffer(new byte[40]);
-				in.readFully(buffer.buffer, 0, 40);
+				int archives = 10;
+				ByteBuffer buffer = new ByteBuffer(new byte[archives * 4 + 4]);
+				in.readFully(buffer.buffer, 0, archives * 4 + 4);
 				in.close();
 
-				for (int index = 0; index < 9; index++) {
+				for (int index = 0; index < archives; index++) {
 					expectedCRCs[index] = buffer.getIntLittleEndian();
 				}
 
 				int checksumValue = buffer.getIntLittleEndian();
 				int expectedValue = 1234;
 
-				for (int index = 0; index < 9; index++) {
+				for (int index = 0; index < archives; index++) {
 					expectedValue = (expectedValue << 1) + expectedCRCs[index];
 				}
 
 				if (checksumValue != expectedValue) {
 					error = "checksum problem";
-					expectedCRCs[8] = 0;
+					expectedCRCs[9] = 0;
 				}
 			} catch (EOFException _ex) {
 				error = "EOF problem";
-				expectedCRCs[8] = 0;
+				expectedCRCs[9] = 0;
 			} catch (IOException _ex) {
 				error = "connection problem";
-				expectedCRCs[8] = 0;
+				expectedCRCs[9] = 0;
 			} catch (Exception _ex) {
 				error = "logic problem";
-				expectedCRCs[8] = 0;
+				expectedCRCs[9] = 0;
 
 				if (!Signlink.reporterror) {
 					return;
 				}
 			}
 
-			if (expectedCRCs[8] == 0) {
+			if (expectedCRCs[9] == 0) {
 				checksumCount++;
 
 				for (int seconds = secondsToWait; seconds > 0; seconds--) {
@@ -3547,6 +3394,7 @@ public class Client extends GameRenderer {
 						//drawSmoothLoading(10, "Game updated - please reload page");
 						seconds = 10;
 					} else {
+						System.out.println(error + " - Will retry in " + seconds + " secs.");
 						//drawSmoothLoading(10, error + " - Will retry in " + seconds + " secs.");
 					}
 
@@ -3597,9 +3445,9 @@ public class Client extends GameRenderer {
 					if(dmg == 0)
 						dmg = 1;
 				}
-				cacheSprite[784].drawSprite(spriteDrawX - 11, spriteDrawY - 12);
+				CacheSpriteLoader.getCacheSprite(784).drawSprite(spriteDrawX - 11, spriteDrawY - 12);
 			} else {
-				cacheSprite[785].drawSprite(spriteDrawX - 12, spriteDrawY - 13);
+				CacheSpriteLoader.getCacheSprite(785).drawSprite(spriteDrawX - 12, spriteDrawY - 13);
 			}
 			smallText.drawText(0, String.valueOf(dmg), spriteDrawY + 4, spriteDrawX);
 			smallText.drawText(0xffffff, String.valueOf(dmg), spriteDrawY + 3, spriteDrawX - 1);
@@ -3648,11 +3496,11 @@ public class Client extends GameRenderer {
 				if (soak > 0) {
 					x -= 16;
 				}
-				end1 = cacheSprite[792 + (type * 3)];
-				middle = cacheSprite[792 + (type * 3) + 1];
-				end2 = cacheSprite[792 + (type * 3) + 2];
+				end1 = CacheSpriteLoader.getCacheSprite(792 + (type * 3));
+				middle = CacheSpriteLoader.getCacheSprite(792 + (type * 3) + 1);
+				end2 = CacheSpriteLoader.getCacheSprite(792 + (type * 3) + 2);
 				if (icon != 255 && icon != 8) {
-					cacheSprite[786 + icon].drawSprite3(spriteDrawX
+					CacheSpriteLoader.getCacheSprite(786 + icon).drawSprite3(spriteDrawX
 							- 31 + x, drawPos - 9, opacity);
 				}
 				end1.drawSprite3(spriteDrawX - 12 + x, drawPos - 12, opacity);
@@ -3669,7 +3517,7 @@ public class Client extends GameRenderer {
 					drawSoak(soak, opacity, drawPos, x);
 			} else {
 				int decrX = soak > 0 ? 26 : 12;
-				cacheSprite[543].drawSprite3(spriteDrawX - decrX, drawPos - 14, opacity);
+				CacheSpriteLoader.getCacheSprite(543).drawSprite3(spriteDrawX - decrX, drawPos - 14, opacity);
 				if (soak > 0) {
 					drawSoak(soak, opacity, drawPos, 4);
 				}
@@ -3680,18 +3528,18 @@ public class Client extends GameRenderer {
 	public void drawSoak(int damage, int opacity, int drawPos, int x) {
 		x -= 12;
 		int soakLength = String.valueOf(damage).length();
-		cacheSprite[793 + 5].drawSprite3(spriteDrawX + x,
+		CacheSpriteLoader.getCacheSprite(793 + 5).drawSprite3(spriteDrawX + x,
 				drawPos - 12, opacity);
 		x += 20;
-		cacheSprite[792 + 30].drawSprite3(spriteDrawX + x,
+		CacheSpriteLoader.getCacheSprite(792 + 30).drawSprite3(spriteDrawX + x,
 				drawPos - 12, opacity);
 		x += 4;
 		for (int i = 0; i < soakLength * 2; i++) {
-			cacheSprite[792 + 31].drawSprite3(spriteDrawX + x,
+			CacheSpriteLoader.getCacheSprite(792 + 31).drawSprite3(spriteDrawX + x,
 					drawPos - 12, opacity);
 			x += 4;
 		}
-		cacheSprite[792 + 32].drawSprite3(spriteDrawX + x,
+		CacheSpriteLoader.getCacheSprite(792 + 32).drawSprite3(spriteDrawX + x,
 				drawPos - 10, opacity);
 		if(damage > 99) {
 			x -= 5;
@@ -5163,43 +5011,43 @@ public class Client extends GameRenderer {
 					case 26026:
 						Configuration.DISPLAY_HP_ABOVE_HEAD = !Configuration.DISPLAY_HP_ABOVE_HEAD;
 						pushMessage("Displaying hp above head turned " + (Configuration.DISPLAY_HP_ABOVE_HEAD ? "on" : "off") + ".", 0, "");
-						savePlayerData();
+						Settings.save();
 						updateSetting(interfaceId, !Configuration.DISPLAY_HP_ABOVE_HEAD);
 						break;
 					case 26027:
 						Configuration.DISPLAY_USERNAMES_ABOVE_HEAD = !Configuration.DISPLAY_USERNAMES_ABOVE_HEAD;
 						pushMessage("Displaying usernames above head turned " + (Configuration.DISPLAY_USERNAMES_ABOVE_HEAD ? "on" : "off") + ".", 0, "");
-						savePlayerData();
+						Settings.save();
 						updateSetting(interfaceId, !Configuration.DISPLAY_USERNAMES_ABOVE_HEAD);
 						break;
 					case 26031:
 						GameFrameConstants.gameframeType = GameFrameConstants.gameframeType == GameFrameType.FRAME_525 ? GameFrameType.FRAME_554 : GameFrameType.FRAME_525;
 						pushMessage("Gameframe toggled.", 0, "");
-						savePlayerData();
+						Settings.save();
 						updateSetting(interfaceId, GameFrameConstants.gameframeType == GameFrameType.FRAME_525);
 						break;
 					case 26035:
 						Configuration.FOG_ENABLED = !Configuration.FOG_ENABLED;
 						pushMessage("HD Fog toggled.", 0, "");
-						savePlayerData();
+						Settings.save();
 						updateSetting(interfaceId, !Configuration.FOG_ENABLED);
 						break;
 					case 26014:
 						Configuration.NEW_HITMARKS = !Configuration.NEW_HITMARKS;
 						pushMessage("New hitmarks turned " + (Configuration.NEW_HITMARKS ? "on" : "off") + ".", 0, "");
-						savePlayerData();
+						Settings.save();
 						updateSetting(interfaceId, !Configuration.NEW_HITMARKS);
 						break;
 					case 26007:
 						Configuration.NEW_FUNCTION_KEYS = !Configuration.NEW_FUNCTION_KEYS;
 						pushMessage("New function keys turned " + (Configuration.NEW_FUNCTION_KEYS ? "on" : "off") + ".", 0, "");
-						savePlayerData();
+						Settings.save();
 						updateSetting(interfaceId, !Configuration.NEW_FUNCTION_KEYS);
 						break;
 					case 26010:
 						Configuration.NEW_CURSORS = !Configuration.NEW_CURSORS;
 						pushMessage("New cursors turned " + (Configuration.NEW_CURSORS ? "on" : "off") + ".", 0, "");
-						savePlayerData();
+						Settings.save();
 						updateSetting(interfaceId, !Configuration.NEW_CURSORS);
 						oldCursor = null;
 						if(!Configuration.NEW_CURSORS) {
@@ -5211,26 +5059,26 @@ public class Client extends GameRenderer {
 					case 26008:
 						Configuration.NEW_HEALTH_BARS = !Configuration.NEW_HEALTH_BARS;
 						pushMessage("New health bars turned " + (Configuration.NEW_HEALTH_BARS ? "on" : "off") + ".", 0, "");
-						savePlayerData();
+						Settings.save();
 						updateSetting(interfaceId, !Configuration.NEW_HEALTH_BARS);
 						break;
 					case 26029:
 						Configuration.CONSTITUTION_ENABLED = !Configuration.CONSTITUTION_ENABLED;
 						pushMessage("Constitution turned " + (Configuration.CONSTITUTION_ENABLED ? "on" : "off") + ".", 0, "");
-						savePlayerData();
+						Settings.save();
 						updateSetting(interfaceId, !Configuration.CONSTITUTION_ENABLED);
 						break;
 					case 26033:
 						Configuration.NOTIFICATIONS_ENABLED = !Configuration.NOTIFICATIONS_ENABLED;
 						pushMessage("Push notifications turned " + (Configuration.NOTIFICATIONS_ENABLED ? "on" : "off") + ".", 0, "");
-						savePlayerData();
+						Settings.save();
 						updateSetting(interfaceId, !Configuration.NOTIFICATIONS_ENABLED);
 						break;
 					case 26054:
 						setLowDetail();
 						loadRegion();
 						pushMessage("Set to low detail.", 0, "");
-						savePlayerData();
+						Settings.save();
 						updateSetting(interfaceId, false);
 						updateSetting(26058, false);
 						break;
@@ -5238,7 +5086,7 @@ public class Client extends GameRenderer {
 						setHighDetail();
 						loadRegion();
 						pushMessage("Set to high detail.", 0, "");
-						savePlayerData();
+						Settings.save();
 						updateSetting(interfaceId, false);
 						updateSetting(26054, false);
 						break;
@@ -5321,7 +5169,7 @@ public class Client extends GameRenderer {
 				if(interfaceId == 957) {
 					variousSettings[287] = variousSettings[502] = variousSettings[502] == 1 ? 0 : 1;
 					updateConfig(287);
-					savePlayerData();
+					Settings.save();
 				}
 	}
 
@@ -6583,7 +6431,7 @@ public class Client extends GameRenderer {
 
 											if (!childInterface.hideStackSize) {
 												if(k10 >= 1500000000 && childInterface.drawInfinity) {
-													cacheSprite[780].drawSprite(k5, j6);
+													CacheSpriteLoader.getCacheSprite(780).drawSprite(k5, j6);
 												} else {
 													smallText.method385(0,
 															intToKOrMil(k10),
@@ -6841,16 +6689,16 @@ public class Client extends GameRenderer {
 						//System.out.println(""+childInterface.sprite1);
 						//System.out.println(""+childInterface.sprite2);
 						
-						//childInterface.sprite1 = cacheSprite2[56];
-						//childInterface.sprite2 = cacheSprite2[57];
+						//childInterface.sprite1 = CacheSpriteLoader.getCacheSprite2(56];
+						//childInterface.sprite2 = CacheSpriteLoader.getCacheSprite2(57];
 					}
 					Sprite sprite;
 					/*
 					if (child.enabledSpriteId != -1 && SpriteCache.spriteCache[child.enabledSpriteId] == null) {
-						onDemandFetcher.requestFileData(IMAGE_IDX - 1, child.enabledSpriteId);
+						onDemandFetcher.pushRequest(IMAGE_IDX - 1, child.enabledSpriteId);
 					}
 					if (child.disabledSpriteId != -1 && SpriteCache.spriteCache[child.disabledSpriteId] == null) {
-						onDemandFetcher.requestFileData(IMAGE_IDX - 1, child.disabledSpriteId);
+						onDemandFetcher.pushRequest(IMAGE_IDX - 1, child.disabledSpriteId);
 					}
 					*/
 					if (childInterface.itemSpriteId > 0 && childInterface.sprite1 == null && childInterface.sprite2 == null) {
@@ -6888,7 +6736,7 @@ public class Client extends GameRenderer {
 						}
 					}
 					if (autoCast && childInterface.id == autocastId) {
-						cacheSprite[497].drawSprite(childX - 3, childY - 3);
+						CacheSpriteLoader.getCacheSprite(497).drawSprite(childX - 3, childY - 3);
 					}
 				} else if (childInterface.type == 6) {
 					int k3 = Rasterizer.centerX;
@@ -7201,7 +7049,7 @@ public class Client extends GameRenderer {
 			int j = Integer.parseInt(RSInterface.interfaceCache[27002].message);
 			for(int k = 0; k <= i; k++)
 			{
-				RSInterface.interfaceCache[27014 + k].sprite1  = cacheSprite[1009];
+				RSInterface.interfaceCache[27014 + k].sprite1  = CacheSpriteLoader.getCacheSprite(1009);
 				RSInterface.interfaceCache[27014 + k].message = (new StringBuilder()).append("Click here to select tab ").append(k + 1).toString();
 			}
 
@@ -7213,20 +7061,20 @@ public class Client extends GameRenderer {
 
 			if(i != 8)
 			{
-				RSInterface.interfaceCache[27015 + i].sprite1 = cacheSprite[1010];
+				RSInterface.interfaceCache[27015 + i].sprite1 = CacheSpriteLoader.getCacheSprite(1010);
 				RSInterface.interfaceCache[27015 + i].message = "Drag an item here to create a new tab";
 			}
 			if(j == -1)
 			{
-				RSInterface.interfaceCache[27013].sprite1 = cacheSprite[1011];
+				RSInterface.interfaceCache[27013].sprite1 = CacheSpriteLoader.getCacheSprite(1011);
 			} else
 				if(j > 0)
 				{
-					RSInterface.interfaceCache[27014 + j].sprite1 = cacheSprite[1012];
-					RSInterface.interfaceCache[27014].sprite1 =  cacheSprite[1011];
+					RSInterface.interfaceCache[27014 + j].sprite1 = CacheSpriteLoader.getCacheSprite(1012);
+					RSInterface.interfaceCache[27014].sprite1 =  CacheSpriteLoader.getCacheSprite(1011);
 				} else
 				{
-					RSInterface.interfaceCache[27014].sprite1 = cacheSprite[1008];
+					RSInterface.interfaceCache[27014].sprite1 = CacheSpriteLoader.getCacheSprite(1008);
 				}
 			RSInterface.interfaceCache[27000].message = "0";
 		}
@@ -7390,7 +7238,7 @@ public class Client extends GameRenderer {
 		"none"
 	};
 	
-	private boolean rememberMe = true;
+	boolean rememberMe = true;
 	
 	public void drawLoginScreen() {
 		
@@ -7401,15 +7249,15 @@ public class Client extends GameRenderer {
 		
 		if(loginMessage1.length() > 0) {
 			
-			cacheSprite2[0].drawAdvancedSprite(0, 0);
-			//cacheSprite2[20].drawAdvancedSprite(240, 124);
+			CacheSpriteLoader.getCacheSprite2(0).drawAdvancedSprite(0, 0);
+			//CacheSpriteLoader.getCacheSprite2(20).drawAdvancedSprite(240, 124);
 
 			DrawingArea.drawAlphaBox(199, 137, 366, 234, 0, 100);
 			
 			if(backButtonHover) {
-				cacheSprite2[26].drawAdvancedSprite(511 + 38, 125 + 15);
+				CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(511 + 38, 125 + 15);
 			} else {
-				cacheSprite2[21].drawAdvancedSprite(511 + 38, 125 + 15);
+				CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(511 + 38, 125 + 15);
 			}
 			
 			if(loginMessage1 != null && loginMessage1.length() != 0) {
@@ -7421,25 +7269,25 @@ public class Client extends GameRenderer {
 				boldText.drawCenteredText(0xefefef, 381, loginMessage2, y_2 - 30, true);
 			}
 			if(ahover) {
-				cacheSprite2[28].drawAdvancedSprite(312, 458);
+				CacheSpriteLoader.getCacheSprite2(28).drawAdvancedSprite(312, 458);
 			}	
 			
 			if(bhover) {
-				cacheSprite2[29].drawAdvancedSprite(347, 458);
+				CacheSpriteLoader.getCacheSprite2(29).drawAdvancedSprite(347, 458);
 			}
 			
 			if(chover) {
-				cacheSprite2[30].drawAdvancedSprite(382, 458);
+				CacheSpriteLoader.getCacheSprite2(30).drawAdvancedSprite(382, 458);
 			}	
 			
 			if(dhover) {
-				cacheSprite2[31].drawAdvancedSprite(417, 458);
+				CacheSpriteLoader.getCacheSprite2(31).drawAdvancedSprite(417, 458);
 			}
 		} else {
-			/*cacheSprite2[0].drawAdvancedSprite(0, 0);
+			/*CacheSpriteLoader.getCacheSprite2(0].drawAdvancedSprite(0, 0);
 
 			if(loginButtonHover) {
-				cacheSprite2[27].drawAdvancedSprite(259, 309);
+				CacheSpriteLoader.getCacheSprite2(27].drawAdvancedSprite(259, 309);
 			} else {
 			
 			}
@@ -7451,42 +7299,42 @@ public class Client extends GameRenderer {
 			}
 			
 			if(input1Hover) {
-				cacheSprite2[23].drawAdvancedSprite(259, 153);
+				CacheSpriteLoader.getCacheSprite2(23].drawAdvancedSprite(259, 153);
 			} else {
-				cacheSprite2[22].drawAdvancedSprite(259, 153);
+				CacheSpriteLoader.getCacheSprite2(22].drawAdvancedSprite(259, 153);
 			}	
 			
 			if(input2Hover) {
-				cacheSprite2[23].drawAdvancedSprite(259, 203);
+				CacheSpriteLoader.getCacheSprite2(23].drawAdvancedSprite(259, 203);
 			} else {
-				cacheSprite2[22].drawAdvancedSprite(259, 203);
+				CacheSpriteLoader.getCacheSprite2(22].drawAdvancedSprite(259, 203);
 			}
 			
 			if(ahover) {
-				cacheSprite2[28].drawAdvancedSprite(312, 458);
+				CacheSpriteLoader.getCacheSprite2(28].drawAdvancedSprite(312, 458);
 			}	
 			
 			if(bhover) {
-				cacheSprite2[29].drawAdvancedSprite(347, 458);
+				CacheSpriteLoader.getCacheSprite2(29].drawAdvancedSprite(347, 458);
 			}
 			
 			if(chover) {
-				cacheSprite2[30].drawAdvancedSprite(382, 458);
+				CacheSpriteLoader.getCacheSprite2(30].drawAdvancedSprite(382, 458);
 			}	
 			
 			if(dhover) {
-				cacheSprite2[31].drawAdvancedSprite(417, 458);
+				CacheSpriteLoader.getCacheSprite2(31].drawAdvancedSprite(417, 458);
 			}
 			
 			if(rememberMeButtonHover) {
 				if(rememberMe) {
-					cacheSprite2[35].drawAdvancedSprite(258, 234);
+					CacheSpriteLoader.getCacheSprite2(35].drawAdvancedSprite(258, 234);
 				} else {
-					cacheSprite2[34].drawAdvancedSprite(258, 234);
+					CacheSpriteLoader.getCacheSprite2(34].drawAdvancedSprite(258, 234);
 				}
 			} else {
 				if(rememberMe) {
-					cacheSprite2[25].drawAdvancedSprite(256, 231);
+					CacheSpriteLoader.getCacheSprite2(25].drawAdvancedSprite(256, 231);
 				}
 			}
 			
@@ -7502,7 +7350,7 @@ public class Client extends GameRenderer {
 				boldText.drawRegularText(true, 265, 14335390, getStars(password), 221);
 			}*/
 
-			cacheSprite2[0].drawAdvancedSprite(0, 0);
+			CacheSpriteLoader.getCacheSprite2(0).drawAdvancedSprite(0, 0);
 			boldText.drawCenteredText(0xffbb18, 765 / 2, "Welcome to RuneLive", 155, true);
 
 			boldText.drawCenteredText(0xefefef, 765 / 2, "Please enter your username and password.", 178, true);
@@ -7510,7 +7358,7 @@ public class Client extends GameRenderer {
 			int y = 202;
 			boldText.drawText(0, "Username:", y + 1, 268);
 			boldText.drawText(0xffcb18, "Username:", y, 267);
-			cacheSprite2[input1Hover ? 96 : 94].drawCenteredARGBImage(765 / 2, y + 19);
+			CacheSpriteLoader.getCacheSprite2(input1Hover ? 96 : 94).drawCenteredARGBImage(765 / 2, y + 19);
 			if(loginScreenCursorPos == 0 && loopCycle % 45 < 10) {
 				boldText.drawRegularText(true, 243, 0xefefef, myUsername + "|", y + 24);
 			} else {
@@ -7520,7 +7368,7 @@ public class Client extends GameRenderer {
 			y += 52;
 			boldText.drawText(0, "Password:", y + 1, 268);
 			boldText.drawText(0xffcb18, "Password:", y, 267);
-			cacheSprite2[input2Hover ? 96 : 94].drawCenteredARGBImage(765 / 2, y + 19);
+			CacheSpriteLoader.getCacheSprite2(input2Hover ? 96 : 94).drawCenteredARGBImage(765 / 2, y + 19);
 
 			if(loginScreenCursorPos == 1 && loopCycle % 45 < 10) {
 				boldText.drawRegularText(true, 243, 0xefefef, getStars(password)+"|", y + 24);
@@ -7528,66 +7376,66 @@ public class Client extends GameRenderer {
 				boldText.drawRegularText(true, 243, 0xefefef, getStars(password), y + 24);
 			}
 
-			cacheSprite2[rememberMeButtonHover ? (rememberMe ? 102 : 98) : (rememberMe ? 101 : 97)].drawARGBImage(234, y + 40);
+			CacheSpriteLoader.getCacheSprite2(rememberMeButtonHover ? (rememberMe ? 102 : 98) : (rememberMe ? 101 : 97)).drawARGBImage(234, y + 40);
 			normalText.drawRegularText(true, 261, 0xefefef, "Remember me", y + 56);
 
 			y += 90;
-			cacheSprite2[loginButtonHover ? 95 : 93].drawCenteredARGBImage(765 / 2, y);
+			CacheSpriteLoader.getCacheSprite2(loginButtonHover ? 95 : 93).drawCenteredARGBImage(765 / 2, y);
 			boldText.drawCenteredText(0xffbb18, 765 / 2, "Login", y + 5, true);
 			
 		}
-		cacheSprite2[99].drawAdvancedSprite(264, 373);
+		CacheSpriteLoader.getCacheSprite2(99).drawAdvancedSprite(264, 373);
 		if(profile1hover) {
 			if(!saved_characters_usernames[0].equals("Empty")) {
-				cacheSprite2[100].drawAdvancedSprite(264, 373);
+				CacheSpriteLoader.getCacheSprite2(100).drawAdvancedSprite(264, 373);
 				if(profileclose1hover) {
-					cacheSprite2[26].drawAdvancedSprite(326, 374);
+					CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(326, 374);
 				} else {
-					cacheSprite2[21].drawAdvancedSprite(326, 374);
+					CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(326, 374);
 				}
 			}
 		}
-		cacheSprite2[33].drawAdvancedSprite(264 + 22, 373 + 5);
+		CacheSpriteLoader.getCacheSprite2(33).drawAdvancedSprite(264 + 22, 373 + 5);
 
 		if(!saved_characters_usernames[0].equals("Empty")) {
 			if(profileclose1hover) {
-				cacheSprite2[26].drawAdvancedSprite(326, 374);
+				CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(326, 374);
 			} else {
-				cacheSprite2[21].drawAdvancedSprite(326, 374);
+				CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(326, 374);
 			}
 		}
 		smallText.drawCenteredText(0xefefef, 301, saved_characters_usernames[0], 442, true);
 
-		cacheSprite2[99].drawAdvancedSprite(343, 373);
+		CacheSpriteLoader.getCacheSprite2(99).drawAdvancedSprite(343, 373);
 		if(profile2hover) {
 			if(!saved_characters_usernames[1].equals("Empty")) {
-				cacheSprite2[100].drawAdvancedSprite(343, 373);
+				CacheSpriteLoader.getCacheSprite2(100).drawAdvancedSprite(343, 373);
 			}
 		}
 		if(!saved_characters_usernames[1].equals("Empty")) {
 			if(profileclose2hover) {
-				cacheSprite2[26].drawAdvancedSprite(405, 374);
+				CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(405, 374);
 			} else {
-				cacheSprite2[21].drawAdvancedSprite(405, 374);
+				CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(405, 374);
 			}
 		}
-		cacheSprite2[33].drawAdvancedSprite(343 + 22, 373 + 5);
+		CacheSpriteLoader.getCacheSprite2(33).drawAdvancedSprite(343 + 22, 373 + 5);
 		smallText.drawCenteredText(0xefefef, 380, saved_characters_usernames[1], 442, true);
 
-		cacheSprite2[99].drawAdvancedSprite(422, 373);
+		CacheSpriteLoader.getCacheSprite2(99).drawAdvancedSprite(422, 373);
 		if(profile3hover) {
 			if(!saved_characters_usernames[2].equals("Empty")) {
-				cacheSprite2[100].drawAdvancedSprite(422, 373);
+				CacheSpriteLoader.getCacheSprite2(100).drawAdvancedSprite(422, 373);
 			}
 		}
 		if(!saved_characters_usernames[2].equals("Empty")) {
 			if(profileclose3hover) {
-				cacheSprite2[26].drawAdvancedSprite(485, 374);
+				CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(485, 374);
 			} else {
-				cacheSprite2[21].drawAdvancedSprite(485, 374);
+				CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(485, 374);
 			}
 		}
-		cacheSprite2[33].drawAdvancedSprite(422 + 22, 373 + 5);
+		CacheSpriteLoader.getCacheSprite2(33).drawAdvancedSprite(422 + 22, 373 + 5);
 		smallText.drawCenteredText(0xefefef, 459, saved_characters_usernames[2], 442, true);
 		
 		titleScreenIP.drawGraphics(0, super.graphics, 0);
@@ -8052,9 +7900,9 @@ public class Client extends GameRenderer {
 	public void updateBankInterface() {
 		int tabAmount = settings[2000] & 0xFF;
 		int activeTab = settings[2000] >> 8 & 0xFF;
-		Sprite activeTabSprite = cacheSprite[617];
-		Sprite tabSprite = cacheSprite[613];
-		Sprite newTabSprite = cacheSprite[614];
+		Sprite activeTabSprite = CacheSpriteLoader.getCacheSprite(617);
+		Sprite tabSprite = CacheSpriteLoader.getCacheSprite(613);
+		Sprite newTabSprite = CacheSpriteLoader.getCacheSprite(614);
 		Sprite emptySprite = new Sprite(0, 0);
 		for (int i = 0; i < 9; i++) {
 			if (i < tabAmount) {
@@ -8143,7 +7991,7 @@ public class Client extends GameRenderer {
 		//normalText.drawText(0xffffff, "Connection lost.", 18, 119);
 		//normalText.drawText(0, "Please wait - attempting to reestablish.", 34, 117);
 		//normalText.drawText(0xffffff, "Please wait - attempting to reestablish.", 34, 116);
-		cacheSprite[1106].drawSprite(7, 4);
+		CacheSpriteLoader.getCacheSprite(1106).drawSprite(7, 4);
 		if (!resizing && gameScreenIP != null) {
 			gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
 		}
@@ -8347,11 +8195,11 @@ public class Client extends GameRenderer {
 				} else {
 					int k28 = floorMap[k16] = onDemandFetcher.getMapCount(0, j26, l23);
 					if (k28 != -1) {
-						onDemandFetcher.requestFileData(3, k28);
+						onDemandFetcher.pushRequest(3, k28);
 					}
 					int j30 = objectMap[k16] = onDemandFetcher.getMapCount(1, j26, l23);
 					if (j30 != -1) {
-						onDemandFetcher.requestFileData(3, j30);
+						onDemandFetcher.pushRequest(3, j30);
 					}
 					k16++;
 				}
@@ -8413,7 +8261,7 @@ public class Client extends GameRenderer {
 				}
 			}
 		}
-		for (Class30_Sub1 class30_sub1_1 = (Class30_Sub1) getaClass19_1179().reverseGetFirst(); class30_sub1_1 != null; class30_sub1_1 = (Class30_Sub1) getaClass19_1179().reverseGetNext()) {
+		for (Class30_Sub1 class30_sub1_1 = (Class30_Sub1) getaClass19_1179().getTail(); class30_sub1_1 != null; class30_sub1_1 = (Class30_Sub1) getaClass19_1179().next()) {
 			class30_sub1_1.anInt1297 -= i17;
 			class30_sub1_1.anInt1298 -= j21;
 			if (class30_sub1_1.anInt1297 < 0 || class30_sub1_1.anInt1298 < 0 || class30_sub1_1.anInt1297 >= 104 || class30_sub1_1.anInt1298 >= 104) {
@@ -8441,14 +8289,14 @@ public class Client extends GameRenderer {
 		int timeToWait = 5;
 
 		try {
-			if (decompressors[0] != null) {
-				buffer = decompressors[0].decompress(index);
+			if (cacheIndices[0] != null) {
+				buffer = cacheIndices[0].get(index);
 			}
 		} catch (Exception _ex) {
 		}
 
 		if (buffer != null) {
-			if (Configuration.JAGCACHED_ENABLED) {
+			if (Configuration.FILE_SERVER_ENABLED) {
 				crc32Instance.reset();
 				crc32Instance.update(buffer);
 				int crcValue = (int) crc32Instance.getValue();
@@ -8500,6 +8348,7 @@ public class Client extends GameRenderer {
 					int percentage = currentLength * 100 / totalLength;
 
 					if (percentage != lastPercentage) {
+						System.out.println("Loading " + fileName + " - " + percentage + "%");
 						//drawSmoothLoading(loadingBarValue, "Loading " + fileName + " - " + percentage + "%");
 					}
 
@@ -8509,15 +8358,15 @@ public class Client extends GameRenderer {
 				datainputstream.close();
 
 				try {
-					if (decompressors[0] != null) {
-						decompressors[0].method234(buffer.length, buffer, index);
+					if (cacheIndices[0] != null) {
+						cacheIndices[0].put(buffer.length, buffer, index);
 					}
 				} catch (Exception _ex) {
-					decompressors[0] = null;
+					cacheIndices[0] = null;
 				}
 
 				if (buffer != null) {
-					if (Configuration.JAGCACHED_ENABLED) {
+					if (Configuration.FILE_SERVER_ENABLED) {
 						crc32Instance.reset();
 						crc32Instance.update(buffer);
 						int currentCrc = (int) crc32Instance.getValue();
@@ -8525,7 +8374,7 @@ public class Client extends GameRenderer {
 						if (currentCrc != crc) {
 							buffer = null;
 							errorCount++;
-							error = "Checksum error: " + currentCrc;
+							error = "Checksum error: " + currentCrc + "," + crc;
 						}
 					}
 				}
@@ -8563,7 +8412,7 @@ public class Client extends GameRenderer {
 						//drawSmoothLoading(loadingBarValue, "Game updated - please reload page");
 						seconds = 10;
 					} else {
-						throw new RuntimeException("Unable to find archive: " + name);
+						throw new RuntimeException("Unable to find archive: " + cacheArchive + ", error: " + error);
 					}
 
 					try {
@@ -8813,7 +8662,7 @@ public class Client extends GameRenderer {
 	private void loadingStages() {
 		if (isLowDetail() && loadingStage == 2 && ObjectManager.anInt131 != plane) {
 			gameScreenIP.initDrawingArea();
-			cacheSprite[1105].drawSprite(8, 9);
+			CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
 			if (!resizing) {
 				gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
 			}
@@ -8825,7 +8674,7 @@ public class Client extends GameRenderer {
 			int j = getMapLoadingState();
 
 			if (j != 0 && System.currentTimeMillis() - aLong824 > 0x57e40L) {
-				Signlink.reportError(myUsername + " glcfb " + getServerSeed() + "," + j + "," + isLowDetail() + "," + decompressors[0] + "," + onDemandFetcher.getRemaining() + "," + plane + "," + anInt1069 + "," + anInt1070);
+				Signlink.reportError(myUsername + " glcfb " + getServerSeed() + "," + j + "," + isLowDetail() + "," + cacheIndices[0] + "," + onDemandFetcher.getRemaining() + "," + plane + "," + anInt1069 + "," + anInt1070);
 				aLong824 = System.currentTimeMillis();
 			}
 		}
@@ -9514,9 +9363,9 @@ public class Client extends GameRenderer {
 	}
 
 	private void method104() {
-		Animable_Sub3 class30_sub2_sub4_sub3 = (Animable_Sub3) getaClass19_1056().reverseGetFirst();
+		Animable_Sub3 class30_sub2_sub4_sub3 = (Animable_Sub3) getaClass19_1056().getTail();
 
-		for (; class30_sub2_sub4_sub3 != null; class30_sub2_sub4_sub3 = (Animable_Sub3) getaClass19_1056().reverseGetNext()) {
+		for (; class30_sub2_sub4_sub3 != null; class30_sub2_sub4_sub3 = (Animable_Sub3) getaClass19_1056().next()) {
 			if (class30_sub2_sub4_sub3.anInt1560 != plane || class30_sub2_sub4_sub3.aBoolean1567) {
 				class30_sub2_sub4_sub3.unlink();
 			} else if (loopCycle >= class30_sub2_sub4_sub3.anInt1564) {
@@ -9570,7 +9419,7 @@ public class Client extends GameRenderer {
 				                            								  SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0])
 				                            								  .length() - 4), 16)].length == 0)
 					onDemandFetcher
-					.requestFileData(
+					.pushRequest(
 							1,
 							Integer.parseInt(
 									Integer.toHexString(
@@ -9628,7 +9477,7 @@ public class Client extends GameRenderer {
 					                            								  Animation.cache[l].frameIDs[0])
 					                            								  .length() - 4), 16)].length == 0)
 						onDemandFetcher
-						.requestFileData(
+						.pushRequest(
 								1,
 								Integer.parseInt(
 										Integer.toHexString(
@@ -9884,7 +9733,7 @@ public class Client extends GameRenderer {
 
 	private void method115() {
 		if (loadingStage == 2) {
-			for (Class30_Sub1 class30_sub1 = (Class30_Sub1) getaClass19_1179().reverseGetFirst(); class30_sub1 != null; class30_sub1 = (Class30_Sub1) getaClass19_1179().reverseGetNext()) {
+			for (Class30_Sub1 class30_sub1 = (Class30_Sub1) getaClass19_1179().getTail(); class30_sub1 != null; class30_sub1 = (Class30_Sub1) getaClass19_1179().next()) {
 				if (class30_sub1.anInt1294 > 0) {
 					class30_sub1.anInt1294--;
 				}
@@ -10099,7 +9948,7 @@ public class Client extends GameRenderer {
 
 	private void method130(int j, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2) {
 		Class30_Sub1 class30_sub1 = null;
-		for (Class30_Sub1 class30_sub1_1 = (Class30_Sub1) getaClass19_1179().reverseGetFirst(); class30_sub1_1 != null; class30_sub1_1 = (Class30_Sub1) getaClass19_1179().reverseGetNext()) {
+		for (Class30_Sub1 class30_sub1_1 = (Class30_Sub1) getaClass19_1179().getTail(); class30_sub1_1 != null; class30_sub1_1 = (Class30_Sub1) getaClass19_1179().next()) {
 			if (class30_sub1_1.anInt1295 != l1 || class30_sub1_1.anInt1297 != i2 || class30_sub1_1.anInt1298 != j1 || class30_sub1_1.anInt1296 != i1) {
 				continue;
 			}
@@ -10114,7 +9963,7 @@ public class Client extends GameRenderer {
 			class30_sub1.anInt1297 = i2;
 			class30_sub1.anInt1298 = j1;
 			method89(class30_sub1);
-			getaClass19_1179().insertHead(class30_sub1);
+			getaClass19_1179().pushFront(class30_sub1);
 		}
 		class30_sub1.anInt1291 = k;
 		class30_sub1.anInt1293 = k1;
@@ -10187,7 +10036,7 @@ public class Client extends GameRenderer {
 			if (j3 >= 0 && i6 >= 0 && j3 < 104 && i6 < 104) {
 				Deque class19_1 = groundArray[plane][j3][i6];
 				if (class19_1 != null) {
-					for (Item class30_sub2_sub4_sub2_3 = (Item) class19_1.reverseGetFirst(); class30_sub2_sub4_sub2_3 != null; class30_sub2_sub4_sub2_3 = (Item) class19_1.reverseGetNext()) {
+					for (Item class30_sub2_sub4_sub2_3 = (Item) class19_1.getTail(); class30_sub2_sub4_sub2_3 != null; class30_sub2_sub4_sub2_3 = (Item) class19_1.next()) {
 						if (class30_sub2_sub4_sub2_3.id != (l8 & 0x7fff) || class30_sub2_sub4_sub2_3.amount != k11) {
 							continue;
 						}
@@ -10230,7 +10079,7 @@ public class Client extends GameRenderer {
 				if (groundArray[plane][k6][j9] == null) {
 					groundArray[plane][k6][j9] = new Deque();
 				}
-				groundArray[plane][k6][j9].insertHead(class30_sub2_sub4_sub2_2);
+				groundArray[plane][k6][j9].pushFront(class30_sub2_sub4_sub2_2);
 				spawnGroundItem(k6, j9);
 			}
 			return;
@@ -10243,7 +10092,7 @@ public class Client extends GameRenderer {
 			if (i4 >= 0 && l6 >= 0 && i4 < 104 && l6 < 104) {
 				Deque class19 = groundArray[plane][i4][l6];
 				if (class19 != null) {
-					for (Item item = (Item) class19.reverseGetFirst(); item != null; item = (Item) class19.reverseGetNext()) {
+					for (Item item = (Item) class19.getTail(); item != null; item = (Item) class19.next()) {
 						if (item.id != (k9 & 0x7fff)) {
 							continue;
 						}
@@ -10251,7 +10100,7 @@ public class Client extends GameRenderer {
 						break;
 					}
 
-					if (class19.reverseGetFirst() == null) {
+					if (class19.getTail() == null) {
 						groundArray[plane][i4][l6] = null;
 					}
 					spawnGroundItem(i4, l6);
@@ -10421,7 +10270,7 @@ public class Client extends GameRenderer {
 				i5 = i5 * 128 + 64;
 				l7 = l7 * 128 + 64;
 				Animable_Sub3 class30_sub2_sub4_sub3 = new Animable_Sub3(plane, loopCycle, j15, k10, method42(plane, l7, i5) - l12, l7, i5);
-				getaClass19_1056().insertHead(class30_sub2_sub4_sub3);
+				getaClass19_1056().pushFront(class30_sub2_sub4_sub3);
 			}
 
 			return;
@@ -10443,7 +10292,7 @@ public class Client extends GameRenderer {
 					groundArray[plane][l10][i13] = new Deque();
 				}
 
-				groundArray[plane][l10][i13].insertHead(class30_sub2_sub4_sub2_1);
+				groundArray[plane][l10][i13].pushFront(class30_sub2_sub4_sub2_1);
 				spawnGroundItem(l10, i13);
 			}
 
@@ -10488,7 +10337,7 @@ public class Client extends GameRenderer {
 				k13 = k13 * 128 + 64;
 				PlayerProjectile class30_sub2_sub4_sub4 = new PlayerProjectile(i21, l18, k19 + loopCycle, j20 + loopCycle, j21, plane, method42(plane, k8, l5) - i18, k8, l5, l15, i17);
 				class30_sub2_sub4_sub4.method455(k19 + loopCycle, k13, method42(plane, k13, j11) - l18, j11);
-				getaClass19_1013().insertHead(class30_sub2_sub4_sub4);
+				getaClass19_1013().pushFront(class30_sub2_sub4_sub4);
 			}
 		}
 	}
@@ -11553,7 +11402,7 @@ public class Client extends GameRenderer {
 	}
 
 	private void method55() {
-		for (PlayerProjectile class30_sub2_sub4_sub4 = (PlayerProjectile) getaClass19_1013().reverseGetFirst(); class30_sub2_sub4_sub4 != null; class30_sub2_sub4_sub4 = (PlayerProjectile) getaClass19_1013().reverseGetNext()) {
+		for (PlayerProjectile class30_sub2_sub4_sub4 = (PlayerProjectile) getaClass19_1013().getTail(); class30_sub2_sub4_sub4 != null; class30_sub2_sub4_sub4 = (PlayerProjectile) getaClass19_1013().next()) {
 			if (class30_sub2_sub4_sub4.anInt1597 != plane || loopCycle > class30_sub2_sub4_sub4.anInt1572) {
 				class30_sub2_sub4_sub4.unlink();
 			} else if (loopCycle >= class30_sub2_sub4_sub4.anInt1571) {
@@ -11585,7 +11434,7 @@ public class Client extends GameRenderer {
 	private final synchronized void method56(int i, boolean bool, int music) {
 		if (musicIsntNull()) {
 			nextSong = music;
-			onDemandFetcher.requestFileData(2, nextSong);
+			onDemandFetcher.pushRequest(2, nextSong);
 			musicVolume2 = i;
 			anInt139 = -1;
 			aBoolean995 = true;
@@ -11596,7 +11445,7 @@ public class Client extends GameRenderer {
 	private final synchronized void method58(int i_30_, int volume, boolean bool, int music) {
 		if (musicIsntNull()) {
 			nextSong = music;
-			onDemandFetcher.requestFileData(2, nextSong);
+			onDemandFetcher.pushRequest(2, nextSong);
 			musicVolume2 = volume;
 			anInt139 = -1;
 			aBoolean995 = true;
@@ -11622,8 +11471,8 @@ public class Client extends GameRenderer {
 	}
 
 	private void method63() {
-		Class30_Sub1 class30_sub1 = (Class30_Sub1) getaClass19_1179().reverseGetFirst();
-		for (; class30_sub1 != null; class30_sub1 = (Class30_Sub1) getaClass19_1179().reverseGetNext()) {
+		Class30_Sub1 class30_sub1 = (Class30_Sub1) getaClass19_1179().getTail();
+		for (; class30_sub1 != null; class30_sub1 = (Class30_Sub1) getaClass19_1179().next()) {
 			if (class30_sub1.anInt1294 == -1) {
 				class30_sub1.anInt1302 = 0;
 				method89(class30_sub1);
@@ -12157,7 +12006,7 @@ public class Client extends GameRenderer {
 						                            								  .length() - 4),
 						                            								  16)].length == 0)
 							onDemandFetcher
-							.requestFileData(
+							.pushRequest(
 									1,
 									Integer.parseInt(
 											Integer.toHexString(
@@ -12205,7 +12054,7 @@ public class Client extends GameRenderer {
 							                            								  SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0])
 							                            								  .length() - 4), 16)].length == 0)
 								onDemandFetcher
-								.requestFileData(
+								.pushRequest(
 										1,
 										Integer.parseInt(
 												Integer.toHexString(
@@ -12631,17 +12480,17 @@ public class Client extends GameRenderer {
 		// return signlink.openurl(s);
 		// else
 		// return new DataInputStream((new URL(getCodeBase(), s)).openStream());
-		if (aSocket832 != null) {
+		if (jaggrabSocket != null) {
 			try {
-				aSocket832.close();
+				jaggrabSocket.close();
 			} catch (Exception _ex) {
 			}
-			aSocket832 = null;
+			jaggrabSocket = null;
 		}
-		aSocket832 = createFileServerSocket(43595);
-		aSocket832.setSoTimeout(10000);
-		java.io.InputStream inputstream = aSocket832.getInputStream();
-		OutputStream outputstream = aSocket832.getOutputStream();
+		jaggrabSocket = createFileServerSocket(43595);
+		jaggrabSocket.setSoTimeout(10000);
+		java.io.InputStream inputstream = jaggrabSocket.getInputStream();
+		OutputStream outputstream = jaggrabSocket.getOutputStream();
 		outputstream.write(("JAGGRAB /" + s + "\n\n").getBytes());
 		return new DataInputStream(inputstream);
 	}
@@ -12746,7 +12595,7 @@ public class Client extends GameRenderer {
 					}
 				}
 
-				for (Class30_Sub1 class30_sub1 = (Class30_Sub1) getaClass19_1179().reverseGetFirst(); class30_sub1 != null; class30_sub1 = (Class30_Sub1) getaClass19_1179().reverseGetNext()) {
+				for (Class30_Sub1 class30_sub1 = (Class30_Sub1) getaClass19_1179().getTail(); class30_sub1 != null; class30_sub1 = (Class30_Sub1) getaClass19_1179().next()) {
 					if (class30_sub1.anInt1297 >= anInt1268 && class30_sub1.anInt1297 < anInt1268 + 8 && class30_sub1.anInt1298 >= anInt1269 && class30_sub1.anInt1298 < anInt1269 + 8 && class30_sub1.anInt1295 == plane) {
 						class30_sub1.anInt1294 = 0;
 					}
@@ -12963,7 +12812,7 @@ public class Client extends GameRenderer {
 				loadingStage = 1;
 				aLong824 = System.currentTimeMillis();
 				gameScreenIP.initDrawingArea();
-				cacheSprite[1105].drawSprite(8, 9);
+				CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
 				//drawLoadingMessages(1, "Loading - please wait.", null);
 				if (!resizing) {
 					gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
@@ -12991,11 +12840,11 @@ public class Client extends GameRenderer {
 							} else {
 								int k28 = floorMap[k16] = onDemandFetcher.getMapCount(0, j26, l23);
 								if (k28 != -1) {
-									onDemandFetcher.requestFileData(3, k28);
+									onDemandFetcher.pushRequest(3, k28);
 								}
 								int j30 = objectMap[k16] = onDemandFetcher.getMapCount(1, j26, l23);
 								if (j30 != -1) {
-									onDemandFetcher.requestFileData(3, j30);
+									onDemandFetcher.pushRequest(3, j30);
 								}
 								k16++;
 							}
@@ -13038,11 +12887,11 @@ public class Client extends GameRenderer {
 					int l31 = i29 & 0xff;
 					int j32 = floorMap[l26] = onDemandFetcher.getMapCount(0, l31, l30);
 					if (j32 != -1) {
-						onDemandFetcher.requestFileData(3, j32);
+						onDemandFetcher.pushRequest(3, j32);
 					}
 					int i33 = objectMap[l26] = onDemandFetcher.getMapCount(1, l31, l30);
 					if (i33 != -1) {
-						onDemandFetcher.requestFileData(3, i33);
+						onDemandFetcher.pushRequest(3, i33);
 					}
 					}
 				}
@@ -13102,7 +12951,7 @@ public class Client extends GameRenderer {
 						}
 					}
 				}
-				for (Class30_Sub1 class30_sub1_1 = (Class30_Sub1) getaClass19_1179().reverseGetFirst(); class30_sub1_1 != null; class30_sub1_1 = (Class30_Sub1) getaClass19_1179().reverseGetNext()) {
+				for (Class30_Sub1 class30_sub1_1 = (Class30_Sub1) getaClass19_1179().getTail(); class30_sub1_1 != null; class30_sub1_1 = (Class30_Sub1) getaClass19_1179().next()) {
 					class30_sub1_1.anInt1297 -= i17;
 					class30_sub1_1.anInt1298 -= j21;
 					if (class30_sub1_1.anInt1297 < 0 || class30_sub1_1.anInt1298 < 0 || class30_sub1_1.anInt1297 >= 104 || class30_sub1_1.anInt1298 >= 104) {
@@ -13677,7 +13526,7 @@ public class Client extends GameRenderer {
 				RSInterface icons = RSInterface.interfaceCache[frameId];
 
 				if (icons != null) {
-					icons.sprite1 = icons.sprite2 = Client.cacheSprite[rankSpriteIDs[rankId]];
+					icons.sprite1 = icons.sprite2 = CacheSpriteLoader.getCacheSprite(rankSpriteIDs[rankId]);
 				}
 
 				rankSpriteIDs = null;
@@ -13967,7 +13816,7 @@ public class Client extends GameRenderer {
 						break;
 					case 293:
 						int sprite = settingValue == 0 ? 607 : settingValue == 1 ? 606 : settingValue == 2 ? 608 : settingValue == 3 ? 609 : 610;
-						RSInterface.interfaceCache[12348].sprite1 = Client.cacheSprite[sprite];
+						RSInterface.interfaceCache[12348].sprite1 = CacheSpriteLoader.getCacheSprite(sprite);
 						break;
 					}
 					if (settingId < 2000) {
@@ -14142,7 +13991,9 @@ public class Client extends GameRenderer {
 			public void run() {
 				try {
 					Signlink.release();
-					FileUtilities.delete(Signlink.getCacheDirectory().toString());
+					if (!Configuration.LOCAL) {
+						FileUtilities.delete(Signlink.getCacheDirectory().toString());
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 					showErrorScreen(instance, "A fatal error occured while attempting to fix the previous loading error", "Please screenshot this message and report it to the developers immediately", e.getMessage());
@@ -14218,7 +14069,7 @@ public class Client extends GameRenderer {
 					if(profileclose1hover) {
 						saved_characters_usernames[0] = "Empty";
 						saved_characters_passwords[0] = "none";
-						savePlayerData();
+						Settings.save();
 					} else {
 						if(rememberMe) {
 							myUsername = saved_characters_usernames[0];
@@ -14230,7 +14081,7 @@ public class Client extends GameRenderer {
 					if(profileclose2hover) {
 						saved_characters_usernames[1] = "Empty";
 						saved_characters_passwords[1] = "none";
-						savePlayerData();
+						Settings.save();
 					} else {
 						if(rememberMe) {
 							myUsername = saved_characters_usernames[1];
@@ -14242,7 +14093,7 @@ public class Client extends GameRenderer {
 					if(profileclose3hover) {
 						saved_characters_usernames[2] = "Empty";
 						saved_characters_passwords[2] = "none";
-						savePlayerData();
+						Settings.save();
 					} else {
 						if(rememberMe) {
 							myUsername = saved_characters_usernames[2];
@@ -14274,7 +14125,7 @@ public class Client extends GameRenderer {
 				if(profileclose1hover) {
 					saved_characters_usernames[0] = "Empty";
 					saved_characters_passwords[0] = "none";
-					savePlayerData();
+					Settings.save();
 				} else {
 					if(rememberMe) {
 						myUsername = saved_characters_usernames[0];
@@ -14286,7 +14137,7 @@ public class Client extends GameRenderer {
 				if(profileclose2hover) {
 					saved_characters_usernames[1] = "Empty";
 					saved_characters_passwords[1] = "none";
-					savePlayerData();
+					Settings.save();
 				} else {
 					if(rememberMe) {
 						myUsername = saved_characters_usernames[1];
@@ -14298,7 +14149,7 @@ public class Client extends GameRenderer {
 				if(profileclose3hover) {
 					saved_characters_usernames[2] = "Empty";
 					saved_characters_passwords[2] = "none";
-					savePlayerData();
+					Settings.save();
 				} else {
 					if(rememberMe) {
 						myUsername = saved_characters_usernames[2];
@@ -14308,7 +14159,7 @@ public class Client extends GameRenderer {
 				}
 			} else if(rememberMeButtonHover) {
 				rememberMe = !rememberMe;
-				savePlayerData();
+				Settings.save();
 			}
 		}
 
@@ -14602,7 +14453,7 @@ public class Client extends GameRenderer {
 					}
 				}
 			}
-			savePlayerData();
+			Settings.save();
 			finishLogin(client);
 			PlayerHandler.load(client);
 			setCursor(CursorData.CURSOR_0);
@@ -15095,39 +14946,42 @@ public class Client extends GameRenderer {
 
 	private void processOnDemandQueue() {
 		do {
-			OnDemandRequest onDemandData;
+			CacheFileRequest onDemandData;
 
 			do {
-				onDemandData = onDemandFetcher.getNextNode();
+				onDemandData = onDemandFetcher.next();
 
 				if (onDemandData == null) {
 					return;
 				}
 
-				if (onDemandData.getDataType() == 0) {
-					Model.decodeModelHeader(onDemandData.getBuffer(), onDemandData.getId());
-					// needDrawTabArea = true;
-
+				if (onDemandData.getIndex() == 0 || onDemandData.getIndex() == 5) {
+					int modelId = onDemandData.getId();
+					if (onDemandData.getIndex() == 5) {
+						modelId += 65535;
+					}
+					Model.decodeModelHeader(onDemandData.getData(), modelId);
+					//needDrawTabArea = true;
 					if (backDialogID != -1) {
 						setInputTaken(true);
 					}
 				}
-				if (onDemandData.getDataType() == 1) {
-					FrameReader.load(onDemandData.getId(), onDemandData.getBuffer());
+				if (onDemandData.getIndex() == 1) {
+					FrameReader.load(onDemandData.getId(), onDemandData.getData());
 				}
 
-				if (onDemandData.getDataType() == 2 && onDemandData.getId() == nextSong && onDemandData.getBuffer() != null) {
-					musicData = new byte[onDemandData.getBuffer().length];
-					ArrayUtils.arraycopy(onDemandData.getBuffer(), 0, musicData, 0, musicData.length);
+				if (onDemandData.getIndex() == 2 && onDemandData.getId() == nextSong && onDemandData.getData() != null) {
+					musicData = new byte[onDemandData.getData().length];
+					ArrayUtils.arraycopy(onDemandData.getData(), 0, musicData, 0, musicData.length);
 					fetchMusic = true;
 				}
 
-				if (onDemandData.getDataType() == 3 && loadingStage == 1) {
+				if (onDemandData.getIndex() == 3 && loadingStage == 1) {
 					for (int i = 0; i < aByteArrayArray1183.length; i++) {
 						if (floorMap[i] == onDemandData.getId()) {
-							aByteArrayArray1183[i] = onDemandData.getBuffer();
+							aByteArrayArray1183[i] = onDemandData.getData();
 
-							if (onDemandData.getBuffer() == null) {
+							if (onDemandData.getData() == null) {
 								floorMap[i] = -1;
 							}
 
@@ -15138,9 +14992,9 @@ public class Client extends GameRenderer {
 							continue;
 						}
 
-						aByteArrayArray1247[i] = onDemandData.getBuffer();
+						aByteArrayArray1247[i] = onDemandData.getData();
 
-						if (onDemandData.getBuffer() == null) {
+						if (onDemandData.getData() == null) {
 							objectMap[i] = -1;
 						}
 
@@ -15148,12 +15002,12 @@ public class Client extends GameRenderer {
 					}
 				}
 				//SpriteCache.spriteCache[onDemandData.id] = new Sprite(onDemandData.buffer);
-				if (onDemandData.getDataType() == 4) {
-					Texture.decode(onDemandData.getId(), onDemandData.getBuffer());
+				if (onDemandData.getIndex() == 4) {
+					Texture.decode(onDemandData.getId(), onDemandData.getData());
 				}
-			} while (onDemandData.getDataType() != 93 || !onDemandFetcher.method564(onDemandData.getId()));
+			} while (onDemandData.getIndex() != 93 || !onDemandFetcher.method564(onDemandData.getId()));
 
-			ObjectManager.method173(new ByteBuffer(onDemandData.getBuffer()), onDemandFetcher);
+			ObjectManager.method173(new ByteBuffer(onDemandData.getData()), onDemandFetcher);
 		} while (true);
 	}
 	
@@ -15613,7 +15467,7 @@ public class Client extends GameRenderer {
 		mapAreaIP = new RSImageProducer(249, 168, getGameComponent());
 		DrawingArea.setAllPixelsToZero();
 		if (GameFrame.getScreenMode() == ScreenMode.FIXED) {
-			cacheSprite[14].drawSprite(0, 0);
+			CacheSpriteLoader.getCacheSprite(14).drawSprite(0, 0);
 		}
 		tabAreaIP = new RSImageProducer(250, 335, getGameComponent());
 		gameScreenIP = new RSImageProducer(GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 512 : getScreenWidth(), GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 334 : getScreenHeight(), getGameComponent());
@@ -15655,7 +15509,7 @@ public class Client extends GameRenderer {
 		}
 		method58(10, 0, false, 0);
 		updateGraphics(true);
-		savePlayerData();
+		Settings.save();
 	}
 
 	public void resetWorld(int stage) {
@@ -15896,7 +15750,7 @@ public class Client extends GameRenderer {
 		}
 		int k = 0xfa0a1f01;
 		Object obj = null;
-		for (Item item = (Item) class19.reverseGetFirst(); item != null; item = (Item) class19.reverseGetNext()) {
+		for (Item item = (Item) class19.getTail(); item != null; item = (Item) class19.next()) {
 			ItemDefinition itemDef = ItemDefinition.get(item.id);
 			int l = itemDef.value;
 			if (itemDef.stackable) {
@@ -15911,7 +15765,7 @@ public class Client extends GameRenderer {
 		class19.insertTail((Node) obj);
 		Object obj1 = null;
 		Object obj2 = null;
-		for (Item class30_sub2_sub4_sub2_1 = (Item) class19.reverseGetFirst(); class30_sub2_sub4_sub2_1 != null; class30_sub2_sub4_sub2_1 = (Item) class19.reverseGetNext()) {
+		for (Item class30_sub2_sub4_sub2_1 = (Item) class19.getTail(); class30_sub2_sub4_sub2_1 != null; class30_sub2_sub4_sub2_1 = (Item) class19.next()) {
 			if (class30_sub2_sub4_sub2_1.id != ((Item) obj).id && obj1 == null) {
 				obj1 = class30_sub2_sub4_sub2_1;
 			}
@@ -15986,7 +15840,7 @@ public class Client extends GameRenderer {
 	void startUp() {
 		isLoading = true;
 		super.resetGraphic();
-		System.out.println("Initiating loader process...");
+		//System.out.println("Initiating loader process...");
 		processLoadingScreen();
 		new Thread(new MemoryMonitor()).start();
 		if (Signlink.sunjava) {
@@ -15994,7 +15848,7 @@ public class Client extends GameRenderer {
 		}
 		getDocumentBaseHost();
 		
-		System.out.println("Downloading raw cache images...");
+		//.out.println("Downloading raw cache images...");
 		/** DOWNLOADING LOADING IMAGES **/
 		try {
 			loadingImages[2] = ImageIO.read(Client.class.getResourceAsStream("/org/runelive/client/resources/loading_bar.png"));
@@ -16005,16 +15859,21 @@ public class Client extends GameRenderer {
 			e.printStackTrace();
 		}	
 		
-		System.out.println("Downloading cache...");
+		//System.out.println("Downloading cache...");
 		/** DOWNLOADING CACHE **/
-		CacheDownloader.init();
+		//CacheDownloader.init();
 		
 		if (Signlink.cache_dat != null) {
-			for (int i = 0; i < Client.CACHE_INDEX_COUNT; i++) {
-				decompressors[i] = new Decompressor(Signlink.cache_dat, Signlink.cache_idx[i], i + 1);
+			for (int i = 0; i < Configuration.CACHE_INDEX_COUNT; i++) {
+				cacheIndices[i] = new CacheIndex(Signlink.cache_dat, Signlink.cache_idx[i], i + 1);
 			}
 		}
 		resourceLoader = new ResourceLoader();
+
+		if (Configuration.FILE_SERVER_ENABLED) {
+			connectToFileServer();
+		}
+
 		try {
 			ComputerAddress.setUniqueIdentification();
 			setLoadingText(10, "Getting archives...");
@@ -16038,6 +15897,7 @@ public class Client extends GameRenderer {
 			Archive streamLoader_3 = getArchive(6, "textures", "textures", expectedCRCs[6], 45);
 			Archive streamLoader_4 = getArchive(7, "chat system", "wordenc", expectedCRCs[7], 50);
 			Archive soundArchive = getArchive(8, "sound effects", "sounds", expectedCRCs[8], 55);
+			Archive spritesArchive = getArchive(9, "spritecache", "spritecache", expectedCRCs[9], 57);
 			byteGroundArray = new byte[4][104][104];
 			intGroundArray = new int[4][105][105];
 			worldController = new WorldController(intGroundArray);
@@ -16056,12 +15916,23 @@ public class Client extends GameRenderer {
 			setLoadingText(20, "Unpacked archives");
 			constructMusic();
 			setLoadingText(30, "Unpacking media..");
-			SpriteLoader.loadSprites();
-			SpriteLoader2.loadSprites();
-			cacheSprite = SpriteLoader.sprites;
-			cacheSprite2 = SpriteLoader2.sprites;
-			SpriteLoader.sprites = null;
-			SpriteLoader2.sprites = null;
+			boolean archiveSprites = true;
+			//FileUtilities.WriteFile(Signlink.getCacheDirectory() + "/packed_images/" + "sprites.idx", spritesArchive.get("sprites.idx"));
+			FileUtilities.WriteFile(Signlink.getCacheDirectory() + "sprites.dat", spritesArchive.get("sprites.dat"));
+			byte[] idx = archiveSprites ? spritesArchive.get("sprites.idx") : FileUtilities.readFile(Signlink.getCacheDirectory() + "/packed_images/" + "sprites.idx");
+			//byte[] dat =  archiveSprites ? spritesArchive.get("sprites.dat") : FileUtilities.readFile(Signlink.getCacheDirectory() + "/packed_images/" + "sprites.dat");
+			//OldSpriteLoader.loadSprites(idx, dat);
+			CacheSpriteLoader.loadCachedSpriteDefinitions(idx);
+			//FileUtilities.WriteFile(Signlink.getCacheDirectory() + "/packed_images/" + "sprites2.idx", spritesArchive.get("sprites2.idx"));
+			FileUtilities.WriteFile(Signlink.getCacheDirectory() + "sprites2.dat", spritesArchive.get("sprites2.dat"));
+			byte[] idx2 = archiveSprites ? spritesArchive.get("sprites2.idx") : FileUtilities.readFile(Signlink.getCacheDirectory() + "/packed_images/" + "sprites2.idx");
+			//byte[] dat2 =  archiveSprites ? spritesArchive.get("sprites2.dat") : FileUtilities.readFile(Signlink.getCacheDirectory() + "/packed_images/" + "sprites2.dat");
+			//OldSpriteLoader2.loadSprites(idx2, dat2);
+			CacheSpriteLoader.loadCachedSpriteDefinitions2(idx2);
+			//cacheSprite = OldSpriteLoader.sprites;
+			//cacheSprite2 = OldSpriteLoader2.sprites;
+			//OldSpriteLoader.sprites = null;
+			//OldSpriteLoader2.sprites = null;
 			setLoadingText(40, "Unpacked media");
 			mapBack = new Background(mediaArchive, "mapback", 0);
 
@@ -16092,7 +15963,7 @@ public class Client extends GameRenderer {
 				}
 
 				for (int j6 = 9; j6 < 18; j6++) {
-					headIcons[j6] = Client.cacheSprite[j6 + 357 - 9];
+					headIcons[j6] = CacheSpriteLoader.getCacheSprite(j6 + 357 - 9);
 				}
 
 				for (int j45 = 0; j45 < 7; j45++) {
@@ -16113,7 +15984,7 @@ public class Client extends GameRenderer {
 			mapDotPlayer = new Sprite(mediaArchive, "mapdots", 2);
 			mapDotFriend = new Sprite(mediaArchive, "mapdots", 3);
 			//mapDotTeam = new Sprite(mediaArchive, "mapdots", 6);
-			mapDotTeam = cacheSprite2[88];
+			mapDotTeam = CacheSpriteLoader.getCacheSprite2(88);
 
 			for (int j3 = 0; j3 < 12; j3++) {
 				scrollPart[j3] = new Sprite(mediaArchive, "scrollpart", j3);
@@ -16125,7 +15996,7 @@ public class Client extends GameRenderer {
 
 			loadModIcons();
 	
-			multiOverlay = cacheSprite[1025];
+			multiOverlay = CacheSpriteLoader.getCacheSprite(1025);
 			
 			Sprite sprite = new Sprite(mediaArchive, "screenframe", 0);
 			leftFrame = new RSImageProducer(sprite.myWidth, sprite.myHeight, getGameComponent());
@@ -16150,8 +16021,8 @@ public class Client extends GameRenderer {
 			Animation.unpackConfig(streamLoader);
 			setLoadingText(70, "Unpacking config..");
 			ObjectDefinition.unpackConfig(streamLoader);
-			Flo.unpackConfig(streamLoader);
-			OverLayFlo317.load(streamLoader);
+			FloorUnderlay.unpackConfig(streamLoader);
+			FloorOverlay.load(streamLoader);
 			ItemDefinition.unpackConfig(streamLoader);
 			MobDefinition.load(streamLoader);
 			IdentityKit.unpackConfig(streamLoader);
@@ -16247,9 +16118,9 @@ public class Client extends GameRenderer {
 			Animable_Sub5.clientInstance = this;
 			ObjectDefinition.clientInstance = this;
 			MobDefinition.clientInstance = this;
-			loadPlayerData();
-			preloadModels();
-			final BufferedReader reader = new BufferedReader(new FileReader(MapUpdate.map_repack_file));
+			Settings.load();
+			//preloadModels();
+			/*final BufferedReader reader = new BufferedReader(new FileReader(MapUpdate.map_repack_file));
 			if(Integer.valueOf(reader.readLine()) == 1) {
 				repackCacheIndex(4);
 				System.out.println("Maps have been updated.");
@@ -16266,12 +16137,20 @@ public class Client extends GameRenderer {
 				writer3.write("0");
 				writer3.close();
 				AnimationsUpdate.REPACK = 0;
-			}
+			}*/
 			//ObjectDefinition.dumpObjectModels();
 			//onDemandFetcher.dump();
 			//repackCacheIndex(4); //Maps
 			//repackCacheIndex(2); //Animations
-			//decompressors[1].dump();
+			//cacheIndices[1].dump();
+			/*for (int index = 1; index < cacheIndices.length; index++) {
+				System.out.println("Dumping index " + index);
+				cacheIndices[index].dump();
+			}*/
+			/*for (int index = 1; index < cacheIndices.length; index++) {
+				System.out.println("Cache files in index " + index + ": " + cacheIndices[index].getFileCount());
+				//cacheIndices[index].dump();
+			}*/
 			isLoading = false;
 			updateSettingsInterface();
 			if(Configuration.NEW_CURSORS) {
@@ -16288,24 +16167,24 @@ public class Client extends GameRenderer {
 	}
 	
 	public void loadModIcons() {
-		modIcons[0] = cacheSprite[828]; //Moderator
-		modIcons[1] = cacheSprite[828]; //Moderator
-		modIcons[2] = cacheSprite[829]; //Administrator
-		modIcons[3] = cacheSprite2[3]; //Owner
-		modIcons[4] = cacheSprite[837]; //Support
-		modIcons[5] = cacheSprite2[2]; //YouTuber
-		modIcons[6] = cacheSprite2[54]; //Global Moderator
-		modIcons[7] = cacheSprite2[16]; //Regular Donator
-		modIcons[8] = cacheSprite2[15]; //Super Donator
-		modIcons[9] = cacheSprite2[14]; //Extreme Donator
-		modIcons[10] = cacheSprite2[37]; //Legendary Donator
-		modIcons[11] = cacheSprite2[38]; //Uber Donator
-		modIcons[12] = cacheSprite[840]; //Regular Ironman
-		modIcons[13] = cacheSprite[839]; //Hardcore Ironman
-		modIcons[14] = cacheSprite2[72]; //Community Manager
-		modIcons[15] = cacheSprite2[66]; //Wiki Editor
-		modIcons[16] = cacheSprite2[65]; //Wiki Manager
-		modIcons[17] = cacheSprite2[90]; //Staff Manager
+		modIcons[0] = CacheSpriteLoader.getCacheSprite(828); //Moderator
+		modIcons[1] = CacheSpriteLoader.getCacheSprite(828); //Moderator
+		modIcons[2] = CacheSpriteLoader.getCacheSprite(829); //Administrator
+		modIcons[3] = CacheSpriteLoader.getCacheSprite2(3); //Owner
+		modIcons[4] = CacheSpriteLoader.getCacheSprite(837); //Support
+		modIcons[5] = CacheSpriteLoader.getCacheSprite2(2); //YouTuber
+		modIcons[6] = CacheSpriteLoader.getCacheSprite2(54); //Global Moderator
+		modIcons[7] = CacheSpriteLoader.getCacheSprite2(16); //Regular Donator
+		modIcons[8] = CacheSpriteLoader.getCacheSprite2(15); //Super Donator
+		modIcons[9] = CacheSpriteLoader.getCacheSprite2(14); //Extreme Donator
+		modIcons[10] = CacheSpriteLoader.getCacheSprite2(37); //Legendary Donator
+		modIcons[11] = CacheSpriteLoader.getCacheSprite2(38); //Uber Donator
+		modIcons[12] = CacheSpriteLoader.getCacheSprite(840); //Regular Ironman
+		modIcons[13] = CacheSpriteLoader.getCacheSprite(839); //Hardcore Ironman
+		modIcons[14] = CacheSpriteLoader.getCacheSprite2(72); //Community Manager
+		modIcons[15] = CacheSpriteLoader.getCacheSprite2(66); //Wiki Editor
+		modIcons[16] = CacheSpriteLoader.getCacheSprite2(65); //Wiki Manager
+		modIcons[17] = CacheSpriteLoader.getCacheSprite2(90); //Staff Manager
 	}
 	
 	public final String loyaltyRank(int i) {
@@ -16422,7 +16301,7 @@ public class Client extends GameRenderer {
 		int[] ids = new int[] {};
 		for (int i : ids) {
 			try {
-				byte abyte[] = decompressors[archive].decompress(onDemandFetcher.getModelIndex(i));
+				byte abyte[] = cacheIndices[archive].get(onDemandFetcher.getModelIndex(i));
 				File map = new File(Signlink.getCacheDirectory() + "/itemdata/" + onDemandFetcher.getModelIndex(i) + ".gz");
 				FileOutputStream fos = new FileOutputStream(map);
 				fos.write(abyte);
@@ -16438,7 +16317,7 @@ public class Client extends GameRenderer {
 		try {
 			for(int i = 0; ; i++) {
 				try {
-					byte[] indexByteArray = decompressors[cacheIndex].decompress(i);
+					byte[] indexByteArray = cacheIndices[cacheIndex].get(i);
 					if(indexByteArray == null) {
 						System.out.println("Could not find a higher index, exiting dump operation");
 						continue;
@@ -16595,7 +16474,7 @@ public class Client extends GameRenderer {
 		SpotAnimDefinition.list.unlinkAll();
 	}
 
-	private void updateConfig(int configId) {
+	void updateConfig(int configId) {
 		try {
 			int j = 0;
 			if (configId < Varp.getCache().length)
@@ -16722,7 +16601,7 @@ public class Client extends GameRenderer {
 								l += 19;
 							}
 							if (player.bountyHunterIcon >= 0 && player.bountyHunterIcon <= 4) {
-								cacheSprite[1026 + player.bountyHunterIcon].drawSprite(spriteDrawX - (player.skulled ? 8 : 10), spriteDrawY - l);
+								CacheSpriteLoader.getCacheSprite(1026 + player.bountyHunterIcon).drawSprite(spriteDrawX - (player.skulled ? 8 : 10), spriteDrawY - l);
 								l += 28;
 							}
 							if (player.headIcon < 20) {
@@ -16805,15 +16684,13 @@ public class Client extends GameRenderer {
 									HpPercent = 56;
 								}
 								if (maxHealth >= 2000) {
-									cacheSprite[396].drawSprite(spriteDrawX - 44, spriteDrawY - 5);
-									Sprite HPBarFull = new Sprite(SpriteLoader.cache[397].spriteData, hpPercent, 7, 1);
+									CacheSpriteLoader.getCacheSprite(396).drawSprite(spriteDrawX - 44, spriteDrawY - 5);
+									Sprite HPBarFull = new Sprite(CacheSpriteLoader.getCacheSpriteData(397), hpPercent, 7, 1);
 									HPBarFull.drawSprite(spriteDrawX - 44, spriteDrawY - 5);
-									HPBarFull = null;
 								} else {
-									cacheSprite[349].drawSprite(spriteDrawX - 28, spriteDrawY - 5);
-									Sprite HPBarFull = new Sprite(SpriteLoader.cache[348].spriteData, HpPercent, 7, 1);
+									CacheSpriteLoader.getCacheSprite(349).drawSprite(spriteDrawX - 28, spriteDrawY - 5);
+									Sprite HPBarFull = new Sprite(CacheSpriteLoader.getCacheSpriteData(348), HpPercent, 7, 1);
 									HPBarFull.drawSprite(spriteDrawX - 28, spriteDrawY - 5);
-									HPBarFull = null;
 								}
 							} else {
 
@@ -17199,8 +17076,8 @@ public class Client extends GameRenderer {
 	public Sprite coinPart;
 	public Sprite coinActiveHover;
 	
-	private int[] quickPrayers = new int[28];
-	private int[] quickCurses = new int[20];
+	int[] quickPrayers = new int[28];
+	int[] quickCurses = new int[20];
 
 	private int[] getCurseTypeForIndex(int index) {
 		int[] types = null;
@@ -17365,7 +17242,7 @@ public class Client extends GameRenderer {
 	private int[] deflectCurse = {7,8,9,17,18};
 	
 	private void saveQuickSelection() {
-		savePlayerData();
+		Settings.save();
 		tabInterfaceIDs[5] = prayerInterfaceType;
 	}
 
@@ -17379,7 +17256,7 @@ public class Client extends GameRenderer {
 		double percent = (spec / 100D);
 		double f = 39 * percent;
 		int depleteFill = 39 - (int) f;
-		cacheSprite2[18].drawSprite(x, y);
+		CacheSpriteLoader.getCacheSprite2(18).drawSprite(x, y);
 		String spec_var = ""+spec+"";
 		int color;
 		if(specActivated)

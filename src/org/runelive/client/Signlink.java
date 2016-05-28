@@ -20,7 +20,7 @@ public final class Signlink implements Runnable {
 
 	private static boolean active;
 	public static RandomAccessFile cache_dat = null;
-	public static final RandomAccessFile[] cache_idx = new RandomAccessFile[Client.CACHE_INDEX_COUNT];
+	public static final RandomAccessFile[] cache_idx = new RandomAccessFile[Configuration.CACHE_INDEX_COUNT];
 	public static String dns = null;
 	private static String dnsreq = null;
 	public static Applet mainapp = null;
@@ -60,11 +60,24 @@ public final class Signlink implements Runnable {
 	}
 	
 	public static String getCacheDirectory() {
-		String cacheLoc = System.getProperty("user.home") + "/";
+		String cacheLoc = System.getProperty("user.home") + File.separator;
 		if(Configuration.DROPBOX_MODE) {
 			cacheLoc = "./";
 		}
-		cacheLoc += Configuration.CACHE_DIRECTORY_NAME + "/";
+		cacheLoc += Configuration.CACHE_DIRECTORY_NAME + File.separator;
+		File cacheDir = new File(cacheLoc);
+		if(!cacheDir.exists()) {
+			cacheDir.mkdir();
+		}
+		return cacheLoc;
+	}
+
+	public static String getOldCacheDirectory() {
+		String cacheLoc = System.getProperty("user.home") + File.separator;
+		if(Configuration.DROPBOX_MODE) {
+			cacheLoc = "./";
+		}
+		cacheLoc += "ikov_cache2" + File.separator;
 		File cacheDir = new File(cacheLoc);
 		if(!cacheDir.exists()) {
 			cacheDir.mkdir();
@@ -161,10 +174,10 @@ public final class Signlink implements Runnable {
 		}
 
 		try {
-			cache_dat = new RandomAccessFile(s + "/cache_index_data/main_file_cache.dat", "rw");
+			cache_dat = new RandomAccessFile(s + "/main_file_cache.dat", "rw");
 
-			for (int i = 0; i < Client.CACHE_INDEX_COUNT; i++) {
-				cache_idx[i] = new RandomAccessFile(s + "/cache_index_data/main_file_cache.idx" + i, "rw");
+			for (int i = 0; i < Configuration.CACHE_INDEX_COUNT; i++) {
+				cache_idx[i] = new RandomAccessFile(s + "/main_file_cache.idx" + i, "rw");
 			}
 		} catch (Exception exception) {
 			exception.printStackTrace();

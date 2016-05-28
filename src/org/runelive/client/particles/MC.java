@@ -1,7 +1,6 @@
 package org.runelive.client.particles;
 
-import org.runelive.client.graphics.SpriteLoader2;
-import org.runelive.client.Client;
+import org.runelive.client.graphics.CacheSpriteLoader;
 
 final class MC extends QC {
 
@@ -10,7 +9,7 @@ final class MC extends QC {
 		this.getImage(new Vector3(0, -1, 0));
 		this.getImage(20);
 		this.I(0.002F);
-		this.setImage(Client.cacheSprite2[88]);
+		this.setImage(CacheSpriteLoader.getCacheSprite2(88));
 		this.K();
 	}
 

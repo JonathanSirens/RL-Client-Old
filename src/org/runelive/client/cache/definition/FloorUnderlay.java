@@ -3,7 +3,7 @@ package org.runelive.client.cache.definition;
 import org.runelive.client.cache.Archive;
 import org.runelive.client.io.ByteBuffer;
 
-public final class Flo {
+public final class FloorUnderlay {
 
 	private static final boolean SNOW_ENABLED = false;
 
@@ -12,18 +12,18 @@ public final class Flo {
 		int cacheSize = stream.getUnsignedShort();
 
 		if (cache == null) {
-			cache = new Flo[cacheSize];
+			cache = new FloorUnderlay[cacheSize];
 		}
 
 		for (int j = 0; j < cacheSize; j++) {
 			if (cache[j] == null) {
-				cache[j] = new Flo();
+				cache[j] = new FloorUnderlay();
 			}
 			cache[j].readValues(stream);
 		}
 	}
 
-	public static Flo cache[];
+	public static FloorUnderlay cache[];
 	public int anInt390;
 	public int anInt391;
 	public boolean aBoolean393;
@@ -34,7 +34,7 @@ public final class Flo {
 	public int anInt398;
 	public int anInt399;
 
-	public Flo() {
+	public FloorUnderlay() {
 		anInt391 = -1;
 		aBoolean393 = true;
 	}

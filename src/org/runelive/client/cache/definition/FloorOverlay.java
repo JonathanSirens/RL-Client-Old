@@ -9,10 +9,10 @@ import org.runelive.client.cache.Archive;
  *
  * @author Flamable
  */
-public class OverLayFlo317 {
+public class FloorOverlay {
 
 	public boolean aBoolean393;// To add
-	public static OverLayFlo317[] overLayFlo317s;
+	public static FloorOverlay[] floorOverlays;
 
 	public int textureId = -1;
 	public int rgb;
@@ -40,12 +40,12 @@ public class OverLayFlo317 {
 	public static void load(Archive arg1) {
 		ByteBuffer bb = ByteBuffer.wrap(arg1.get("flo2.dat"));
 		int count = bb.getShort();
-		overLayFlo317s = new OverLayFlo317[count];
+		floorOverlays = new FloorOverlay[count];
 		for (int i = 0; i < count; i++) {
-			if (overLayFlo317s[i] == null) {
-				overLayFlo317s[i] = new OverLayFlo317();
+			if (floorOverlays[i] == null) {
+				floorOverlays[i] = new FloorOverlay();
 			}
-			overLayFlo317s[i].parse(bb);
+			floorOverlays[i].parse(bb);
 		}
 	}
 

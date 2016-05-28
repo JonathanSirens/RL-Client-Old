@@ -14,7 +14,7 @@ public final class NodeSubList {
 
 	public void insertHead(NodeSub nodeSub) {
 		if (nodeSub.nextNodeSub != null) {
-			nodeSub.unlinkSub();
+			nodeSub.unlinkCacheable();
 		}
 		nodeSub.nextNodeSub = head.nextNodeSub;
 		nodeSub.prevNodeSub = head;
@@ -27,7 +27,7 @@ public final class NodeSubList {
 		if (nodeSub == head) {
 			return null;
 		} else {
-			nodeSub.unlinkSub();
+			nodeSub.unlinkCacheable();
 			return nodeSub;
 		}
 	}

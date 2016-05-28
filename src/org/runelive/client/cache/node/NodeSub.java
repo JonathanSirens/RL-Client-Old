@@ -8,7 +8,7 @@ public class NodeSub extends Node {
 	public NodeSub() {
 	}
 
-	public final void unlinkSub() {
+	public final void unlinkCacheable() {
 		if (nextNodeSub != null) {
 			nextNodeSub.prevNodeSub = prevNodeSub;
 			prevNodeSub.nextNodeSub = nextNodeSub;

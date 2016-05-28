@@ -2,31 +2,31 @@ package org.runelive.client.cache.ondemand;
 
 import org.runelive.client.cache.node.NodeSub;
 
-public final class OnDemandRequest extends NodeSub {
+public final class CacheFileRequest extends NodeSub {
 
 	private int dataType;
 	public byte buffer[];
 	public int id;
 	boolean incomplete;
-	int loopCycle;
+	int requestAge;
 
-	public OnDemandRequest() {
+	public CacheFileRequest() {
 		incomplete = true;
 	}
 
-	public byte[] getBuffer() {
+	public byte[] getData() {
 		return buffer;
 	}
 
-	public void setBuffer(byte buffer[]) {
+	public void setData(byte buffer[]) {
 		this.buffer = buffer;
 	}
 
-	public int getDataType() {
+	public int getIndex() {
 		return dataType;
 	}
 
-	public void setDataType(int dataType) {
+	public void setCacheIndex(int dataType) {
 		this.dataType = dataType;
 	}
 

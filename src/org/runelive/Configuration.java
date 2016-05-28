@@ -1,6 +1,6 @@
 package org.runelive;
 
-import org.runelive.client.updates.ClientUpdate;
+import org.runelive.client.ClientUpdate;
 
 /**
  * The client's features can easily be toggled/changed here.
@@ -9,7 +9,7 @@ import org.runelive.client.updates.ClientUpdate;
 public class Configuration {
 
 	/** CONNECTION **/
-	public final static boolean LOCAL = true;
+	public final static boolean LOCAL = false;
 	public final static String SERVER_HOST = LOCAL ? "127.0.0.1" : "158.69.125.71"; // 158.69.125.71
 	public final static int SERVER_PORT = 59018;
 
@@ -29,14 +29,15 @@ public class Configuration {
 	
 	/** MAIN CONSTANTS **/
 	public final static String CLIENT_NAME = "RuneLive " + ClientUpdate.clientVersion + "";
-	public final static String CACHE_DIRECTORY_NAME = "ikov_cache2"; // Cache folder name
+	public final static String CACHE_DIRECTORY_NAME = "runelive"; // Cache folder name
 	public final static int CLIENT_VERSION = 3;
-	public final static boolean JAGCACHED_ENABLED = false;
-	public final static String JAGCACHED_HOST = "";
+	public final static boolean FILE_SERVER_ENABLED = true;
+	public final static String JAGCACHED_HOST = "192.169.82.170";//"127.0.0.1";
 	
 	/** UPDATING **/
 	public final static int NPC_BITS = 18;
-	
+	public static final int CACHE_INDEX_COUNT = 7;
+
 	/** FEATURES **/
 	public static boolean SAVE_ACCOUNTS = false;
 	public static boolean DISPLAY_HP_ABOVE_HEAD = false;
