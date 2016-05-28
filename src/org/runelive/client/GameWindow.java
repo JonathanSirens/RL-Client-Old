@@ -63,6 +63,10 @@ final class GameWindow extends JFrame {
         instance = new GameWindow(new Client(), 765, 503, false, false);
         minimumSize = instance.getSize();
         instance.applet.init();
+        instance.setAlwaysOnTop(true);
+        instance.toFront();
+        instance.requestFocus();
+        instance.setAlwaysOnTop(false);
     }
 
     public static void setFixed() {
