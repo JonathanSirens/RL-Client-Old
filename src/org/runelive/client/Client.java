@@ -7995,7 +7995,8 @@ public class Client extends GameRenderer {
 		//normalText.drawText(0xffffff, "Connection lost.", 18, 119);
 		//normalText.drawText(0, "Please wait - attempting to reestablish.", 34, 117);
 		//normalText.drawText(0xffffff, "Please wait - attempting to reestablish.", 34, 116);
-		CacheSpriteLoader.getCacheSprite(1106).drawSprite(7, 4);
+		//CacheSpriteLoader.getCacheSprite(1106).drawSprite(7, 4);
+		drawLoadingMessages("Connection lost. Please wait - attempting to reestablish.");
 		if (!resizing && gameScreenIP != null) {
 			gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
 		}
@@ -8668,7 +8669,8 @@ public class Client extends GameRenderer {
 	private void loadingStages() {
 		if (isLowDetail() && loadingStage == 2 && ObjectManager.anInt131 != plane) {
 			gameScreenIP.initDrawingArea();
-			CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
+			//CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
+			drawLoadingMessages("Loading " + onDemandFetcher.getRemaining() + " files - please wait... ");
 			if (!resizing) {
 				gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
 			}
@@ -8677,6 +8679,12 @@ public class Client extends GameRenderer {
 		}
 
 		if (loadingStage == 1) {
+			gameScreenIP.initDrawingArea();
+			//CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
+			drawLoadingMessages("Loading " + onDemandFetcher.getRemaining() + " files - please wait... ");
+			if (!resizing) {
+				gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
+			}
 			int j = getMapLoadingState();
 
 			if (j != 0 && System.currentTimeMillis() - aLong824 > 0x57e40L) {
@@ -12818,8 +12826,8 @@ public class Client extends GameRenderer {
 				loadingStage = 1;
 				aLong824 = System.currentTimeMillis();
 				gameScreenIP.initDrawingArea();
-				CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
-				//drawLoadingMessages(1, "Loading - please wait.", null);
+				//CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
+				drawLoadingMessages("Loading " + onDemandFetcher.getRemaining() + " files - please wait... ");
 				if (!resizing) {
 					gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
 				}
@@ -13974,7 +13982,15 @@ public class Client extends GameRenderer {
 		pktType = -1;
 		return true;
 	}
-	
+
+	private void drawLoadingMessages(String s) {
+		int x = 5, y = 5;
+		int width = 10 + newRegularFont.getTextWidth(s), height = 22;
+		DrawingArea.drawFilledPixels(x, y, width, height, 0xffffff);
+		DrawingArea.drawFilledPixels(x + 1, y + 1, width - 2, height - 2, 0);
+		newRegularFont.drawBasicString(s, x + 5, y + 15, 0xffffff, 0);
+	}
+
 	private int showClanOptions;
     public boolean poisoned;
     public boolean venom;
