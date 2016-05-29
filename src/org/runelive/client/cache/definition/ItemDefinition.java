@@ -305,6 +305,12 @@ public final class ItemDefinition {
 			11175, 11171
 		}; 
 		break;
+			case 21117:
+				itemDef.immitate(get(6199));
+				itemDef.name = "Achievement Box";
+				itemDef.groundActions[2] = "Take";
+				itemDef.actions = new String[]{"Open", null, null, null, null, "Drop"};
+				break;
 	case 21106:
 		itemDef.setDefaults();
 		itemDef.immitate(get(1450));
