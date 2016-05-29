@@ -477,6 +477,14 @@ public class RSFontSystem extends DrawingArea {
 		}
 	}
 
+	public void drawRightAlignedString(String string, int drawX, int drawY, int color, int shadow) {
+		if (string != null) {
+			setColorAndShadow(color, shadow);
+			string = handleOldSyntax(string);
+			drawBasicString(string, drawX - getTextWidth(string), drawY, true);
+		}
+	}
+
 	private void drawCharacter(int character, int i_35_, int i_36_, int i_37_, int i_38_, int i_39_, boolean bool) {
 		int i_40_ = i_35_ + i_36_ * DrawingArea.width;
 		int i_41_ = DrawingArea.width - i_37_;
