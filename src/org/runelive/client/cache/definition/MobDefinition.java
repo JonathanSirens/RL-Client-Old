@@ -158,6 +158,9 @@ public final class MobDefinition {
 			definition.walkAnimation = vet.walkAnimation;
 			definition.combatLevel = 464;
 			break;
+			case 1385:
+				definition.actions = new String[] {"Talk-to", null, "Change Home", null, null};
+				break;
 		case 4646:
 			definition.actions = new String[] {"Talk-to", null, "Teleport", null, null};
 			break;
