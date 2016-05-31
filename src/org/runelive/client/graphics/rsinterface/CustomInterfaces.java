@@ -728,6 +728,8 @@ public class CustomInterfaces extends RSInterface {
 				addClickableText(i, "", "Toggle Experience", fonts, 1, 0xff0000, 167, 13);
 			} else if(i == 55115) {
 				addClickableText(i, "", "Toggle IP's on login", fonts, 1, 0xff0000, 167, 13);
+			} else if(i == 55116) {
+				addClickableText(i, "", "Toggle home loc on login", fonts, 1, 0xff0000, 167, 13);
 			} else if(i >= 55101 && i <= 55107) {
 				addClickableText(i, "", "Open", fonts, 1, 0xff0000, 167, 13);
 			} else {
