@@ -309,6 +309,7 @@ public final class ItemDefinition {
 				itemDef.name = "Pet Seagull";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
+				break;
 			case 21252:
 				itemDef.immitate(get(12021));
 				itemDef.name = "Pet Beaver";
