@@ -305,6 +305,27 @@ public final class ItemDefinition {
 			11175, 11171
 		}; 
 		break;
+			case 7887:
+				itemDef.name = "Pet Seagull";
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
+			case 21252:
+				itemDef.immitate(get(12021));
+				itemDef.name = "Pet Beaver";
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
+				break;
+			case 21251:
+				itemDef.immitate(get(9976));
+				itemDef.name = "Pet Chinchompa";
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
+				break;
+			case 21250:
+				itemDef.name = "Pet Rock Golem";
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
+				break;
 			case 21117:
 				itemDef.immitate(get(6199));
 				itemDef.name = "Achievement Box";

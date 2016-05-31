@@ -560,6 +560,22 @@ public final class MobDefinition {
 			definition.name = "Pure";
 			definition.actions = new String[] {"Trade", null, null, null, null};
 			break;
+			case 8648:
+				definition.name = "Pet Rock Golem";
+				definition.actions = new String[] {"Pick-up", null, null, null, null};
+				break;
+			case 5559:
+				definition.name = "Pet Raccoon";
+				definition.actions = new String[] {"Pick-up", null, null, null, null};
+				break;
+			case 9579:
+				definition.name = "Pet Chinchompa";
+				definition.actions = new String[] {"Pick-up", null, null, null, null};
+				break;
+			case 2707:
+				definition.name = "Pet Seagull";
+				definition.actions = new String[] {"Pick-up", null, null, null, null};
+				break;
 		case 3030:
 			definition.name = "King black dragon";
 			definition.actions = new String[5];
