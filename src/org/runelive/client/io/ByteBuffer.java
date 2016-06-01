@@ -246,12 +246,12 @@ public final class ByteBuffer extends NodeSub {
 		return new String(buffer, i, position - i - 1);
 	}
 
-	public int getTribyte() {
+	public int getMediumInt() {
 		position += 3;
 		return ((buffer[position - 3] & 0xFF) << 16) + ((buffer[position - 2] & 0xFF) << 8) + (buffer[position - 1] & 0xFF);
 	}
 
-	public final int getTribyte(int value) {
+	public final int getMediumInt(int value) {
 		position += 3;
 		return (0xFF & buffer[position - 3] << 16) + (0xFF & buffer[position - 2] << 8) + (0xFF & buffer[position - 1]);
 	}

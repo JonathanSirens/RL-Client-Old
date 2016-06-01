@@ -15,8 +15,8 @@ public final class Archive {
 
 	public Archive(byte[] data) {
 		ByteBuffer buffer = new ByteBuffer(data);
-		int decompressed = buffer.getTribyte();
-		int compressed = buffer.getTribyte();
+		int decompressed = buffer.getMediumInt();
+		int compressed = buffer.getMediumInt();
 		this.decompressed = decompressed != compressed;
 
 		if (this.decompressed) {
@@ -37,8 +37,8 @@ public final class Archive {
 
 		for (int i = 0; i < entryCount; i++) {
 			entryHashes[i] = buffer.getIntLittleEndian();
-			entrySizes[i] = buffer.getTribyte();
-			entryCompressedSizes[i] = buffer.getTribyte();
+			entrySizes[i] = buffer.getMediumInt();
+			entryCompressedSizes[i] = buffer.getMediumInt();
 			entryPositions[i] = position;
 			position += entryCompressedSizes[i];
 		}

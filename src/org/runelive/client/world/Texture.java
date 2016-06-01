@@ -31,7 +31,7 @@ public final class Texture {
 		texture.mipmaps[0] = new int[16384];
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				int rgb = buffer.getTribyte();
+				int rgb = buffer.getMediumInt();
 				if (width <= 64 && height <= 64) {
 					int x_ = x << 1;
 					int y_ = y << 1;

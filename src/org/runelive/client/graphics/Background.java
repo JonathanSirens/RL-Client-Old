@@ -23,7 +23,7 @@ public final class Background extends DrawingArea {
 		int j = stream_1.getUnsignedByte();
 		palette = new int[j];
 		for (int k = 0; k < j - 1; k++) {
-			palette[k + 1] = stream_1.getTribyte();
+			palette[k + 1] = stream_1.getMediumInt();
 		}
 
 		for (int l = 0; l < i; l++) {

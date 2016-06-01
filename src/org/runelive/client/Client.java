@@ -31,7 +31,6 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -910,8 +909,8 @@ public class Client extends GameRenderer {
 	private final boolean aBoolean994;
 	private final boolean[] aBooleanArray876;
 	private byte[] aByteArray912;
-	private byte[][] aByteArrayArray1183;
-	private byte[][] aByteArrayArray1247;
+	private byte[][] localFloorMapData;
+	private byte[][] localObjectMapData;
 	private CollisionMap[] clippingPlanes;
 	private Deque aClass19_1013;
 	private Deque aClass19_1056;
@@ -1899,12 +1898,12 @@ public class Client extends GameRenderer {
 						}
 					}
 					menuActionName[menuActionRow] = myRights == 3 ? "Examine @cya@"
-							+ class46.name + " @gre@(@whi@" + class46.type
+							+ class46.name + " @gre@(@whi@" + class46.id
 							+ "@gre@) (@whi@" + (x + baseX) + "," + (y + baseY)
 							+ "@gre@)" :  "Examine @cya@"
 							+ class46.name;
 					menuActionID[menuActionRow] = 1226;
-					menuActionCmd1[menuActionRow] = class46 == null ? -1 : class46.type << 14;
+					menuActionCmd1[menuActionRow] = class46 == null ? -1 : class46.id << 14;
 					menuActionCmd2[menuActionRow] = x;
 					menuActionCmd3[menuActionRow] = y;
 					menuActionCmd4[menuActionRow] = index;
@@ -3227,8 +3226,8 @@ public class Client extends GameRenderer {
 		setLoginBuffer(null);
 		setInputBuffer(null);
 		anIntArray1234 = null;
-		aByteArrayArray1183 = null;
-		aByteArrayArray1247 = null;
+		localFloorMapData = null;
+		localObjectMapData = null;
 		floorMap = null;
 		objectMap = null;
 		intGroundArray = null;
@@ -7097,25 +7096,25 @@ public class Client extends GameRenderer {
         Font font = new Font("Verdana", 0, 10);
         graphics2D.setFont(font);
 		boolean dont_show_last_percentage = false;
-            int n5 = 317; //X Position
-			if(text.toLowerCase().contains("downloading cache")) {
-				n5 = 285;
-				super.graphics.drawString(String.valueOf(text) + "", n5, 177);
-			} else {
-				super.graphics.drawString(String.valueOf(text) + " "+percent+"%", n5, 177);
-			}
-            if (percent > 0) {
-                int n6 = percent = (int)((double)percent * 1.93);
-                percent = 25;
-                int n7 = n6;
-                Image image = loadingImages[2];
-                BufferedImage bufferedImage = new BufferedImage(n7, 12, 2);
-                Graphics2D graphics2D2 = bufferedImage.createGraphics();
-                graphics2D2.drawImage(image, 0, 0, 193, 13, null);
-                graphics2D2.dispose();
-                image = bufferedImage;
-                super.graphics.drawImage(image, 287, 182, null);
-            }
+		int n5 = 317; //X Position
+		if(text.toLowerCase().contains("downloading")) {
+			n5 = 285;
+			super.graphics.drawString(String.valueOf(text) + "", n5, 177);
+		} else {
+			super.graphics.drawString(String.valueOf(text) + " "+percent+"%", n5, 177);
+		}
+		if (percent > 0) {
+			int n6 = percent = (int)((double)percent * 1.93);
+			percent = 25;
+			int n7 = n6;
+			Image image = loadingImages[2];
+			BufferedImage bufferedImage = new BufferedImage(n7, 12, 2);
+			Graphics2D graphics2D2 = bufferedImage.createGraphics();
+			graphics2D2.drawImage(image, 0, 0, 193, 13, null);
+			graphics2D2.dispose();
+			image = bufferedImage;
+			super.graphics.drawImage(image, 287, 182, null);
+		}
 	}
 	
 	public int skillIdForButton(int buttonId) {
@@ -7241,6 +7240,18 @@ public class Client extends GameRenderer {
 				
 		titleScreenIP.initDrawingArea();
 		setLoadingAndLoginHovers();
+
+		if (onDemandFetcher.getPriorityHandler().isRunning()) {
+			CacheSpriteLoader.getCacheSprite2(0).drawAdvancedSprite(0, 0);
+			int y = 217;
+			boldText.drawCenteredText(0xffbb18, 765 / 2, "Welcome to RuneLive", y, true);
+			normalText.drawCenteredText(0xefefef, 765 / 2, "Please wait while we download the required", y + 25, true);
+			normalText.drawCenteredText(0xefefef, 765 / 2, "files to play.", y + 40, true);
+			String status = onDemandFetcher.getRemaining() + " files remaining - please wait...";
+			boldText.drawCenteredText(0xefefef, 765 / 2, status, y + 65, true);
+			titleScreenIP.drawGraphics(0, super.graphics, 0);
+			return;
+		}
 		
 		if(loginMessage1.length() > 0) {
 			
@@ -8168,8 +8179,8 @@ public class Client extends GameRenderer {
 				k16++;
 			}
 		}
-		aByteArrayArray1183 = new byte[k16][];
-		aByteArrayArray1247 = new byte[k16][];
+		localFloorMapData = new byte[k16][];
+		localObjectMapData = new byte[k16][];
 		anIntArray1234 = new int[k16];
 		floorMap = new int[k16];
 		objectMap = new int[k16];
@@ -8182,13 +8193,13 @@ public class Client extends GameRenderer {
 					objectMap[k16] = -1;
 					k16++;
 				} else {
-					int k28 = floorMap[k16] = onDemandFetcher.getMapCount(0, j26, l23);
-					if (k28 != -1) {
-						onDemandFetcher.pushRequest(3, k28);
+					int floorMapId = floorMap[k16] = onDemandFetcher.getMapCount(0, j26, l23);
+					if (floorMapId != -1) {
+						onDemandFetcher.pushRequest(3, floorMapId);
 					}
-					int j30 = objectMap[k16] = onDemandFetcher.getMapCount(1, j26, l23);
-					if (j30 != -1) {
-						onDemandFetcher.pushRequest(3, j30);
+					int objectMapId = objectMap[k16] = onDemandFetcher.getMapCount(1, j26, l23);
+					if (objectMapId != -1) {
+						onDemandFetcher.pushRequest(3, objectMapId);
 					}
 					k16++;
 				}
@@ -8315,7 +8326,7 @@ public class Client extends GameRenderer {
 				datainputstream.readFully(temp, 0, 6);
 				ByteBuffer stream = new ByteBuffer(temp);
 				stream.position = 3;
-				int totalLength = stream.getTribyte() + 6;
+				int totalLength = stream.getMediumInt() + 6;
 				int currentLength = 6;
 				buffer = new byte[totalLength];
 				System.arraycopy(temp, 0, buffer, 0, 6);
@@ -10641,7 +10652,7 @@ public class Client extends GameRenderer {
 			}
 
 			ObjectManager objectManager = new ObjectManager(byteGroundArray, intGroundArray);
-			int k2 = aByteArrayArray1183.length;
+			int k2 = localFloorMapData.length;
 			for (int i1 = 0; i1 < k2; i1++) {
 				for (int i2 = 0; i2 < 2000; i2++) {
 					if (anIntArray1234[i1] == positions[i2]) {
@@ -10659,7 +10670,7 @@ public class Client extends GameRenderer {
 				for (int i3 = 0; i3 < k2; i3++) {
 					int i4 = (anIntArray1234[i3] >> 8) * 64 - baseX;
 					int k5 = (anIntArray1234[i3] & 0xff) * 64 - baseY;
-					byte abyte0[] = aByteArrayArray1183[i3];
+					byte abyte0[] = localFloorMapData[i3];
 					if (abyte0 != null) {
 						objectManager.method180(abyte0, k5, i4, (anInt1069 - 6) * 8, (anInt1070 - 6) * 8, clippingPlanes);
 					}
@@ -10668,7 +10679,7 @@ public class Client extends GameRenderer {
 				for (int j4 = 0; j4 < k2; j4++) {
 					int l5 = (anIntArray1234[j4] >> 8) * 62 - baseX;
 					int k7 = (anIntArray1234[j4] & 0xff) * 62 - baseY;
-					byte abyte2[] = aByteArrayArray1183[j4];
+					byte abyte2[] = localFloorMapData[j4];
 
 					if (abyte2 == null && anInt1070 < 800) {
 						objectManager.method174(k7, 64, 64, l5);
@@ -10680,7 +10691,7 @@ public class Client extends GameRenderer {
 				}
 
 				for (int i6 = 0; i6 < k2; i6++) {
-					byte abyte1[] = aByteArrayArray1247[i6];
+					byte abyte1[] = localObjectMapData[i6];
 					if (abyte1 != null) {
 						int l8 = (anIntArray1234[i6] >> 8) * 64 - baseX;
 						int k9 = (anIntArray1234[i6] & 0xff) * 64 - baseY;
@@ -10704,11 +10715,11 @@ public class Client extends GameRenderer {
 			int j11 = (j10 / 8 << 8) + l10 / 8;
 
 			for (int l11 = 0; l11 < anIntArray1234.length; l11++) {
-				if (anIntArray1234[l11] != j11 || aByteArrayArray1183[l11] == null) {
+				if (anIntArray1234[l11] != j11 || localFloorMapData[l11] == null) {
 					continue;
 				}
 
-				objectManager.method179(i9, l9, clippingPlanes, k4 * 8, (j10 & 7) * 8, aByteArrayArray1183[l11], (l10 & 7) * 8, j3, j6 * 8);
+				objectManager.method179(i9, l9, clippingPlanes, k4 * 8, (j10 & 7) * 8, localFloorMapData[l11], (l10 & 7) * 8, j3, j6 * 8);
 				break;
 			}
 							}
@@ -10743,10 +10754,10 @@ public class Client extends GameRenderer {
 			int j12 = (k11 / 8 << 8) + i12 / 8;
 
 			for (int k12 = 0; k12 < anIntArray1234.length; k12++) {
-				if (anIntArray1234[k12] != j12 || aByteArrayArray1247[k12] == null) {
+				if (anIntArray1234[k12] != j12 || localObjectMapData[k12] == null) {
 					continue;
 				}
-				objectManager.method183(clippingPlanes, worldController, k10, j8 * 8, (i12 & 7) * 8, l6, aByteArrayArray1247[k12], (k11 & 7) * 8, i11, j9 * 8);
+				objectManager.method183(clippingPlanes, worldController, k10, j8 * 8, (i12 & 7) * 8, l6, localObjectMapData[k12], (k11 & 7) * 8, i11, j9 * 8);
 				break;
 			}
 							}
@@ -11362,19 +11373,19 @@ public class Client extends GameRenderer {
 			floorMaps = "";
 			objectMaps = "";
 		}
-		for (int i = 0; i < aByteArrayArray1183.length; i++) {
+		for (int i = 0; i < localFloorMapData.length; i++) {
 			floorMaps += "  " + floorMap[i];
 			objectMaps += "  " + objectMap[i];
-			if (aByteArrayArray1183[i] == null && floorMap[i] != -1) {
+			if (localFloorMapData[i] == null && floorMap[i] != -1) {
 				return -1;
 			}
-			if (aByteArrayArray1247[i] == null && objectMap[i] != -1) {
+			if (localObjectMapData[i] == null && objectMap[i] != -1) {
 				return -2;
 			}
 		}
 		boolean flag = true;
-		for (int j = 0; j < aByteArrayArray1183.length; j++) {
-			byte abyte0[] = aByteArrayArray1247[j];
+		for (int j = 0; j < localFloorMapData.length; j++) {
+			byte abyte0[] = localObjectMapData[j];
 			if (abyte0 != null) {
 				int k = (anIntArray1234[j] >> 8) * 64 - baseX;
 				int l = (anIntArray1234[j] & 0xff) * 64 - baseY;
@@ -12824,8 +12835,8 @@ public class Client extends GameRenderer {
 							k16++;
 						}
 					}
-					aByteArrayArray1183 = new byte[k16][];
-					aByteArrayArray1247 = new byte[k16][];
+					localFloorMapData = new byte[k16][];
+					localObjectMapData = new byte[k16][];
 					anIntArray1234 = new int[k16];
 					floorMap = new int[k16];
 					objectMap = new int[k16];
@@ -12876,8 +12887,8 @@ public class Client extends GameRenderer {
 							}
 						}
 					}
-					aByteArrayArray1183 = new byte[l16][];
-					aByteArrayArray1247 = new byte[l16][];
+					localFloorMapData = new byte[l16][];
+					localObjectMapData = new byte[l16][];
 					anIntArray1234 = new int[l16];
 					floorMap = new int[l16];
 					objectMap = new int[l16];
@@ -14028,8 +14039,9 @@ public class Client extends GameRenderer {
 			processLoadingError("An internal error occured whilst loading the RuneLive client", "The client's common error quick fix system is attempting to repair the cause", "The client will automatically close in 10 seconds...");
 			return;
 		}
-		if(isLoading)
+		if(isLoading) {
 			return;
+		}
 		if (!loggedIn) {
 			drawLoginScreen();
 		} else {
@@ -14047,13 +14059,18 @@ public class Client extends GameRenderer {
 
 		loopCycle++;
 
-		if (!loggedIn) {
-			processLoginScreenInput();
+		if (onDemandFetcher.getPriorityHandler().isRunning()) {
+			onDemandFetcher.getPriorityHandler().process();
 		} else {
-			mainGameProcessor();
+			if (!loggedIn) {
+				processLoginScreenInput();
+			} else {
+				mainGameProcessor();
+			}
 		}
 
 		processOnDemandQueue();
+
 		checkSize();
 		method49();
 		handleSounds();
@@ -14986,38 +15003,42 @@ public class Client extends GameRenderer {
 					fetchMusic = true;
 				}
 
-				if (onDemandData.getIndex() == 3 && loadingStage == 1) {
-					for (int i = 0; i < aByteArrayArray1183.length; i++) {
-						if (floorMap[i] == onDemandData.getId()) {
-							aByteArrayArray1183[i] = onDemandData.getData();
+				if (onDemandData.getIndex() == 3) {
+					if (loadingStage == 1) {
+						for (int i = 0; i < localFloorMapData.length; i++) {
+							if (floorMap[i] == onDemandData.getId()) {
+								localFloorMapData[i] = onDemandData.getData();
+								if (onDemandData.getData() == null) {
+									floorMap[i] = -1;
+								}
+								break;
+							}
+
+							if (objectMap[i] != onDemandData.getId()) {
+								continue;
+							}
+
+							localObjectMapData[i] = onDemandData.getData();
 
 							if (onDemandData.getData() == null) {
-								floorMap[i] = -1;
+								objectMap[i] = -1;
 							}
 
 							break;
 						}
-
-						if (objectMap[i] != onDemandData.getId()) {
-							continue;
+					} else if (!loggedIn && onDemandFetcher.getPriorityHandler().isRunning()) {
+						boolean isObjectMap = !onDemandFetcher.isFloorMap(onDemandData.getId());
+						if (!isObjectMap) {
+							ObjectManager.requestObjects(new ByteBuffer(onDemandData.getData()), onDemandFetcher);
 						}
-
-						aByteArrayArray1247[i] = onDemandData.getData();
-
-						if (onDemandData.getData() == null) {
-							objectMap[i] = -1;
-						}
-
-						break;
 					}
 				}
 				//SpriteCache.spriteCache[onDemandData.id] = new Sprite(onDemandData.buffer);
 				if (onDemandData.getIndex() == 4) {
 					Texture.decode(onDemandData.getId(), onDemandData.getData());
 				}
-			} while (onDemandData.getIndex() != 93 || !onDemandFetcher.method564(onDemandData.getId()));
-
-			ObjectManager.method173(new ByteBuffer(onDemandData.getData()), onDemandFetcher);
+			} while (onDemandData.getIndex() != 93 || !onDemandFetcher.isFloorMap(onDemandData.getId()));
+				ObjectManager.requestObjects(new ByteBuffer(onDemandData.getData()), onDemandFetcher);
 		} while (true);
 	}
 	
@@ -16055,7 +16076,7 @@ public class Client extends GameRenderer {
 				e.printStackTrace();
 			}
 
-			setLoadingText(100, "Unpacked interfaces");
+			setLoadingText(97, "Unpacked interfaces");
 
 			try {
 				for (int j6 = 0; j6 < 33; j6++) {
@@ -16155,6 +16176,7 @@ public class Client extends GameRenderer {
 				//cacheIndices[index].dump();
 			}*/
 			System.gc();
+			onDemandFetcher.getPriorityHandler().requestFiles();
 			isLoading = false;
 			updateSettingsInterface();
 			if(Configuration.NEW_CURSORS) {

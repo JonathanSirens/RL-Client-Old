@@ -4,6 +4,9 @@ package org.runelive.client.cache.node;
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3)
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class NodeSubList {
 
 	public NodeSubList() {
@@ -61,6 +64,14 @@ public final class NodeSubList {
 		}
 
 		return i;
+	}
+
+	public List<NodeSub> getList() {
+		List<NodeSub> list = new ArrayList<>();
+		for (NodeSub nodeSub = head.prevNodeSub; nodeSub != head; nodeSub = nodeSub.prevNodeSub) {
+			list.add(nodeSub);
+		}
+		return list;
 	}
 
 	private final NodeSub head;

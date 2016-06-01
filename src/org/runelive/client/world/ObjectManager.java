@@ -40,23 +40,23 @@ public final class ObjectManager {
 		return k;
 	}
 
-	public static void method173(ByteBuffer stream, CacheFileRequester class42_sub1) {
+	public static void requestObjects(ByteBuffer buffer, CacheFileRequester fileRequester) {
 		label0: {
-		int i = -1;
+		int objectId = -1;
 		do {
-			int j = stream.getUSmart2();
+			int j = buffer.getUSmart2();
 			if (j == 0) {
 				break label0;
 			}
-			i += j;
-			ObjectDefinition class46 = ObjectDefinition.forID(i);
-			class46.method574(class42_sub1);
+			objectId += j;
+			ObjectDefinition objectDef = ObjectDefinition.forID(objectId);
+			objectDef.preloadObjectModels(fileRequester);
 			do {
-				int k = stream.getSmart();
+				int k = buffer.getSmart();
 				if (k == 0) {
 					break;
 				}
-				stream.getUnsignedByte();
+				buffer.getUnsignedByte();
 			} while (true);
 		} while (true);
 	}

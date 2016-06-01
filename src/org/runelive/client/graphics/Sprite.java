@@ -626,7 +626,7 @@ public class Sprite extends DrawingArea {
 		int j = stream_1.getUnsignedByte();
 		int ai[] = new int[j];
 		for (int k = 0; k < j - 1; k++) {
-			ai[k + 1] = stream_1.getTribyte();
+			ai[k + 1] = stream_1.getMediumInt();
 			if (ai[k + 1] == 0)
 				ai[k + 1] = 1;
 		}

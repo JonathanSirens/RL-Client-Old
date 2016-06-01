@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.List;
 import java.util.zip.CRC32;
 import java.util.zip.GZIPInputStream;
 
@@ -16,6 +17,7 @@ import org.runelive.client.Signlink;
 import org.runelive.client.cache.Archive;
 import org.runelive.client.cache.CacheIndex;
 import org.runelive.client.cache.node.Deque;
+import org.runelive.client.cache.node.NodeSub;
 import org.runelive.client.cache.node.NodeSubList;
 import org.runelive.client.io.ByteBuffer;
 
@@ -105,6 +107,12 @@ public final class CacheFileRequester implements Runnable {
 	private byte[] modelIndices;
 	public int errorCount;
 
+	public PriorityRequestHandler getPriorityHandler() {
+		return priorityRequestHandler;
+	}
+
+	private PriorityRequestHandler priorityRequestHandler;
+
 	public CacheFileRequester() {
 		requested = new Deque();
 		statusString = "";
@@ -120,6 +128,7 @@ public final class CacheFileRequester implements Runnable {
 		checksums = new int[6][];
 		toRequest = new Deque();
 		mandatory = new Deque();
+		this.priorityRequestHandler = new PriorityRequestHandler(this);
 	}
 
 	private void checkReceived() {
@@ -497,6 +506,19 @@ public final class CacheFileRequester implements Runnable {
 		}
 	}
 
+	public boolean remainingContains(int index, int id) {
+		synchronized (remainingMandatory) {
+			List<NodeSub> list = remainingMandatory.getList();
+			for (NodeSub sub : list) {
+				CacheFileRequest request = (CacheFileRequest) sub;
+				if (request.getIndex() == index && request.getId() == id) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	private void handleFailed() {
 		incompletedCount = 0;
 		completedCount = 0;
@@ -543,13 +565,12 @@ public final class CacheFileRequester implements Runnable {
 		}
 	}
 
-	public boolean method564(int i) {
-		for (int k = 0; k < mapIndices1.length; k++) {
-			if (mapIndices3[k] == i) {
+	public boolean isFloorMap(int mapFileId) {
+		for (int mapFile = 0; mapFile < mapIndices1.length; mapFile++) {
+			if (mapIndices3[mapFile] == mapFileId) {
 				return true;
 			}
 		}
-
 		return false;
 	}
 
@@ -648,6 +669,7 @@ public final class CacheFileRequester implements Runnable {
 					if (!current.incomplete && current.getIndex() == 3) {
 						current.incomplete = true;
 						current.setCacheIndex(93);
+						System.out.println("Requested full map for: " + current.getId());
 					}
 					if (current.incomplete) {
 						synchronized (completed) {
@@ -796,13 +818,13 @@ public final class CacheFileRequester implements Runnable {
 		return modelIndices[i] & 0xff;
 	}
 
-	public void start(Archive streamLoader, Client client1) {
-		byte[] abyte2 = null;
+	public void start(Archive archive, Client client1) {
+		byte[] data = null;
 		int j1 = 0;
 		String as1[] = { "model_crc", "anim_crc", "midi_crc", "map_crc",
 		"textures_crc", "model_extended_crc" };
 		for (int index = 0; index < 6; index++) {
-			byte data[] = streamLoader.get(as1[index]);
+			data = archive.get(as1[index]);
 			ByteBuffer buffer = new ByteBuffer(data);
 			int fileAmount = data.length / 4;
 			checksums[index] = new int[fileAmount];
@@ -813,18 +835,18 @@ public final class CacheFileRequester implements Runnable {
 
 		}
 
-		abyte2 = streamLoader.get("model_index");
+		data = archive.get("model_index");
 		j1 = checksums[0].length;
 		modelIndices = new byte[j1];
 		for (int k1 = 0; k1 < j1; k1++) {
-			if (k1 < abyte2.length) {
-				modelIndices[k1] = abyte2[k1];
+			if (k1 < data.length) {
+				modelIndices[k1] = data[k1];
 			} else {
 				modelIndices[k1] = 0;
 			}
 		}
-		abyte2 = streamLoader.get("map_index");
-		ByteBuffer stream2 = new ByteBuffer(abyte2);
+		data = archive.get("map_index");
+		ByteBuffer stream2 = new ByteBuffer(data);
 		int mapCount = stream2.getUnsignedShort();
 		mapIndices1 = new int[mapCount];
 		mapIndices2 = new int[mapCount];
@@ -880,12 +902,21 @@ public final class CacheFileRequester implements Runnable {
 		mapIndices2[151] = 1984;
 		mapIndices3[151] = 1985;
 
-		abyte2 = streamLoader.get("midi_index");
-		stream2 = new ByteBuffer(abyte2);
-		j1 = abyte2.length;
+		data = archive.get("midi_index");
+		stream2 = new ByteBuffer(data);
+		j1 = data.length;
 		anIntArray1348 = new int[j1];
 		for (int k2 = 0; k2 < j1; k2++) {
 			anIntArray1348[k2] = stream2.getUnsignedByte();
+		}
+
+		data = archive.get("map_priorities.dat");
+		ByteBuffer buffer = new ByteBuffer(data);
+		int size = buffer.getMediumInt();
+		for (int index = 0; index < size; index++) {
+			int id = buffer.getMediumInt();
+			byte priority = buffer.getByte();
+			this.priorityRequestHandler.addMap(id);
 		}
 
 		clientInstance = client1;

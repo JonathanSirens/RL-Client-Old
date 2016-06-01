@@ -2903,16 +2903,16 @@ public class Model extends Animable {
 					kb[k14] = nc3.getUnsignedShort();
 
 					if (newformat >= 14) {
-						N[k14] = nc3.getTribyte(-1);
+						N[k14] = nc3.getMediumInt(-1);
 					} else {
 						N[k14] = nc3.getUnsignedShort();
 					}
 
 					y[k14] = nc3.getUnsignedShort();
 				} else {
-					kb[k14] = nc3.getTribyte(-1);
-					N[k14] = nc3.getTribyte(-1);
-					y[k14] = nc3.getTribyte(-1);
+					kb[k14] = nc3.getMediumInt(-1);
+					N[k14] = nc3.getMediumInt(-1);
+					y[k14] = nc3.getMediumInt(-1);
 				}
 
 				gb[k14] = nc4.getSignedByte();
@@ -2925,15 +2925,15 @@ public class Model extends Animable {
 				texTrianglesPoint3[k14] = nc2.getUnsignedShort();
 
 				if (newformat >= 15) {
-					kb[k14] = nc3.getTribyte(-1);
-					N[k14] = nc3.getTribyte(-1);
-					y[k14] = nc3.getTribyte(-1);
+					kb[k14] = nc3.getMediumInt(-1);
+					N[k14] = nc3.getMediumInt(-1);
+					y[k14] = nc3.getMediumInt(-1);
 				} else {
 					kb[k14] = nc3.getUnsignedShort();
 					if (newformat < 14) {
 						N[k14] = nc3.getUnsignedShort();
 					} else {
-						N[k14] = nc3.getTribyte(-1);
+						N[k14] = nc3.getMediumInt(-1);
 					}
 					y[k14] = nc3.getUnsignedShort();
 				}
@@ -2952,13 +2952,13 @@ public class Model extends Animable {
 					if (newformat < 14) {
 						N[k14] = nc3.getUnsignedShort();
 					} else {
-						N[k14] = nc3.getTribyte(-1);
+						N[k14] = nc3.getMediumInt(-1);
 					}
 					y[k14] = nc3.getUnsignedShort();
 				} else {
-					kb[k14] = nc3.getTribyte(-1);
-					N[k14] = nc3.getTribyte(-1);
-					y[k14] = nc3.getTribyte(-1);
+					kb[k14] = nc3.getMediumInt(-1);
+					N[k14] = nc3.getMediumInt(-1);
+					y[k14] = nc3.getMediumInt(-1);
 				}
 				gb[k14] = nc4.getSignedByte();
 				lb[k14] = nc5.getSignedByte();

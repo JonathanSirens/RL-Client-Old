@@ -8,6 +8,7 @@ import org.runelive.client.FrameReader;
 import org.runelive.client.List;
 import org.runelive.client.Signlink;
 import org.runelive.client.cache.Archive;
+import org.runelive.client.cache.ondemand.CacheFileRequest;
 import org.runelive.client.cache.ondemand.CacheFileRequester;
 import org.runelive.client.io.ByteBuffer;
 import org.runelive.client.world.Model;
@@ -25,7 +26,7 @@ public final class ObjectDefinition {
 
     public static ObjectDefinition forID(int id) {
         for (int j = 0; j < 20; j++) {
-            if (cache[j].type == id) {
+            if (cache[j].id == id) {
                 return cache[j];
             }
         }
@@ -53,7 +54,7 @@ public final class ObjectDefinition {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        definition.type = id;
+        definition.id = id;
         definition.setDefaults();
         //    definition.readValues(stream);
         if(id > streamIndices.length || loadNew)
@@ -108,7 +109,7 @@ public final class ObjectDefinition {
         }
 
 
-        boolean removeObject = definition.type == 1442 || definition.type == 1433 || definition.type == 1443 || definition.type == 1441 || definition.type == 26916 || definition.type == 26917 || definition.type == 5244 || definition.type == 2623 || definition.type == 2956 || definition.type == 463 || definition.type == 462 || definition.type == 10527 || definition.type == 10529 || definition.type == 40257 || definition.type == 296 || definition.type == 300 || definition.type == 1747 || definition.type == 7332 || definition.type == 7326 || definition.type == 7325 || definition.type == 7385 || definition.type == 7331 || definition.type == 7385 || definition.type == 7320 || definition.type == 7317 || definition.type == 7323 || definition.type == 7354 || definition.type == 1536 || definition.type == 1537 || definition.type == 5126 || definition.type == 1551 || definition.type == 1553 || definition.type == 1516 || definition.type == 1519 || definition.type == 1557 || definition.type == 1558 || definition.type == 7126 || definition.type == 733 || definition.type == 14233 || definition.type == 14235 || definition.type == 1596 || definition.type == 1597 || definition.type == 14751 || definition.type == 14752 || definition.type == 14923 || definition.type == 36844 || definition.type == 30864 || definition.type == 2514 || definition.type == 1805 || definition.type == 15536 || definition.type == 2399 || definition.type == 14749 || definition.type == 29315 || definition.type == 29316 || definition.type == 29319 || definition.type == 29320 || definition.type == 29360 || definition.type == 1528 || definition.type == 36913 || definition.type == 36915 || definition.type == 15516 || definition.type == 35549 || definition.type == 35551 || definition.type == 26808 || definition.type == 26910 || definition.type == 26913 || definition.type == 24381 || definition.type == 15514 || definition.type == 25891 || definition.type == 26082 || definition.type == 26081 || definition.type == 1530 || definition.type == 16776 || definition.type == 16778 || definition.type == 28589 || definition.type == 1533 || definition.type == 17089 || definition.type == 1600 || definition.type == 1601 || definition.type == 11707 || definition.type == 24376 || definition.type == 24378 || definition.type == 40108 || definition.type == 59 || definition.type == 2069 || definition.type == 36846;
+        boolean removeObject = definition.id == 1442 || definition.id == 1433 || definition.id == 1443 || definition.id == 1441 || definition.id == 26916 || definition.id == 26917 || definition.id == 5244 || definition.id == 2623 || definition.id == 2956 || definition.id == 463 || definition.id == 462 || definition.id == 10527 || definition.id == 10529 || definition.id == 40257 || definition.id == 296 || definition.id == 300 || definition.id == 1747 || definition.id == 7332 || definition.id == 7326 || definition.id == 7325 || definition.id == 7385 || definition.id == 7331 || definition.id == 7385 || definition.id == 7320 || definition.id == 7317 || definition.id == 7323 || definition.id == 7354 || definition.id == 1536 || definition.id == 1537 || definition.id == 5126 || definition.id == 1551 || definition.id == 1553 || definition.id == 1516 || definition.id == 1519 || definition.id == 1557 || definition.id == 1558 || definition.id == 7126 || definition.id == 733 || definition.id == 14233 || definition.id == 14235 || definition.id == 1596 || definition.id == 1597 || definition.id == 14751 || definition.id == 14752 || definition.id == 14923 || definition.id == 36844 || definition.id == 30864 || definition.id == 2514 || definition.id == 1805 || definition.id == 15536 || definition.id == 2399 || definition.id == 14749 || definition.id == 29315 || definition.id == 29316 || definition.id == 29319 || definition.id == 29320 || definition.id == 29360 || definition.id == 1528 || definition.id == 36913 || definition.id == 36915 || definition.id == 15516 || definition.id == 35549 || definition.id == 35551 || definition.id == 26808 || definition.id == 26910 || definition.id == 26913 || definition.id == 24381 || definition.id == 15514 || definition.id == 25891 || definition.id == 26082 || definition.id == 26081 || definition.id == 1530 || definition.id == 16776 || definition.id == 16778 || definition.id == 28589 || definition.id == 1533 || definition.id == 17089 || definition.id == 1600 || definition.id == 1601 || definition.id == 11707 || definition.id == 24376 || definition.id == 24378 || definition.id == 40108 || definition.id == 59 || definition.id == 2069 || definition.id == 36846;
         if(removeObject) {
             definition.objectModelIDs = null;
             definition.hasActions = false;
@@ -127,7 +128,7 @@ public final class ObjectDefinition {
             definition.configID = definition.varbitIndex;
             definition.varbitIndex = -1;
         }*/
-        if(definition.name != null && definition.type != 591) {
+        if(definition.name != null && definition.id != 591) {
             String s =definition.name.toLowerCase();
             if(s.contains("bank") && !s.contains("closed")) {
   
@@ -1556,7 +1557,7 @@ public final class ObjectDefinition {
     private boolean aBoolean751;
     public static boolean lowDetail;
     private static ByteBuffer stream;
-    public int type;
+    public int id;
     public boolean aBoolean757;
     public int mapSceneID;
     public int configObjectIDs[];
@@ -1586,14 +1587,24 @@ public final class ObjectDefinition {
     public static List mruNodes1 = new List(500);
     public String actions[];
 
-    public void method574(CacheFileRequester class42_sub1) {
+    public void method574(CacheFileRequester requester) {
         if (objectModelIDs == null) {
             return;
         }
         for (int objectModelID : objectModelIDs) {
-            class42_sub1.method560(objectModelID & 0xffff, 0);
+            requester.method560(objectModelID & 0xffff, 0);
         }
     }
+
+	public void preloadObjectModels(CacheFileRequester requester) {
+		if (objectModelIDs == null) {
+			return;
+		}
+		//System.out.println("Requesting object preload for object: " + this.id);
+		for (int objectModelID : objectModelIDs) {
+			requester.pushRequest(CacheFileRequest.MODEL, objectModelID & 0xffff);
+		}
+	}
 
     public boolean method577(int i) {
         if (anIntArray776 == null) {
@@ -1681,7 +1692,7 @@ public final class ObjectDefinition {
             if (j != 10) {
                 return null;
             }
-            l1 = (type << 8) + l + ((long) (k + 1) << 32);
+            l1 = (id << 8) + l + ((long) (k + 1) << 32);
             Model model_1 = (Model) mruNodes2.insertFromCache(l1);
             if (model_1 != null) {
                 return model_1;
@@ -1728,7 +1739,7 @@ public final class ObjectDefinition {
             if (i1 == -1) {
                 return null;
             }
-            l1 = (type << 8) + (i1 << 3) + l + ((long) (k + 1) << 32);
+            l1 = (id << 8) + (i1 << 3) + l + ((long) (k + 1) << 32);
             Model model_2 = (Model) mruNodes2.insertFromCache(l1);
             if (model_2 != null) {
                 return model_2;
@@ -2013,7 +2024,7 @@ public final class ObjectDefinition {
     }
 
     public static void loadEvilTree(ObjectDefinition definition) {
-        switch (definition.type) {
+        switch (definition.id) {
 
         case 11391:
             definition.objectModelIDs = new int[] { 45733, 45735 };

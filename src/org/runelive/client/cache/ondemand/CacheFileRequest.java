@@ -38,4 +38,11 @@ public final class CacheFileRequest extends NodeSub {
 		this.id = id;
 	}
 
+	public static final int MODEL = 0;
+	public static final int ANIM = 1;
+	public static final int MIDI = 2;
+	public static final int MAP = 3;
+	public static final int TEXTURE = 4;
+	public static final int MODEL_EXT = 5;
+
 }

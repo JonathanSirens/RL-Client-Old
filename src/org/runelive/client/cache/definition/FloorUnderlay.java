@@ -123,7 +123,7 @@ public final class FloorUnderlay {
 			if (i == 0) {
 				return;
 			} else if (i == 1) {
-				anInt390 = stream.getTribyte();
+				anInt390 = stream.getMediumInt();
 				method262(anInt390);
 			} else if (i == 2) {
 				anInt391 = stream.getUnsignedByte();
@@ -140,7 +140,7 @@ public final class FloorUnderlay {
 				int k = anInt395;
 				int l = anInt396;
 				int i1 = anInt397;
-				int j1 = stream.getTribyte();
+				int j1 = stream.getMediumInt();
 				method262(j1);
 				anInt394 = j;
 				anInt395 = k;
