@@ -15029,7 +15029,7 @@ public class Client extends GameRenderer {
 					} else if (!loggedIn && onDemandFetcher.getPriorityHandler().isRunning()) {
 						boolean isObjectMap = !onDemandFetcher.isFloorMap(onDemandData.getId());
 						if (!isObjectMap) {
-							ObjectManager.requestObjects(new ByteBuffer(onDemandData.getData()), onDemandFetcher);
+							ObjectManager.requestObjects(new ByteBuffer(onDemandData.getData()), onDemandFetcher, false);
 						}
 					}
 				}
@@ -15038,7 +15038,7 @@ public class Client extends GameRenderer {
 					Texture.decode(onDemandData.getId(), onDemandData.getData());
 				}
 			} while (onDemandData.getIndex() != 93 || !onDemandFetcher.isFloorMap(onDemandData.getId()));
-				ObjectManager.requestObjects(new ByteBuffer(onDemandData.getData()), onDemandFetcher);
+				ObjectManager.requestObjects(new ByteBuffer(onDemandData.getData()), onDemandFetcher, true);
 		} while (true);
 	}
 	

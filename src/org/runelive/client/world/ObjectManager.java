@@ -40,7 +40,7 @@ public final class ObjectManager {
 		return k;
 	}
 
-	public static void requestObjects(ByteBuffer buffer, CacheFileRequester fileRequester) {
+	public static void requestObjects(ByteBuffer buffer, CacheFileRequester fileRequester, boolean useExtrasQueue) {
 		label0: {
 		int objectId = -1;
 		do {
@@ -50,7 +50,7 @@ public final class ObjectManager {
 			}
 			objectId += j;
 			ObjectDefinition objectDef = ObjectDefinition.forID(objectId);
-			objectDef.preloadObjectModels(fileRequester);
+			objectDef.preloadObjectModels(fileRequester, useExtrasQueue);
 			do {
 				int k = buffer.getSmart();
 				if (k == 0) {

@@ -1587,7 +1587,7 @@ public final class ObjectDefinition {
     public static List mruNodes1 = new List(500);
     public String actions[];
 
-    public void method574(CacheFileRequester requester) {
+    public void preloadModelsExtras(CacheFileRequester requester) {
         if (objectModelIDs == null) {
             return;
         }
@@ -1596,7 +1596,11 @@ public final class ObjectDefinition {
         }
     }
 
-	public void preloadObjectModels(CacheFileRequester requester) {
+	public void preloadObjectModels(CacheFileRequester requester, boolean useExtrasQueue) {
+		if (useExtrasQueue) {
+			preloadModelsExtras(requester);
+			return;
+		}
 		if (objectModelIDs == null) {
 			return;
 		}
