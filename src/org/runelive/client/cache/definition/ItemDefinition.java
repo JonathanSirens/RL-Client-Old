@@ -5698,7 +5698,11 @@ public final class ItemDefinition {
                 itemDef.actions[4] = "Drop";
                 break;
 
-            case 21111:
+			case 11716:
+				itemDef.actions = new String[]{null, "Wield", "Make-Hasta", null, "Drop"};
+				break;
+
+            case 21120:
                 itemDef.name = "Zamorakian hasta";
                 itemDef.modelZoom = 1900;
                 itemDef.modelRotation1 = 1257;
