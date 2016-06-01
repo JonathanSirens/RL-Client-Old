@@ -1,6 +1,6 @@
 package org.runelive.client;
 
-import java.awt.Toolkit;
+import java.awt.*;
 
 import org.runelive.client.cache.CacheIndex;
 import org.runelive.client.graphics.*;
@@ -19,19 +19,12 @@ import org.runelive.alertify.Alertify;
 import org.runelive.alertify.AlertifyBuilder;
 
 import java.io.FileOutputStream;
+import java.net.*;
 import java.util.zip.GZIPOutputStream;
 import org.runelive.alertify.AlertifyType;
 import org.runelive.alertify.ui.*;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.RenderingHints;
 import org.runelive.client.util.*;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+
 import java.awt.image.BufferedImage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -39,10 +32,6 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.URL;
-import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -127,6 +116,8 @@ import org.runelive.client.world.sound.Class5_Sub2_Sub1;
 import org.runelive.client.world.sound.Class5_Sub2_Sub2;
 import org.runelive.client.world.sound.Sound;
 import org.runelive.client.world.sound.Sounds;
+import org.runelive.task.Task;
+import org.runelive.task.TaskManager;
 
 public class Client extends GameRenderer {
 
@@ -8624,40 +8615,42 @@ public class Client extends GameRenderer {
 	}
 
 	static void launchURL(String url) {
-		String osName = System.getProperty("os.name");
-
-		try {
-			if (osName.startsWith("Mac OS")) {
-				Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
-				Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] { String.class });
-				openURL.invoke(null, new Object[] { url });
-			} else if (osName.startsWith("Windows")) {
-				Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
-			} else {
-				// assume Unix or Linux
-				String[] browsers = { "firefox", "opera", "konqueror",
-						"epiphany", "mozilla", "netscape", "safari" };
-				String browser = null;
-
-				for (int count = 0; count < browsers.length && browser == null; count++) {
-					if (Runtime.getRuntime().exec(new String[] { "which",
-							browsers[count] }).waitFor() == 0) {
-						browser = browsers[count];
-					}
-				}
-
-				if (browser == null) {
-					throw new Exception("Could not find web browser");
-				} else {
-					Runtime.getRuntime().exec(new String[] { browser, url });
-				}
+		TaskManager.submit(new Task() {
+			@Override
+			public void execute() {
+				openUrl(url);
 			}
-		} catch (Exception e) {
-			instance.pushMessage("Failed to open URL.", 0, "");
-		}
+		});
 	}
 
-	public static boolean forceRegionLoad;
+	private static void openUrl(String url) {
+		if(Desktop.isDesktopSupported()){
+			Desktop desktop = Desktop.getDesktop();
+			try {
+				desktop.browse(new URI(url));
+			} catch (IOException e) {
+				System.err.println("Desktop supported, IOException occurred while opening url: " + url);
+			} catch (URISyntaxException e) {
+				System.err.println("Desktop supported, URISyntaxException occurred while opening url: " + url);
+			}
+		} else {
+			Runtime runtime = Runtime.getRuntime();
+			if (SystemInfo.isMac()) {
+				String[] args = {"osascript", "-e", "open location \"" + url + "\""};
+				try {
+					runtime.exec(args);
+				} catch (IOException e) {
+					System.err.println("Desktop not supported, IOException occurred while opening url (osascript): " + url);
+				}
+			} else {
+				try {
+					runtime.exec("xdg-open " + url);
+				} catch (IOException e) {
+					System.err.println("Desktop not supported, IOException occurred while opening url (xdg-open): " + url);
+				}
+			}
+		}
+	}
 
 	private void loadingStages() {
 		if (isLowDetail() && loadingStage == 2 && ObjectManager.anInt131 != plane) {

@@ -135,6 +135,9 @@ public final class CacheFileRequester implements Runnable {
 			}
 			if (Configuration.FILE_SERVER_ENABLED) {
 				if (request.getIndex() >= 0 && request.getIndex() <= Configuration.CACHE_INDEX_COUNT && checksums[request.getIndex()] != null) {
+					if (request.getId() >= checksums[request.getIndex()].length) {
+						System.err.println("Error: Requested file id " + request.getId() + " exceeds checksum capacity of " + checksums[request.getIndex()].length);
+					}
 					if (!crcMatches(checksums[request.getIndex()][request.getId()], data)) {
 						data = null;
 					}
