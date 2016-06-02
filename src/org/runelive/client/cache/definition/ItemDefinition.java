@@ -1076,6 +1076,11 @@ public final class ItemDefinition {
                 itemDef.actions = new String[]{null, "Wield", "Check", "Unload", "Uncharge"};
                 itemDef.groundActions = new String[]{null, null, "Take", null, null};
                 break;
+			case 7968:
+				itemDef.name = "Imbue Scroll";
+				itemDef.actions = new String[]{null, null, null, null, "Destroy"};
+				itemDef.groundActions = new String[]{null, null, "Take", null, null};
+				break;
             case 11996:
                 MobDefinition kbd = MobDefinition.get(50);
                 itemDef.immitate(ItemDefinition.get(17488));
