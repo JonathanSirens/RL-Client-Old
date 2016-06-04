@@ -249,7 +249,67 @@ public final class ItemDefinition {
                 itemDef.actions[1] = "Wield";
                 itemDef.actions[4] = "Drop";
                 break;
-
+		   case 21111:
+				itemDef.setDefaults();
+				itemDef.name = "Ganodermic visor";
+				itemDef.description = "It's an Ganodermic visor".getBytes();
+				itemDef.actions = new String[5];
+				itemDef.actions[1] = "Wield";    
+				itemDef.modelID = 10935;
+				itemDef.maleWearId = 10373;
+				itemDef.femaleWearId = 10523;
+				itemDef.modelZoom = 1118;
+				itemDef.modelRotation1 = 215;
+				itemDef.modelRotation2 = 175;
+				itemDef.modelOffset1 = 1;
+				itemDef.modelOffsetY = -30;
+			break;
+			case 21112:
+				itemDef.setDefaults();
+				itemDef.name = "Ganodermic poncho";
+				itemDef.description = "It's an Ganodermic poncho".getBytes();
+				itemDef.actions = new String[5];
+				itemDef.actions[1] = "Wield";    
+				itemDef.modelID = 10919;
+				itemDef.maleWearId = 10490;
+				itemDef.femaleWearId = 10664;
+				itemDef.modelZoom = 1513;
+				itemDef.modelRotation1 = 485;
+				itemDef.modelRotation2 = 13;
+				itemDef.modelOffset1 = 1;
+				itemDef.modelOffsetY = -3;
+			break;
+			case 21113:
+				itemDef.setDefaults();
+				itemDef.name = "Ganodermic leggings";
+				itemDef.description = "It's an Ganodermic leggings".getBytes();
+				itemDef.actions = new String[5];
+				itemDef.actions[1] = "Wield";    
+				itemDef.modelID = 10942;
+				itemDef.maleWearId = 10486;
+				itemDef.femaleWearId = 10578;
+				itemDef.modelZoom = 1513;
+				itemDef.modelRotation1 = 498;
+				itemDef.modelRotation2 = 0;
+				itemDef.modelOffset1 = 8;
+				itemDef.modelOffsetY = -18;
+			break;
+			case 21114:
+				itemDef.setDefaults();
+				itemDef.name = "Polypore staff";
+				itemDef.description = "It's an Polypore staff".getBytes();
+				itemDef.actions = new String[5];
+				itemDef.actions[1] = "Wield";            
+				itemDef.modelID = 13426;
+				itemDef.maleWearId = 13417;
+				itemDef.femaleWearId = 13417;
+				itemDef.modelZoom = 3750;
+				itemDef.modelRotation1 = 1454;
+				itemDef.modelRotation2 = 997;
+				itemDef.modelOffsetX = 1145;
+				itemDef.modelOffset1 = 0;
+				itemDef.modelOffsetY = 8;
+			break;       	
             case 21100:
                 itemDef.modelID = 67007;
                 itemDef.name = "Drygore Mace";

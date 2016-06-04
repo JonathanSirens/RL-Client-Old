@@ -7,7 +7,7 @@ package org.runelive;
 public class Configuration {
 
 	/** CONNECTION **/
-	public final static boolean LOCAL = false;
+	public final static boolean LOCAL = true;
 	public final static String SERVER_HOST = LOCAL ? "127.0.0.1" : "158.69.125.71"; // 158.69.125.71
 	public final static int SERVER_PORT = 59018;
 
@@ -26,7 +26,7 @@ public class Configuration {
 	public static final boolean DROPBOX_MODE = false;
 	
 	/** MAIN CONSTANTS **/
-	public static final String CLIENT_VERSION = "2.48";
+	public static final String CLIENT_VERSION = "2.47";
 	public final static String CLIENT_NAME = "RuneLive " + CLIENT_VERSION + "";
 	public final static String CACHE_DIRECTORY_NAME = "runelive"; // Cache folder name
 	public final static int USELESS_VERSION = 3;
