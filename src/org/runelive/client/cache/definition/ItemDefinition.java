@@ -2075,6 +2075,12 @@ public final class ItemDefinition {
                 itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
                 itemDef.modelID = 61729;
                 break;
+            case 19672:
+            case 19673:
+            case 19674:
+                itemDef.groundActions = new String[]{null, null, "Take"};
+                itemDef.actions = new String[]{null, "Wear", null, null, "Drop"};
+                break;
             case 21000:
                 itemDef.setDefaults();
                 itemDef.modelID = 70000;
