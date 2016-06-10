@@ -220,8 +220,9 @@ public final class MobDefinition {
 			definition.adjustVertextPointsXOrY = 63;
 			definition.npcSizeInSquares = 3;
 			break;	
-		case 2006:
-			definition.copy(get(83));
+		case 1472:
+			definition.adjustVertextPointZ += 25;
+			definition.adjustVertextPointsXOrY += 25;
 			definition.name = "Todd the wrath";
 			definition.combatLevel = 583;
 			break;
