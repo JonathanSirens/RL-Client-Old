@@ -1243,6 +1243,7 @@ public class Client extends GameRenderer {
 	public int yCameraCurve;
 	public int yCameraPos;
 	public int zCameraPos;
+	private boolean dataOn;
 	private boolean fpsOn;
 	public boolean autoCast = false;
 	public int autocastId = 0;
@@ -1489,8 +1490,10 @@ public class Client extends GameRenderer {
 		case "cursors":
 			Configuration.NEW_CURSORS = !Configuration.NEW_CURSORS;
 			break;
-		case "fps":
 		case "data":
+			dataOn = !dataOn;
+			break;
+		case "fps":
 			fpsOn = !fpsOn;
 			break;
 		case "noclip":
@@ -5529,7 +5532,7 @@ public class Client extends GameRenderer {
 			normalText.method385(0xffff00, "Object Maps: " + objectMaps + ";", 359 - minus, 5);
 			normalText.method385(0xffff00, "Floor Maps: " + floorMaps + ";", 374 - minus, 5);
 		}*/
-		if (fpsOn) {
+		if (dataOn) {
 			int textX = mapArea.getxPos() - 90;
 			int textY = 20;
 			int textColor = 0xffff00;
@@ -5554,6 +5557,16 @@ public class Client extends GameRenderer {
 			normalText.method385(textColor, "MouseY:" + super.mouseY + "", textY, textX);
 			textY += 15;
 			normalText.method385(textColor, "File queue:" + onDemandFetcher.getRemaining() + "", textY, textX);
+		} else if(fpsOn) {
+			int textColor = 0xffff00;
+			if (super.fps < 15) {
+				textColor = 0xff0000;
+			}
+			if(GameFrame.getScreenMode() == ScreenMode.RESIZABLE) {
+				normalText.method385(textColor, "Fps:" + super.fps, 25, getScreenWidth() - 260);
+			} else {
+				normalText.method385(textColor, "Fps:" + super.fps, 25, getScreenWidth() - 300);
+			}
 		}
 
 		if (systemUpdateTimer != 0) {
@@ -11882,6 +11895,8 @@ public class Client extends GameRenderer {
 							launchURL("http://rune.live/vote");
 						} else if(inputString.toLowerCase().startsWith("::store") || inputString.toLowerCase().startsWith("::donate")) {
 							launchURL("http://rune.live/store/");
+						} else if(inputString.toLowerCase().startsWith("::fps")) {
+							fpsOn = !fpsOn;
 						} else {
 							getOut().putOpcode(103);
 							getOut().putByte(inputString.length() - 1);
