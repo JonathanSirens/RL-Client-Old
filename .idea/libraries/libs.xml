@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="libs">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/jacob.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/alertify4j.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jacob.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

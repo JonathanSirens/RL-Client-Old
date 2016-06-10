@@ -371,6 +371,7 @@ public class Client extends GameRenderer {
 		updateSetting(26054, !Configuration.HIGH_DETAIL);
 		updateSetting(26058, Configuration.HIGH_DETAIL);
 		updateSetting(26035, Configuration.FOG_ENABLED);
+		updateSetting(26037, Configuration.TOGGLE_ROOF_OFF);
 	}
 	
 	private boolean hovered(RSInterface rsi) {
@@ -5023,6 +5024,13 @@ public class Client extends GameRenderer {
 						pushMessage("HD Fog toggled.", 0, "");
 						Settings.save();
 						updateSetting(interfaceId, !Configuration.FOG_ENABLED);
+						break;
+					case 26037:
+						Configuration.TOGGLE_ROOF_OFF = !Configuration.TOGGLE_ROOF_OFF;
+						pushMessage("Roofs have been toggled.", 0, "");
+						Settings.save();
+						updateSetting(interfaceId, !Configuration.TOGGLE_ROOF_OFF);
+						loadRegion();
 						break;
 					case 26014:
 						Configuration.NEW_HITMARKS = !Configuration.NEW_HITMARKS;

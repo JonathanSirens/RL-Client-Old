@@ -531,7 +531,7 @@ public final class ObjectManager {
 						k15 -= anIntArray127[k18];
 						k16 -= anIntArray128[k18];
 					}
-					if (k17 >= 1 && k17 < anInt147 - 1 && (!(lowDetail || Configuration.TOGGLE_ROOF_OFF) || (aByteArrayArrayArray149[0][l6][k17] & 2) != 0 || (aByteArrayArrayArray149[l][l6][k17] & 0x10) == 0 && method182(k17, l, l6) == anInt131)) {
+					if (k17 >= 1 && k17 < anInt147 - 1 && (!(!Configuration.TOGGLE_ROOF_OFF) || (aByteArrayArrayArray149[0][l6][k17] & 2) != 0 || (aByteArrayArrayArray149[l][l6][k17] & 0x10) == 0 && method182(k17, l, l6) == anInt131)) {
 						if (l < anInt145) {
 							anInt145 = l;
 						}
@@ -899,7 +899,7 @@ public final class ObjectManager {
 	}
 
 	private void method175(int y, WorldController worldController, CollisionMap class11, int type, int z, int x, int objectId, int face) {
-		if ((lowDetail || Configuration.TOGGLE_ROOF_OFF) && (aByteArrayArrayArray149[0][x][y] & 2) == 0) {
+		if ((!Configuration.TOGGLE_ROOF_OFF) && (aByteArrayArrayArray149[0][x][y] & 2) == 0) {
 			if ((aByteArrayArrayArray149[z][x][y] & 0x10) != 0) {
 				return;
 			}

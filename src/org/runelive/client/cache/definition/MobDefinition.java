@@ -30,9 +30,9 @@ public final class MobDefinition {
 		definition.id = id;
 		definition.readValues(buffer);
 		switch (id) {
-		case 1677:
-			System.out.println("Men model id: "+definition.npcModels[0]+"");
-		break;
+        case 83:
+        	System.out.println(""+definition.npcModels[1]);
+        	break;
 		case 5866:
 			definition.name = "Cerberus";
 			definition.npcModels = new int[] { 29270 };
@@ -219,7 +219,12 @@ public final class MobDefinition {
 			definition.adjustVertextPointZ = 63;
 			definition.adjustVertextPointsXOrY = 63;
 			definition.npcSizeInSquares = 3;
-			break;			
+			break;	
+		case 2006:
+			definition.copy(get(83));
+			definition.name = "Todd the wrath";
+			definition.combatLevel = 583;
+			break;
 		case 2004:
 			definition.npcModels = new int[1];
 			definition.npcModels[0] = 28231;

@@ -65,7 +65,7 @@ public class Configuration {
 	/**
 	 * Roofs should be displayed
 	 */
-	public static boolean TOGGLE_ROOF_OFF = true;
+	public static boolean TOGGLE_ROOF_OFF = false;
 
 	/**
 	 * Should the new fov be displayed?
