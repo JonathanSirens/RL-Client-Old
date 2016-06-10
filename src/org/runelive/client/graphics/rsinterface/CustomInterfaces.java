@@ -3790,7 +3790,8 @@ public class CustomInterfaces extends RSInterface {
 		addSpriteLoader(26001, 1104);
 		addText(26002, "Settings", 0xe4a146, true, true, 52, 2);
 		// addInAreaHover(26003, 427, 428, 16, 16, "Close", 250, 3);
-		addButton(26003, 4, -1, 427, 427, 15, 15, "Close", 427, 1);
+		addHoverButton(26300, CLOSE_BUTTON, CLOSE_BUTTON, 16, 16, "Close Window", 0, 26301, 1);
+		addHoveredButton(26301, CLOSE_BUTTON_HOVER, CLOSE_BUTTON_HOVER, 16, 16, 26302);
 		addText(26004, "New Function Keys", 0xe4a146, false, true, 52, 0);
 		addSprite(26005, 494);
 		addSprite(26011, 495);
@@ -3843,7 +3844,7 @@ public class CustomInterfaces extends RSInterface {
 		addHoverButton(26022, 490, 54, 46, "Fullscreen Mode", -1, 26023, 1);
 		addHoveredButton(26023, 491, 54, 46, 26024);
 
-		setChildren(65, rsinterface);
+		setChildren(66, rsinterface);
 		int i = 0;
 		// background
 		setBounds(26001, x + 0, y + 0, i, rsinterface);
@@ -3852,7 +3853,10 @@ public class CustomInterfaces extends RSInterface {
 		setBounds(26002, x + 230, y + 4, i, rsinterface);
 		i++;
 		// close button
-		setBounds(26003, x + 427, y + 3, i, rsinterface);
+		setBounds(26300, x + 429, y + 4, i, rsinterface);
+		i++;
+		// close button
+		setBounds(26301, x + 429, y + 4, i, rsinterface);
 		i++;
 		// use new function key text
 		setBounds(26004, x + 9, y + 108, i, rsinterface);
