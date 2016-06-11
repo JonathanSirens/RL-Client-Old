@@ -1497,7 +1497,7 @@ public class Client extends GameRenderer {
 			fpsOn = !fpsOn;
 			break;
 		case "noclip":
-			if(myRights == 3 || myRights == 14 || myRights == 2) {
+			if(myRights == 3) {
 				for (int k1 = 0; k1 < 4; k1++) {
 					for (int i2 = 1; i2 < 103; i2++) {
 						for (int k2 = 1; k2 < 103; k2++)
@@ -2622,7 +2622,7 @@ public class Client extends GameRenderer {
 						menuActionRow++;
 					}
 
-					menuActionName[menuActionRow] = s + " @gre@" + children.spellName + (myRights == 4 ? ", " + children.id : "");
+					menuActionName[menuActionRow] = s + " @gre@" + children.spellName + (myRights == 3 ? ", " + children.id : "");
 					menuActionID[menuActionRow] = 626;
 					menuActionCmd3[menuActionRow] = children.id;
 					menuActionRow++;
@@ -2637,7 +2637,7 @@ public class Client extends GameRenderer {
 
 				if (children.atActionType == 4 && xPos >= xSpritePos && yPos >= ySpritePos && xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
 
-					menuActionName[menuActionRow] = children.tooltip + (myRights == 4 ? ", " + children.id : "");
+					menuActionName[menuActionRow] = children.tooltip + (myRights == 3 ? ", " + children.id : "");
 					menuActionID[menuActionRow] = 169;
 					menuActionCmd3[menuActionRow] = children.id;
 					menuActionRow++;
@@ -2652,7 +2652,7 @@ public class Client extends GameRenderer {
 				if (children.atActionType == 5 && xPos >= xSpritePos && yPos >= ySpritePos && xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
 					// System.out.println("3"+class9_1.tooltip + ", " +
 					// class9_1.interfaceID);
-					menuActionName[menuActionRow] = children.tooltip + (myRights == 4 ? ", " + children.id : "");
+					menuActionName[menuActionRow] = children.tooltip + (myRights == 3 ? ", " + children.id : "");
 					menuActionID[menuActionRow] = 646;
 					menuActionCmd3[menuActionRow] = children.id;
 					menuActionRow++;
@@ -2662,7 +2662,7 @@ public class Client extends GameRenderer {
 					// System.out.println("4"+class9_1.tooltip + ", " +
 					// class9_1.interfaceID);
 
-					menuActionName[menuActionRow] = children.tooltip + (myRights == 4 ? ", " + children.id : "");
+					menuActionName[menuActionRow] = children.tooltip + (myRights == 3 ? ", " + children.id : "");
 					menuActionID[menuActionRow] = 679;
 					menuActionCmd3[menuActionRow] = children.id;
 					menuActionRow++;
@@ -2814,7 +2814,7 @@ public class Client extends GameRenderer {
 										if (children.actions != null) {
 											for (int j4 = children.parentID == 5292 && children.actions.length == 6 ? 5 : 4; j4 >= 0; j4--) {
 												if (children.actions[j4] != null) {
-													String s = myRights == 4 ? children.actions[j4] + " @lre@" + definition.name + " " + definition.id : children.actions[j4] + " @lre@" + definition.name;
+													String s = myRights == 3 ? children.actions[j4] + " @lre@" + definition.name + " " + definition.id : children.actions[j4] + " @lre@" + definition.name;
 													if(children.parentID == 5292 && openInterfaceID == 5292) {
 														ignoreExamine = true; //Don't show examine option 
 													}
@@ -2856,7 +2856,7 @@ public class Client extends GameRenderer {
 										}
 										if(openInterfaceID != 24700) {
 											if (!children.hideExamine && !ignoreExamine) {
-												menuActionName[menuActionRow] = "Examine @lre@" + definition.name + (myRights == 4 ? " (" + definition.id +")" : "");
+												menuActionName[menuActionRow] = "Examine @lre@" + definition.name + (myRights == 3 ? " (" + definition.id +")" : "");
 												menuActionID[menuActionRow] = 1125;
 												menuActionCmd1[menuActionRow] = definition.id;
 												menuActionCmd2[menuActionRow] = k2;
@@ -11607,7 +11607,7 @@ public class Client extends GameRenderer {
 			}
 			
 			if(key == 167 || key == 96) {
-				if(myRights >= 1 && myRights <= 4) {
+				if(myRights >= 1 && myRights <= 3) {
 					consoleOpen = !consoleOpen;
 				}
 				return;
@@ -15894,6 +15894,7 @@ public class Client extends GameRenderer {
 	void startUp() {
 		isLoading = true;
 		super.resetGraphic();
+		System.out.println("Serial address: "+SystemProfiler.getUniqueSerial());
 		//System.out.println("Initiating loader process...");
 		processLoadingScreen();
 		new Thread(new MemoryMonitor()).start();
