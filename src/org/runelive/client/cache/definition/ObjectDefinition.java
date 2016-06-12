@@ -1088,7 +1088,6 @@ public final class ObjectDefinition {
 			definition.aBoolean764 = true;
 			definition.hasActions = false;
 		break;
-
 		case 27059: 
 			definition.setDefaults();
 			definition.objectModelIDs = new int[] { 29602 };

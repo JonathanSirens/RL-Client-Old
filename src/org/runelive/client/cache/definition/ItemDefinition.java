@@ -209,7 +209,6 @@ public final class ItemDefinition {
                 itemDef.actions[1] = "Wield";
                 itemDef.actions[4] = "Drop";
                 break;
-
             case 21091:
                 itemDef.modelID = 67000;
                 itemDef.name = "Drygore Rapier";

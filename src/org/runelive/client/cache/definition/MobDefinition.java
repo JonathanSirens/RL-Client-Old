@@ -59,6 +59,19 @@ public final class MobDefinition {
 			definition.adjustVertextPointZ = spot2.adjustVertextPointZ;
 			definition.actions = new String[] { "Bait", null, null, null, null };
 			break;
+		case 130:
+			definition.name = "Ganodermic beast";
+			definition.combatLevel = 280;
+			definition.npcSizeInSquares = 3;
+			definition.drawYellowDotOnMap = true;
+			definition.adjustVertextPointsXOrY = 128;
+			definition.adjustVertextPointZ = 128;
+			definition.npcModels = new int[] {13888};
+			definition.actions = new String[] { null, "Attack", null, null, null };
+			definition.degreesToTurn = 32;
+			definition.standAnimation = 4553;
+			definition.walkAnimation = 4555;
+			break;
 		case 501:
 			definition.name = "Queen Revenant";
 			break;
