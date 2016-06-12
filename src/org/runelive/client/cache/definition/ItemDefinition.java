@@ -308,7 +308,27 @@ public final class ItemDefinition {
 				itemDef.modelOffsetX = 1145;
 				itemDef.modelOffset1 = 0;
 				itemDef.modelOffsetY = 8;
-			break;       	
+			break;    
+			case 21115:
+				itemDef.immitate(get(15459));
+                itemDef.originalModelColors = new int[]{
+                		6020, 6020
+                };
+                itemDef.modifiedModelColors = new int[]{
+                		43955, 22439
+                };
+                itemDef.name = "Defender lvl 6";
+				break;
+			case 21116:
+				itemDef.immitate(get(15459));
+                itemDef.originalModelColors = new int[]{
+                		123770, 123770
+                };
+                itemDef.modifiedModelColors = new int[]{
+                		43955, 22439
+                };
+                itemDef.name = "Defender lvl 7";
+				break;
             case 21100:
                 itemDef.modelID = 67007;
                 itemDef.name = "Drygore Mace";
