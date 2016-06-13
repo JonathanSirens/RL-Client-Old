@@ -183,7 +183,7 @@ public final class CacheFileRequester implements Runnable {
 				}
 
 				openSocketTime = currentTime;
-				socket = clientInstance.createFileServerSocket(43593);
+				socket = clientInstance.createFileServerSocket(Configuration.ONDEMAND_PORT);
 				in = socket.getInputStream();
 				out = socket.getOutputStream();
 				out.write(15);

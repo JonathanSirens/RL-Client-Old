@@ -12521,7 +12521,7 @@ public class Client extends GameRenderer {
 			}
 			jaggrabSocket = null;
 		}
-		jaggrabSocket = createFileServerSocket(43595);
+		jaggrabSocket = createFileServerSocket(Configuration.JAGGRAB_PORT);
 		jaggrabSocket.setSoTimeout(10000);
 		java.io.InputStream inputstream = jaggrabSocket.getInputStream();
 		OutputStream outputstream = jaggrabSocket.getOutputStream();
