@@ -59,6 +59,20 @@ public final class MobDefinition {
 			definition.adjustVertextPointZ = spot2.adjustVertextPointZ;
 			definition.actions = new String[] { "Bait", null, null, null, null };
 			break;
+		case 131:
+			definition.name = "Tortured gorilla";
+			definition.combatLevel = 142;
+			definition.npcSizeInSquares = 2;
+			definition.drawYellowDotOnMap = true;
+			definition.adjustVertextPointsXOrY = 64;
+			definition.adjustVertextPointZ = 64;
+			definition.npcModels = new int[] {31238};
+			definition.actions = new String[] { null, "Attack", null, null, null };
+			definition.degreesToTurn = 32;
+			definition.standAnimation = 4559;
+			//definition.walkAnimation = 4555;
+			definition.walkAnimation = -1;
+			break;	
 		case 130:
 			definition.name = "Ganodermic beast";
 			definition.combatLevel = 280;
@@ -426,6 +440,29 @@ public final class MobDefinition {
 			definition.standAnimation = 808;
 			definition.walkAnimation = 819;
 			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
+			break;
+		case 132:
+			definition.name = "Froob";
+			definition.description = "A master attacker of RuneLive.".getBytes();
+			definition.combatLevel = 913;
+			definition.actions = new String[5];
+			definition.actions[1] = "Attack";
+			definition.npcModels = new int[9];
+			definition.npcModels[0] = 14395; //Hat
+			definition.npcModels[1] = 42628; //Platebody
+			definition.npcModels[2] = 42629; //Platelegs
+			definition.npcModels[3] = 9638; //Cape
+			definition.npcModels[4] = 13319; //Gloves
+			definition.npcModels[5] = 9802; //Boots
+			definition.npcModels[6] = 60692; //Amulet
+			definition.npcModels[7] = 56237; //Weapon
+			definition.npcModels[8] = 8948; //Shield
+			definition.standAnimation = 808;
+			definition.walkAnimation = 819;
+			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
+			definition.adjustVertextPointZ = 200;
+			definition.adjustVertextPointsXOrY = 200;
+			definition.npcSizeInSquares = 4;
 			break;
 		case 6830:
 		case 6841:
