@@ -329,6 +329,50 @@ public final class ItemDefinition {
                 };
                 itemDef.name = "Defender lvl 7";
 				break;
+            case 21118:
+                itemDef.setDefaults();
+                itemDef.name = "Partyhat & specs";
+                itemDef.description = "A very special partyhat.".getBytes();
+                itemDef.maleWearId = 28505;
+                itemDef.femaleWearId = 28576;
+                itemDef.modelID = 28693;
+                itemDef.modelRotation1 = 242;
+                itemDef.modelRotation2 = 0;
+                itemDef.modelZoom = 653;
+                itemDef.modelOffset1 = 0;
+                itemDef.modelOffsetY = -1;
+                itemDef.actions = new String[5];
+                itemDef.actions[1] = "Wield";
+                itemDef.actions[3] = "Check";
+                itemDef.originalModelColors = new int[]{
+                		6020
+                };
+                itemDef.modifiedModelColors = new int[]{
+                		43963
+                };
+                break;
+            case 21119:
+                itemDef.setDefaults();
+                itemDef.name = "Partyhat & specs";
+                itemDef.description = "A very special partyhat.".getBytes();
+                itemDef.maleWearId = 28505;
+                itemDef.femaleWearId = 28576;
+                itemDef.modelID = 28693;
+                itemDef.modelRotation1 = 242;
+                itemDef.modelRotation2 = 0;
+                itemDef.modelZoom = 653;
+                itemDef.modelOffset1 = 0;
+                itemDef.modelOffsetY = -1;
+                itemDef.actions = new String[5];
+                itemDef.actions[1] = "Wield";
+                itemDef.actions[3] = "Check";
+                itemDef.originalModelColors = new int[]{
+                		123770
+                };
+                itemDef.modifiedModelColors = new int[]{
+                		43963
+                };
+                break;
             case 21100:
                 itemDef.modelID = 67007;
                 itemDef.name = "Drygore Mace";
@@ -5140,6 +5184,7 @@ public final class ItemDefinition {
             case 20084:
                 itemDef.name = "Golden Maul";
                 break;
+            
             case 6199:
                 itemDef.name = "Mystery Box";
                 itemDef.actions = new String[5];
