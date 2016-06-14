@@ -88,7 +88,7 @@ public final class ObjectManager {
 	}
 
 	private static int method184(int i, int j, int k, int l) {
-		int i1 = 0x10000 - Rasterizer.COSINE[k * 1024 / l] >> 1;
+		int i1 = 0x10000 - Canvas3D.COSINE[k * 1024 / l] >> 1;
 		return (i * (0x10000 - i1) >> 16) + (j * i1 >> 16);
 	}
 
@@ -577,7 +577,7 @@ public final class ObjectManager {
 							}
 							int i22 = 0;
 							if (j21 != -1) {
-								i22 = Rasterizer.anIntArray1482[method187(k21, 96)];
+								i22 = Canvas3D.anIntArray1482[method187(k21, 96)];
 							}
 							if (i19 == 0) {
 								worldController.method279(l, l6, k17, 0, 0, -1, 154, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), 0, 0, 0, 0, i22, 0, false);
@@ -592,19 +592,19 @@ public final class ObjectManager {
 								int j23;
 								int mapTexture;
 								if (floorTexture >= 0 && floorTexture <= 50) {
-									mapTexture = Rasterizer.method369(floorTexture);
+									mapTexture = Canvas3D.method369(floorTexture);
 									j23 = -1;
 								} else if (flo_2.rgb == 0xff00ff) {
 									mapTexture = 0;
 									j23 = -2;
 									floorTexture = -1;
 								} else if (flo_2.rgb == 0x333333) {
-									mapTexture = Rasterizer.anIntArray1482[method185(flo_2.anInt399, 96)];
+									mapTexture = Canvas3D.anIntArray1482[method185(flo_2.anInt399, 96)];
 									j23 = -2;
 									floorTexture = -1;
 								} else {
 									j23 = method177(flo_2.anInt394, flo_2.anInt395, flo_2.anInt396);
-									mapTexture = Rasterizer.anIntArray1482[method185(flo_2.anInt399, 96)];
+									mapTexture = Canvas3D.anIntArray1482[method185(flo_2.anInt399, 96)];
 								}
 								 //System.out.println("id: " + j23);
 								if (i19 - 1 == 151 && flo_2.rgb == 0xff00ff) { //Lava
@@ -615,13 +615,13 @@ public final class ObjectManager {
 									j23 = -2;
 									floorTexture = -1;
 								} else if (i19 - 1 == 111) {
-									mapTexture = Rasterizer.method369(1);
+									mapTexture = Canvas3D.method369(1);
 									j23 = -1;
 									floorTexture = 1;
 								}
 									
 								if (j23 == 111)  { // Water
-									mapTexture = Rasterizer.method369(1);
+									mapTexture = Canvas3D.method369(1);
 									j23 = -1;
 									floorTexture = 1;
 								} else if (j23 == 53) { // Blue at duel
@@ -639,7 +639,7 @@ public final class ObjectManager {
 									floorTexture = 32;
 								} else if (j23 == 135) { // Water at duel
 									// arena
-									mapTexture = Rasterizer.method369(1);
+									mapTexture = Canvas3D.method369(1);
 									j23 = -2;
 									floorTexture = -1;
 								} else if (j23 == 6041) { // Al kharid
@@ -675,7 +675,7 @@ public final class ObjectManager {
 									mapTexture = 0x483B21;
 									j23 = method177(25, 146, 24);
 								} else if (j23 == 127) {
-									mapTexture = Rasterizer.method369(25);
+									mapTexture = Canvas3D.method369(25);
 									j23 = -1;
 									floorTexture = 25;
 								}
@@ -689,7 +689,7 @@ public final class ObjectManager {
 									//j23 = 1;
 								}
 								if(floorTexture == 137) {
-									mapTexture = Rasterizer.method369(25);
+									mapTexture = Canvas3D.method369(25);
 									floorTexture = 25;
 									j23 = -1;
 								}

@@ -25,10 +25,10 @@ import org.runelive.client.RSInterface;
 import org.runelive.client.Settings;
 import org.runelive.client.Signlink;
 import org.runelive.client.graphics.CacheSpriteLoader;
-import org.runelive.client.graphics.DrawingArea;
+import org.runelive.client.graphics.Canvas2D;
 import org.runelive.client.graphics.fonts.RSFontSystem;
 import org.runelive.client.graphics.gameframe.GameFrame;
-import org.runelive.client.world.Rasterizer;
+import org.runelive.client.world.Canvas3D;
 
 public class ChatArea extends GameFrame {
 
@@ -240,7 +240,7 @@ public class ChatArea extends GameFrame {
 				}
 			}
 
-			Rasterizer.lineOffsets = client.anIntArray1180;
+			Canvas3D.lineOffsets = client.anIntArray1180;
 			/*
 			 * if(screenMode != ScreenMode.FIXED && !componentHidden()) {
 			 * if((client.mouseX >= getOffSetX() && client.mouseX <=
@@ -275,17 +275,17 @@ public class ChatArea extends GameFrame {
 						for (int i = 0; i < getHeight() - 35; i++) {
 							int opacity = (int) (i * rate);
 							// if(resizeY + i < Client.clientHeight - 26)
-							DrawingArea.fillRect(getOffSetX() + 5, getOffSetY() + 121 - i, getWidth() - 10, 1, 0, opacity);
+							Canvas2D.fillRect(getOffSetX() + 5, getOffSetY() + 121 - i, getWidth() - 10, 1, 0, opacity);
 
 						}
 
-						DrawingArea.drawAlphaGradient(getOffSetX() + 5, getOffSetY() + 5, getWidth() - 10, 1, 0xb4aea1, 0, 250);
+						Canvas2D.drawAlphaGradient(getOffSetX() + 5, getOffSetY() + 5, getWidth() - 10, 1, 0xb4aea1, 0, 250);
 					} else {
 						CacheSpriteLoader.getCacheSprite(3).drawTransparentSprite(getOffSetX(), getOffSetY(), 255);
 					}
 
 					// for(int i = 0; i < getWidth)
-					// DrawingArea.drawHorizontalLine(resizeY, 0x807660,
+					// Canvas2D.drawHorizontalLine(resizeY, 0x807660,
 					// getWidth() - 20, getOffSetX() + 5);
 				}
 			}
@@ -310,7 +310,7 @@ public class ChatArea extends GameFrame {
 				RSFontSystem textDrawingArea = client.newRegularFont;
 				int messageY = -3;
 				int scrollPosition = 0;
-				DrawingArea.setBounds(getOffSetX() + 8, getOffSetY() + 7, getOffSetX() + getWidth() - 22, getOffSetY() + getHeight() - 28);
+				Canvas2D.setBounds(getOffSetX() + 8, getOffSetY() + 7, getOffSetX() + getWidth() - 22, getOffSetY() + getHeight() - 28);
 
 				for (int i = 0; i < 500; i++) {
 					if (client.chatMessages[i] != null) {
@@ -545,7 +545,7 @@ public class ChatArea extends GameFrame {
 					}
 				}
 
-				DrawingArea.defaultDrawingAreaSize();
+				Canvas2D.defaultDrawingAreaSize();
 				Client.anInt1211 = scrollPosition * 14 + 7 + 5;
 
 				if (Client.anInt1211 < 111) {
@@ -593,7 +593,7 @@ public class ChatArea extends GameFrame {
 
 				//drawSplitChatSelectionBox(client);
 
-				DrawingArea.fillRect(getOffSetX() + 7, getOffSetY() + 121, getWidth() - 13, 1, screenMode == ScreenMode.FIXED ? 0x807660 : 0xaea799, 150);
+				Canvas2D.fillRect(getOffSetX() + 7, getOffSetY() + 121, getWidth() - 13, 1, screenMode == ScreenMode.FIXED ? 0x807660 : 0xaea799, 150);
 			}
 
 			if (client.menuOpen && client.menuScreenArea == 2) {
@@ -605,7 +605,7 @@ public class ChatArea extends GameFrame {
 			}
 
 			client.gameScreenIP.initDrawingArea();
-			Rasterizer.lineOffsets = client.anIntArray1182;
+			Canvas3D.lineOffsets = client.anIntArray1182;
 		}
 	}
 
@@ -641,8 +641,8 @@ public class ChatArea extends GameFrame {
 		try {
 			int splitBoxX = 495;
 			int splitBoxY = 122 + (GameFrame.getScreenMode() == ScreenMode.FIXED ? 0 : 2);
-			DrawingArea.fillRect(splitBoxX + 1, getOffSetY() + splitBoxY + 1, 15, 12, SPLIT_CHAT_COLORS[client.splitChatColor], 255);
-			DrawingArea.fillPixels(splitBoxX, 16, 13, 0, getOffSetY() + splitBoxY);
+			Canvas2D.fillRect(splitBoxX + 1, getOffSetY() + splitBoxY + 1, 15, 12, SPLIT_CHAT_COLORS[client.splitChatColor], 255);
+			Canvas2D.fillPixels(splitBoxX, 16, 13, 0, getOffSetY() + splitBoxY);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 			client.splitChatColor = 0;

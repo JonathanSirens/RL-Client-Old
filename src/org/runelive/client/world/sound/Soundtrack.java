@@ -94,7 +94,7 @@ final class Soundtrack {
 				break;
 			}
 			anIntArray404[i_0_] = i_1_;
-			anIntArray407[i_0_] = class3_sub12.method421();
+			anIntArray407[i_0_] = class3_sub12.getUnsignedSmart();
 			anIntArray414[i_0_] = class3_sub12.getSmart();
 		}
 		anInt406 = class3_sub12.getSmart();

@@ -2,7 +2,7 @@ package org.runelive.client.graphics;
 
 import org.runelive.client.cache.node.NodeSub;
 
-public class DrawingArea extends NodeSub {
+public class Canvas2D extends NodeSub {
 
 	public static int pixels[];
 	public static int width;
@@ -314,8 +314,8 @@ public class DrawingArea extends NodeSub {
 		if (posY + height > bottomY) {
 			height = bottomY - posY;
 		}
-		int k1 = DrawingArea.width - width;
-		int l1 = posX + posY * DrawingArea.width;
+		int k1 = Canvas2D.width - width;
+		int l1 = posX + posY * Canvas2D.width;
 		for (int i2 = -height; i2 < 0; i2++) {
 			for (int j2 = -width; j2 < 0; j2++) {
 				pixels[l1++] = color;
@@ -506,24 +506,24 @@ public class DrawingArea extends NodeSub {
 			posY = 0;
 		}
 
-		if (width > DrawingArea.width) {
-			width = DrawingArea.width;
+		if (width > Canvas2D.width) {
+			width = Canvas2D.width;
 		}
 
-		if (height > DrawingArea.height) {
-			height = DrawingArea.height;
+		if (height > Canvas2D.height) {
+			height = Canvas2D.height;
 		}
 
-		DrawingArea.topX = posX;
-		DrawingArea.topY = posY;
-		DrawingArea.bottomX = width;
-		DrawingArea.bottomY = height;
-		DrawingArea.centerX = bottomX - 0;
-		DrawingArea.centerY = bottomX / 2;
+		Canvas2D.topX = posX;
+		Canvas2D.topY = posY;
+		Canvas2D.bottomX = width;
+		Canvas2D.bottomY = height;
+		Canvas2D.centerX = bottomX - 0;
+		Canvas2D.centerY = bottomX / 2;
 		middleY = bottomY / 2;
 	}
 
-	public DrawingArea() {
+	public Canvas2D() {
 	}
 
 }

@@ -97,7 +97,7 @@ import org.runelive.client.world.Object2;
 import org.runelive.client.world.Object3;
 import org.runelive.client.world.Object5;
 import org.runelive.client.world.ObjectManager;
-import org.runelive.client.world.Rasterizer;
+import org.runelive.client.world.Canvas3D;
 import org.runelive.client.world.Texture;
 import org.runelive.client.world.WorldController;
 import org.runelive.client.world.background.ScriptManager;
@@ -838,7 +838,7 @@ public class Client extends GameRenderer {
 	static void setLowDetail() {
 		setLowDetail(true);
 		WorldController.lowDetail = true;
-		Rasterizer.lowDetail = false;
+		Canvas3D.lowDetail = false;
 		ObjectManager.lowDetail = true;
 		ObjectDefinition.lowDetail = true;
 		Configuration.HIGH_DETAIL = false;
@@ -850,7 +850,7 @@ public class Client extends GameRenderer {
 	static void setHighDetail() {
 		setLowDetail(false);
 		WorldController.lowDetail = false;
-		Rasterizer.lowDetail = false;
+		Canvas3D.lowDetail = false;
 		ObjectManager.lowDetail = false;
 		ObjectDefinition.lowDetail = false;
 		Configuration.hdTexturing = true;
@@ -1412,8 +1412,8 @@ public class Client extends GameRenderer {
 
 	private void drawConsole() {
 		if (consoleOpen) {
-			DrawingArea.transparentBox(334, 0, 0, 5320850, getGameComponent().getWidth(), 0, 97);
-			DrawingArea.drawPixels(1, 315, 0, 16777215, getGameComponent().getWidth());
+			Canvas2D.transparentBox(334, 0, 0, 5320850, getGameComponent().getWidth(), 0, 97);
+			Canvas2D.drawPixels(1, 315, 0, 16777215, getGameComponent().getWidth());
 			newBoldFont.drawBasicString("-->", 11, 328, 16777215, 0, false);
 			if (loopCycle % 20 < 10) {
 				newBoldFont.drawBasicString(consoleInput + "|", 38, 328, 16777215, 0, false);
@@ -3137,8 +3137,8 @@ public class Client extends GameRenderer {
 		i1 = j2;
 
 		if (l >= 50) {
-			spriteDrawX = Rasterizer.centerX + (i << log_view_dist) / l;
-			spriteDrawY = Rasterizer.centerY + (i1 << log_view_dist) / l;
+			spriteDrawX = Canvas3D.centerX + (i << log_view_dist) / l;
+			spriteDrawY = Canvas3D.centerY + (i1 << log_view_dist) / l;
 		} else {
 			spriteDrawX = -1;
 			spriteDrawY = -1;
@@ -3308,7 +3308,7 @@ public class Client extends GameRenderer {
 		Varp.setCache(null);
 		super.fullGameScreen = null;
 		Player.mruNodes = null;
-		Rasterizer.nullify();
+		Canvas3D.nullify();
 		WorldController.nullify();
 		Model.nullify();
 		Texture.reset();
@@ -5596,9 +5596,9 @@ public class Client extends GameRenderer {
 				loginScreenBG(true);
 			}
 
-			int canvasCenterX = Rasterizer.centerX;
-			int canvasCenterY = Rasterizer.centerY;
-			int canvasPixels[] = Rasterizer.lineOffsets;
+			int canvasCenterX = Canvas3D.centerX;
+			int canvasCenterY = Canvas3D.centerY;
+			int canvasPixels[] = Canvas3D.lineOffsets;
 
 			if (titleScreenOffsets != null && (titleWidth != getScreenWidth() || titleHeight != getScreenHeight())) {
 				titleScreenOffsets = null;
@@ -5607,12 +5607,12 @@ public class Client extends GameRenderer {
 			if (titleScreenOffsets == null) {
 				titleWidth = getScreenWidth();
 				titleHeight = getScreenHeight();
-				titleScreenOffsets = Rasterizer.getOffsets(titleWidth, titleHeight);
+				titleScreenOffsets = Canvas3D.getOffsets(titleWidth, titleHeight);
 			}
 
-			Rasterizer.centerX = centerX;
-			Rasterizer.centerY = centerY;
-			Rasterizer.lineOffsets = titleScreenOffsets;
+			Canvas3D.centerX = centerX;
+			Canvas3D.centerY = centerY;
+			Canvas3D.lineOffsets = titleScreenOffsets;
 
 			if (loadingStage == 2 && ObjectManager.anInt131 != plane) {
 				loadingStage = 1;
@@ -5640,22 +5640,22 @@ public class Client extends GameRenderer {
 				getScriptManager().cycle();
 			}
 
-			Rasterizer.centerX = canvasCenterX;
-			Rasterizer.centerY = canvasCenterY;
-			Rasterizer.lineOffsets = canvasPixels;
+			Canvas3D.centerX = canvasCenterX;
+			Canvas3D.centerY = canvasCenterY;
+			Canvas3D.lineOffsets = canvasPixels;
 		}
 	}
 
 	private void drawBlackBox(int x, int y) {
-		DrawingArea.drawPixels(71, y - 1, x - 2, 0x726451, 1);
-		DrawingArea.drawPixels(69, y, x + 174, 0x726451, 1);
-		DrawingArea.drawPixels(1, y - 2, x - 2, 0x726451, 178);
-		DrawingArea.drawPixels(1, y + 68, x, 0x726451, 174);
-		DrawingArea.drawPixels(71, y - 1, x - 1, 0x2E2B23, 1);
-		DrawingArea.drawPixels(71, y - 1, x + 175, 0x2E2B23, 1);
-		DrawingArea.drawPixels(1, y - 1, x, 0x2E2B23, 175);
-		DrawingArea.drawPixels(1, y + 69, x, 0x2E2B23, 175);
-		DrawingArea.method335(0, y, 174, 68, 220, x);
+		Canvas2D.drawPixels(71, y - 1, x - 2, 0x726451, 1);
+		Canvas2D.drawPixels(69, y, x + 174, 0x726451, 1);
+		Canvas2D.drawPixels(1, y - 2, x - 2, 0x726451, 178);
+		Canvas2D.drawPixels(1, y + 68, x, 0x726451, 174);
+		Canvas2D.drawPixels(71, y - 1, x - 1, 0x2E2B23, 1);
+		Canvas2D.drawPixels(71, y - 1, x + 175, 0x2E2B23, 1);
+		Canvas2D.drawPixels(1, y - 1, x, 0x2E2B23, 175);
+		Canvas2D.drawPixels(1, y + 69, x, 0x2E2B23, 175);
+		Canvas2D.method335(0, y, 174, 68, 220, x);
 	}
 
 	public String inputTitle = null;
@@ -6092,8 +6092,8 @@ public class Client extends GameRenderer {
 				anInt945 = 0;
 				resetAllImageProducers();
 				super.fullGameScreen.initDrawingArea();
-				Rasterizer.lineOffsets = fullScreenTextureArray;
-				DrawingArea.setAllPixelsToZero();
+				Canvas3D.lineOffsets = fullScreenTextureArray;
+				Canvas2D.setAllPixelsToZero();
 				welcomeScreenRaised = true;
 				if (openInterfaceID != -1) {
 					RSInterface rsInterface_1 = RSInterface.interfaceCache[openInterfaceID];
@@ -6273,8 +6273,8 @@ public class Client extends GameRenderer {
 			if (width <= boldText.getTextWidth(results[i]) + 6)
 				width = boldText.getTextWidth(results[i]) + 2;
 		}
-		DrawingArea.drawPixels(height, yPos, xPos, 0xFFFFA0, width);
-		DrawingArea.fillPixels(xPos, width, height, 0, yPos);
+		Canvas2D.drawPixels(height, yPos, xPos, 0xFFFFA0, width);
+		Canvas2D.fillPixels(xPos, width, height, 0, yPos);
 		yPos += 14;
 		for (int i = 0; i < results.length; i++) {
 			normalText.drawRegularText(false, xPos + 3, 0, results[i],
@@ -6293,11 +6293,11 @@ public class Client extends GameRenderer {
 		if (class9.interfaceShown && anInt1026 != class9.id && anInt1048 != class9.id && anInt1039 != class9.id) {
 			return;
 		}
-		int i1 = DrawingArea.topX;
-		int j1 = DrawingArea.topY;
-		int k1 = DrawingArea.bottomX;
-		int l1 = DrawingArea.bottomY;
-		DrawingArea.setBounds(interfaceX, interfaceY, interfaceX + class9.width, interfaceY + class9.height);
+		int i1 = Canvas2D.topX;
+		int j1 = Canvas2D.topY;
+		int k1 = Canvas2D.bottomX;
+		int l1 = Canvas2D.bottomY;
+		Canvas2D.setBounds(interfaceX, interfaceY, interfaceX + class9.width, interfaceY + class9.height);
 		int i2 = class9.children.length;
 
 		for (int j2 = 0; j2 < i2; j2++) {
@@ -6366,7 +6366,7 @@ public class Client extends GameRenderer {
 								int j7 = 0;
 								int j9 = childInterface.inv[i3] - 1;
 
-								if (k5 > DrawingArea.topX - 32 && k5 < DrawingArea.bottomX && j6 > DrawingArea.topY - 32 && j6 < DrawingArea.bottomY || activeInterfaceType != 0 && anInt1085 == i3) {
+								if (k5 > Canvas2D.topX - 32 && k5 < Canvas2D.bottomX && j6 > Canvas2D.topY - 32 && j6 < Canvas2D.bottomY || activeInterfaceType != 0 && anInt1085 == i3) {
 									int l9 = 0;
 									if (itemSelected == 1 && anInt1283 == i3 && anInt1284 == childInterface.id) {
 										l9 = 0xffffff;
@@ -6406,8 +6406,8 @@ public class Client extends GameRenderer {
 													bankItemDragSprite = null;
 												}
 											}
-											if (j6 + j7 < DrawingArea.topY && class9.scrollPosition > 0) {
-												int i10 = anInt945 * (DrawingArea.topY - j6 - j7) / 3;
+											if (j6 + j7 < Canvas2D.topY && class9.scrollPosition > 0) {
+												int i10 = anInt945 * (Canvas2D.topY - j6 - j7) / 3;
 
 												if (i10 > anInt945 * 10) {
 													i10 = anInt945 * 10;
@@ -6421,8 +6421,8 @@ public class Client extends GameRenderer {
 												anInt1088 += i10;
 											}
 
-											if (j6 + j7 + 32 > DrawingArea.bottomY && class9.scrollPosition < class9.scrollMax - class9.height) {
-												int j10 = anInt945 * (j6 + j7 + 32 - DrawingArea.bottomY) / 3;
+											if (j6 + j7 + 32 > Canvas2D.bottomY && class9.scrollPosition < class9.scrollMax - class9.height) {
+												int j10 = anInt945 * (j6 + j7 + 32 - Canvas2D.bottomY) / 3;
 
 												if (j10 > anInt945 * 10) {
 													j10 = anInt945 * 10;
@@ -6515,14 +6515,14 @@ public class Client extends GameRenderer {
 					if (opacity != 256) {
 						if (opacity == 0) {
 							if (childInterface.filled) {
-								DrawingArea.drawPixels(childInterface.height, childY, childX, j3, childInterface.width);
+								Canvas2D.drawPixels(childInterface.height, childY, childX, j3, childInterface.width);
 							} else {
-								DrawingArea.fillPixels(childX, childInterface.width, childInterface.height, j3, childY);
+								Canvas2D.fillPixels(childX, childInterface.width, childInterface.height, j3, childY);
 							}
 						} else if (childInterface.filled) {
-							DrawingArea.fillRect(j3, childY, childInterface.width, childInterface.height, 256 - (opacity & 0xFF), childX);
+							Canvas2D.fillRect(j3, childY, childInterface.width, childInterface.height, 256 - (opacity & 0xFF), childX);
 						} else {
-							DrawingArea.method338(childY, childInterface.height, 256 - (opacity & 0xFF), j3, childInterface.width, childX);
+							Canvas2D.method338(childY, childInterface.height, 256 - (opacity & 0xFF), j3, childInterface.width, childX);
 						}
 					}
 
@@ -6551,14 +6551,14 @@ public class Client extends GameRenderer {
 
 					if (childInterface.opacity == 0) {
 						if (childInterface.filled) {
-							DrawingArea.drawPixels(childInterface.height, childY, childX, j3, childInterface.width);
+							Canvas2D.drawPixels(childInterface.height, childY, childX, j3, childInterface.width);
 						} else {
-							DrawingArea.fillPixels(childX, childInterface.width, childInterface.height, j3, childY);
+							Canvas2D.fillPixels(childX, childInterface.width, childInterface.height, j3, childY);
 						}
 					} else if (childInterface.filled) {
-						DrawingArea.method335(j3, childY, childInterface.width, childInterface.height, 256 - (childInterface.opacity & 0xff), childX);
+						Canvas2D.method335(j3, childY, childInterface.width, childInterface.height, 256 - (childInterface.opacity & 0xff), childX);
 					} else {
-						DrawingArea.method338(childY, childInterface.height, 256 - (childInterface.opacity & 0xff), j3, childInterface.width, childX);
+						Canvas2D.method338(childY, childInterface.height, 256 - (childInterface.opacity & 0xff), j3, childInterface.width, childX);
 					}
 					*/
 					
@@ -6614,7 +6614,7 @@ public class Client extends GameRenderer {
 						s = "Please wait...";
 						i4 = childInterface.textColor;
 					}
-					if (DrawingArea.width == 516) {
+					if (Canvas2D.width == 516) {
 						if (i4 == 0xffff00) {
 							i4 = 255;
 						}
@@ -6754,12 +6754,12 @@ public class Client extends GameRenderer {
 						CacheSpriteLoader.getCacheSprite(497).drawSprite(childX - 3, childY - 3);
 					}
 				} else if (childInterface.type == 6) {
-					int k3 = Rasterizer.centerX;
-					int j4 = Rasterizer.centerY;
-					Rasterizer.centerX = childX + childInterface.width / 2;
-					Rasterizer.centerY = childY + childInterface.height / 2;
-					int i5 = Rasterizer.SINE[childInterface.modelRotation1] * childInterface.modelZoom >> 16;
-		int l5 = Rasterizer.COSINE[childInterface.modelRotation1] * childInterface.modelZoom >> 16;
+					int k3 = Canvas3D.centerX;
+					int j4 = Canvas3D.centerY;
+					Canvas3D.centerX = childX + childInterface.width / 2;
+					Canvas3D.centerY = childY + childInterface.height / 2;
+					int i5 = Canvas3D.SINE[childInterface.modelRotation1] * childInterface.modelZoom >> 16;
+		int l5 = Canvas3D.COSINE[childInterface.modelRotation1] * childInterface.modelZoom >> 16;
 		boolean flag2 = interfaceIsSelected(childInterface);
 		int i7;
 		if (flag2) {
@@ -6777,8 +6777,8 @@ public class Client extends GameRenderer {
 		if (model != null) {
 			model.renderSingle(childInterface.modelRotation2, 0, childInterface.modelRotation1, 0, i5, l5);
 		}
-		Rasterizer.centerX = k3;
-		Rasterizer.centerY = j4;
+		Canvas3D.centerX = k3;
+		Canvas3D.centerY = j4;
 				} else if (childInterface.type == 7) {
 					TextDrawingArea textDrawingArea_1 = childInterface.textDrawingAreas;
 					int k4 = 0;
@@ -6871,8 +6871,8 @@ public class Client extends GameRenderer {
 					if (yPos + boxHeight > interfaceY + class9.height) {
 						yPos = childY - boxHeight;
 					}
-					DrawingArea.drawPixels(boxHeight, yPos, xPos, 0xFFFFA0, boxWidth);
-					DrawingArea.fillPixels(xPos, boxWidth, boxHeight, 0, yPos);
+					Canvas2D.drawPixels(boxHeight, yPos, xPos, 0xFFFFA0, boxWidth);
+					Canvas2D.fillPixels(xPos, boxWidth, boxHeight, 0, yPos);
 					String s2 = childInterface.message;
 					for (int j11 = yPos + textDrawingArea_2.anInt1497 + 2; s2.length() > 0; j11 += textDrawingArea_2.anInt1497 + 1) {// anInt1497
 						if (s2.indexOf("%") != -1) {
@@ -7000,19 +7000,19 @@ public class Client extends GameRenderer {
 							xPos -= 90;
 						}
 					}
-					DrawingArea.drawPixels(boxHeight, yPos, xPos, 0xFFFFA0, boxWidth);
+					Canvas2D.drawPixels(boxHeight, yPos, xPos, 0xFFFFA0, boxWidth);
 					if (canDrawPercent && currentExp[skillIdForButton(childInterface.id)] < 1000000000 && Skills.goalData[skillIdForButton(childInterface.id)][0] != -1 && Skills.goalData[skillIdForButton(childInterface.id)][1] != -1 && Skills.goalData[skillIdForButton(childInterface.id)][2] != -1) {
 						int goalPercentage = Skills.goalData[skillIdForButton(childInterface.id)][2];
-						DrawingArea.fillPixels(xPos + 4, boxWidth - 7, 12, 0, yPos + boxHeight - 14);
-						DrawingArea.drawPixels(10, yPos + boxHeight - 13, 4 + xPos + 1, Color.RED.getRGB(), boxWidth - 9);
-						DrawingArea.drawPixels(10, yPos + boxHeight - 13, 4 + xPos + 1, Color.GREEN.getRGB(), (int) ((boxWidth - 7) * .01 * goalPercentage) - 2);
+						Canvas2D.fillPixels(xPos + 4, boxWidth - 7, 12, 0, yPos + boxHeight - 14);
+						Canvas2D.drawPixels(10, yPos + boxHeight - 13, 4 + xPos + 1, Color.RED.getRGB(), boxWidth - 9);
+						Canvas2D.drawPixels(10, yPos + boxHeight - 13, 4 + xPos + 1, Color.GREEN.getRGB(), (int) ((boxWidth - 7) * .01 * goalPercentage) - 2);
 						if (goalPercentage == 100) {
 							smallText.drawText(0, "Goal Completed!", yPos - 3 + boxHeight, (int) (xPos + (boxWidth - 7 - (textDrawingArea_2.getTextWidth("Goal Completed!") + 10)) / 2.0 + 54));
 						} else {
 							smallText.drawText(0, goalPercentage + "%", yPos - 3 + boxHeight, (int) (xPos + (boxWidth - 6 - (textDrawingArea_2.getTextWidth(goalPercentage + "%") + 10)) / 2.0 + 24));
 						}
 					}
-					DrawingArea.fillPixels(xPos, boxWidth, boxHeight, 0, yPos);
+					Canvas2D.fillPixels(xPos, boxWidth, boxHeight, 0, yPos);
 					String s2 = childInterface.message;
 					for (int j11 = yPos + textDrawingArea_2.anInt1497 + 2; s2
 							.length() > 0; j11 += textDrawingArea_2.anInt1497 + 1) {
@@ -7053,7 +7053,7 @@ public class Client extends GameRenderer {
 				}
 			}
 		}
-		DrawingArea.setBounds(i1, j1, k1, l1);
+		Canvas2D.setBounds(i1, j1, k1, l1);
 	}
 
 	public void drawOnBankInterface()
@@ -7279,7 +7279,7 @@ public class Client extends GameRenderer {
 			CacheSpriteLoader.getCacheSprite2(0).drawAdvancedSprite(0, 0);
 			//CacheSpriteLoader.getCacheSprite2(20).drawAdvancedSprite(240, 124);
 
-			DrawingArea.drawAlphaBox(199, 137, 366, 234, 0, 100);
+			Canvas2D.drawAlphaBox(199, 137, 366, 234, 0, 100);
 			
 			if(backButtonHover) {
 				CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(511 + 38, 125 + 15);
@@ -7601,10 +7601,10 @@ public class Client extends GameRenderer {
 			k1 -= 0;
 		}
 		if (menuToggle == false) {
-			DrawingArea.fillRectangle(i1, j, k, l, 150, i);
-			DrawingArea.fillRectangle(0, j + 1, k - 2, 16, 150, i + 1);
-			DrawingArea.fillPixels(i + 1, k - 2, l - 19, 0, j + 18);
-			DrawingArea.drawRectangle(j + 18, l - 19, 150, 0, k - 2, i + 1);
+			Canvas2D.fillRectangle(i1, j, k, l, 150, i);
+			Canvas2D.fillRectangle(0, j + 1, k - 2, 16, 150, i + 1);
+			Canvas2D.fillPixels(i + 1, k - 2, l - 19, 0, j + 18);
+			Canvas2D.drawRectangle(j + 18, l - 19, 150, 0, k - 2, i + 1);
 			boldText.method385(0xc6b895, "Choose Option", j + 14,
 					i + 3);
 			boldText.method385(0xc6b895, "Choose Option", j + 14,
@@ -7618,41 +7618,41 @@ public class Client extends GameRenderer {
 				boldText.drawRegularText(true, i + 3, j2, menuActionName[l1], i2);
 			}
 		} else if (menuToggle == true) {
-			// DrawingArea.drawPixels(height, yPos, xPos, color, width);
-			// DrawingArea.fillPixels(xPos, width, height, color, yPos);
-			DrawingArea.drawPixels(l - 4, j + 2, i, 7367262, k);
-			DrawingArea.drawPixels(l - 2, j + 1, i + 1, 7367262, k - 2);
-			DrawingArea.drawPixels(l, j, i + 2, 7367262, k - 4);
-			DrawingArea.drawPixels(l - 2, j + 1, i + 3, 2959394, k - 6);
-			DrawingArea.drawPixels(l - 4, j + 2, i + 2, 2959394, k - 4);
-			DrawingArea.drawPixels(l - 6, j + 3, i + 1, 2959394, k - 2);
-			DrawingArea.drawPixels(l - 22, j + 19, i + 2, 5392957, k - 4);
-			DrawingArea.drawPixels(l - 22, j + 20, i + 3, 5392957, k - 6);
-			DrawingArea.drawPixels(l - 23, j + 20, i + 3, 1123113, k - 6);
-			DrawingArea.fillPixels(i + 3, k - 6, 1, 2763035, j + 2);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 2762267, j + 3);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 2433302, j + 4);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 2170389, j + 5);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 1973010, j + 6);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 1709838, j + 7);
-			DrawingArea.fillPixels(i + 2, k - 4, 2, 1380875, j + 8);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 1051912, j + 10);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 592388, j + 11);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 526083, j + 12);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 592388, j + 13);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 460802, j + 14);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 592388, j + 15);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 460802, j + 16);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 592388, j + 17);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 2763035, j + 18);
-			DrawingArea.fillPixels(i + 3, k - 6, 1, 5654851, j + 19);
+			// Canvas2D.drawPixels(height, yPos, xPos, color, width);
+			// Canvas2D.fillPixels(xPos, width, height, color, yPos);
+			Canvas2D.drawPixels(l - 4, j + 2, i, 7367262, k);
+			Canvas2D.drawPixels(l - 2, j + 1, i + 1, 7367262, k - 2);
+			Canvas2D.drawPixels(l, j, i + 2, 7367262, k - 4);
+			Canvas2D.drawPixels(l - 2, j + 1, i + 3, 2959394, k - 6);
+			Canvas2D.drawPixels(l - 4, j + 2, i + 2, 2959394, k - 4);
+			Canvas2D.drawPixels(l - 6, j + 3, i + 1, 2959394, k - 2);
+			Canvas2D.drawPixels(l - 22, j + 19, i + 2, 5392957, k - 4);
+			Canvas2D.drawPixels(l - 22, j + 20, i + 3, 5392957, k - 6);
+			Canvas2D.drawPixels(l - 23, j + 20, i + 3, 1123113, k - 6);
+			Canvas2D.fillPixels(i + 3, k - 6, 1, 2763035, j + 2);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 2762267, j + 3);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 2433302, j + 4);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 2170389, j + 5);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 1973010, j + 6);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 1709838, j + 7);
+			Canvas2D.fillPixels(i + 2, k - 4, 2, 1380875, j + 8);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 1051912, j + 10);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 11);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 526083, j + 12);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 13);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 460802, j + 14);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 15);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 460802, j + 16);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 17);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 2763035, j + 18);
+			Canvas2D.fillPixels(i + 3, k - 6, 1, 5654851, j + 19);
 			boldText.method385(0xc6b895, "Choose Option", j + 14,
 					i + 3);
 			for (int l1 = 0; l1 < menuActionRow; l1++) {
 				int i2 = j + 31 + (menuActionRow - 1 - l1) * 15;
 				int j2 = 0xc6b895;
 				if (j1 > i && j1 < i + k && k1 > i2 - 13 && k1 < i2 + 3) {
-					DrawingArea.drawPixels(15, i2 - 11, i + 3, 2512492, menuWidth - 6);
+					Canvas2D.drawPixels(15, i2 - 11, i + 3, 2512492, menuWidth - 6);
 					j2 = 0xeee5c6;
 					currentActionMenu = l1;
 				}
@@ -7706,34 +7706,34 @@ public class Client extends GameRenderer {
 			x -= 515;
 			y -= 0;
 		}
-			// DrawingArea.drawPixels(height, yPos, xPos, color, width);
-			// DrawingArea.fillPixels(xPos, width, height, color, yPos);
-			DrawingArea.drawPixels(l - 4, j + 2, i, 7367262, k);
-			DrawingArea.drawPixels(l - 2, j + 1, i + 1, 7367262, k - 2);
-			DrawingArea.drawPixels(l, j, i + 2, 7367262, k - 4);
-			DrawingArea.drawPixels(l - 2, j + 1, i + 3, 2959394, k - 6);
-			DrawingArea.drawPixels(l - 4, j + 2, i + 2, 2959394, k - 4);
-			DrawingArea.drawPixels(l - 6, j + 3, i + 1, 2959394, k - 2);
-			DrawingArea.drawPixels(l - 22, j + 19, i + 2, 5392957, k - 4);
-			DrawingArea.drawPixels(l - 22, j + 20, i + 3, 5392957, k - 6);
-			DrawingArea.drawPixels(l - 23, j + 20, i + 3, 1123113, k - 6);
-			DrawingArea.fillPixels(i + 3, k - 6, 1, 2763035, j + 2);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 2762267, j + 3);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 2433302, j + 4);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 2170389, j + 5);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 1973010, j + 6);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 1709838, j + 7);
-			DrawingArea.fillPixels(i + 2, k - 4, 2, 1380875, j + 8);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 1051912, j + 10);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 592388, j + 11);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 526083, j + 12);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 592388, j + 13);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 460802, j + 14);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 592388, j + 15);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 460802, j + 16);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 592388, j + 17);
-			DrawingArea.fillPixels(i + 2, k - 4, 1, 2763035, j + 18);
-			DrawingArea.fillPixels(i + 3, k - 6, 1, 5654851, j + 19);
+			// Canvas2D.drawPixels(height, yPos, xPos, color, width);
+			// Canvas2D.fillPixels(xPos, width, height, color, yPos);
+			Canvas2D.drawPixels(l - 4, j + 2, i, 7367262, k);
+			Canvas2D.drawPixels(l - 2, j + 1, i + 1, 7367262, k - 2);
+			Canvas2D.drawPixels(l, j, i + 2, 7367262, k - 4);
+			Canvas2D.drawPixels(l - 2, j + 1, i + 3, 2959394, k - 6);
+			Canvas2D.drawPixels(l - 4, j + 2, i + 2, 2959394, k - 4);
+			Canvas2D.drawPixels(l - 6, j + 3, i + 1, 2959394, k - 2);
+			Canvas2D.drawPixels(l - 22, j + 19, i + 2, 5392957, k - 4);
+			Canvas2D.drawPixels(l - 22, j + 20, i + 3, 5392957, k - 6);
+			Canvas2D.drawPixels(l - 23, j + 20, i + 3, 1123113, k - 6);
+			Canvas2D.fillPixels(i + 3, k - 6, 1, 2763035, j + 2);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 2762267, j + 3);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 2433302, j + 4);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 2170389, j + 5);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 1973010, j + 6);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 1709838, j + 7);
+			Canvas2D.fillPixels(i + 2, k - 4, 2, 1380875, j + 8);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 1051912, j + 10);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 11);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 526083, j + 12);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 13);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 460802, j + 14);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 15);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 460802, j + 16);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 17);
+			Canvas2D.fillPixels(i + 2, k - 4, 1, 2763035, j + 18);
+			Canvas2D.fillPixels(i + 3, k - 6, 1, 5654851, j + 19);
 			boldText.method385(0xc6b895, "Choose Option", j + 14,
 					i + 3);
 		int beforeX = xPos;
@@ -7741,7 +7741,7 @@ public class Client extends GameRenderer {
 				int i2 = j + 31 + (menuActionRow - 1 - l1) * 15;
 				int j2 = 0xc6b895;
 				if (j1 > i && j1 < i + k && k1 > i2 - 13 && k1 < i2 + 3) {
-					DrawingArea.drawPixels(15, i2 - 11, i + 3, 2512492, menuWidth - 6);
+					Canvas2D.drawPixels(15, i2 - 11, i + 3, 2512492, menuWidth - 6);
 					j2 = 0xeee5c6;
 					currentActionMenu = l1;
 				}
@@ -9892,46 +9892,47 @@ public class Client extends GameRenderer {
 	private int method120() {
 		int j = 3;
 		if (yCameraCurve < 310) {
-			int k = xCameraPos >> 7;
-		int l = yCameraPos >> 7;
+			int x = xCameraPos >> 7;
+		int y = yCameraPos >> 7;
 			int i1 = myPlayer.x >> 7;
 			int j1 = myPlayer.y >> 7;
-			if ((byteGroundArray[plane][k][l] & 4) != 0) {
+			//System.out.println(myPlayer.x + ", " + myPlayer.y + ", " + x + ", " + y + ", " + plane);
+			if ((byteGroundArray[plane][x][y] & 4) != 0) {
 				j = plane;
 			}
 			int k1;
-			if (i1 > k) {
-				k1 = i1 - k;
+			if (i1 > x) {
+				k1 = i1 - x;
 			} else {
-				k1 = k - i1;
+				k1 = x - i1;
 			}
 			int l1;
-			if (j1 > l) {
-				l1 = j1 - l;
+			if (j1 > y) {
+				l1 = j1 - y;
 			} else {
-				l1 = l - j1;
+				l1 = y - j1;
 			}
 			if (k1 > l1) {
 				int i2 = l1 * 0x10000 / k1;
 				int k2 = 32768;
-				while (k != i1) {
-					if (k < i1) {
-						k++;
-					} else if (k > i1) {
-						k--;
+				while (x != i1) {
+					if (x < i1) {
+						x++;
+					} else if (x > i1) {
+						x--;
 					}
-					if ((byteGroundArray[plane][k][l] & 4) != 0) {
+					if ((byteGroundArray[plane][x][y] & 4) != 0) {
 						j = plane;
 					}
 					k2 += i2;
 					if (k2 >= 0x10000) {
 						k2 -= 0x10000;
-						if (l < j1) {
-							l++;
-						} else if (l > j1) {
-							l--;
+						if (y < j1) {
+							y++;
+						} else if (y > j1) {
+							y--;
 						}
-						if ((byteGroundArray[plane][k][l] & 4) != 0) {
+						if ((byteGroundArray[plane][x][y] & 4) != 0) {
 							j = plane;
 						}
 					}
@@ -9939,24 +9940,24 @@ public class Client extends GameRenderer {
 			} else {
 				int j2 = k1 * 0x10000 / l1;
 				int l2 = 32768;
-				while (l != j1) {
-					if (l < j1) {
-						l++;
-					} else if (l > j1) {
-						l--;
+				while (y != j1) {
+					if (y < j1) {
+						y++;
+					} else if (y > j1) {
+						y--;
 					}
-					if ((byteGroundArray[plane][k][l] & 4) != 0) {
+					if ((byteGroundArray[plane][x][y] & 4) != 0) {
 						j = plane;
 					}
 					l2 += j2;
 					if (l2 >= 0x10000) {
 						l2 -= 0x10000;
-						if (k < i1) {
-							k++;
-						} else if (k > i1) {
-							k--;
+						if (x < i1) {
+							x++;
+						} else if (x > i1) {
+							x--;
 						}
-						if ((byteGroundArray[plane][k][l] & 4) != 0) {
+						if ((byteGroundArray[plane][x][y] & 4) != 0) {
 							j = plane;
 						}
 					}
@@ -10565,15 +10566,15 @@ public class Client extends GameRenderer {
 
 		}
 
-		int k2 = Rasterizer.anInt1481;
+		int k2 = Canvas3D.anInt1481;
 		Model.aBoolean1684 = true;
 		Model.anInt1687 = 0;
 		Model.anInt1685 = super.mouseX - 4;
 		Model.anInt1686 = super.mouseY - 4;
 		
 		//blue fog: 0x5DA4C9, white: 0xc8c0a8
-		DrawingArea.drawPixels(getScreenHeight(), 0, 0, Configuration.FOG_ENABLED ? 0x5DA4C9 : 0, getScreenWidth());
-		// DrawingArea.drawAlphaGradient(0, 0, getScreenWidth(),
+		Canvas2D.drawPixels(getScreenHeight(), 0, 0, Configuration.FOG_ENABLED ? 0x5DA4C9 : 0, getScreenWidth());
+		// Canvas2D.drawAlphaGradient(0, 0, getScreenWidth(),
 		// getScreenHeight(), 0x5DA4C9, 0x9DA4C2, 255);
 
 		if (loggedIn) {
@@ -10655,7 +10656,7 @@ public class Client extends GameRenderer {
 			setLastKnownPlane(-1);
 			getaClass19_1056().removeAll();
 			getaClass19_1013().removeAll();
-			Rasterizer.method366();
+			Canvas3D.method366();
 			unlinkMRUNodes();
 			worldController.initToNull();
 			System.gc();
@@ -10837,7 +10838,7 @@ public class Client extends GameRenderer {
 		}
 
 		System.gc();
-		Rasterizer.method367();
+		Canvas3D.method367();
 		onDemandFetcher.method566();
 		int k = (anInt1069 - 6) / 8 - 1;
 		int j1 = (anInt1069 + 6) / 8 + 1;
@@ -10974,8 +10975,8 @@ public class Client extends GameRenderer {
 		// Textures
 		int speed = 1;
 
-		if (Rasterizer.anIntArray1480[17] >= j) {
-			Background background = Rasterizer.aBackgroundArray1474s[17];
+		if (Canvas3D.anIntArray1480[17] >= j) {
+			Background background = Canvas3D.aBackgroundArray1474s[17];
 			int k = background.imgWidth * background.imgHeight - 1;
 			int j1 = background.imgWidth * anInt945 * speed;
 			byte abyte0[] = background.imgPixels;
@@ -10987,7 +10988,7 @@ public class Client extends GameRenderer {
 
 			background.imgPixels = abyte3;
 			aByteArray912 = abyte0;
-			Rasterizer.method370(17);
+			Canvas3D.method370(17);
 			anInt854++;
 
 			if (anInt854 > 1235) {
@@ -11013,8 +11014,8 @@ public class Client extends GameRenderer {
 			}
 		}
 
-		if (Rasterizer.anIntArray1480[24] >= j) {
-			Background background_1 = Rasterizer.aBackgroundArray1474s[24];
+		if (Canvas3D.anIntArray1480[24] >= j) {
+			Background background_1 = Canvas3D.aBackgroundArray1474s[24];
 			int l = background_1.imgWidth * background_1.imgHeight - 1;
 			int k1 = background_1.imgWidth * anInt945 * 2;
 			byte abyte1[] = background_1.imgPixels;
@@ -11026,11 +11027,11 @@ public class Client extends GameRenderer {
 
 			background_1.imgPixels = abyte4;
 			aByteArray912 = abyte1;
-			Rasterizer.method370(24);
+			Canvas3D.method370(24);
 		}
 
-		if (Rasterizer.anIntArray1480[34] >= j) {
-			Background background_2 = Rasterizer.aBackgroundArray1474s[34];
+		if (Canvas3D.anIntArray1480[34] >= j) {
+			Background background_2 = Canvas3D.aBackgroundArray1474s[34];
 			int i1 = background_2.imgWidth * background_2.imgHeight - 1;
 			int l1 = background_2.imgWidth * anInt945 * 2;
 			byte abyte2[] = background_2.imgPixels;
@@ -11042,11 +11043,11 @@ public class Client extends GameRenderer {
 
 			background_2.imgPixels = abyte5;
 			aByteArray912 = abyte2;
-			Rasterizer.method370(34);
+			Canvas3D.method370(34);
 		}
 
-		if (Rasterizer.anIntArray1480[1] >= j) {
-			Background background_2 = Rasterizer.aBackgroundArray1474s[1];
+		if (Canvas3D.anIntArray1480[1] >= j) {
+			Background background_2 = Canvas3D.aBackgroundArray1474s[1];
 			int i1 = background_2.imgWidth * background_2.imgHeight - 1;
 			int l1 = background_2.imgWidth * anInt945 * 2;
 			byte abyte2[] = background_2.imgPixels;
@@ -11058,11 +11059,11 @@ public class Client extends GameRenderer {
 
 			background_2.imgPixels = abyte5;
 			aByteArray912 = abyte2;
-			Rasterizer.method370(1);
+			Canvas3D.method370(1);
 		}
 
-		if (Rasterizer.anIntArray1480[40] >= j) {
-			Background background_2 = Rasterizer.aBackgroundArray1474s[40];
+		if (Canvas3D.anIntArray1480[40] >= j) {
+			Background background_2 = Canvas3D.aBackgroundArray1474s[40];
 			int i1 = background_2.imgWidth * background_2.imgHeight - 1;
 			int l1 = background_2.imgWidth * anInt945 * 1;
 			byte abyte2[] = background_2.imgPixels;
@@ -11074,7 +11075,7 @@ public class Client extends GameRenderer {
 
 			background_2.imgPixels = abyte5;
 			aByteArray912 = abyte2;
-			Rasterizer.method370(40);
+			Canvas3D.method370(40);
 		}
 	}
 
@@ -14007,9 +14008,9 @@ public class Client extends GameRenderer {
 		int x = 5, y = 5;
 		int width = 200;//10 + newRegularFont.getTextWidth(s);
 		int height = 22;
-		//DrawingArea.drawFilledPixels(0, 0, GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 512 : getScreenWidth(), GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 334 : getScreenHeight(), 0);
-		DrawingArea.drawFilledPixels(x, y, width, height, 0xffffff);
-		DrawingArea.drawFilledPixels(x + 1, y + 1, width - 2, height - 2, 0);
+		//Canvas2D.drawFilledPixels(0, 0, GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 512 : getScreenWidth(), GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 334 : getScreenHeight(), 0);
+		Canvas2D.drawFilledPixels(x, y, width, height, 0xffffff);
+		Canvas2D.drawFilledPixels(x + 1, y + 1, width - 2, height - 2, 0);
 		newRegularFont.drawCenteredString(s, x + 5 + width / 2, y + 15, 0xffffff, 0);
 	}
 
@@ -14322,7 +14323,8 @@ public class Client extends GameRenderer {
 	 */
 	private void login(String password, String username, boolean reconnecting, Client client) {
 		if(loggingIn) {
-			return;
+			//System.out.println("Already logging in!");
+			//return;
 		}
 		username = TextClass.fixName(username);
 		username = optimizeText(username);
@@ -14791,8 +14793,8 @@ public class Client extends GameRenderer {
 				clickX -= 73;
 				clickY -= 75;
 				int k = viewRotation + minimapRotation & 0x7ff;
-				int i1 = Rasterizer.SINE[k];
-				int j1 = Rasterizer.COSINE[k];
+				int i1 = Canvas3D.SINE[k];
+				int j1 = Canvas3D.COSINE[k];
 				i1 = i1 * (minimapZoom + 256) >> 8;
 		j1 = j1 * (minimapZoom + 256) >> 8;
 				int k1 = clickY * i1 + clickX * j1 >> 11;
@@ -15495,13 +15497,13 @@ public class Client extends GameRenderer {
 		gameScreenIP = null;
 		aRSImageProducer_1125 = null;
 		aRSImageProducer_1107 = new RSImageProducer(509, 171, getGameComponent());
-		DrawingArea.setAllPixelsToZero();
+		Canvas2D.setAllPixelsToZero();
 		titleScreenIP = new RSImageProducer(getScreenWidth(), getScreenHeight(), getGameComponent());
-		DrawingArea.setAllPixelsToZero();
+		Canvas2D.setAllPixelsToZero();
 		new RSImageProducer(203, 238, getGameComponent());
-		DrawingArea.setAllPixelsToZero();
+		Canvas2D.setAllPixelsToZero();
 		new RSImageProducer(74, 94, getGameComponent());
-		DrawingArea.setAllPixelsToZero();
+		Canvas2D.setAllPixelsToZero();
 		if (titleStreamLoader != null) {
 			drawLogo();
 			loadTitleScreen();
@@ -15519,13 +15521,13 @@ public class Client extends GameRenderer {
 		titleScreenIP = null;
 		chatAreaIP = new RSImageProducer(516, 165, getGameComponent());
 		mapAreaIP = new RSImageProducer(249, 168, getGameComponent());
-		DrawingArea.setAllPixelsToZero();
+		Canvas2D.setAllPixelsToZero();
 		if (GameFrame.getScreenMode() == ScreenMode.FIXED) {
 			CacheSpriteLoader.getCacheSprite(14).drawSprite(0, 0);
 		}
 		tabAreaIP = new RSImageProducer(250, 335, getGameComponent());
 		gameScreenIP = new RSImageProducer(GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 512 : getScreenWidth(), GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 334 : getScreenHeight(), getGameComponent());
-		DrawingArea.setAllPixelsToZero();
+		Canvas2D.setAllPixelsToZero();
 		aRSImageProducer_1125 = new RSImageProducer(249, 45, getGameComponent());
 		welcomeScreenRaised = true;
 	}
@@ -16061,9 +16063,9 @@ public class Client extends GameRenderer {
 			compass = new Sprite(mediaArchive, "compass", 0);
 			clientId = Signlink.uid;
 			setLoadingText(50, "Unpacking textures..");
-			Rasterizer.method368(streamLoader_3);
-			Rasterizer.method372(0.59999999999999998D);
-			Rasterizer.method367();
+			Canvas3D.method368(streamLoader_3);
+			Canvas3D.method372(0.59999999999999998D);
+			Canvas3D.method367();
 			setLoadingText(60, "Unpacked textures");
 			FrameReader.initialise(onDemandFetcher.getAnimCount());
 			Animation.unpackConfig(streamLoader);
@@ -16537,13 +16539,13 @@ public class Client extends GameRenderer {
 
 			if (j == 1) {
 				if (k == 1) {
-					Rasterizer.method372(0.90000000000000002D);
+					Canvas3D.method372(0.90000000000000002D);
 				} else if (k == 2) {
-					Rasterizer.method372(0.80000000000000004D);
+					Canvas3D.method372(0.80000000000000004D);
 				} else if (k == 3) {
-					Rasterizer.method372(0.69999999999999996D);
+					Canvas3D.method372(0.69999999999999996D);
 				} else if (k == 4) {
-					Rasterizer.method372(0.59999999999999998D);
+					Canvas3D.method372(0.59999999999999998D);
 				}
 
 				ItemDefinition.mruNodes1.unlinkAll();
@@ -16748,8 +16750,8 @@ public class Client extends GameRenderer {
 								if (i1 > 30) {
 									i1 = 30;
 								}
-								DrawingArea.drawPixels(5, spriteDrawY - 3, spriteDrawX - 15, 65280, i1);
-								DrawingArea.drawPixels(5, spriteDrawY - 3, spriteDrawX - 15 + i1, 0xff0000, 30 - i1);
+								Canvas2D.drawPixels(5, spriteDrawY - 3, spriteDrawX - 15, 65280, i1);
+								Canvas2D.drawPixels(5, spriteDrawY - 3, spriteDrawX - 15 + i1, 0xff0000, 30 - i1);
 							}
 							if (Configuration.DISPLAY_HP_ABOVE_HEAD && obj instanceof Player) {
 								Entity o = (Entity) obj;
@@ -16899,10 +16901,10 @@ public class Client extends GameRenderer {
 					if (anIntArray981[k] == 4) {
 						int i4 = boldText.method384(s);
 						int k4 = (150 - anIntArray982[k]) * (i4 + 100) / 150;
-						DrawingArea.setBounds(spriteDrawX - 50, 0, spriteDrawX + 50, 334);
+						Canvas2D.setBounds(spriteDrawX - 50, 0, spriteDrawX + 50, 334);
 						boldText.method385(0, s, spriteDrawY + 1, spriteDrawX + 51 - k4);
 						boldText.method385(i3, s, spriteDrawY, spriteDrawX + 50 - k4);
-						DrawingArea.defaultDrawingAreaSize();
+						Canvas2D.defaultDrawingAreaSize();
 					}
 
 					if (anIntArray981[k] == 5) {
@@ -16915,10 +16917,10 @@ public class Client extends GameRenderer {
 							l4 = j4 - 125;
 						}
 
-						DrawingArea.setBounds(0, spriteDrawY - boldText.anInt1497 - 1, 512, spriteDrawY + 5);
+						Canvas2D.setBounds(0, spriteDrawY - boldText.anInt1497 - 1, 512, spriteDrawY + 5);
 						boldText.drawText(0, s, spriteDrawY + 1 + l4, spriteDrawX + 1);
 						boldText.drawText(i3, s, spriteDrawY + l4, spriteDrawX);
-						DrawingArea.defaultDrawingAreaSize();
+						Canvas2D.defaultDrawingAreaSize();
 					}
 				} else {
 					boldText.drawText(0, s, spriteDrawY + 1, spriteDrawX + 1);
@@ -16945,20 +16947,20 @@ public class Client extends GameRenderer {
 
 	public void updateGameArea() {
 		try {
-			Rasterizer.setBounds(getScreenWidth(), getScreenHeight());
-			fullScreenTextureArray = Rasterizer.lineOffsets;
-			Rasterizer.setBounds(GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? chatAreaIP != null ? chatAreaIP.anInt316 : 519 : getScreenWidth(), GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? chatAreaIP != null ? chatAreaIP.anInt317 : 165 : getScreenHeight());
-			anIntArray1180 = Rasterizer.lineOffsets;
-			Rasterizer.setBounds(GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? tabAreaIP != null ? tabAreaIP.anInt316 : 346 : getScreenWidth(), GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? tabAreaIP != null ? tabAreaIP.anInt317 : 335 : getScreenHeight());
-			anIntArray1181 = Rasterizer.lineOffsets;
-			Rasterizer.setBounds(gameAreaWidth, gameAreaHeight);
-			anIntArray1182 = Rasterizer.lineOffsets;
+			Canvas3D.setBounds(getScreenWidth(), getScreenHeight());
+			fullScreenTextureArray = Canvas3D.lineOffsets;
+			Canvas3D.setBounds(GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? chatAreaIP != null ? chatAreaIP.anInt316 : 519 : getScreenWidth(), GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? chatAreaIP != null ? chatAreaIP.anInt317 : 165 : getScreenHeight());
+			anIntArray1180 = Canvas3D.lineOffsets;
+			Canvas3D.setBounds(GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? tabAreaIP != null ? tabAreaIP.anInt316 : 346 : getScreenWidth(), GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? tabAreaIP != null ? tabAreaIP.anInt317 : 335 : getScreenHeight());
+			anIntArray1181 = Canvas3D.lineOffsets;
+			Canvas3D.setBounds(gameAreaWidth, gameAreaHeight);
+			anIntArray1182 = Canvas3D.lineOffsets;
 			int ai[] = new int[9];
 
 			for (int i8 = 0; i8 < 9; i8++) {
 				int k8 = 128 + i8 * 32 + 15;
 				int l8 = 600 + k8 * 3;
-				int i9 = Rasterizer.SINE[k8];
+				int i9 = Canvas3D.SINE[k8];
 				ai[i8] = l8 * i9 >> 16;
 			}
 
@@ -17510,8 +17512,8 @@ public class Client extends GameRenderer {
 		double percentOfHpLost = 100-percentOfHpLeft;
 		int hpBarYPos = yPos + height - 20;
 		TextDrawingArea.drawAlphaFilledPixels(xPos, yPos, width, height, 000000, 50);
-		DrawingArea.drawPixels(15, hpBarYPos, hpBarXPps + (int) percentOfHpLeft, 11740160, (int) percentOfHpLost);//red
-		DrawingArea.drawPixels(15, hpBarYPos, hpBarXPps/*-(int)percentOfHpLost*/, 31744, (int) percentOfHpLeft);//green
+		Canvas2D.drawPixels(15, hpBarYPos, hpBarXPps + (int) percentOfHpLeft, 11740160, (int) percentOfHpLost);//red
+		Canvas2D.drawPixels(15, hpBarYPos, hpBarXPps/*-(int)percentOfHpLost*/, 31744, (int) percentOfHpLeft);//green
 		newBoldFont.drawCenteredString(currentHp + "/" + maxHp, xPos + (width/2), hpBarYPos + 13,16777215,0);
 	}
 
@@ -17844,8 +17846,8 @@ public class Client extends GameRenderer {
     				opacity = 255 - opacity;
     			}
     			if (percentile > -1 && percentile <= 100) {
-    				DrawingArea.setDrawingArea(334, 0, 512, 0);
-    				DrawingArea.drawAlphaBox(0, 0, 512, 334, 0x000000, opacity);
+    				Canvas2D.setDrawingArea(334, 0, 512, 0);
+    				Canvas2D.drawAlphaBox(0, 0, 512, 334, 0x000000, opacity);
     				if (percentile > 85 && state == 1 || percentile < 50 && state == -1) {
     					newRegularFont.drawCenteredString(text, 512 / 2, 334 / 2, 0xFFFFFF, 0);
     				} else if (percentile == 100) {

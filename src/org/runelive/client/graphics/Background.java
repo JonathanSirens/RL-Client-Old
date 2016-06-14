@@ -3,7 +3,7 @@ package org.runelive.client.graphics;
 import org.runelive.client.cache.Archive;
 import org.runelive.client.io.ByteBuffer;
 
-public final class Background extends DrawingArea {
+public final class Background extends Canvas2D {
 
 	public byte imgPixels[];
 	public final int[] palette;
@@ -126,39 +126,39 @@ public final class Background extends DrawingArea {
 	public void method361(int i, int k) {
 		i += xOffset;
 		k += yOffset;
-		int l = i + k * DrawingArea.width;
+		int l = i + k * Canvas2D.width;
 		int i1 = 0;
 		int j1 = imgHeight;
 		int k1 = imgWidth;
-		int l1 = DrawingArea.width - k1;
+		int l1 = Canvas2D.width - k1;
 		int i2 = 0;
-		if (k < DrawingArea.topY) {
-			int j2 = DrawingArea.topY - k;
+		if (k < Canvas2D.topY) {
+			int j2 = Canvas2D.topY - k;
 			j1 -= j2;
-			k = DrawingArea.topY;
+			k = Canvas2D.topY;
 			i1 += j2 * k1;
-			l += j2 * DrawingArea.width;
+			l += j2 * Canvas2D.width;
 		}
-		if (k + j1 > DrawingArea.bottomY) {
-			j1 -= k + j1 - DrawingArea.bottomY;
+		if (k + j1 > Canvas2D.bottomY) {
+			j1 -= k + j1 - Canvas2D.bottomY;
 		}
-		if (i < DrawingArea.topX) {
-			int k2 = DrawingArea.topX - i;
+		if (i < Canvas2D.topX) {
+			int k2 = Canvas2D.topX - i;
 			k1 -= k2;
-			i = DrawingArea.topX;
+			i = Canvas2D.topX;
 			i1 += k2;
 			l += k2;
 			i2 += k2;
 			l1 += k2;
 		}
-		if (i + k1 > DrawingArea.bottomX) {
-			int l2 = i + k1 - DrawingArea.bottomX;
+		if (i + k1 > Canvas2D.bottomX) {
+			int l2 = i + k1 - Canvas2D.bottomX;
 			k1 -= l2;
 			i2 += l2;
 			l1 += l2;
 		}
 		if (!(k1 <= 0 || j1 <= 0)) {
-			method362(j1, DrawingArea.pixels, imgPixels, l1, l, k1, i1, palette, i2);
+			method362(j1, Canvas2D.pixels, imgPixels, l1, l, k1, i1, palette, i2);
 		}
 	}
 

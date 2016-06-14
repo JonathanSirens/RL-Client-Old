@@ -4,15 +4,15 @@ import org.runelive.Configuration;
 import org.runelive.client.Client;
 import org.runelive.client.cache.Archive;
 import org.runelive.client.graphics.Background;
-import org.runelive.client.graphics.DrawingArea;
+import org.runelive.client.graphics.Canvas2D;
 
-public final class Rasterizer extends DrawingArea {
+public final class Canvas3D extends Canvas2D {
 
 	public static Background aBackgroundArray1474s[] = new Background[51];
-	public static boolean aBoolean1462;
-	private static boolean aBoolean1463;
-	private static boolean[] aBooleanArray1475 = new boolean[51];
-	public static int anInt1465;
+	public static boolean restrict_edges;
+	private static boolean opaque;
+	private static boolean[] transparentTextures = new boolean[51];
+	public static int alpha;
 	private static int anInt1473;
 	private static int anInt1477;
 	public static int anInt1481;
@@ -85,13 +85,13 @@ public final class Rasterizer extends DrawingArea {
 	}
 
 	public static void method364() {
-		lineOffsets = new int[DrawingArea.height];
-		for (int j = 0; j < DrawingArea.height; j++) {
-			lineOffsets[j] = DrawingArea.width * j;
+		lineOffsets = new int[Canvas2D.height];
+		for (int j = 0; j < Canvas2D.height; j++) {
+			lineOffsets[j] = Canvas2D.width * j;
 		}
 
-		centerX = DrawingArea.width / 2;
-		centerY = DrawingArea.height / 2;
+		centerX = Canvas2D.width / 2;
+		centerY = Canvas2D.height / 2;
 	}
 
 	public static void method366() {
@@ -172,7 +172,7 @@ public final class Rasterizer extends DrawingArea {
 		anIntArrayArray1479[i] = null;
 	}
 
-	private static int[] method371(int i) {
+	private static int[] getTexturePixels(int i) {
 		anIntArray1480[i] = anInt1481++;
 
 		if (anIntArrayArray1479[i] != null) {
@@ -204,13 +204,13 @@ public final class Rasterizer extends DrawingArea {
 		int ai1[] = anIntArrayArray1483[i];
 
 		if (lowDetail) {
-			aBooleanArray1475[i] = false;
+			transparentTextures[i] = false;
 
 			for (int i1 = 0; i1 < 4096; i1++) {
 				int i2 = ai[i1] = ai1[background.imgPixels[i1]] & 0xf8f8ff;
 
 				if (i2 == 0) {
-					aBooleanArray1475[i] = true;
+					transparentTextures[i] = true;
 				}
 
 				ai[4096 + i1] = i2 - (i2 >>> 3) & 0xf8f8ff;
@@ -230,14 +230,14 @@ public final class Rasterizer extends DrawingArea {
 				}
 			}
 
-			aBooleanArray1475[i] = false;
+			transparentTextures[i] = false;
 
 			for (int l1 = 0; l1 < 16384; l1++) {
 				ai[l1] &= 0xf8f8ff;
 				int k2 = ai[l1];
 
 				if (k2 == 0) {
-					aBooleanArray1475[i] = true;
+					transparentTextures[i] = true;
 				}
 
 				ai[16384 + l1] = k2 - (k2 >>> 3) & 0xf8f8ff;
@@ -395,16 +395,16 @@ public final class Rasterizer extends DrawingArea {
 		}
 
 		if (y1 <= y2 && y1 <= y3) {
-			if (y1 >= DrawingArea.bottomY) {
+			if (y1 >= Canvas2D.bottomY) {
 				return;
 			}
 
-			if (y2 > DrawingArea.bottomY) {
-				y2 = DrawingArea.bottomY;
+			if (y2 > Canvas2D.bottomY) {
+				y2 = Canvas2D.bottomY;
 			}
 
-			if (y3 > DrawingArea.bottomY) {
-				y3 = DrawingArea.bottomY;
+			if (y3 > Canvas2D.bottomY) {
+				y3 = Canvas2D.bottomY;
 			}
 
 			if (y2 < y3) {
@@ -432,8 +432,8 @@ public final class Rasterizer extends DrawingArea {
 					y3 -= y2;
 					y2 -= y1;
 
-					for (y1 = lineOffsets[y1]; --y2 >= 0; y1 += DrawingArea.width) {
-						drawFogScanline(DrawingArea.pixels, y1, x3 >> 16, x1 >> 16, z3, z1);
+					for (y1 = lineOffsets[y1]; --y2 >= 0; y1 += Canvas2D.width) {
+						drawFogScanline(Canvas2D.pixels, y1, x3 >> 16, x1 >> 16, z3, z1);
 						x3 += j3;
 						x1 += j2;
 						z3 += k3;
@@ -441,12 +441,12 @@ public final class Rasterizer extends DrawingArea {
 					}
 
 					while (--y3 >= 0) {
-						drawFogScanline(DrawingArea.pixels, y1, x3 >> 16, x2 >> 16, z3, z2);
+						drawFogScanline(Canvas2D.pixels, y1, x3 >> 16, x2 >> 16, z3, z2);
 						x3 += j3;
 						x2 += l2;
 						z3 += k3;
 						z2 += i3;
-						y1 += DrawingArea.width;
+						y1 += Canvas2D.width;
 					}
 
 					return;
@@ -455,8 +455,8 @@ public final class Rasterizer extends DrawingArea {
 				y3 -= y2;
 				y2 -= y1;
 
-				for (y1 = lineOffsets[y1]; --y2 >= 0; y1 += DrawingArea.width) {
-					drawFogScanline(DrawingArea.pixels, y1, x1 >> 16, x3 >> 16, z1, z3);
+				for (y1 = lineOffsets[y1]; --y2 >= 0; y1 += Canvas2D.width) {
+					drawFogScanline(Canvas2D.pixels, y1, x1 >> 16, x3 >> 16, z1, z3);
 					x3 += j3;
 					x1 += j2;
 					z3 += k3;
@@ -464,12 +464,12 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--y3 >= 0) {
-					drawFogScanline(DrawingArea.pixels, y1, x2 >> 16, x3 >> 16, z2, z3);
+					drawFogScanline(Canvas2D.pixels, y1, x2 >> 16, x3 >> 16, z2, z3);
 					x3 += j3;
 					x2 += l2;
 					z3 += k3;
 					z2 += i3;
-					y1 += DrawingArea.width;
+					y1 += Canvas2D.width;
 				}
 
 				return;
@@ -499,8 +499,8 @@ public final class Rasterizer extends DrawingArea {
 				y2 -= y3;
 				y3 -= y1;
 
-				for (y1 = lineOffsets[y1]; --y3 >= 0; y1 += DrawingArea.width) {
-					drawFogScanline(DrawingArea.pixels, y1, x2 >> 16, x1 >> 16, z2, z1);
+				for (y1 = lineOffsets[y1]; --y3 >= 0; y1 += Canvas2D.width) {
+					drawFogScanline(Canvas2D.pixels, y1, x2 >> 16, x1 >> 16, z2, z1);
 					x2 += j3;
 					x1 += j2;
 					z2 += k3;
@@ -508,12 +508,12 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--y2 >= 0) {
-					drawFogScanline(DrawingArea.pixels, y1, x3 >> 16, x1 >> 16, z3, z1);
+					drawFogScanline(Canvas2D.pixels, y1, x3 >> 16, x1 >> 16, z3, z1);
 					x3 += l2;
 					x1 += j2;
 					z3 += i3;
 					z1 += k2;
-					y1 += DrawingArea.width;
+					y1 += Canvas2D.width;
 				}
 
 				return;
@@ -522,8 +522,8 @@ public final class Rasterizer extends DrawingArea {
 			y2 -= y3;
 			y3 -= y1;
 
-			for (y1 = lineOffsets[y1]; --y3 >= 0; y1 += DrawingArea.width) {
-				drawFogScanline(DrawingArea.pixels, y1, x1 >> 16, x2 >> 16, z1, z2);
+			for (y1 = lineOffsets[y1]; --y3 >= 0; y1 += Canvas2D.width) {
+				drawFogScanline(Canvas2D.pixels, y1, x1 >> 16, x2 >> 16, z1, z2);
 				x2 += j3;
 				x1 += j2;
 				z2 += k3;
@@ -531,28 +531,28 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--y2 >= 0) {
-				drawFogScanline(DrawingArea.pixels, y1, x1 >> 16, x3 >> 16, z1, z3);
+				drawFogScanline(Canvas2D.pixels, y1, x1 >> 16, x3 >> 16, z1, z3);
 				x3 += l2;
 				x1 += j2;
 				z3 += i3;
 				z1 += k2;
-				y1 += DrawingArea.width;
+				y1 += Canvas2D.width;
 			}
 
 			return;
 		}
 
 		if (y2 <= y3) {
-			if (y2 >= DrawingArea.bottomY) {
+			if (y2 >= Canvas2D.bottomY) {
 				return;
 			}
 
-			if (y3 > DrawingArea.bottomY) {
-				y3 = DrawingArea.bottomY;
+			if (y3 > Canvas2D.bottomY) {
+				y3 = Canvas2D.bottomY;
 			}
 
-			if (y1 > DrawingArea.bottomY) {
-				y1 = DrawingArea.bottomY;
+			if (y1 > Canvas2D.bottomY) {
+				y1 = Canvas2D.bottomY;
 			}
 
 			if (y3 < y1) {
@@ -580,8 +580,8 @@ public final class Rasterizer extends DrawingArea {
 					y1 -= y3;
 					y3 -= y2;
 
-					for (y2 = lineOffsets[y2]; --y3 >= 0; y2 += DrawingArea.width) {
-						drawFogScanline(DrawingArea.pixels, y2, x1 >> 16, x2 >> 16, z1, z2);
+					for (y2 = lineOffsets[y2]; --y3 >= 0; y2 += Canvas2D.width) {
+						drawFogScanline(Canvas2D.pixels, y2, x1 >> 16, x2 >> 16, z1, z2);
 						x1 += j2;
 						x2 += l2;
 						z1 += k2;
@@ -589,12 +589,12 @@ public final class Rasterizer extends DrawingArea {
 					}
 
 					while (--y1 >= 0) {
-						drawFogScanline(DrawingArea.pixels, y2, x1 >> 16, x3 >> 16, z1, z3);
+						drawFogScanline(Canvas2D.pixels, y2, x1 >> 16, x3 >> 16, z1, z3);
 						x1 += j2;
 						x3 += j3;
 						z1 += k2;
 						z3 += k3;
-						y2 += DrawingArea.width;
+						y2 += Canvas2D.width;
 					}
 
 					return;
@@ -603,8 +603,8 @@ public final class Rasterizer extends DrawingArea {
 				y1 -= y3;
 				y3 -= y2;
 
-				for (y2 = lineOffsets[y2]; --y3 >= 0; y2 += DrawingArea.width) {
-					drawFogScanline(DrawingArea.pixels, y2, x2 >> 16, x1 >> 16, z2, z1);
+				for (y2 = lineOffsets[y2]; --y3 >= 0; y2 += Canvas2D.width) {
+					drawFogScanline(Canvas2D.pixels, y2, x2 >> 16, x1 >> 16, z2, z1);
 					x1 += j2;
 					x2 += l2;
 					z1 += k2;
@@ -612,12 +612,12 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--y1 >= 0) {
-					drawFogScanline(DrawingArea.pixels, y2, x3 >> 16, x1 >> 16, z3, z1);
+					drawFogScanline(Canvas2D.pixels, y2, x3 >> 16, x1 >> 16, z3, z1);
 					x1 += j2;
 					x3 += j3;
 					z1 += k2;
 					z3 += k3;
-					y2 += DrawingArea.width;
+					y2 += Canvas2D.width;
 				}
 
 				return;
@@ -647,8 +647,8 @@ public final class Rasterizer extends DrawingArea {
 				y3 -= y1;
 				y1 -= y2;
 
-				for (y2 = lineOffsets[y2]; --y1 >= 0; y2 += DrawingArea.width) {
-					drawFogScanline(DrawingArea.pixels, y2, x3 >> 16, x2 >> 16, z3, z2);
+				for (y2 = lineOffsets[y2]; --y1 >= 0; y2 += Canvas2D.width) {
+					drawFogScanline(Canvas2D.pixels, y2, x3 >> 16, x2 >> 16, z3, z2);
 					x3 += j2;
 					x2 += l2;
 					z3 += k2;
@@ -656,12 +656,12 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--y3 >= 0) {
-					drawFogScanline(DrawingArea.pixels, y2, x1 >> 16, x2 >> 16, z1, z2);
+					drawFogScanline(Canvas2D.pixels, y2, x1 >> 16, x2 >> 16, z1, z2);
 					x1 += j3;
 					x2 += l2;
 					z1 += k3;
 					z2 += i3;
-					y2 += DrawingArea.width;
+					y2 += Canvas2D.width;
 				}
 
 				return;
@@ -670,8 +670,8 @@ public final class Rasterizer extends DrawingArea {
 			y3 -= y1;
 			y1 -= y2;
 
-			for (y2 = lineOffsets[y2]; --y1 >= 0; y2 += DrawingArea.width) {
-				drawFogScanline(DrawingArea.pixels, y2, x2 >> 16, x3 >> 16, z2, z3);
+			for (y2 = lineOffsets[y2]; --y1 >= 0; y2 += Canvas2D.width) {
+				drawFogScanline(Canvas2D.pixels, y2, x2 >> 16, x3 >> 16, z2, z3);
 				x3 += j2;
 				x2 += l2;
 				z3 += k2;
@@ -679,23 +679,23 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--y3 >= 0) {
-				drawFogScanline(DrawingArea.pixels, y2, x2 >> 16, x1 >> 16, z2, z1);
+				drawFogScanline(Canvas2D.pixels, y2, x2 >> 16, x1 >> 16, z2, z1);
 				x1 += j3;
 				x2 += l2;
 				z1 += k3;
 				z2 += i3;
-				y2 += DrawingArea.width;
+				y2 += Canvas2D.width;
 			}
 			return;
 		}
-		if (y3 >= DrawingArea.bottomY) {
+		if (y3 >= Canvas2D.bottomY) {
 			return;
 		}
-		if (y1 > DrawingArea.bottomY) {
-			y1 = DrawingArea.bottomY;
+		if (y1 > Canvas2D.bottomY) {
+			y1 = Canvas2D.bottomY;
 		}
-		if (y2 > DrawingArea.bottomY) {
-			y2 = DrawingArea.bottomY;
+		if (y2 > Canvas2D.bottomY) {
+			y2 = Canvas2D.bottomY;
 		}
 		if (y1 < y2) {
 			x2 = x3 <<= 16;
@@ -717,8 +717,8 @@ public final class Rasterizer extends DrawingArea {
 			if (l2 < j3) {
 				y2 -= y1;
 				y1 -= y3;
-				for (y3 = lineOffsets[y3]; --y1 >= 0; y3 += DrawingArea.width) {
-					drawFogScanline(DrawingArea.pixels, y3, x2 >> 16, x3 >> 16, z2, z3);
+				for (y3 = lineOffsets[y3]; --y1 >= 0; y3 += Canvas2D.width) {
+					drawFogScanline(Canvas2D.pixels, y3, x2 >> 16, x3 >> 16, z2, z3);
 					x2 += l2;
 					x3 += j3;
 					z2 += i3;
@@ -726,19 +726,19 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--y2 >= 0) {
-					drawFogScanline(DrawingArea.pixels, y3, x2 >> 16, x1 >> 16, z2, z1);
+					drawFogScanline(Canvas2D.pixels, y3, x2 >> 16, x1 >> 16, z2, z1);
 					x2 += l2;
 					x1 += j2;
 					z2 += i3;
 					z1 += k2;
-					y3 += DrawingArea.width;
+					y3 += Canvas2D.width;
 				}
 				return;
 			}
 			y2 -= y1;
 			y1 -= y3;
-			for (y3 = lineOffsets[y3]; --y1 >= 0; y3 += DrawingArea.width) {
-				drawFogScanline(DrawingArea.pixels, y3, x3 >> 16, x2 >> 16, z3, z2);
+			for (y3 = lineOffsets[y3]; --y1 >= 0; y3 += Canvas2D.width) {
+				drawFogScanline(Canvas2D.pixels, y3, x3 >> 16, x2 >> 16, z3, z2);
 				x2 += l2;
 				x3 += j3;
 				z2 += i3;
@@ -746,12 +746,12 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--y2 >= 0) {
-				drawFogScanline(DrawingArea.pixels, y3, x1 >> 16, x2 >> 16, z1, z2);
+				drawFogScanline(Canvas2D.pixels, y3, x1 >> 16, x2 >> 16, z1, z2);
 				x2 += l2;
 				x1 += j2;
 				z2 += i3;
 				z1 += k2;
-				y3 += DrawingArea.width;
+				y3 += Canvas2D.width;
 			}
 			return;
 		}
@@ -774,8 +774,8 @@ public final class Rasterizer extends DrawingArea {
 		if (l2 < j3) {
 			y1 -= y2;
 			y2 -= y3;
-			for (y3 = lineOffsets[y3]; --y2 >= 0; y3 += DrawingArea.width) {
-				drawFogScanline(DrawingArea.pixels, y3, x1 >> 16, x3 >> 16, z1, z3);
+			for (y3 = lineOffsets[y3]; --y2 >= 0; y3 += Canvas2D.width) {
+				drawFogScanline(Canvas2D.pixels, y3, x1 >> 16, x3 >> 16, z1, z3);
 				x1 += l2;
 				x3 += j3;
 				z1 += i3;
@@ -783,19 +783,19 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--y1 >= 0) {
-				drawFogScanline(DrawingArea.pixels, y3, x2 >> 16, x3 >> 16, z2, z3);
+				drawFogScanline(Canvas2D.pixels, y3, x2 >> 16, x3 >> 16, z2, z3);
 				x2 += j2;
 				x3 += j3;
 				z2 += k2;
 				z3 += k3;
-				y3 += DrawingArea.width;
+				y3 += Canvas2D.width;
 			}
 			return;
 		}
 		y1 -= y2;
 		y2 -= y3;
-		for (y3 = lineOffsets[y3]; --y2 >= 0; y3 += DrawingArea.width) {
-			drawFogScanline(DrawingArea.pixels, y3, x3 >> 16, x1 >> 16, z3, z1);
+		for (y3 = lineOffsets[y3]; --y2 >= 0; y3 += Canvas2D.width) {
+			drawFogScanline(Canvas2D.pixels, y3, x3 >> 16, x1 >> 16, z3, z1);
 			x1 += l2;
 			x3 += j3;
 			z1 += i3;
@@ -803,12 +803,12 @@ public final class Rasterizer extends DrawingArea {
 		}
 
 		while (--y1 >= 0) {
-			drawFogScanline(DrawingArea.pixels, y3, x3 >> 16, x2 >> 16, z3, z2);
+			drawFogScanline(Canvas2D.pixels, y3, x3 >> 16, x2 >> 16, z3, z2);
 			x2 += j2;
 			x3 += j3;
 			z2 += k2;
 			z3 += k3;
-			y3 += DrawingArea.width;
+			y3 += Canvas2D.width;
 		}
 	}
 
@@ -821,9 +821,9 @@ public final class Rasterizer extends DrawingArea {
 			return;
 		}
 		z2 = (z2 - z1) / (x2 - x1);
-		if (aBoolean1462) {
-			if (x2 > DrawingArea.centerX) {
-				x2 = DrawingArea.centerX;
+		if (restrict_edges) {
+			if (x2 > Canvas2D.centerX) {
+				x2 = Canvas2D.centerX;
 			}
 			if (x1 < 0) {
 				z1 -= x1 * z2;
@@ -835,7 +835,7 @@ public final class Rasterizer extends DrawingArea {
 		}
 		int n = x2 - x1;
 		off += x1;
-		if (anInt1465 == 0) {
+		if (alpha == 0) {
 			while (--n >= 0) {
 				int z = z1 >> 16;
 				if (z > FOG_BEGIN) {
@@ -858,7 +858,7 @@ public final class Rasterizer extends DrawingArea {
 							dst[off] = FOREGROUND;//FOREGROUND;
 						} else {
 							int rgb = dst[off];
-							int a1 = (z - FOG_BEGIN) * (256 - anInt1465) / (FOG_END - FOG_BEGIN);
+							int a1 = (z - FOG_BEGIN) * (256 - alpha) / (FOG_END - FOG_BEGIN);
 							int a2 = 256 - a1;
 							dst[off] = getColor(a1, rgb, a2);
 						}
@@ -869,11 +869,11 @@ public final class Rasterizer extends DrawingArea {
 	}
 
 	public static void drawTexturedFogTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int z1, int z2, int z3, int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int tex) {
-		if (!aBooleanArray1475[tex]) {
+		if (!transparentTextures[tex]) {
 			drawFogTriangle(y1, y2, y3, x1, x2, x3, z1, z2, z3);
 			return;
 		}
-		int ai[] = method371(tex);
+		int ai[] = getTexturePixels(tex);
 		k2 = j2 - k2;
 		j3 = i3 - j3;
 		i4 = l3 - i4;
@@ -908,14 +908,14 @@ public final class Rasterizer extends DrawingArea {
 			j8 = (z1 - z3 << 16) / (y1 - y3);
 		}
 		if (y1 <= y2 && y1 <= y3) {
-			if (y1 >= DrawingArea.bottomY) {
+			if (y1 >= Canvas2D.bottomY) {
 				return;
 			}
-			if (y2 > DrawingArea.bottomY) {
-				y2 = DrawingArea.bottomY;
+			if (y2 > Canvas2D.bottomY) {
+				y2 = Canvas2D.bottomY;
 			}
-			if (y3 > DrawingArea.bottomY) {
-				y3 = DrawingArea.bottomY;
+			if (y3 > Canvas2D.bottomY) {
+				y3 = Canvas2D.bottomY;
 			}
 			if (y2 < y3) {
 				x3 = x1 <<= 16;
@@ -943,23 +943,23 @@ public final class Rasterizer extends DrawingArea {
 					y2 -= y1;
 					y1 = lineOffsets[y1];
 					while (--y2 >= 0) {
-						drawTexturedFogScanline(DrawingArea.pixels, ai, y1, x3 >> 16, x1 >> 16, z3, z1, l4, k5, j6, i5, l5, k6);
+						drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, z3, z1, l4, k5, j6, i5, l5, k6);
 						x3 += i8;
 						x1 += i7;
 						z3 += j8;
 						z1 += j7;
-						y1 += DrawingArea.width;
+						y1 += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 					while (--y3 >= 0) {
-						drawTexturedFogScanline(DrawingArea.pixels, ai, y1, x3 >> 16, x2 >> 16, z3, z2, l4, k5, j6, i5, l5, k6);
+						drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x2 >> 16, z3, z2, l4, k5, j6, i5, l5, k6);
 						x3 += i8;
 						x2 += k7;
 						z3 += j8;
 						z2 += l7;
-						y1 += DrawingArea.width;
+						y1 += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -970,23 +970,23 @@ public final class Rasterizer extends DrawingArea {
 				y2 -= y1;
 				y1 = lineOffsets[y1];
 				while (--y2 >= 0) {
-					drawTexturedFogScanline(DrawingArea.pixels, ai, y1, x1 >> 16, x3 >> 16, z1, z3, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x3 >> 16, z1, z3, l4, k5, j6, i5, l5, k6);
 					x3 += i8;
 					x1 += i7;
 					z3 += j8;
 					z1 += j7;
-					y1 += DrawingArea.width;
+					y1 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y3 >= 0) {
-					drawTexturedFogScanline(DrawingArea.pixels, ai, y1, x2 >> 16, x3 >> 16, z2, z3, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x3 >> 16, z2, z3, l4, k5, j6, i5, l5, k6);
 					x3 += i8;
 					x2 += k7;
 					z3 += j8;
 					z2 += l7;
-					y1 += DrawingArea.width;
+					y1 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -1018,23 +1018,23 @@ public final class Rasterizer extends DrawingArea {
 				y3 -= y1;
 				y1 = lineOffsets[y1];
 				while (--y3 >= 0) {
-					drawTexturedFogScanline(DrawingArea.pixels, ai, y1, x2 >> 16, x1 >> 16, z2, z1, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x1 >> 16, z2, z1, l4, k5, j6, i5, l5, k6);
 					x2 += i8;
 					x1 += i7;
 					z2 += j8;
 					z1 += j7;
-					y1 += DrawingArea.width;
+					y1 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y2 >= 0) {
-					drawTexturedFogScanline(DrawingArea.pixels, ai, y1, x3 >> 16, x1 >> 16, z3, z1, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, z3, z1, l4, k5, j6, i5, l5, k6);
 					x3 += k7;
 					x1 += i7;
 					z3 += l7;
 					z1 += j7;
-					y1 += DrawingArea.width;
+					y1 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -1045,23 +1045,23 @@ public final class Rasterizer extends DrawingArea {
 			y3 -= y1;
 			y1 = lineOffsets[y1];
 			while (--y3 >= 0) {
-				drawTexturedFogScanline(DrawingArea.pixels, ai, y1, x1 >> 16, x2 >> 16, z1, z2, l4, k5, j6, i5, l5, k6);
+				drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x2 >> 16, z1, z2, l4, k5, j6, i5, l5, k6);
 				x2 += i8;
 				x1 += i7;
 				z2 += j8;
 				z1 += j7;
-				y1 += DrawingArea.width;
+				y1 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--y2 >= 0) {
-				drawTexturedFogScanline(DrawingArea.pixels, ai, y1, x1 >> 16, x3 >> 16, z1, z3, l4, k5, j6, i5, l5, k6);
+				drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x3 >> 16, z1, z3, l4, k5, j6, i5, l5, k6);
 				x3 += k7;
 				x1 += i7;
 				z3 += l7;
 				z1 += j7;
-				y1 += DrawingArea.width;
+				y1 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -1069,14 +1069,14 @@ public final class Rasterizer extends DrawingArea {
 			return;
 		}
 		if (y2 <= y3) {
-			if (y2 >= DrawingArea.bottomY) {
+			if (y2 >= Canvas2D.bottomY) {
 				return;
 			}
-			if (y3 > DrawingArea.bottomY) {
-				y3 = DrawingArea.bottomY;
+			if (y3 > Canvas2D.bottomY) {
+				y3 = Canvas2D.bottomY;
 			}
-			if (y1 > DrawingArea.bottomY) {
-				y1 = DrawingArea.bottomY;
+			if (y1 > Canvas2D.bottomY) {
+				y1 = Canvas2D.bottomY;
 			}
 			if (y3 < y1) {
 				x1 = x2 <<= 16;
@@ -1104,23 +1104,23 @@ public final class Rasterizer extends DrawingArea {
 					y3 -= y2;
 					y2 = lineOffsets[y2];
 					while (--y3 >= 0) {
-						drawTexturedFogScanline(DrawingArea.pixels, ai, y2, x1 >> 16, x2 >> 16, z1, z2, l4, k5, j6, i5, l5, k6);
+						drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, z1, z2, l4, k5, j6, i5, l5, k6);
 						x1 += i7;
 						x2 += k7;
 						z1 += j7;
 						z2 += l7;
-						y2 += DrawingArea.width;
+						y2 += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 					while (--y1 >= 0) {
-						drawTexturedFogScanline(DrawingArea.pixels, ai, y2, x1 >> 16, x3 >> 16, z1, z3, l4, k5, j6, i5, l5, k6);
+						drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x3 >> 16, z1, z3, l4, k5, j6, i5, l5, k6);
 						x1 += i7;
 						x3 += i8;
 						z1 += j7;
 						z3 += j8;
-						y2 += DrawingArea.width;
+						y2 += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -1131,23 +1131,23 @@ public final class Rasterizer extends DrawingArea {
 				y3 -= y2;
 				y2 = lineOffsets[y2];
 				while (--y3 >= 0) {
-					drawTexturedFogScanline(DrawingArea.pixels, ai, y2, x2 >> 16, x1 >> 16, z2, z1, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x1 >> 16, z2, z1, l4, k5, j6, i5, l5, k6);
 					x1 += i7;
 					x2 += k7;
 					z1 += j7;
 					z2 += l7;
-					y2 += DrawingArea.width;
+					y2 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y1 >= 0) {
-					drawTexturedFogScanline(DrawingArea.pixels, ai, y2, x3 >> 16, x1 >> 16, z3, z1, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x1 >> 16, z3, z1, l4, k5, j6, i5, l5, k6);
 					x1 += i7;
 					x3 += i8;
 					z1 += j7;
 					z3 += j8;
-					y2 += DrawingArea.width;
+					y2 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -1179,23 +1179,23 @@ public final class Rasterizer extends DrawingArea {
 				y1 -= y2;
 				y2 = lineOffsets[y2];
 				while (--y1 >= 0) {
-					drawTexturedFogScanline(DrawingArea.pixels, ai, y2, x3 >> 16, x2 >> 16, z3, z2, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x2 >> 16, z3, z2, l4, k5, j6, i5, l5, k6);
 					x3 += i7;
 					x2 += k7;
 					z3 += j7;
 					z2 += l7;
-					y2 += DrawingArea.width;
+					y2 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y3 >= 0) {
-					drawTexturedFogScanline(DrawingArea.pixels, ai, y2, x1 >> 16, x2 >> 16, z1, z2, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, z1, z2, l4, k5, j6, i5, l5, k6);
 					x1 += i8;
 					x2 += k7;
 					z1 += j8;
 					z2 += l7;
-					y2 += DrawingArea.width;
+					y2 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -1206,37 +1206,37 @@ public final class Rasterizer extends DrawingArea {
 			y1 -= y2;
 			y2 = lineOffsets[y2];
 			while (--y1 >= 0) {
-				drawTexturedFogScanline(DrawingArea.pixels, ai, y2, x2 >> 16, x3 >> 16, z2, z3, l4, k5, j6, i5, l5, k6);
+				drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x3 >> 16, z2, z3, l4, k5, j6, i5, l5, k6);
 				x3 += i7;
 				x2 += k7;
 				z3 += j7;
 				z2 += l7;
-				y2 += DrawingArea.width;
+				y2 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--y3 >= 0) {
-				drawTexturedFogScanline(DrawingArea.pixels, ai, y2, x2 >> 16, x1 >> 16, z2, z1, l4, k5, j6, i5, l5, k6);
+				drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x1 >> 16, z2, z1, l4, k5, j6, i5, l5, k6);
 				x1 += i8;
 				x2 += k7;
 				z1 += j8;
 				z2 += l7;
-				y2 += DrawingArea.width;
+				y2 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			return;
 		}
-		if (y3 >= DrawingArea.bottomY) {
+		if (y3 >= Canvas2D.bottomY) {
 			return;
 		}
-		if (y1 > DrawingArea.bottomY) {
-			y1 = DrawingArea.bottomY;
+		if (y1 > Canvas2D.bottomY) {
+			y1 = Canvas2D.bottomY;
 		}
-		if (y2 > DrawingArea.bottomY) {
-			y2 = DrawingArea.bottomY;
+		if (y2 > Canvas2D.bottomY) {
+			y2 = Canvas2D.bottomY;
 		}
 		if (y1 < y2) {
 			x2 = x3 <<= 16;
@@ -1264,23 +1264,23 @@ public final class Rasterizer extends DrawingArea {
 				y1 -= y3;
 				y3 = lineOffsets[y3];
 				while (--y1 >= 0) {
-					drawTexturedFogScanline(DrawingArea.pixels, ai, y3, x2 >> 16, x3 >> 16, z2, z3, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x3 >> 16, z2, z3, l4, k5, j6, i5, l5, k6);
 					x2 += k7;
 					x3 += i8;
 					z2 += l7;
 					z3 += j8;
-					y3 += DrawingArea.width;
+					y3 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y2 >= 0) {
-					drawTexturedFogScanline(DrawingArea.pixels, ai, y3, x2 >> 16, x1 >> 16, z2, z1, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x1 >> 16, z2, z1, l4, k5, j6, i5, l5, k6);
 					x2 += k7;
 					x1 += i7;
 					z2 += l7;
 					z1 += j7;
-					y3 += DrawingArea.width;
+					y3 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -1291,23 +1291,23 @@ public final class Rasterizer extends DrawingArea {
 			y1 -= y3;
 			y3 = lineOffsets[y3];
 			while (--y1 >= 0) {
-				drawTexturedFogScanline(DrawingArea.pixels, ai, y3, x3 >> 16, x2 >> 16, z3, z2, l4, k5, j6, i5, l5, k6);
+				drawTexturedFogScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x2 >> 16, z3, z2, l4, k5, j6, i5, l5, k6);
 				x2 += k7;
 				x3 += i8;
 				z2 += l7;
 				z3 += j8;
-				y3 += DrawingArea.width;
+				y3 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--y2 >= 0) {
-				drawTexturedFogScanline(DrawingArea.pixels, ai, y3, x1 >> 16, x2 >> 16, z1, z2, l4, k5, j6, i5, l5, k6);
+				drawTexturedFogScanline(Canvas2D.pixels, ai, y3, x1 >> 16, x2 >> 16, z1, z2, l4, k5, j6, i5, l5, k6);
 				x2 += k7;
 				x1 += i7;
 				z2 += l7;
 				z1 += j7;
-				y3 += DrawingArea.width;
+				y3 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -1339,23 +1339,23 @@ public final class Rasterizer extends DrawingArea {
 			y2 -= y3;
 			y3 = lineOffsets[y3];
 			while (--y2 >= 0) {
-				drawTexturedFogScanline(DrawingArea.pixels, ai, y3, x1 >> 16, x3 >> 16, z1, z3, l4, k5, j6, i5, l5, k6);
+				drawTexturedFogScanline(Canvas2D.pixels, ai, y3, x1 >> 16, x3 >> 16, z1, z3, l4, k5, j6, i5, l5, k6);
 				x1 += k7;
 				x3 += i8;
 				z1 += l7;
 				z3 += j8;
-				y3 += DrawingArea.width;
+				y3 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--y1 >= 0) {
-				drawTexturedFogScanline(DrawingArea.pixels, ai, y3, x2 >> 16, x3 >> 16, z2, z3, l4, k5, j6, i5, l5, k6);
+				drawTexturedFogScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x3 >> 16, z2, z3, l4, k5, j6, i5, l5, k6);
 				x2 += i7;
 				x3 += i8;
 				z2 += j7;
 				z3 += j8;
-				y3 += DrawingArea.width;
+				y3 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -1366,23 +1366,23 @@ public final class Rasterizer extends DrawingArea {
 		y2 -= y3;
 		y3 = lineOffsets[y3];
 		while (--y2 >= 0) {
-			drawTexturedFogScanline(DrawingArea.pixels, ai, y3, x3 >> 16, x1 >> 16, z3, z1, l4, k5, j6, i5, l5, k6);
+			drawTexturedFogScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x1 >> 16, z3, z1, l4, k5, j6, i5, l5, k6);
 			x1 += k7;
 			x3 += i8;
 			z1 += l7;
 			z3 += j8;
-			y3 += DrawingArea.width;
+			y3 += Canvas2D.width;
 			l4 += j5;
 			k5 += i6;
 			j6 += l6;
 		}
 		while (--y1 >= 0) {
-			drawTexturedFogScanline(DrawingArea.pixels, ai, y3, x3 >> 16, x2 >> 16, z3, z2, l4, k5, j6, i5, l5, k6);
+			drawTexturedFogScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x2 >> 16, z3, z2, l4, k5, j6, i5, l5, k6);
 			x2 += i7;
 			x3 += i8;
 			z2 += j7;
 			z3 += j8;
-			y3 += DrawingArea.width;
+			y3 += Canvas2D.width;
 			l4 += j5;
 			k5 += i6;
 			j6 += l6;
@@ -1397,9 +1397,9 @@ public final class Rasterizer extends DrawingArea {
 		}
 		z2 = (z2 - z1) / (x2 - x1);
 		int k3;
-		if (aBoolean1462) {
-			if (x2 > DrawingArea.centerX) {
-				x2 = DrawingArea.centerX;
+		if (restrict_edges) {
+			if (x2 > Canvas2D.centerX) {
+				x2 = Canvas2D.centerX;
 			}
 			if (x1 < 0) {
 				z1 -= x1 * z2;
@@ -1829,7 +1829,7 @@ public final class Rasterizer extends DrawingArea {
 		}
 	}
 
-	public static void method374(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2) {
+	public static void drawShadedTriangle(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2) {
 		if (Configuration.hdShading && notTextured) {
 			drawHDGouraudTriangle(i, j, k, l, i1, j1, k1, l1, i2);
 			return;
@@ -1859,16 +1859,16 @@ public final class Rasterizer extends DrawingArea {
 		}
 
 		if (i <= j && i <= k) {
-			if (i >= DrawingArea.bottomY) {
+			if (i >= Canvas2D.bottomY) {
 				return;
 			}
 
-			if (j > DrawingArea.bottomY) {
-				j = DrawingArea.bottomY;
+			if (j > Canvas2D.bottomY) {
+				j = Canvas2D.bottomY;
 			}
 
-			if (k > DrawingArea.bottomY) {
-				k = DrawingArea.bottomY;
+			if (k > Canvas2D.bottomY) {
+				k = Canvas2D.bottomY;
 			}
 
 			if (j < k) {
@@ -1896,8 +1896,8 @@ public final class Rasterizer extends DrawingArea {
 					k -= j;
 					j -= i;
 
-					for (i = lineOffsets[i]; --j >= 0; i += DrawingArea.width) {
-						method375(DrawingArea.pixels, i, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
+					for (i = lineOffsets[i]; --j >= 0; i += Canvas2D.width) {
+						method375(Canvas2D.pixels, i, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
 						j1 += j3;
 						l += j2;
 						i2 += k3;
@@ -1905,12 +1905,12 @@ public final class Rasterizer extends DrawingArea {
 					}
 
 					while (--k >= 0) {
-						method375(DrawingArea.pixels, i, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
+						method375(Canvas2D.pixels, i, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
 						j1 += j3;
 						i1 += l2;
 						i2 += k3;
 						l1 += i3;
-						i += DrawingArea.width;
+						i += Canvas2D.width;
 					}
 
 					return;
@@ -1919,8 +1919,8 @@ public final class Rasterizer extends DrawingArea {
 				k -= j;
 				j -= i;
 
-				for (i = lineOffsets[i]; --j >= 0; i += DrawingArea.width) {
-					method375(DrawingArea.pixels, i, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
+				for (i = lineOffsets[i]; --j >= 0; i += Canvas2D.width) {
+					method375(Canvas2D.pixels, i, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
 					j1 += j3;
 					l += j2;
 					i2 += k3;
@@ -1928,12 +1928,12 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--k >= 0) {
-					method375(DrawingArea.pixels, i, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
+					method375(Canvas2D.pixels, i, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
 					j1 += j3;
 					i1 += l2;
 					i2 += k3;
 					l1 += i3;
-					i += DrawingArea.width;
+					i += Canvas2D.width;
 				}
 
 				return;
@@ -1963,8 +1963,8 @@ public final class Rasterizer extends DrawingArea {
 				j -= k;
 				k -= i;
 
-				for (i = lineOffsets[i]; --k >= 0; i += DrawingArea.width) {
-					method375(DrawingArea.pixels, i, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
+				for (i = lineOffsets[i]; --k >= 0; i += Canvas2D.width) {
+					method375(Canvas2D.pixels, i, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
 					i1 += j3;
 					l += j2;
 					l1 += k3;
@@ -1972,12 +1972,12 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--j >= 0) {
-					method375(DrawingArea.pixels, i, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
+					method375(Canvas2D.pixels, i, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
 					j1 += l2;
 					l += j2;
 					i2 += i3;
 					k1 += k2;
-					i += DrawingArea.width;
+					i += Canvas2D.width;
 				}
 
 				return;
@@ -1986,8 +1986,8 @@ public final class Rasterizer extends DrawingArea {
 			j -= k;
 			k -= i;
 
-			for (i = lineOffsets[i]; --k >= 0; i += DrawingArea.width) {
-				method375(DrawingArea.pixels, i, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
+			for (i = lineOffsets[i]; --k >= 0; i += Canvas2D.width) {
+				method375(Canvas2D.pixels, i, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
 				i1 += j3;
 				l += j2;
 				l1 += k3;
@@ -1995,28 +1995,28 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--j >= 0) {
-				method375(DrawingArea.pixels, i, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
+				method375(Canvas2D.pixels, i, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
 				j1 += l2;
 				l += j2;
 				i2 += i3;
 				k1 += k2;
-				i += DrawingArea.width;
+				i += Canvas2D.width;
 			}
 
 			return;
 		}
 
 		if (j <= k) {
-			if (j >= DrawingArea.bottomY) {
+			if (j >= Canvas2D.bottomY) {
 				return;
 			}
 
-			if (k > DrawingArea.bottomY) {
-				k = DrawingArea.bottomY;
+			if (k > Canvas2D.bottomY) {
+				k = Canvas2D.bottomY;
 			}
 
-			if (i > DrawingArea.bottomY) {
-				i = DrawingArea.bottomY;
+			if (i > Canvas2D.bottomY) {
+				i = Canvas2D.bottomY;
 			}
 
 			if (k < i) {
@@ -2044,8 +2044,8 @@ public final class Rasterizer extends DrawingArea {
 					i -= k;
 					k -= j;
 
-					for (j = lineOffsets[j]; --k >= 0; j += DrawingArea.width) {
-						method375(DrawingArea.pixels, j, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
+					for (j = lineOffsets[j]; --k >= 0; j += Canvas2D.width) {
+						method375(Canvas2D.pixels, j, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
 						l += j2;
 						i1 += l2;
 						k1 += k2;
@@ -2053,12 +2053,12 @@ public final class Rasterizer extends DrawingArea {
 					}
 
 					while (--i >= 0) {
-						method375(DrawingArea.pixels, j, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
+						method375(Canvas2D.pixels, j, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
 						l += j2;
 						j1 += j3;
 						k1 += k2;
 						i2 += k3;
-						j += DrawingArea.width;
+						j += Canvas2D.width;
 					}
 
 					return;
@@ -2067,8 +2067,8 @@ public final class Rasterizer extends DrawingArea {
 				i -= k;
 				k -= j;
 
-				for (j = lineOffsets[j]; --k >= 0; j += DrawingArea.width) {
-					method375(DrawingArea.pixels, j, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
+				for (j = lineOffsets[j]; --k >= 0; j += Canvas2D.width) {
+					method375(Canvas2D.pixels, j, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
 					l += j2;
 					i1 += l2;
 					k1 += k2;
@@ -2076,12 +2076,12 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--i >= 0) {
-					method375(DrawingArea.pixels, j, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
+					method375(Canvas2D.pixels, j, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
 					l += j2;
 					j1 += j3;
 					k1 += k2;
 					i2 += k3;
-					j += DrawingArea.width;
+					j += Canvas2D.width;
 				}
 
 				return;
@@ -2111,8 +2111,8 @@ public final class Rasterizer extends DrawingArea {
 				k -= i;
 				i -= j;
 
-				for (j = lineOffsets[j]; --i >= 0; j += DrawingArea.width) {
-					method375(DrawingArea.pixels, j, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
+				for (j = lineOffsets[j]; --i >= 0; j += Canvas2D.width) {
+					method375(Canvas2D.pixels, j, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
 					j1 += j2;
 					i1 += l2;
 					i2 += k2;
@@ -2120,12 +2120,12 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--k >= 0) {
-					method375(DrawingArea.pixels, j, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
+					method375(Canvas2D.pixels, j, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
 					l += j3;
 					i1 += l2;
 					k1 += k3;
 					l1 += i3;
-					j += DrawingArea.width;
+					j += Canvas2D.width;
 				}
 
 				return;
@@ -2134,8 +2134,8 @@ public final class Rasterizer extends DrawingArea {
 			k -= i;
 			i -= j;
 
-			for (j = lineOffsets[j]; --i >= 0; j += DrawingArea.width) {
-				method375(DrawingArea.pixels, j, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
+			for (j = lineOffsets[j]; --i >= 0; j += Canvas2D.width) {
+				method375(Canvas2D.pixels, j, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
 				j1 += j2;
 				i1 += l2;
 				i2 += k2;
@@ -2143,23 +2143,23 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--k >= 0) {
-				method375(DrawingArea.pixels, j, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
+				method375(Canvas2D.pixels, j, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
 				l += j3;
 				i1 += l2;
 				k1 += k3;
 				l1 += i3;
-				j += DrawingArea.width;
+				j += Canvas2D.width;
 			}
 			return;
 		}
-		if (k >= DrawingArea.bottomY) {
+		if (k >= Canvas2D.bottomY) {
 			return;
 		}
-		if (i > DrawingArea.bottomY) {
-			i = DrawingArea.bottomY;
+		if (i > Canvas2D.bottomY) {
+			i = Canvas2D.bottomY;
 		}
-		if (j > DrawingArea.bottomY) {
-			j = DrawingArea.bottomY;
+		if (j > Canvas2D.bottomY) {
+			j = Canvas2D.bottomY;
 		}
 		if (i < j) {
 			i1 = j1 <<= 16;
@@ -2181,8 +2181,8 @@ public final class Rasterizer extends DrawingArea {
 			if (l2 < j3) {
 				j -= i;
 				i -= k;
-				for (k = lineOffsets[k]; --i >= 0; k += DrawingArea.width) {
-					method375(DrawingArea.pixels, k, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
+				for (k = lineOffsets[k]; --i >= 0; k += Canvas2D.width) {
+					method375(Canvas2D.pixels, k, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
 					i1 += l2;
 					j1 += j3;
 					l1 += i3;
@@ -2190,19 +2190,19 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--j >= 0) {
-					method375(DrawingArea.pixels, k, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
+					method375(Canvas2D.pixels, k, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
 					i1 += l2;
 					l += j2;
 					l1 += i3;
 					k1 += k2;
-					k += DrawingArea.width;
+					k += Canvas2D.width;
 				}
 				return;
 			}
 			j -= i;
 			i -= k;
-			for (k = lineOffsets[k]; --i >= 0; k += DrawingArea.width) {
-				method375(DrawingArea.pixels, k, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
+			for (k = lineOffsets[k]; --i >= 0; k += Canvas2D.width) {
+				method375(Canvas2D.pixels, k, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
 				i1 += l2;
 				j1 += j3;
 				l1 += i3;
@@ -2210,12 +2210,12 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--j >= 0) {
-				method375(DrawingArea.pixels, k, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
+				method375(Canvas2D.pixels, k, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
 				i1 += l2;
 				l += j2;
 				l1 += i3;
 				k1 += k2;
-				k += DrawingArea.width;
+				k += Canvas2D.width;
 			}
 			return;
 		}
@@ -2238,8 +2238,8 @@ public final class Rasterizer extends DrawingArea {
 		if (l2 < j3) {
 			i -= j;
 			j -= k;
-			for (k = lineOffsets[k]; --j >= 0; k += DrawingArea.width) {
-				method375(DrawingArea.pixels, k, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
+			for (k = lineOffsets[k]; --j >= 0; k += Canvas2D.width) {
+				method375(Canvas2D.pixels, k, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
 				l += l2;
 				j1 += j3;
 				k1 += i3;
@@ -2247,19 +2247,19 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--i >= 0) {
-				method375(DrawingArea.pixels, k, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
+				method375(Canvas2D.pixels, k, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
 				i1 += j2;
 				j1 += j3;
 				l1 += k2;
 				i2 += k3;
-				k += DrawingArea.width;
+				k += Canvas2D.width;
 			}
 			return;
 		}
 		i -= j;
 		j -= k;
-		for (k = lineOffsets[k]; --j >= 0; k += DrawingArea.width) {
-			method375(DrawingArea.pixels, k, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
+		for (k = lineOffsets[k]; --j >= 0; k += Canvas2D.width) {
+			method375(Canvas2D.pixels, k, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
 			l += l2;
 			j1 += j3;
 			k1 += i3;
@@ -2267,12 +2267,12 @@ public final class Rasterizer extends DrawingArea {
 		}
 
 		while (--i >= 0) {
-			method375(DrawingArea.pixels, k, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
+			method375(Canvas2D.pixels, k, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
 			i1 += j2;
 			j1 += j3;
 			l1 += k2;
 			i2 += k3;
-			k += DrawingArea.width;
+			k += Canvas2D.width;
 		}
 	}
 
@@ -2281,14 +2281,14 @@ public final class Rasterizer extends DrawingArea {
 		int k;// was parameter
 		if (notTextured) {
 			int l1;
-			if (aBoolean1462) {
+			if (restrict_edges) {
 				if (i1 - l > 3) {
 					l1 = (k1 - j1) / (i1 - l);
 				} else {
 					l1 = 0;
 				}
-				if (i1 > DrawingArea.centerX) {
-					i1 = DrawingArea.centerX;
+				if (i1 > Canvas2D.centerX) {
+					i1 = Canvas2D.centerX;
 				}
 				if (l < 0) {
 					j1 -= l * l1;
@@ -2312,7 +2312,7 @@ public final class Rasterizer extends DrawingArea {
 					l1 = 0;
 				}
 			}
-			if (anInt1465 == 0) {
+			if (alpha == 0) {
 				while (--k >= 0) {
 					j = anIntArray1482[j1 >> 8];
 					j1 += l1;
@@ -2335,8 +2335,8 @@ public final class Rasterizer extends DrawingArea {
 					return;
 				}
 			} else {
-				int j2 = anInt1465;
-				int l2 = 256 - anInt1465;
+				int j2 = alpha;
+				int l2 = 256 - alpha;
 				while (--k >= 0) {
 					j = anIntArray1482[j1 >> 8];
 					j1 += l1;
@@ -2366,9 +2366,9 @@ public final class Rasterizer extends DrawingArea {
 			return;
 		}
 		int i2 = (k1 - j1) / (i1 - l);
-		if (aBoolean1462) {
-			if (i1 > DrawingArea.centerX) {
-				i1 = DrawingArea.centerX;
+		if (restrict_edges) {
+			if (i1 > Canvas2D.centerX) {
+				i1 = Canvas2D.centerX;
 			}
 			if (l < 0) {
 				j1 -= l * i2;
@@ -2380,7 +2380,7 @@ public final class Rasterizer extends DrawingArea {
 		}
 		i += l;
 		k = i1 - l;
-		if (anInt1465 == 0) {
+		if (alpha == 0) {
 			do {
 				ai[i] = anIntArray1482[j1 >> 8];
 				i++;
@@ -2388,8 +2388,8 @@ public final class Rasterizer extends DrawingArea {
 			} while (--k > 0);
 			return;
 		}
-		int k2 = anInt1465;
-		int i3 = 256 - anInt1465;
+		int k2 = alpha;
+		int i3 = 256 - alpha;
 		do {
 			j = anIntArray1482[j1 >> 8];
 			j1 += i2;
@@ -2425,16 +2425,16 @@ public final class Rasterizer extends DrawingArea {
 		}
 
 		if (i <= j && i <= k) {
-			if (i >= DrawingArea.bottomY) {
+			if (i >= Canvas2D.bottomY) {
 				return;
 			}
 
-			if (j > DrawingArea.bottomY) {
-				j = DrawingArea.bottomY;
+			if (j > Canvas2D.bottomY) {
+				j = Canvas2D.bottomY;
 			}
 
-			if (k > DrawingArea.bottomY) {
-				k = DrawingArea.bottomY;
+			if (k > Canvas2D.bottomY) {
+				k = Canvas2D.bottomY;
 			}
 			if(k > lineOffsets.length) {
 				return;
@@ -2465,8 +2465,8 @@ public final class Rasterizer extends DrawingArea {
 					k -= j;
 					j -= i;
 
-					for (i = lineOffsets[i]; --j >= 0; i += DrawingArea.width) {
-						drawHDGouraudScanline(DrawingArea.pixels, i, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
+					for (i = lineOffsets[i]; --j >= 0; i += Canvas2D.width) {
+						drawHDGouraudScanline(Canvas2D.pixels, i, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
 						j1 += j3;
 						l += j2;
 						i2 += k3;
@@ -2474,12 +2474,12 @@ public final class Rasterizer extends DrawingArea {
 					}
 
 					while (--k >= 0) {
-						drawHDGouraudScanline(DrawingArea.pixels, i, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
+						drawHDGouraudScanline(Canvas2D.pixels, i, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
 						j1 += j3;
 						i1 += l2;
 						i2 += k3;
 						l1 += i3;
-						i += DrawingArea.width;
+						i += Canvas2D.width;
 					}
 
 					return;
@@ -2488,8 +2488,8 @@ public final class Rasterizer extends DrawingArea {
 				k -= j;
 				j -= i;
 
-				for (i = lineOffsets[i]; --j >= 0; i += DrawingArea.width) {
-					drawHDGouraudScanline(DrawingArea.pixels, i, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
+				for (i = lineOffsets[i]; --j >= 0; i += Canvas2D.width) {
+					drawHDGouraudScanline(Canvas2D.pixels, i, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
 					j1 += j3;
 					l += j2;
 					i2 += k3;
@@ -2497,12 +2497,12 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--k >= 0) {
-					drawHDGouraudScanline(DrawingArea.pixels, i, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
+					drawHDGouraudScanline(Canvas2D.pixels, i, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
 					j1 += j3;
 					i1 += l2;
 					i2 += k3;
 					l1 += i3;
-					i += DrawingArea.width;
+					i += Canvas2D.width;
 				}
 
 				return;
@@ -2532,8 +2532,8 @@ public final class Rasterizer extends DrawingArea {
 				j -= k;
 				k -= i;
 
-				for (i = lineOffsets[i]; --k >= 0; i += DrawingArea.width) {
-					drawHDGouraudScanline(DrawingArea.pixels, i, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
+				for (i = lineOffsets[i]; --k >= 0; i += Canvas2D.width) {
+					drawHDGouraudScanline(Canvas2D.pixels, i, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
 					i1 += j3;
 					l += j2;
 					l1 += k3;
@@ -2541,12 +2541,12 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--j >= 0) {
-					drawHDGouraudScanline(DrawingArea.pixels, i, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
+					drawHDGouraudScanline(Canvas2D.pixels, i, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
 					j1 += l2;
 					l += j2;
 					i2 += i3;
 					k1 += k2;
-					i += DrawingArea.width;
+					i += Canvas2D.width;
 				}
 
 				return;
@@ -2555,8 +2555,8 @@ public final class Rasterizer extends DrawingArea {
 			j -= k;
 			k -= i;
 
-			for (i = lineOffsets[i]; --k >= 0; i += DrawingArea.width) {
-				drawHDGouraudScanline(DrawingArea.pixels, i, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
+			for (i = lineOffsets[i]; --k >= 0; i += Canvas2D.width) {
+				drawHDGouraudScanline(Canvas2D.pixels, i, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
 				i1 += j3;
 				l += j2;
 				l1 += k3;
@@ -2564,28 +2564,28 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--j >= 0) {
-				drawHDGouraudScanline(DrawingArea.pixels, i, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
+				drawHDGouraudScanline(Canvas2D.pixels, i, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
 				j1 += l2;
 				l += j2;
 				i2 += i3;
 				k1 += k2;
-				i += DrawingArea.width;
+				i += Canvas2D.width;
 			}
 
 			return;
 		}
 
 		if (j <= k) {
-			if (j >= DrawingArea.bottomY) {
+			if (j >= Canvas2D.bottomY) {
 				return;
 			}
 
-			if (k > DrawingArea.bottomY) {
-				k = DrawingArea.bottomY;
+			if (k > Canvas2D.bottomY) {
+				k = Canvas2D.bottomY;
 			}
 
-			if (i > DrawingArea.bottomY) {
-				i = DrawingArea.bottomY;
+			if (i > Canvas2D.bottomY) {
+				i = Canvas2D.bottomY;
 			}
 
 			if (k < i) {
@@ -2613,8 +2613,8 @@ public final class Rasterizer extends DrawingArea {
 					i -= k;
 					k -= j;
 
-					for (j = lineOffsets[j]; --k >= 0; j += DrawingArea.width) {
-						drawHDGouraudScanline(DrawingArea.pixels, j, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
+					for (j = lineOffsets[j]; --k >= 0; j += Canvas2D.width) {
+						drawHDGouraudScanline(Canvas2D.pixels, j, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
 						l += j2;
 						i1 += l2;
 						k1 += k2;
@@ -2622,12 +2622,12 @@ public final class Rasterizer extends DrawingArea {
 					}
 
 					while (--i >= 0) {
-						drawHDGouraudScanline(DrawingArea.pixels, j, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
+						drawHDGouraudScanline(Canvas2D.pixels, j, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
 						l += j2;
 						j1 += j3;
 						k1 += k2;
 						i2 += k3;
-						j += DrawingArea.width;
+						j += Canvas2D.width;
 					}
 
 					return;
@@ -2636,8 +2636,8 @@ public final class Rasterizer extends DrawingArea {
 				i -= k;
 				k -= j;
 
-				for (j = lineOffsets[j]; --k >= 0; j += DrawingArea.width) {
-					drawHDGouraudScanline(DrawingArea.pixels, j, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
+				for (j = lineOffsets[j]; --k >= 0; j += Canvas2D.width) {
+					drawHDGouraudScanline(Canvas2D.pixels, j, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
 					l += j2;
 					i1 += l2;
 					k1 += k2;
@@ -2645,12 +2645,12 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--i >= 0) {
-					drawHDGouraudScanline(DrawingArea.pixels, j, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
+					drawHDGouraudScanline(Canvas2D.pixels, j, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
 					l += j2;
 					j1 += j3;
 					k1 += k2;
 					i2 += k3;
-					j += DrawingArea.width;
+					j += Canvas2D.width;
 				}
 
 				return;
@@ -2680,8 +2680,8 @@ public final class Rasterizer extends DrawingArea {
 				k -= i;
 				i -= j;
 
-				for (j = lineOffsets[j]; --i >= 0; j += DrawingArea.width) {
-					drawHDGouraudScanline(DrawingArea.pixels, j, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
+				for (j = lineOffsets[j]; --i >= 0; j += Canvas2D.width) {
+					drawHDGouraudScanline(Canvas2D.pixels, j, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
 					j1 += j2;
 					i1 += l2;
 					i2 += k2;
@@ -2689,12 +2689,12 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--k >= 0) {
-					drawHDGouraudScanline(DrawingArea.pixels, j, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
+					drawHDGouraudScanline(Canvas2D.pixels, j, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
 					l += j3;
 					i1 += l2;
 					k1 += k3;
 					l1 += i3;
-					j += DrawingArea.width;
+					j += Canvas2D.width;
 				}
 
 				return;
@@ -2703,8 +2703,8 @@ public final class Rasterizer extends DrawingArea {
 			k -= i;
 			i -= j;
 
-			for (j = lineOffsets[j]; --i >= 0; j += DrawingArea.width) {
-				drawHDGouraudScanline(DrawingArea.pixels, j, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
+			for (j = lineOffsets[j]; --i >= 0; j += Canvas2D.width) {
+				drawHDGouraudScanline(Canvas2D.pixels, j, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
 				j1 += j2;
 				i1 += l2;
 				i2 += k2;
@@ -2712,23 +2712,23 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--k >= 0) {
-				drawHDGouraudScanline(DrawingArea.pixels, j, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
+				drawHDGouraudScanline(Canvas2D.pixels, j, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
 				l += j3;
 				i1 += l2;
 				k1 += k3;
 				l1 += i3;
-				j += DrawingArea.width;
+				j += Canvas2D.width;
 			}
 			return;
 		}
-		if (k >= DrawingArea.bottomY) {
+		if (k >= Canvas2D.bottomY) {
 			return;
 		}
-		if (i > DrawingArea.bottomY) {
-			i = DrawingArea.bottomY;
+		if (i > Canvas2D.bottomY) {
+			i = Canvas2D.bottomY;
 		}
-		if (j > DrawingArea.bottomY) {
-			j = DrawingArea.bottomY;
+		if (j > Canvas2D.bottomY) {
+			j = Canvas2D.bottomY;
 		}
 		if (i < j) {
 			i1 = j1 <<= 16;
@@ -2750,8 +2750,8 @@ public final class Rasterizer extends DrawingArea {
 			if (l2 < j3) {
 				j -= i;
 				i -= k;
-				for (k = lineOffsets[k]; --i >= 0; k += DrawingArea.width) {
-					drawHDGouraudScanline(DrawingArea.pixels, k, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
+				for (k = lineOffsets[k]; --i >= 0; k += Canvas2D.width) {
+					drawHDGouraudScanline(Canvas2D.pixels, k, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
 					i1 += l2;
 					j1 += j3;
 					l1 += i3;
@@ -2759,19 +2759,19 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--j >= 0) {
-					drawHDGouraudScanline(DrawingArea.pixels, k, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
+					drawHDGouraudScanline(Canvas2D.pixels, k, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
 					i1 += l2;
 					l += j2;
 					l1 += i3;
 					k1 += k2;
-					k += DrawingArea.width;
+					k += Canvas2D.width;
 				}
 				return;
 			}
 			j -= i;
 			i -= k;
-			for (k = lineOffsets[k]; --i >= 0; k += DrawingArea.width) {
-				drawHDGouraudScanline(DrawingArea.pixels, k, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
+			for (k = lineOffsets[k]; --i >= 0; k += Canvas2D.width) {
+				drawHDGouraudScanline(Canvas2D.pixels, k, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
 				i1 += l2;
 				j1 += j3;
 				l1 += i3;
@@ -2779,12 +2779,12 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--j >= 0) {
-				drawHDGouraudScanline(DrawingArea.pixels, k, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
+				drawHDGouraudScanline(Canvas2D.pixels, k, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
 				i1 += l2;
 				l += j2;
 				l1 += i3;
 				k1 += k2;
-				k += DrawingArea.width;
+				k += Canvas2D.width;
 			}
 			return;
 		}
@@ -2807,8 +2807,8 @@ public final class Rasterizer extends DrawingArea {
 		if (l2 < j3) {
 			i -= j;
 			j -= k;
-			for (k = lineOffsets[k]; --j >= 0; k += DrawingArea.width) {
-				drawHDGouraudScanline(DrawingArea.pixels, k, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
+			for (k = lineOffsets[k]; --j >= 0; k += Canvas2D.width) {
+				drawHDGouraudScanline(Canvas2D.pixels, k, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
 				l += l2;
 				j1 += j3;
 				k1 += i3;
@@ -2816,19 +2816,19 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--i >= 0) {
-				drawHDGouraudScanline(DrawingArea.pixels, k, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
+				drawHDGouraudScanline(Canvas2D.pixels, k, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
 				i1 += j2;
 				j1 += j3;
 				l1 += k2;
 				i2 += k3;
-				k += DrawingArea.width;
+				k += Canvas2D.width;
 			}
 			return;
 		}
 		i -= j;
 		j -= k;
-		for (k = lineOffsets[k]; --j >= 0; k += DrawingArea.width) {
-			drawHDGouraudScanline(DrawingArea.pixels, k, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
+		for (k = lineOffsets[k]; --j >= 0; k += Canvas2D.width) {
+			drawHDGouraudScanline(Canvas2D.pixels, k, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
 			l += l2;
 			j1 += j3;
 			k1 += i3;
@@ -2836,12 +2836,12 @@ public final class Rasterizer extends DrawingArea {
 		}
 
 		while (--i >= 0) {
-			drawHDGouraudScanline(DrawingArea.pixels, k, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
+			drawHDGouraudScanline(Canvas2D.pixels, k, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
 			i1 += j2;
 			j1 += j3;
 			l1 += k2;
 			i2 += k3;
-			k += DrawingArea.width;
+			k += Canvas2D.width;
 		}
 	}
 
@@ -2852,9 +2852,9 @@ public final class Rasterizer extends DrawingArea {
 			return;
 		}
 		int i2 = (k1 - j1) / (i1 - l);
-		if (aBoolean1462) {
-			if (i1 > DrawingArea.centerX) {
-				i1 = DrawingArea.centerX;
+		if (restrict_edges) {
+			if (i1 > Canvas2D.centerX) {
+				i1 = Canvas2D.centerX;
 			}
 			if (l < 0) {
 				j1 -= l * i2;
@@ -2866,7 +2866,7 @@ public final class Rasterizer extends DrawingArea {
 		}
 		i += l;
 		k = i1 - l;
-		if (anInt1465 == 0) {
+		if (alpha == 0) {
 			do {
 				final int idx = j1 >> 8;
 				if (idx != 0xffff && (j1 & 0xff) != 0) {
@@ -2882,8 +2882,8 @@ public final class Rasterizer extends DrawingArea {
 			} while (--k > 0);
 			return;
 		}
-		int k2 = anInt1465;
-		int i3 = 256 - anInt1465;
+		int k2 = alpha;
+		int i3 = 256 - alpha;
 		do {
 			final int idx = j1 >> 8;
 			if (idx != 0xffff && (j1 & 0xff) != 0) {
@@ -2902,7 +2902,7 @@ public final class Rasterizer extends DrawingArea {
 		} while (--k > 0);
 	}
 
-	public static void method376(int i, int j, int k, int l, int i1, int j1, int k1) {
+	public static void drawFlatTriangle(int i, int j, int k, int l, int i1, int j1, int k1) {
 		int l1 = 0;
 		if (j != i) {
 			l1 = (i1 - l << 16) / (j - i);
@@ -2916,14 +2916,14 @@ public final class Rasterizer extends DrawingArea {
 			j2 = (l - j1 << 16) / (i - k);
 		}
 		if (i <= j && i <= k) {
-			if (i >= DrawingArea.bottomY) {
+			if (i >= Canvas2D.bottomY) {
 				return;
 			}
-			if (j > DrawingArea.bottomY) {
-				j = DrawingArea.bottomY;
+			if (j > Canvas2D.bottomY) {
+				j = Canvas2D.bottomY;
 			}
-			if (k > DrawingArea.bottomY) {
-				k = DrawingArea.bottomY;
+			if (k > Canvas2D.bottomY) {
+				k = Canvas2D.bottomY;
 			}
 			if (j < k) {
 				j1 = l <<= 16;
@@ -2940,33 +2940,33 @@ public final class Rasterizer extends DrawingArea {
 				if (i != j && j2 < l1 || i == j && j2 > i2) {
 					k -= j;
 					j -= i;
-					for (i = lineOffsets[i]; --j >= 0; i += DrawingArea.width) {
-						method377(DrawingArea.pixels, i, k1, j1 >> 16, l >> 16);
+					for (i = lineOffsets[i]; --j >= 0; i += Canvas2D.width) {
+						method377(Canvas2D.pixels, i, k1, j1 >> 16, l >> 16);
 						j1 += j2;
 						l += l1;
 					}
 
 					while (--k >= 0) {
-						method377(DrawingArea.pixels, i, k1, j1 >> 16, i1 >> 16);
+						method377(Canvas2D.pixels, i, k1, j1 >> 16, i1 >> 16);
 						j1 += j2;
 						i1 += i2;
-						i += DrawingArea.width;
+						i += Canvas2D.width;
 					}
 					return;
 				}
 				k -= j;
 				j -= i;
-				for (i = lineOffsets[i]; --j >= 0; i += DrawingArea.width) {
-					method377(DrawingArea.pixels, i, k1, l >> 16, j1 >> 16);
+				for (i = lineOffsets[i]; --j >= 0; i += Canvas2D.width) {
+					method377(Canvas2D.pixels, i, k1, l >> 16, j1 >> 16);
 					j1 += j2;
 					l += l1;
 				}
 
 				while (--k >= 0) {
-					method377(DrawingArea.pixels, i, k1, i1 >> 16, j1 >> 16);
+					method377(Canvas2D.pixels, i, k1, i1 >> 16, j1 >> 16);
 					j1 += j2;
 					i1 += i2;
-					i += DrawingArea.width;
+					i += Canvas2D.width;
 				}
 				return;
 			}
@@ -2984,45 +2984,45 @@ public final class Rasterizer extends DrawingArea {
 			if (i != k && j2 < l1 || i == k && i2 > l1) {
 				j -= k;
 				k -= i;
-				for (i = lineOffsets[i]; --k >= 0; i += DrawingArea.width) {
-					method377(DrawingArea.pixels, i, k1, i1 >> 16, l >> 16);
+				for (i = lineOffsets[i]; --k >= 0; i += Canvas2D.width) {
+					method377(Canvas2D.pixels, i, k1, i1 >> 16, l >> 16);
 					i1 += j2;
 					l += l1;
 				}
 
 				while (--j >= 0) {
-					method377(DrawingArea.pixels, i, k1, j1 >> 16, l >> 16);
+					method377(Canvas2D.pixels, i, k1, j1 >> 16, l >> 16);
 					j1 += i2;
 					l += l1;
-					i += DrawingArea.width;
+					i += Canvas2D.width;
 				}
 				return;
 			}
 			j -= k;
 			k -= i;
-			for (i = lineOffsets[i]; --k >= 0; i += DrawingArea.width) {
-				method377(DrawingArea.pixels, i, k1, l >> 16, i1 >> 16);
+			for (i = lineOffsets[i]; --k >= 0; i += Canvas2D.width) {
+				method377(Canvas2D.pixels, i, k1, l >> 16, i1 >> 16);
 				i1 += j2;
 				l += l1;
 			}
 
 			while (--j >= 0) {
-				method377(DrawingArea.pixels, i, k1, l >> 16, j1 >> 16);
+				method377(Canvas2D.pixels, i, k1, l >> 16, j1 >> 16);
 				j1 += i2;
 				l += l1;
-				i += DrawingArea.width;
+				i += Canvas2D.width;
 			}
 			return;
 		}
 		if (j <= k) {
-			if (j >= DrawingArea.bottomY) {
+			if (j >= Canvas2D.bottomY) {
 				return;
 			}
-			if (k > DrawingArea.bottomY) {
-				k = DrawingArea.bottomY;
+			if (k > Canvas2D.bottomY) {
+				k = Canvas2D.bottomY;
 			}
-			if (i > DrawingArea.bottomY) {
-				i = DrawingArea.bottomY;
+			if (i > Canvas2D.bottomY) {
+				i = Canvas2D.bottomY;
 			}
 			if (k < i) {
 				l = i1 <<= 16;
@@ -3039,33 +3039,33 @@ public final class Rasterizer extends DrawingArea {
 				if (j != k && l1 < i2 || j == k && l1 > j2) {
 					i -= k;
 					k -= j;
-					for (j = lineOffsets[j]; --k >= 0; j += DrawingArea.width) {
-						method377(DrawingArea.pixels, j, k1, l >> 16, i1 >> 16);
+					for (j = lineOffsets[j]; --k >= 0; j += Canvas2D.width) {
+						method377(Canvas2D.pixels, j, k1, l >> 16, i1 >> 16);
 						l += l1;
 						i1 += i2;
 					}
 
 					while (--i >= 0) {
-						method377(DrawingArea.pixels, j, k1, l >> 16, j1 >> 16);
+						method377(Canvas2D.pixels, j, k1, l >> 16, j1 >> 16);
 						l += l1;
 						j1 += j2;
-						j += DrawingArea.width;
+						j += Canvas2D.width;
 					}
 					return;
 				}
 				i -= k;
 				k -= j;
-				for (j = lineOffsets[j]; --k >= 0; j += DrawingArea.width) {
-					method377(DrawingArea.pixels, j, k1, i1 >> 16, l >> 16);
+				for (j = lineOffsets[j]; --k >= 0; j += Canvas2D.width) {
+					method377(Canvas2D.pixels, j, k1, i1 >> 16, l >> 16);
 					l += l1;
 					i1 += i2;
 				}
 
 				while (--i >= 0) {
-					method377(DrawingArea.pixels, j, k1, j1 >> 16, l >> 16);
+					method377(Canvas2D.pixels, j, k1, j1 >> 16, l >> 16);
 					l += l1;
 					j1 += j2;
-					j += DrawingArea.width;
+					j += Canvas2D.width;
 				}
 				return;
 			}
@@ -3083,44 +3083,44 @@ public final class Rasterizer extends DrawingArea {
 			if (l1 < i2) {
 				k -= i;
 				i -= j;
-				for (j = lineOffsets[j]; --i >= 0; j += DrawingArea.width) {
-					method377(DrawingArea.pixels, j, k1, j1 >> 16, i1 >> 16);
+				for (j = lineOffsets[j]; --i >= 0; j += Canvas2D.width) {
+					method377(Canvas2D.pixels, j, k1, j1 >> 16, i1 >> 16);
 					j1 += l1;
 					i1 += i2;
 				}
 
 				while (--k >= 0) {
-					method377(DrawingArea.pixels, j, k1, l >> 16, i1 >> 16);
+					method377(Canvas2D.pixels, j, k1, l >> 16, i1 >> 16);
 					l += j2;
 					i1 += i2;
-					j += DrawingArea.width;
+					j += Canvas2D.width;
 				}
 				return;
 			}
 			k -= i;
 			i -= j;
-			for (j = lineOffsets[j]; --i >= 0; j += DrawingArea.width) {
-				method377(DrawingArea.pixels, j, k1, i1 >> 16, j1 >> 16);
+			for (j = lineOffsets[j]; --i >= 0; j += Canvas2D.width) {
+				method377(Canvas2D.pixels, j, k1, i1 >> 16, j1 >> 16);
 				j1 += l1;
 				i1 += i2;
 			}
 
 			while (--k >= 0) {
-				method377(DrawingArea.pixels, j, k1, i1 >> 16, l >> 16);
+				method377(Canvas2D.pixels, j, k1, i1 >> 16, l >> 16);
 				l += j2;
 				i1 += i2;
-				j += DrawingArea.width;
+				j += Canvas2D.width;
 			}
 			return;
 		}
-		if (k >= DrawingArea.bottomY) {
+		if (k >= Canvas2D.bottomY) {
 			return;
 		}
-		if (i > DrawingArea.bottomY) {
-			i = DrawingArea.bottomY;
+		if (i > Canvas2D.bottomY) {
+			i = Canvas2D.bottomY;
 		}
-		if (j > DrawingArea.bottomY) {
-			j = DrawingArea.bottomY;
+		if (j > Canvas2D.bottomY) {
+			j = Canvas2D.bottomY;
 		}
 		if (i < j) {
 			i1 = j1 <<= 16;
@@ -3137,33 +3137,33 @@ public final class Rasterizer extends DrawingArea {
 			if (i2 < j2) {
 				j -= i;
 				i -= k;
-				for (k = lineOffsets[k]; --i >= 0; k += DrawingArea.width) {
-					method377(DrawingArea.pixels, k, k1, i1 >> 16, j1 >> 16);
+				for (k = lineOffsets[k]; --i >= 0; k += Canvas2D.width) {
+					method377(Canvas2D.pixels, k, k1, i1 >> 16, j1 >> 16);
 					i1 += i2;
 					j1 += j2;
 				}
 
 				while (--j >= 0) {
-					method377(DrawingArea.pixels, k, k1, i1 >> 16, l >> 16);
+					method377(Canvas2D.pixels, k, k1, i1 >> 16, l >> 16);
 					i1 += i2;
 					l += l1;
-					k += DrawingArea.width;
+					k += Canvas2D.width;
 				}
 				return;
 			}
 			j -= i;
 			i -= k;
-			for (k = lineOffsets[k]; --i >= 0; k += DrawingArea.width) {
-				method377(DrawingArea.pixels, k, k1, j1 >> 16, i1 >> 16);
+			for (k = lineOffsets[k]; --i >= 0; k += Canvas2D.width) {
+				method377(Canvas2D.pixels, k, k1, j1 >> 16, i1 >> 16);
 				i1 += i2;
 				j1 += j2;
 			}
 
 			while (--j >= 0) {
-				method377(DrawingArea.pixels, k, k1, l >> 16, i1 >> 16);
+				method377(Canvas2D.pixels, k, k1, l >> 16, i1 >> 16);
 				i1 += i2;
 				l += l1;
-				k += DrawingArea.width;
+				k += Canvas2D.width;
 			}
 			return;
 		}
@@ -3181,41 +3181,41 @@ public final class Rasterizer extends DrawingArea {
 		if (i2 < j2) {
 			i -= j;
 			j -= k;
-			for (k = lineOffsets[k]; --j >= 0; k += DrawingArea.width) {
-				method377(DrawingArea.pixels, k, k1, l >> 16, j1 >> 16);
+			for (k = lineOffsets[k]; --j >= 0; k += Canvas2D.width) {
+				method377(Canvas2D.pixels, k, k1, l >> 16, j1 >> 16);
 				l += i2;
 				j1 += j2;
 			}
 
 			while (--i >= 0) {
-				method377(DrawingArea.pixels, k, k1, i1 >> 16, j1 >> 16);
+				method377(Canvas2D.pixels, k, k1, i1 >> 16, j1 >> 16);
 				i1 += l1;
 				j1 += j2;
-				k += DrawingArea.width;
+				k += Canvas2D.width;
 			}
 			return;
 		}
 		i -= j;
 		j -= k;
-		for (k = lineOffsets[k]; --j >= 0; k += DrawingArea.width) {
-			method377(DrawingArea.pixels, k, k1, j1 >> 16, l >> 16);
+		for (k = lineOffsets[k]; --j >= 0; k += Canvas2D.width) {
+			method377(Canvas2D.pixels, k, k1, j1 >> 16, l >> 16);
 			l += i2;
 			j1 += j2;
 		}
 
 		while (--i >= 0) {
-			method377(DrawingArea.pixels, k, k1, j1 >> 16, i1 >> 16);
+			method377(Canvas2D.pixels, k, k1, j1 >> 16, i1 >> 16);
 			i1 += l1;
 			j1 += j2;
-			k += DrawingArea.width;
+			k += Canvas2D.width;
 		}
 	}
 
 	private static void method377(int ai[], int i, int j, int l, int i1) {
 		int k;// was parameter
-		if (aBoolean1462) {
-			if (i1 > DrawingArea.centerX) {
-				i1 = DrawingArea.centerX;
+		if (restrict_edges) {
+			if (i1 > Canvas2D.centerX) {
+				i1 = Canvas2D.centerX;
 			}
 			if (l < 0) {
 				l = 0;
@@ -3226,7 +3226,7 @@ public final class Rasterizer extends DrawingArea {
 		}
 		i += l;
 		k = i1 - l >> 2;
-		if (anInt1465 == 0) {
+		if (alpha == 0) {
 			while (--k >= 0) {
 				ai[i] = j;
 				i++;
@@ -3244,8 +3244,8 @@ public final class Rasterizer extends DrawingArea {
 
 			return;
 		}
-		int j1 = anInt1465;
-		int k1 = 256 - anInt1465;
+		int j1 = alpha;
+		int k1 = 256 - alpha;
 		j = ((j & 0xff00ff) * k1 >> 8 & 0xff00ff) + ((j & 0xff00) * k1 >> 8 & 0xff00);
 		while (--k >= 0) {
 			ai[i] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
@@ -3264,13 +3264,23 @@ public final class Rasterizer extends DrawingArea {
 
 	}
 
-	public static void method378(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int k4) {
+	public static void drawTexturedTriangle(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int textureId) {
+		if (textureId < 0 || textureId >= 51) {
+			//drawShadedTriangle(i, j, k, l, i1, j1, k1, l1, i2);
+			//return;
+		}
 		if (Configuration.hdShading) {
-			drawHDTexturedTriangle(i, j, k, l, i1, j1, k1, l1, i2, j2, k2, l2, i3, j3, k3, l3, i4, j4, k4);
+			drawHDTexturedTriangle(i, j, k, l, i1, j1, k1, l1, i2, j2, k2, l2, i3, j3, k3, l3, i4, j4, textureId);
 			return;
 		}
-		int ai[] = method371(k4);
-		aBoolean1463 = !aBooleanArray1475[k4];
+		int ai[] = getTexturePixels(textureId);
+		/*if (col >= 0xffff) {
+			col = -1;
+		}
+		if (col >= 0) {
+			col = Model.hsl2rgb[col];
+		}*/
+		opaque = !transparentTextures[textureId];
 		k2 = j2 - k2;
 		j3 = i3 - j3;
 		i4 = l3 - i4;
@@ -3305,14 +3315,14 @@ public final class Rasterizer extends DrawingArea {
 			j8 = (k1 - i2 << 16) / (i - k);
 		}
 		if (i <= j && i <= k) {
-			if (i >= DrawingArea.bottomY) {
+			if (i >= Canvas2D.bottomY) {
 				return;
 			}
-			if (j > DrawingArea.bottomY) {
-				j = DrawingArea.bottomY;
+			if (j > Canvas2D.bottomY) {
+				j = Canvas2D.bottomY;
 			}
-			if (k > DrawingArea.bottomY) {
-				k = DrawingArea.bottomY;
+			if (k > Canvas2D.bottomY) {
+				k = Canvas2D.bottomY;
 			}
 			if (j < k) {
 				j1 = l <<= 16;
@@ -3340,23 +3350,23 @@ public final class Rasterizer extends DrawingArea {
 					j -= i;
 					i = lineOffsets[i];
 					while (--j >= 0) {
-						method379(DrawingArea.pixels, ai, i, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+						method379(Canvas2D.pixels, ai, i, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 						j1 += i8;
 						l += i7;
 						i2 += j8;
 						k1 += j7;
-						i += DrawingArea.width;
+						i += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 					while (--k >= 0) {
-						method379(DrawingArea.pixels, ai, i, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+						method379(Canvas2D.pixels, ai, i, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 						j1 += i8;
 						i1 += k7;
 						i2 += j8;
 						l1 += l7;
-						i += DrawingArea.width;
+						i += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -3367,23 +3377,23 @@ public final class Rasterizer extends DrawingArea {
 				j -= i;
 				i = lineOffsets[i];
 				while (--j >= 0) {
-					method379(DrawingArea.pixels, ai, i, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, i, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 					j1 += i8;
 					l += i7;
 					i2 += j8;
 					k1 += j7;
-					i += DrawingArea.width;
+					i += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--k >= 0) {
-					method379(DrawingArea.pixels, ai, i, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, i, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 					j1 += i8;
 					i1 += k7;
 					i2 += j8;
 					l1 += l7;
-					i += DrawingArea.width;
+					i += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -3415,23 +3425,23 @@ public final class Rasterizer extends DrawingArea {
 				k -= i;
 				i = lineOffsets[i];
 				while (--k >= 0) {
-					method379(DrawingArea.pixels, ai, i, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, i, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 					i1 += i8;
 					l += i7;
 					l1 += j8;
 					k1 += j7;
-					i += DrawingArea.width;
+					i += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--j >= 0) {
-					method379(DrawingArea.pixels, ai, i, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, i, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 					j1 += k7;
 					l += i7;
 					i2 += l7;
 					k1 += j7;
-					i += DrawingArea.width;
+					i += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -3442,23 +3452,23 @@ public final class Rasterizer extends DrawingArea {
 			k -= i;
 			i = lineOffsets[i];
 			while (--k >= 0) {
-				method379(DrawingArea.pixels, ai, i, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, i, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 				i1 += i8;
 				l += i7;
 				l1 += j8;
 				k1 += j7;
-				i += DrawingArea.width;
+				i += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--j >= 0) {
-				method379(DrawingArea.pixels, ai, i, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, i, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 				j1 += k7;
 				l += i7;
 				i2 += l7;
 				k1 += j7;
-				i += DrawingArea.width;
+				i += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -3466,14 +3476,14 @@ public final class Rasterizer extends DrawingArea {
 			return;
 		}
 		if (j <= k) {
-			if (j >= DrawingArea.bottomY) {
+			if (j >= Canvas2D.bottomY) {
 				return;
 			}
-			if (k > DrawingArea.bottomY) {
-				k = DrawingArea.bottomY;
+			if (k > Canvas2D.bottomY) {
+				k = Canvas2D.bottomY;
 			}
-			if (i > DrawingArea.bottomY) {
-				i = DrawingArea.bottomY;
+			if (i > Canvas2D.bottomY) {
+				i = Canvas2D.bottomY;
 			}
 			if (k < i) {
 				l = i1 <<= 16;
@@ -3501,23 +3511,23 @@ public final class Rasterizer extends DrawingArea {
 					k -= j;
 					j = lineOffsets[j];
 					while (--k >= 0) {
-						method379(DrawingArea.pixels, ai, j, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+						method379(Canvas2D.pixels, ai, j, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 						l += i7;
 						i1 += k7;
 						k1 += j7;
 						l1 += l7;
-						j += DrawingArea.width;
+						j += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 					while (--i >= 0) {
-						method379(DrawingArea.pixels, ai, j, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+						method379(Canvas2D.pixels, ai, j, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 						l += i7;
 						j1 += i8;
 						k1 += j7;
 						i2 += j8;
-						j += DrawingArea.width;
+						j += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -3528,23 +3538,23 @@ public final class Rasterizer extends DrawingArea {
 				k -= j;
 				j = lineOffsets[j];
 				while (--k >= 0) {
-					method379(DrawingArea.pixels, ai, j, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, j, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 					l += i7;
 					i1 += k7;
 					k1 += j7;
 					l1 += l7;
-					j += DrawingArea.width;
+					j += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--i >= 0) {
-					method379(DrawingArea.pixels, ai, j, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, j, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 					l += i7;
 					j1 += i8;
 					k1 += j7;
 					i2 += j8;
-					j += DrawingArea.width;
+					j += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -3576,23 +3586,23 @@ public final class Rasterizer extends DrawingArea {
 				i -= j;
 				j = lineOffsets[j];
 				while (--i >= 0) {
-					method379(DrawingArea.pixels, ai, j, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, j, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 					j1 += i7;
 					i1 += k7;
 					i2 += j7;
 					l1 += l7;
-					j += DrawingArea.width;
+					j += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--k >= 0) {
-					method379(DrawingArea.pixels, ai, j, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, j, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 					l += i8;
 					i1 += k7;
 					k1 += j8;
 					l1 += l7;
-					j += DrawingArea.width;
+					j += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -3603,37 +3613,37 @@ public final class Rasterizer extends DrawingArea {
 			i -= j;
 			j = lineOffsets[j];
 			while (--i >= 0) {
-				method379(DrawingArea.pixels, ai, j, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, j, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 				j1 += i7;
 				i1 += k7;
 				i2 += j7;
 				l1 += l7;
-				j += DrawingArea.width;
+				j += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--k >= 0) {
-				method379(DrawingArea.pixels, ai, j, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, j, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 				l += i8;
 				i1 += k7;
 				k1 += j8;
 				l1 += l7;
-				j += DrawingArea.width;
+				j += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			return;
 		}
-		if (k >= DrawingArea.bottomY) {
+		if (k >= Canvas2D.bottomY) {
 			return;
 		}
-		if (i > DrawingArea.bottomY) {
-			i = DrawingArea.bottomY;
+		if (i > Canvas2D.bottomY) {
+			i = Canvas2D.bottomY;
 		}
-		if (j > DrawingArea.bottomY) {
-			j = DrawingArea.bottomY;
+		if (j > Canvas2D.bottomY) {
+			j = Canvas2D.bottomY;
 		}
 		if (i < j) {
 			i1 = j1 <<= 16;
@@ -3661,23 +3671,23 @@ public final class Rasterizer extends DrawingArea {
 				i -= k;
 				k = lineOffsets[k];
 				while (--i >= 0) {
-					method379(DrawingArea.pixels, ai, k, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, k, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 					i1 += k7;
 					j1 += i8;
 					l1 += l7;
 					i2 += j8;
-					k += DrawingArea.width;
+					k += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--j >= 0) {
-					method379(DrawingArea.pixels, ai, k, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, k, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 					i1 += k7;
 					l += i7;
 					l1 += l7;
 					k1 += j7;
-					k += DrawingArea.width;
+					k += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -3688,23 +3698,23 @@ public final class Rasterizer extends DrawingArea {
 			i -= k;
 			k = lineOffsets[k];
 			while (--i >= 0) {
-				method379(DrawingArea.pixels, ai, k, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, k, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 				i1 += k7;
 				j1 += i8;
 				l1 += l7;
 				i2 += j8;
-				k += DrawingArea.width;
+				k += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--j >= 0) {
-				method379(DrawingArea.pixels, ai, k, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, k, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 				i1 += k7;
 				l += i7;
 				l1 += l7;
 				k1 += j7;
-				k += DrawingArea.width;
+				k += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -3736,23 +3746,23 @@ public final class Rasterizer extends DrawingArea {
 			j -= k;
 			k = lineOffsets[k];
 			while (--j >= 0) {
-				method379(DrawingArea.pixels, ai, k, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, k, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 				l += k7;
 				j1 += i8;
 				k1 += l7;
 				i2 += j8;
-				k += DrawingArea.width;
+				k += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--i >= 0) {
-				method379(DrawingArea.pixels, ai, k, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, k, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 				i1 += i7;
 				j1 += i8;
 				l1 += j7;
 				i2 += j8;
-				k += DrawingArea.width;
+				k += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -3763,23 +3773,23 @@ public final class Rasterizer extends DrawingArea {
 		j -= k;
 		k = lineOffsets[k];
 		while (--j >= 0) {
-			method379(DrawingArea.pixels, ai, k, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+			method379(Canvas2D.pixels, ai, k, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 			l += k7;
 			j1 += i8;
 			k1 += l7;
 			i2 += j8;
-			k += DrawingArea.width;
+			k += Canvas2D.width;
 			l4 += j5;
 			k5 += i6;
 			j6 += l6;
 		}
 		while (--i >= 0) {
-			method379(DrawingArea.pixels, ai, k, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+			method379(Canvas2D.pixels, ai, k, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 			i1 += i7;
 			j1 += i8;
 			l1 += j7;
 			i2 += j8;
-			k += DrawingArea.width;
+			k += Canvas2D.width;
 			l4 += j5;
 			k5 += i6;
 			j6 += l6;
@@ -3794,10 +3804,10 @@ public final class Rasterizer extends DrawingArea {
 		}
 		int j3;
 		int k3;
-		if (aBoolean1462) {
+		if (restrict_edges) {
 			j3 = (k1 - j1) / (i1 - l);
-			if (i1 > DrawingArea.centerX) {
-				i1 = DrawingArea.centerX;
+			if (i1 > Canvas2D.centerX) {
+				i1 = Canvas2D.centerX;
 			}
 			if (l < 0) {
 				j1 -= l * j3;
@@ -3854,7 +3864,7 @@ public final class Rasterizer extends DrawingArea {
 			int k7 = k4 - j >> 3;
 			i += (j1 & 0x600000) >> 3;
 			int i8 = j1 >> 23;
-			if (aBoolean1463) {
+			if (opaque) {
 				while (k3-- > 0) {
 					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
 					i += i7;
@@ -4021,7 +4031,7 @@ public final class Rasterizer extends DrawingArea {
 		int l7 = l4 - j >> 3;
 		i += j1 & 0x600000;
 		int j8 = j1 >> 23;
-		if (aBoolean1463) {
+		if (opaque) {
 			while (k3-- > 0) {
 				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
@@ -4155,12 +4165,12 @@ public final class Rasterizer extends DrawingArea {
 
 	}
 
-	public static void drawHDTexturedTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int l1, int l2, int l3, int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int tex) {
+	public static void drawHDTexturedTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int l1, int l2, int l3, int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int textureId) {
 		l1 = 0x7f - l1 << 1;
 		l2 = 0x7f - l2 << 1;
 		l3 = 0x7f - l3 << 1;
-		int ai[] = method371(tex);
-		aBoolean1463 = !aBooleanArray1475[tex];
+		int ai[] = getTexturePixels(textureId);
+		opaque = !transparentTextures[textureId];
 		tx2 = tx1 - tx2;
 		ty2 = ty1 - ty2;
 		tz2 = tz1 - tz2;
@@ -4195,14 +4205,14 @@ public final class Rasterizer extends DrawingArea {
 			j8 = (l1 - l3 << 16) / (y1 - y3);
 		}
 		if (y1 <= y2 && y1 <= y3) {
-			if (y1 >= DrawingArea.bottomY) {
+			if (y1 >= Canvas2D.bottomY) {
 				return;
 			}
-			if (y2 > DrawingArea.bottomY) {
-				y2 = DrawingArea.bottomY;
+			if (y2 > Canvas2D.bottomY) {
+				y2 = Canvas2D.bottomY;
 			}
-			if (y3 > DrawingArea.bottomY) {
-				y3 = DrawingArea.bottomY;
+			if (y3 > Canvas2D.bottomY) {
+				y3 = Canvas2D.bottomY;
 			}
 			if (y2 < y3) {
 				x3 = x1 <<= 16;
@@ -4230,23 +4240,23 @@ public final class Rasterizer extends DrawingArea {
 					y2 -= y1;
 					y1 = lineOffsets[y1];
 					while (--y2 >= 0) {
-						drawHDTexturedScanline(DrawingArea.pixels, ai, y1, x3 >> 16, x1 >> 16, l3, l1, l4, k5, j6, i5, l5, k6);
+						drawHDTexturedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, l3, l1, l4, k5, j6, i5, l5, k6);
 						x3 += i8;
 						x1 += i7;
 						l3 += j8;
 						l1 += j7;
-						y1 += DrawingArea.width;
+						y1 += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 					while (--y3 >= 0) {
-						drawHDTexturedScanline(DrawingArea.pixels, ai, y1, x3 >> 16, x2 >> 16, l3, l2, l4, k5, j6, i5, l5, k6);
+						drawHDTexturedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x2 >> 16, l3, l2, l4, k5, j6, i5, l5, k6);
 						x3 += i8;
 						x2 += k7;
 						l3 += j8;
 						l2 += l7;
-						y1 += DrawingArea.width;
+						y1 += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -4257,23 +4267,23 @@ public final class Rasterizer extends DrawingArea {
 				y2 -= y1;
 				y1 = lineOffsets[y1];
 				while (--y2 >= 0) {
-					drawHDTexturedScanline(DrawingArea.pixels, ai, y1, x1 >> 16, x3 >> 16, l1, l3, l4, k5, j6, i5, l5, k6);
+					drawHDTexturedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x3 >> 16, l1, l3, l4, k5, j6, i5, l5, k6);
 					x3 += i8;
 					x1 += i7;
 					l3 += j8;
 					l1 += j7;
-					y1 += DrawingArea.width;
+					y1 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y3 >= 0) {
-					drawHDTexturedScanline(DrawingArea.pixels, ai, y1, x2 >> 16, x3 >> 16, l2, l3, l4, k5, j6, i5, l5, k6);
+					drawHDTexturedScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x3 >> 16, l2, l3, l4, k5, j6, i5, l5, k6);
 					x3 += i8;
 					x2 += k7;
 					l3 += j8;
 					l2 += l7;
-					y1 += DrawingArea.width;
+					y1 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -4305,23 +4315,23 @@ public final class Rasterizer extends DrawingArea {
 				y3 -= y1;
 				y1 = lineOffsets[y1];
 				while (--y3 >= 0) {
-					drawHDTexturedScanline(DrawingArea.pixels, ai, y1, x2 >> 16, x1 >> 16, l2, l1, l4, k5, j6, i5, l5, k6);
+					drawHDTexturedScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x1 >> 16, l2, l1, l4, k5, j6, i5, l5, k6);
 					x2 += i8;
 					x1 += i7;
 					l2 += j8;
 					l1 += j7;
-					y1 += DrawingArea.width;
+					y1 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y2 >= 0) {
-					drawHDTexturedScanline(DrawingArea.pixels, ai, y1, x3 >> 16, x1 >> 16, l3, l1, l4, k5, j6, i5, l5, k6);
+					drawHDTexturedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, l3, l1, l4, k5, j6, i5, l5, k6);
 					x3 += k7;
 					x1 += i7;
 					l3 += l7;
 					l1 += j7;
-					y1 += DrawingArea.width;
+					y1 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -4332,23 +4342,23 @@ public final class Rasterizer extends DrawingArea {
 			y3 -= y1;
 			y1 = lineOffsets[y1];
 			while (--y3 >= 0) {
-				drawHDTexturedScanline(DrawingArea.pixels, ai, y1, x1 >> 16, x2 >> 16, l1, l2, l4, k5, j6, i5, l5, k6);
+				drawHDTexturedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x2 >> 16, l1, l2, l4, k5, j6, i5, l5, k6);
 				x2 += i8;
 				x1 += i7;
 				l2 += j8;
 				l1 += j7;
-				y1 += DrawingArea.width;
+				y1 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--y2 >= 0) {
-				drawHDTexturedScanline(DrawingArea.pixels, ai, y1, x1 >> 16, x3 >> 16, l1, l3, l4, k5, j6, i5, l5, k6);
+				drawHDTexturedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x3 >> 16, l1, l3, l4, k5, j6, i5, l5, k6);
 				x3 += k7;
 				x1 += i7;
 				l3 += l7;
 				l1 += j7;
-				y1 += DrawingArea.width;
+				y1 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -4356,14 +4366,14 @@ public final class Rasterizer extends DrawingArea {
 			return;
 		}
 		if (y2 <= y3) {
-			if (y2 >= DrawingArea.bottomY) {
+			if (y2 >= Canvas2D.bottomY) {
 				return;
 			}
-			if (y3 > DrawingArea.bottomY) {
-				y3 = DrawingArea.bottomY;
+			if (y3 > Canvas2D.bottomY) {
+				y3 = Canvas2D.bottomY;
 			}
-			if (y1 > DrawingArea.bottomY) {
-				y1 = DrawingArea.bottomY;
+			if (y1 > Canvas2D.bottomY) {
+				y1 = Canvas2D.bottomY;
 			}
 			if (y3 < y1) {
 				x1 = x2 <<= 16;
@@ -4391,23 +4401,23 @@ public final class Rasterizer extends DrawingArea {
 					y3 -= y2;
 					y2 = lineOffsets[y2];
 					while (--y3 >= 0) {
-						drawHDTexturedScanline(DrawingArea.pixels, ai, y2, x1 >> 16, x2 >> 16, l1, l2, l4, k5, j6, i5, l5, k6);
+						drawHDTexturedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, l1, l2, l4, k5, j6, i5, l5, k6);
 						x1 += i7;
 						x2 += k7;
 						l1 += j7;
 						l2 += l7;
-						y2 += DrawingArea.width;
+						y2 += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 					while (--y1 >= 0) {
-						drawHDTexturedScanline(DrawingArea.pixels, ai, y2, x1 >> 16, x3 >> 16, l1, l3, l4, k5, j6, i5, l5, k6);
+						drawHDTexturedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x3 >> 16, l1, l3, l4, k5, j6, i5, l5, k6);
 						x1 += i7;
 						x3 += i8;
 						l1 += j7;
 						l3 += j8;
-						y2 += DrawingArea.width;
+						y2 += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -4418,23 +4428,23 @@ public final class Rasterizer extends DrawingArea {
 				y3 -= y2;
 				y2 = lineOffsets[y2];
 				while (--y3 >= 0) {
-					drawHDTexturedScanline(DrawingArea.pixels, ai, y2, x2 >> 16, x1 >> 16, l2, l1, l4, k5, j6, i5, l5, k6);
+					drawHDTexturedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x1 >> 16, l2, l1, l4, k5, j6, i5, l5, k6);
 					x1 += i7;
 					x2 += k7;
 					l1 += j7;
 					l2 += l7;
-					y2 += DrawingArea.width;
+					y2 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y1 >= 0) {
-					drawHDTexturedScanline(DrawingArea.pixels, ai, y2, x3 >> 16, x1 >> 16, l3, l1, l4, k5, j6, i5, l5, k6);
+					drawHDTexturedScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x1 >> 16, l3, l1, l4, k5, j6, i5, l5, k6);
 					x1 += i7;
 					x3 += i8;
 					l1 += j7;
 					l3 += j8;
-					y2 += DrawingArea.width;
+					y2 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -4466,23 +4476,23 @@ public final class Rasterizer extends DrawingArea {
 				y1 -= y2;
 				y2 = lineOffsets[y2];
 				while (--y1 >= 0) {
-					drawHDTexturedScanline(DrawingArea.pixels, ai, y2, x3 >> 16, x2 >> 16, l3, l2, l4, k5, j6, i5, l5, k6);
+					drawHDTexturedScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x2 >> 16, l3, l2, l4, k5, j6, i5, l5, k6);
 					x3 += i7;
 					x2 += k7;
 					l3 += j7;
 					l2 += l7;
-					y2 += DrawingArea.width;
+					y2 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y3 >= 0) {
-					drawHDTexturedScanline(DrawingArea.pixels, ai, y2, x1 >> 16, x2 >> 16, l1, l2, l4, k5, j6, i5, l5, k6);
+					drawHDTexturedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, l1, l2, l4, k5, j6, i5, l5, k6);
 					x1 += i8;
 					x2 += k7;
 					l1 += j8;
 					l2 += l7;
-					y2 += DrawingArea.width;
+					y2 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -4493,37 +4503,37 @@ public final class Rasterizer extends DrawingArea {
 			y1 -= y2;
 			y2 = lineOffsets[y2];
 			while (--y1 >= 0) {
-				drawHDTexturedScanline(DrawingArea.pixels, ai, y2, x2 >> 16, x3 >> 16, l2, l3, l4, k5, j6, i5, l5, k6);
+				drawHDTexturedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x3 >> 16, l2, l3, l4, k5, j6, i5, l5, k6);
 				x3 += i7;
 				x2 += k7;
 				l3 += j7;
 				l2 += l7;
-				y2 += DrawingArea.width;
+				y2 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--y3 >= 0) {
-				drawHDTexturedScanline(DrawingArea.pixels, ai, y2, x2 >> 16, x1 >> 16, l2, l1, l4, k5, j6, i5, l5, k6);
+				drawHDTexturedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x1 >> 16, l2, l1, l4, k5, j6, i5, l5, k6);
 				x1 += i8;
 				x2 += k7;
 				l1 += j8;
 				l2 += l7;
-				y2 += DrawingArea.width;
+				y2 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			return;
 		}
-		if (y3 >= DrawingArea.bottomY) {
+		if (y3 >= Canvas2D.bottomY) {
 			return;
 		}
-		if (y1 > DrawingArea.bottomY) {
-			y1 = DrawingArea.bottomY;
+		if (y1 > Canvas2D.bottomY) {
+			y1 = Canvas2D.bottomY;
 		}
-		if (y2 > DrawingArea.bottomY) {
-			y2 = DrawingArea.bottomY;
+		if (y2 > Canvas2D.bottomY) {
+			y2 = Canvas2D.bottomY;
 		}
 		if (y1 < y2) {
 			x2 = x3 <<= 16;
@@ -4551,23 +4561,23 @@ public final class Rasterizer extends DrawingArea {
 				y1 -= y3;
 				y3 = lineOffsets[y3];
 				while (--y1 >= 0) {
-					drawHDTexturedScanline(DrawingArea.pixels, ai, y3, x2 >> 16, x3 >> 16, l2, l3, l4, k5, j6, i5, l5, k6);
+					drawHDTexturedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x3 >> 16, l2, l3, l4, k5, j6, i5, l5, k6);
 					x2 += k7;
 					x3 += i8;
 					l2 += l7;
 					l3 += j8;
-					y3 += DrawingArea.width;
+					y3 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y2 >= 0) {
-					drawHDTexturedScanline(DrawingArea.pixels, ai, y3, x2 >> 16, x1 >> 16, l2, l1, l4, k5, j6, i5, l5, k6);
+					drawHDTexturedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x1 >> 16, l2, l1, l4, k5, j6, i5, l5, k6);
 					x2 += k7;
 					x1 += i7;
 					l2 += l7;
 					l1 += j7;
-					y3 += DrawingArea.width;
+					y3 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -4578,23 +4588,23 @@ public final class Rasterizer extends DrawingArea {
 			y1 -= y3;
 			y3 = lineOffsets[y3];
 			while (--y1 >= 0) {
-				drawHDTexturedScanline(DrawingArea.pixels, ai, y3, x3 >> 16, x2 >> 16, l3, l2, l4, k5, j6, i5, l5, k6);
+				drawHDTexturedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x2 >> 16, l3, l2, l4, k5, j6, i5, l5, k6);
 				x2 += k7;
 				x3 += i8;
 				l2 += l7;
 				l3 += j8;
-				y3 += DrawingArea.width;
+				y3 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--y2 >= 0) {
-				drawHDTexturedScanline(DrawingArea.pixels, ai, y3, x1 >> 16, x2 >> 16, l1, l2, l4, k5, j6, i5, l5, k6);
+				drawHDTexturedScanline(Canvas2D.pixels, ai, y3, x1 >> 16, x2 >> 16, l1, l2, l4, k5, j6, i5, l5, k6);
 				x2 += k7;
 				x1 += i7;
 				l2 += l7;
 				l1 += j7;
-				y3 += DrawingArea.width;
+				y3 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -4626,23 +4636,23 @@ public final class Rasterizer extends DrawingArea {
 			y2 -= y3;
 			y3 = lineOffsets[y3];
 			while (--y2 >= 0) {
-				drawHDTexturedScanline(DrawingArea.pixels, ai, y3, x1 >> 16, x3 >> 16, l1, l3, l4, k5, j6, i5, l5, k6);
+				drawHDTexturedScanline(Canvas2D.pixels, ai, y3, x1 >> 16, x3 >> 16, l1, l3, l4, k5, j6, i5, l5, k6);
 				x1 += k7;
 				x3 += i8;
 				l1 += l7;
 				l3 += j8;
-				y3 += DrawingArea.width;
+				y3 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--y1 >= 0) {
-				drawHDTexturedScanline(DrawingArea.pixels, ai, y3, x2 >> 16, x3 >> 16, l2, l3, l4, k5, j6, i5, l5, k6);
+				drawHDTexturedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x3 >> 16, l2, l3, l4, k5, j6, i5, l5, k6);
 				x2 += i7;
 				x3 += i8;
 				l2 += j7;
 				l3 += j8;
-				y3 += DrawingArea.width;
+				y3 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -4653,23 +4663,23 @@ public final class Rasterizer extends DrawingArea {
 		y2 -= y3;
 		y3 = lineOffsets[y3];
 		while (--y2 >= 0) {
-			drawHDTexturedScanline(DrawingArea.pixels, ai, y3, x3 >> 16, x1 >> 16, l3, l1, l4, k5, j6, i5, l5, k6);
+			drawHDTexturedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x1 >> 16, l3, l1, l4, k5, j6, i5, l5, k6);
 			x1 += k7;
 			x3 += i8;
 			l1 += l7;
 			l3 += j8;
-			y3 += DrawingArea.width;
+			y3 += Canvas2D.width;
 			l4 += j5;
 			k5 += i6;
 			j6 += l6;
 		}
 		while (--y1 >= 0) {
-			drawHDTexturedScanline(DrawingArea.pixels, ai, y3, x3 >> 16, x2 >> 16, l3, l2, l4, k5, j6, i5, l5, k6);
+			drawHDTexturedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x2 >> 16, l3, l2, l4, k5, j6, i5, l5, k6);
 			x2 += i7;
 			x3 += i8;
 			l2 += j7;
 			l3 += j8;
-			y3 += DrawingArea.width;
+			y3 += Canvas2D.width;
 			l4 += j5;
 			k5 += i6;
 			j6 += l6;
@@ -4684,9 +4694,9 @@ public final class Rasterizer extends DrawingArea {
 		}
 		int dl = (l2 - l1) / (x2 - x1);
 		int n;
-		if (aBoolean1462) {
-			if (x2 > DrawingArea.centerX) {
-				x2 = DrawingArea.centerX;
+		if (restrict_edges) {
+			if (x2 > Canvas2D.centerX) {
+				x2 = Canvas2D.centerX;
 			}
 			if (x1 < 0) {
 				l1 -= x1 * dl;
@@ -4730,7 +4740,7 @@ public final class Rasterizer extends DrawingArea {
 			}
 			int i7 = i4 - i >> 3;
 			int k7 = k4 - j >> 3;
-			if (aBoolean1463) {
+			if (opaque) {
 				int rgb;
 				int l;
 				while (n-- > 0) {
@@ -4939,7 +4949,7 @@ public final class Rasterizer extends DrawingArea {
 		}
 		int j7 = j4 - i >> 3;
 		int l7 = l4 - j >> 3;
-		if (aBoolean1463) {
+		if (opaque) {
 			while (n-- > 0) {
 				int rgb;
 				int l;
@@ -5141,7 +5151,7 @@ public final class Rasterizer extends DrawingArea {
 
 	public static void drawMaterializedTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int hsl1, int hsl2, int hsl3, int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int tex) {
 		if (!Configuration.hdTexturing || Texture.get(tex) == null) {
-			method374(y1, y2, y3, x1, x2, x3, hsl1, hsl2, hsl3);
+			drawShadedTriangle(y1, y2, y3, x1, x2, x3, hsl1, hsl2, hsl3);
 			return;
 		}
 		int area = x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2) >> 1;
@@ -5200,14 +5210,14 @@ public final class Rasterizer extends DrawingArea {
 			j8 = (hsl1 - hsl3 << 15) / (y1 - y3);
 		}
 		if (y1 <= y2 && y1 <= y3) {
-			if (y1 >= DrawingArea.bottomY) {
+			if (y1 >= Canvas2D.bottomY) {
 				return;
 			}
-			if (y2 > DrawingArea.bottomY) {
-				y2 = DrawingArea.bottomY;
+			if (y2 > Canvas2D.bottomY) {
+				y2 = Canvas2D.bottomY;
 			}
-			if (y3 > DrawingArea.bottomY) {
-				y3 = DrawingArea.bottomY;
+			if (y3 > Canvas2D.bottomY) {
+				y3 = Canvas2D.bottomY;
 			}
 			if (y2 < y3) {
 				x3 = x1 <<= 16;
@@ -5235,23 +5245,23 @@ public final class Rasterizer extends DrawingArea {
 					y2 -= y1;
 					y1 = lineOffsets[y1];
 					while (--y2 >= 0) {
-						drawMaterializedScanline(DrawingArea.pixels, ai, y1, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+						drawMaterializedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
 						x3 += i8;
 						x1 += i7;
 						hsl3 += j8;
 						hsl1 += j7;
-						y1 += DrawingArea.width;
+						y1 += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 					while (--y3 >= 0) {
-						drawMaterializedScanline(DrawingArea.pixels, ai, y1, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+						drawMaterializedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
 						x3 += i8;
 						x2 += k7;
 						hsl3 += j8;
 						hsl2 += l7;
-						y1 += DrawingArea.width;
+						y1 += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -5262,23 +5272,23 @@ public final class Rasterizer extends DrawingArea {
 				y2 -= y1;
 				y1 = lineOffsets[y1];
 				while (--y2 >= 0) {
-					drawMaterializedScanline(DrawingArea.pixels, ai, y1, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
 					x3 += i8;
 					x1 += i7;
 					hsl3 += j8;
 					hsl1 += j7;
-					y1 += DrawingArea.width;
+					y1 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y3 >= 0) {
-					drawMaterializedScanline(DrawingArea.pixels, ai, y1, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
 					x3 += i8;
 					x2 += k7;
 					hsl3 += j8;
 					hsl2 += l7;
-					y1 += DrawingArea.width;
+					y1 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -5310,23 +5320,23 @@ public final class Rasterizer extends DrawingArea {
 				y3 -= y1;
 				y1 = lineOffsets[y1];
 				while (--y3 >= 0) {
-					drawMaterializedScanline(DrawingArea.pixels, ai, y1, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
 					x2 += i8;
 					x1 += i7;
 					hsl2 += j8;
 					hsl1 += j7;
-					y1 += DrawingArea.width;
+					y1 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y2 >= 0) {
-					drawMaterializedScanline(DrawingArea.pixels, ai, y1, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
 					x3 += k7;
 					x1 += i7;
 					hsl3 += l7;
 					hsl1 += j7;
-					y1 += DrawingArea.width;
+					y1 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -5337,23 +5347,23 @@ public final class Rasterizer extends DrawingArea {
 			y3 -= y1;
 			y1 = lineOffsets[y1];
 			while (--y3 >= 0) {
-				drawMaterializedScanline(DrawingArea.pixels, ai, y1, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
 				x2 += i8;
 				x1 += i7;
 				hsl2 += j8;
 				hsl1 += j7;
-				y1 += DrawingArea.width;
+				y1 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--y2 >= 0) {
-				drawMaterializedScanline(DrawingArea.pixels, ai, y1, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
 				x3 += k7;
 				x1 += i7;
 				hsl3 += l7;
 				hsl1 += j7;
-				y1 += DrawingArea.width;
+				y1 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -5361,14 +5371,14 @@ public final class Rasterizer extends DrawingArea {
 			return;
 		}
 		if (y2 <= y3) {
-			if (y2 >= DrawingArea.bottomY) {
+			if (y2 >= Canvas2D.bottomY) {
 				return;
 			}
-			if (y3 > DrawingArea.bottomY) {
-				y3 = DrawingArea.bottomY;
+			if (y3 > Canvas2D.bottomY) {
+				y3 = Canvas2D.bottomY;
 			}
-			if (y1 > DrawingArea.bottomY) {
-				y1 = DrawingArea.bottomY;
+			if (y1 > Canvas2D.bottomY) {
+				y1 = Canvas2D.bottomY;
 			}
 			if (y3 < y1) {
 				x1 = x2 <<= 16;
@@ -5396,23 +5406,23 @@ public final class Rasterizer extends DrawingArea {
 					y3 -= y2;
 					y2 = lineOffsets[y2];
 					while (--y3 >= 0) {
-						drawMaterializedScanline(DrawingArea.pixels, ai, y2, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+						drawMaterializedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
 						x1 += i7;
 						x2 += k7;
 						hsl1 += j7;
 						hsl2 += l7;
-						y2 += DrawingArea.width;
+						y2 += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 					while (--y1 >= 0) {
-						drawMaterializedScanline(DrawingArea.pixels, ai, y2, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+						drawMaterializedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
 						x1 += i7;
 						x3 += i8;
 						hsl1 += j7;
 						hsl3 += j8;
-						y2 += DrawingArea.width;
+						y2 += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -5423,23 +5433,23 @@ public final class Rasterizer extends DrawingArea {
 				y3 -= y2;
 				y2 = lineOffsets[y2];
 				while (--y3 >= 0) {
-					drawMaterializedScanline(DrawingArea.pixels, ai, y2, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
 					x1 += i7;
 					x2 += k7;
 					hsl1 += j7;
 					hsl2 += l7;
-					y2 += DrawingArea.width;
+					y2 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y1 >= 0) {
-					drawMaterializedScanline(DrawingArea.pixels, ai, y2, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
 					x1 += i7;
 					x3 += i8;
 					hsl1 += j7;
 					hsl3 += j8;
-					y2 += DrawingArea.width;
+					y2 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -5471,23 +5481,23 @@ public final class Rasterizer extends DrawingArea {
 				y1 -= y2;
 				y2 = lineOffsets[y2];
 				while (--y1 >= 0) {
-					drawMaterializedScanline(DrawingArea.pixels, ai, y2, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
 					x3 += i7;
 					x2 += k7;
 					hsl3 += j7;
 					hsl2 += l7;
-					y2 += DrawingArea.width;
+					y2 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y3 >= 0) {
-					drawMaterializedScanline(DrawingArea.pixels, ai, y2, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
 					x1 += i8;
 					x2 += k7;
 					hsl1 += j8;
 					hsl2 += l7;
-					y2 += DrawingArea.width;
+					y2 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -5498,37 +5508,37 @@ public final class Rasterizer extends DrawingArea {
 			y1 -= y2;
 			y2 = lineOffsets[y2];
 			while (--y1 >= 0) {
-				drawMaterializedScanline(DrawingArea.pixels, ai, y2, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
 				x3 += i7;
 				x2 += k7;
 				hsl3 += j7;
 				hsl2 += l7;
-				y2 += DrawingArea.width;
+				y2 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--y3 >= 0) {
-				drawMaterializedScanline(DrawingArea.pixels, ai, y2, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
 				x1 += i8;
 				x2 += k7;
 				hsl1 += j8;
 				hsl2 += l7;
-				y2 += DrawingArea.width;
+				y2 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			return;
 		}
-		if (y3 >= DrawingArea.bottomY) {
+		if (y3 >= Canvas2D.bottomY) {
 			return;
 		}
-		if (y1 > DrawingArea.bottomY) {
-			y1 = DrawingArea.bottomY;
+		if (y1 > Canvas2D.bottomY) {
+			y1 = Canvas2D.bottomY;
 		}
-		if (y2 > DrawingArea.bottomY) {
-			y2 = DrawingArea.bottomY;
+		if (y2 > Canvas2D.bottomY) {
+			y2 = Canvas2D.bottomY;
 		}
 		if (y1 < y2) {
 			x2 = x3 <<= 16;
@@ -5556,23 +5566,23 @@ public final class Rasterizer extends DrawingArea {
 				y1 -= y3;
 				y3 = lineOffsets[y3];
 				while (--y1 >= 0) {
-					drawMaterializedScanline(DrawingArea.pixels, ai, y3, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
 					x2 += k7;
 					x3 += i8;
 					hsl2 += l7;
 					hsl3 += j8;
-					y3 += DrawingArea.width;
+					y3 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--y2 >= 0) {
-					drawMaterializedScanline(DrawingArea.pixels, ai, y3, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
 					x2 += k7;
 					x1 += i7;
 					hsl2 += l7;
 					hsl1 += j7;
-					y3 += DrawingArea.width;
+					y3 += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -5583,23 +5593,23 @@ public final class Rasterizer extends DrawingArea {
 			y1 -= y3;
 			y3 = lineOffsets[y3];
 			while (--y1 >= 0) {
-				drawMaterializedScanline(DrawingArea.pixels, ai, y3, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
 				x2 += k7;
 				x3 += i8;
 				hsl2 += l7;
 				hsl3 += j8;
-				y3 += DrawingArea.width;
+				y3 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--y2 >= 0) {
-				drawMaterializedScanline(DrawingArea.pixels, ai, y3, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
 				x2 += k7;
 				x1 += i7;
 				hsl2 += l7;
 				hsl1 += j7;
-				y3 += DrawingArea.width;
+				y3 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -5631,23 +5641,23 @@ public final class Rasterizer extends DrawingArea {
 			y2 -= y3;
 			y3 = lineOffsets[y3];
 			while (--y2 >= 0) {
-				drawMaterializedScanline(DrawingArea.pixels, ai, y3, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
 				x1 += k7;
 				x3 += i8;
 				hsl1 += l7;
 				hsl3 += j8;
-				y3 += DrawingArea.width;
+				y3 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--y1 >= 0) {
-				drawMaterializedScanline(DrawingArea.pixels, ai, y3, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
 				x2 += i7;
 				x3 += i8;
 				hsl2 += j7;
 				hsl3 += j8;
-				y3 += DrawingArea.width;
+				y3 += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -5658,23 +5668,23 @@ public final class Rasterizer extends DrawingArea {
 		y2 -= y3;
 		y3 = lineOffsets[y3];
 		while (--y2 >= 0) {
-			drawMaterializedScanline(DrawingArea.pixels, ai, y3, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+			drawMaterializedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
 			x1 += k7;
 			x3 += i8;
 			hsl1 += l7;
 			hsl3 += j8;
-			y3 += DrawingArea.width;
+			y3 += Canvas2D.width;
 			l4 += j5;
 			k5 += i6;
 			j6 += l6;
 		}
 		while (--y1 >= 0) {
-			drawMaterializedScanline(DrawingArea.pixels, ai, y3, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+			drawMaterializedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
 			x2 += i7;
 			x3 += i8;
 			hsl2 += j7;
 			hsl3 += j8;
-			y3 += DrawingArea.width;
+			y3 += Canvas2D.width;
 			l4 += j5;
 			k5 += i6;
 			j6 += l6;
@@ -5689,9 +5699,9 @@ public final class Rasterizer extends DrawingArea {
 		}
 		int k3;
 		hsl2 = (hsl2 - hsl1) / (x2 - x1);
-		if (aBoolean1462) {
-			if (x2 > DrawingArea.centerX) {
-				x2 = DrawingArea.centerX;
+		if (restrict_edges) {
+			if (x2 > Canvas2D.centerX) {
+				x2 = Canvas2D.centerX;
 			}
 			if (x1 < 0) {
 				hsl1 -= x1 * hsl2;
@@ -5823,7 +5833,7 @@ public final class Rasterizer extends DrawingArea {
 		COSINE = null;
 		lineOffsets = null;
 		aBackgroundArray1474s = null;
-		aBooleanArray1475 = null;
+		transparentTextures = null;
 		anIntArray1476 = null;
 		anIntArrayArray1478 = null;
 		anIntArrayArray1479 = null;

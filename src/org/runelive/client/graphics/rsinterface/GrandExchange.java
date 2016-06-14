@@ -4,7 +4,7 @@ import org.runelive.client.Client;
 import org.runelive.client.RSInterface;
 import org.runelive.client.cache.definition.ItemDefinition;
 import org.runelive.client.graphics.CacheSpriteLoader;
-import org.runelive.client.graphics.DrawingArea;
+import org.runelive.client.graphics.Canvas2D;
 import org.runelive.client.graphics.Sprite;
 import org.runelive.client.graphics.gameframe.GameFrame;
 import org.runelive.client.graphics.gameframe.GameFrame.ScreenMode;
@@ -708,7 +708,7 @@ public class GrandExchange {
 					itemSearch(Client.getClient().amountOrNameInput);
 				}
 				CacheSpriteLoader.getCacheSprite(1149).drawSprite(0 + xPosOffset, 0 + yPosOffset);
-				DrawingArea.setDrawingArea(121 + yPosOffset, 8, 512, 7);
+				Canvas2D.setDrawingArea(121 + yPosOffset, 8, 512, 7);
 				CacheSpriteLoader.getCacheSprite(1170).drawSprite(18, 18 + yPosOffset);
 				for (int j = 0; j < totalItemResults; j++) {
 					int x = Client.getClient().mouseX();
@@ -734,7 +734,7 @@ public class GrandExchange {
 												+ yPos
 												+ 2
 												+ (totalItemResults < 8 ? 6 : 0)) {
-							DrawingArea.fillRect(0x807660, yPos - 12
+							Canvas2D.fillRect(0x807660, yPos - 12
 									+ yPosOffset + (totalItemResults < 8 ? 6 : 0),
 									424, 15, 60, 75);
 							Sprite itemImg = ItemDefinition.getSprite(itemResultIDs[j], 1,
@@ -745,8 +745,8 @@ public class GrandExchange {
 						}
 					}
 				}
-				DrawingArea.drawPixels(113, 8 + yPosOffset, 74, 0x807660, 2);
-				DrawingArea.defaultDrawingAreaSize();
+				Canvas2D.drawPixels(113, 8 + yPosOffset, 74, 0x807660, 2);
+				Canvas2D.defaultDrawingAreaSize();
 				if (totalItemResults > 8) {
 					Client.getClient().drawScrollbar(114, itemResultScrollPos, 8 + yPosOffset,
 							496 + xPosOffset, totalItemResults * 14, false, false);
@@ -773,14 +773,14 @@ public class GrandExchange {
 					Client.getClient().smallText.drawCenteredText(0xA05A00, 259,
 							"No matching items found", 80 + yPosOffset, false);
 				}
-				DrawingArea.fillRect(0x807660, 121 + yPosOffset, 506, 15, 120,
+				Canvas2D.fillRect(0x807660, 121 + yPosOffset, 506, 15, 120,
 						7);// box
 				// boldText.drawText(0, "<img=8>", 133, 12);
 				Client.getClient().boldText.method591(Client.getClient().amountOrNameInput + "*",
 						28 + xPosOffset, 0xffffff, 133 + yPosOffset);
 				// boldText.drawText(0xffffff, amountOrNameInput + "*",
 				// 133, 122);
-				DrawingArea.drawLine(121 + yPosOffset, 0x807660, 506, 7);// line
+				Canvas2D.drawLine(121 + yPosOffset, 0x807660, 506, 7);// line
 				// drawClose(496, 122, 496, 345 + 112, 496 + 19, 361 + 112);
 				// drawClose(496, 122, 496, 345 + 112, 496 + 19, 361 + 112);
 				// drawClose(496, 122, 496, 345 + 112, 496 + 19, 361 + 112);

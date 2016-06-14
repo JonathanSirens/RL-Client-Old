@@ -7,12 +7,12 @@ import org.runelive.client.Client;
 import org.runelive.client.RandomColor;
 import org.runelive.client.List;
 import org.runelive.client.cache.Archive;
-import org.runelive.client.graphics.DrawingArea;
+import org.runelive.client.graphics.Canvas2D;
 import org.runelive.client.graphics.Sprite;
 import org.runelive.client.io.ByteBuffer;
 import org.runelive.client.world.Model;
 import org.runelive.client.Signlink;
-import org.runelive.client.world.Rasterizer;
+import org.runelive.client.world.Canvas3D;
 
 public final class ItemDefinition {
 
@@ -5945,20 +5945,20 @@ public final class ItemDefinition {
         }
 
         Sprite sprite2 = new Sprite(32, 32);
-        int k1 = Rasterizer.centerX;
-        int l1 = Rasterizer.centerY;
-        int ai[] = Rasterizer.lineOffsets;
-        int ai1[] = DrawingArea.pixels;
-        int i2 = DrawingArea.width;
-        int j2 = DrawingArea.height;
-        int k2 = DrawingArea.topX;
-        int l2 = DrawingArea.bottomX;
-        int i3 = DrawingArea.topY;
-        int j3 = DrawingArea.bottomY;
-        Rasterizer.notTextured = false;
-        DrawingArea.initDrawingArea(32, 32, sprite2.myPixels);
-        DrawingArea.drawPixels(32, 0, 0, 0, 32);
-        Rasterizer.method364();
+        int k1 = Canvas3D.centerX;
+        int l1 = Canvas3D.centerY;
+        int ai[] = Canvas3D.lineOffsets;
+        int ai1[] = Canvas2D.pixels;
+        int i2 = Canvas2D.width;
+        int j2 = Canvas2D.height;
+        int k2 = Canvas2D.topX;
+        int l2 = Canvas2D.bottomX;
+        int i3 = Canvas2D.topY;
+        int j3 = Canvas2D.bottomY;
+        Canvas3D.notTextured = false;
+        Canvas2D.initDrawingArea(32, 32, sprite2.myPixels);
+        Canvas2D.drawPixels(32, 0, 0, 0, 32);
+        Canvas3D.method364();
         int k3 = definition.modelZoom;
 
         if (k == -1) {
@@ -5969,8 +5969,8 @@ public final class ItemDefinition {
             k3 = (int) (k3 * 1.04D);
         }
 
-        int l3 = Rasterizer.SINE[definition.modelRotation1] * k3 >> 16;
-        int i4 = Rasterizer.COSINE[definition.modelRotation1] * k3 >> 16;
+        int l3 = Canvas3D.SINE[definition.modelRotation1] * k3 >> 16;
+        int i4 = Canvas3D.COSINE[definition.modelRotation1] * k3 >> 16;
         model.renderSingle(definition.modelRotation2, definition.modelOffsetX, definition.modelRotation1, definition.modelOffset1, l3 + model.modelHeight / 2 + definition.modelOffsetY, i4 + definition.modelOffsetY);
 
         for (int i5 = 31; i5 >= 0; i5--) {
@@ -6039,12 +6039,12 @@ public final class ItemDefinition {
             mruNodes1.removeFromCache(sprite2, i);
         }
 
-        DrawingArea.initDrawingArea(j2, i2, ai1);
-        DrawingArea.setBounds(k2, i3, l2, j3);
-        Rasterizer.centerX = k1;
-        Rasterizer.centerY = l1;
-        Rasterizer.lineOffsets = ai;
-        Rasterizer.notTextured = true;
+        Canvas2D.initDrawingArea(j2, i2, ai1);
+        Canvas2D.setBounds(k2, i3, l2, j3);
+        Canvas3D.centerX = k1;
+        Canvas3D.centerY = l1;
+        Canvas3D.lineOffsets = ai;
+        Canvas3D.notTextured = true;
 
         if (definition.stackable) {
             sprite2.maxWidth = 33;
@@ -6115,20 +6115,20 @@ public final class ItemDefinition {
         }
 
         Sprite sprite2 = new Sprite(32, 32);
-        int k1 = Rasterizer.centerX;
-        int l1 = Rasterizer.centerY;
-        int ai[] = Rasterizer.lineOffsets;
-        int ai1[] = DrawingArea.pixels;
-        int i2 = DrawingArea.width;
-        int j2 = DrawingArea.height;
-        int k2 = DrawingArea.topX;
-        int l2 = DrawingArea.bottomX;
-        int i3 = DrawingArea.topY;
-        int j3 = DrawingArea.bottomY;
-        Rasterizer.notTextured = false;
-        DrawingArea.initDrawingArea(32, 32, sprite2.myPixels);
-        DrawingArea.drawPixels(32, 0, 0, 0, 32);
-        Rasterizer.method364();
+        int k1 = Canvas3D.centerX;
+        int l1 = Canvas3D.centerY;
+        int ai[] = Canvas3D.lineOffsets;
+        int ai1[] = Canvas2D.pixels;
+        int i2 = Canvas2D.width;
+        int j2 = Canvas2D.height;
+        int k2 = Canvas2D.topX;
+        int l2 = Canvas2D.bottomX;
+        int i3 = Canvas2D.topY;
+        int j3 = Canvas2D.bottomY;
+        Canvas3D.notTextured = false;
+        Canvas2D.initDrawingArea(32, 32, sprite2.myPixels);
+        Canvas2D.drawPixels(32, 0, 0, 0, 32);
+        Canvas3D.method364();
         int k3 = definition.modelZoom;
         if (zoom != -1 && zoom != 0)
             k3 = (definition.modelZoom * 100) / zoom;
@@ -6140,8 +6140,8 @@ public final class ItemDefinition {
             k3 = (int) (k3 * 1.04D);
         }
 
-        int l3 = Rasterizer.SINE[definition.modelRotation1] * k3 >> 16;
-        int i4 = Rasterizer.COSINE[definition.modelRotation1] * k3 >> 16;
+        int l3 = Canvas3D.SINE[definition.modelRotation1] * k3 >> 16;
+        int i4 = Canvas3D.COSINE[definition.modelRotation1] * k3 >> 16;
         model.renderSingle(definition.modelRotation2, definition.modelOffsetX, definition.modelRotation1, definition.modelOffset1, l3 + model.modelHeight / 2 + definition.modelOffsetY, i4 + definition.modelOffsetY);
 
         for (int i5 = 31; i5 >= 0; i5--) {
@@ -6210,12 +6210,12 @@ public final class ItemDefinition {
             mruNodes1.removeFromCache(sprite2, i);
         }
 
-        DrawingArea.initDrawingArea(j2, i2, ai1);
-        DrawingArea.setBounds(k2, i3, l2, j3);
-        Rasterizer.centerX = k1;
-        Rasterizer.centerY = l1;
-        Rasterizer.lineOffsets = ai;
-        Rasterizer.notTextured = true;
+        Canvas2D.initDrawingArea(j2, i2, ai1);
+        Canvas2D.setBounds(k2, i3, l2, j3);
+        Canvas3D.centerX = k1;
+        Canvas3D.centerY = l1;
+        Canvas3D.lineOffsets = ai;
+        Canvas3D.notTextured = true;
 
         if (definition.stackable) {
             sprite2.maxWidth = 33;

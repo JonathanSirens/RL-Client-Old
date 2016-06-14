@@ -19,7 +19,7 @@ import org.runelive.client.Client;
 import org.runelive.client.cache.Archive;
 import org.runelive.client.io.ByteBuffer;
 
-public class Sprite extends DrawingArea {
+public class Sprite extends Canvas2D {
 
 	public void setAlphaTransparency(int a) {
 		for (int pixel = 0; pixel < myPixels.length; pixel++){
@@ -274,112 +274,112 @@ public class Sprite extends DrawingArea {
 	public void drawSprite1(int i, int j, int k) {
 		i += drawOffsetX;
 		j += drawOffsetY;
-		int i1 = i + j * DrawingArea.width;
+		int i1 = i + j * Canvas2D.width;
 		int j1 = 0;
 		int k1 = myHeight;
 		int l1 = myWidth;
-		int i2 = DrawingArea.width - l1;
+		int i2 = Canvas2D.width - l1;
 		int j2 = 0;
-		if (j < DrawingArea.topY) {
-			int k2 = DrawingArea.topY - j;
+		if (j < Canvas2D.topY) {
+			int k2 = Canvas2D.topY - j;
 			k1 -= k2;
-			j = DrawingArea.topY;
+			j = Canvas2D.topY;
 			j1 += k2 * l1;
-			i1 += k2 * DrawingArea.width;
+			i1 += k2 * Canvas2D.width;
 		}
-		if (j + k1 > DrawingArea.bottomY)
-			k1 -= (j + k1) - DrawingArea.bottomY;
-		if (i < DrawingArea.topX) {
-			int l2 = DrawingArea.topX - i;
+		if (j + k1 > Canvas2D.bottomY)
+			k1 -= (j + k1) - Canvas2D.bottomY;
+		if (i < Canvas2D.topX) {
+			int l2 = Canvas2D.topX - i;
 			l1 -= l2;
-			i = DrawingArea.topX;
+			i = Canvas2D.topX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
 			i2 += l2;
 		}
-		if (i + l1 > DrawingArea.bottomX) {
-			int i3 = (i + l1) - DrawingArea.bottomX;
+		if (i + l1 > Canvas2D.bottomX) {
+			int i3 = (i + l1) - Canvas2D.bottomX;
 			l1 -= i3;
 			j2 += i3;
 			i2 += i3;
 		}
 		if (l1 > 0 && k1 > 0)
-			block_copy_alpha(j1, l1, DrawingArea.pixels, myPixels, j2, k1, i2, k, i1);
+			block_copy_alpha(j1, l1, Canvas2D.pixels, myPixels, j2, k1, i2, k, i1);
 	}
 
 	public void drawAdvancedSprite(int i, int j, int alpha) {
 		int k = alpha;
 		i += drawOffsetX;
 		j += drawOffsetY;
-		int i1 = i + j * DrawingArea.width;
+		int i1 = i + j * Canvas2D.width;
 		int j1 = 0;
 		int k1 = myHeight;
 		int l1 = myWidth;
-		int i2 = DrawingArea.width - l1;
+		int i2 = Canvas2D.width - l1;
 		int j2 = 0;
-		if (j < DrawingArea.topY) {
-			int k2 = DrawingArea.topY - j;
+		if (j < Canvas2D.topY) {
+			int k2 = Canvas2D.topY - j;
 			k1 -= k2;
-			j = DrawingArea.topY;
+			j = Canvas2D.topY;
 			j1 += k2 * l1;
-			i1 += k2 * DrawingArea.width;
+			i1 += k2 * Canvas2D.width;
 		}
-		if (j + k1 > DrawingArea.bottomY)
-			k1 -= (j + k1) - DrawingArea.bottomY;
-		if (i < DrawingArea.topX) {
-			int l2 = DrawingArea.topX - i;
+		if (j + k1 > Canvas2D.bottomY)
+			k1 -= (j + k1) - Canvas2D.bottomY;
+		if (i < Canvas2D.topX) {
+			int l2 = Canvas2D.topX - i;
 			l1 -= l2;
-			i = DrawingArea.topX;
+			i = Canvas2D.topX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
 			i2 += l2;
 		}
-		if (i + l1 > DrawingArea.bottomX) {
-			int i3 = (i + l1) - DrawingArea.bottomX;
+		if (i + l1 > Canvas2D.bottomX) {
+			int i3 = (i + l1) - Canvas2D.bottomX;
 			l1 -= i3;
 			j2 += i3;
 			i2 += i3;
 		}
 		if (!(l1 <= 0 || k1 <= 0)) {
-			drawAlphaGlow(j1, l1, DrawingArea.pixels, myPixels, j2, k1, i2, k, i1);
+			drawAlphaGlow(j1, l1, Canvas2D.pixels, myPixels, j2, k1, i2, k, i1);
 		}
 	}
 
 	/*public void drawAdvancedSprite(int i, int j, int k) {
-		int i1 = i + j * DrawingArea.width;
+		int i1 = i + j * Canvas2D.width;
 		int j1 = 0;
 		int k1 = myHeight;
 		int l1 = myWidth;
-		int i2 = DrawingArea.width - l1;
+		int i2 = Canvas2D.width - l1;
 		int j2 = 0;
-		if (j < DrawingArea.topY) {
-			int k2 = DrawingArea.topY - j;
+		if (j < Canvas2D.topY) {
+			int k2 = Canvas2D.topY - j;
 			k1 -= k2;
-			j = DrawingArea.topY;
+			j = Canvas2D.topY;
 			j1 += k2 * l1;
-			i1 += k2 * DrawingArea.width;
+			i1 += k2 * Canvas2D.width;
 		}
-		if (j + k1 > DrawingArea.bottomY)
-			k1 -= (j + k1) - DrawingArea.bottomY;
-		if (i < DrawingArea.topX) {
-			int l2 = DrawingArea.topX - i;
+		if (j + k1 > Canvas2D.bottomY)
+			k1 -= (j + k1) - Canvas2D.bottomY;
+		if (i < Canvas2D.topX) {
+			int l2 = Canvas2D.topX - i;
 			l1 -= l2;
-			i = DrawingArea.topX;
+			i = Canvas2D.topX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
 			i2 += l2;
 		}
-		if (i + l1 > DrawingArea.bottomX) {
-			int i3 = (i + l1) - DrawingArea.bottomX;
+		if (i + l1 > Canvas2D.bottomX) {
+			int i3 = (i + l1) - Canvas2D.bottomX;
 			l1 -= i3;
 			j2 += i3;
 			i2 += i3;
 		}
 		if (!(l1 <= 0 || k1 <= 0)) {
-			drawAlphaSprite(j1, l1, DrawingArea.pixels, myPixels, j2, k1, i2, k, i1);
+			drawAlphaSprite(j1, l1, Canvas2D.pixels, myPixels, j2, k1, i2, k, i1);
 		}
 	}*/
 
@@ -387,38 +387,38 @@ public class Sprite extends DrawingArea {
 		int k = alpha;
 		i += myHeight;
 		j += myWidth;
-		int i1 = i + j * DrawingArea.width;
+		int i1 = i + j * Canvas2D.width;
 		int j1 = 0;
 		int k1 = myHeight;
 		int l1 = myWidth;
-		int i2 = DrawingArea.width - l1;
+		int i2 = Canvas2D.width - l1;
 		int j2 = 0;
-		if (j < DrawingArea.topY) {
-			int k2 = DrawingArea.topY - j;
+		if (j < Canvas2D.topY) {
+			int k2 = Canvas2D.topY - j;
 			k1 -= k2;
-			j = DrawingArea.topY;
+			j = Canvas2D.topY;
 			j1 += k2 * l1;
-			i1 += k2 * DrawingArea.width;
+			i1 += k2 * Canvas2D.width;
 		}
-		if (j + k1 > DrawingArea.bottomY)
-			k1 -= (j + k1) - DrawingArea.bottomY;
-		if (i < DrawingArea.topX) {
-			int l2 = DrawingArea.topX - i;
+		if (j + k1 > Canvas2D.bottomY)
+			k1 -= (j + k1) - Canvas2D.bottomY;
+		if (i < Canvas2D.topX) {
+			int l2 = Canvas2D.topX - i;
 			l1 -= l2;
-			i = DrawingArea.topX;
+			i = Canvas2D.topX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
 			i2 += l2;
 		}
-		if (i + l1 > DrawingArea.bottomX) {
-			int i3 = (i + l1) - DrawingArea.bottomX;
+		if (i + l1 > Canvas2D.bottomX) {
+			int i3 = (i + l1) - Canvas2D.bottomX;
 			l1 -= i3;
 			j2 += i3;
 			i2 += i3;
 		}
 		if (!(l1 <= 0 || k1 <= 0)) {
-			drawAlphaGlow(j1, l1, DrawingArea.pixels, myPixels, j2, k1, i2, k, i1);
+			drawAlphaGlow(j1, l1, Canvas2D.pixels, myPixels, j2, k1, i2, k, i1);
 		}
 	}
 
@@ -449,38 +449,38 @@ public class Sprite extends DrawingArea {
 
 	public void drawAdvancedSprite(int i, int j) {
 		int k = 256;
-		int i1 = i + j * DrawingArea.width;
+		int i1 = i + j * Canvas2D.width;
 		int j1 = 0;
 		int k1 = myHeight;
 		int l1 = myWidth;
-		int i2 = DrawingArea.width - l1;
+		int i2 = Canvas2D.width - l1;
 		int j2 = 0;
-		if (j < DrawingArea.topY) {
-			int k2 = DrawingArea.topY - j;
+		if (j < Canvas2D.topY) {
+			int k2 = Canvas2D.topY - j;
 			k1 -= k2;
-			j = DrawingArea.topY;
+			j = Canvas2D.topY;
 			j1 += k2 * l1;
-			i1 += k2 * DrawingArea.width;
+			i1 += k2 * Canvas2D.width;
 		}
-		if (j + k1 > DrawingArea.bottomY)
-			k1 -= (j + k1) - DrawingArea.bottomY;
-		if (i < DrawingArea.topX) {
-			int l2 = DrawingArea.topX - i;
+		if (j + k1 > Canvas2D.bottomY)
+			k1 -= (j + k1) - Canvas2D.bottomY;
+		if (i < Canvas2D.topX) {
+			int l2 = Canvas2D.topX - i;
 			l1 -= l2;
-			i = DrawingArea.topX;
+			i = Canvas2D.topX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
 			i2 += l2;
 		}
-		if (i + l1 > DrawingArea.bottomX) {
-			int i3 = (i + l1) - DrawingArea.bottomX;
+		if (i + l1 > Canvas2D.bottomX) {
+			int i3 = (i + l1) - Canvas2D.bottomX;
 			l1 -= i3;
 			j2 += i3;
 			i2 += i3;
 		}
 		if (!(l1 <= 0 || k1 <= 0)) {
-			drawAlphaSprite(j1, l1, DrawingArea.pixels, myPixels, j2, k1, i2, k, i1);
+			drawAlphaSprite(j1, l1, Canvas2D.pixels, myPixels, j2, k1, i2, k, i1);
 		}
 	}
 
@@ -497,38 +497,38 @@ public class Sprite extends DrawingArea {
 		int alphaValue = alpha;
 		xPos += drawOffsetX;
 		yPos += drawOffsetY;
-		int i1 = xPos + yPos * DrawingArea.width;
+		int i1 = xPos + yPos * Canvas2D.width;
 		int j1 = 0;
 		int spriteHeight = myHeight;
 		int spriteWidth = myWidth;
-		int i2 = DrawingArea.width - spriteWidth;
+		int i2 = Canvas2D.width - spriteWidth;
 		int j2 = 0;
-		if (yPos < DrawingArea.topY) {
-			int k2 = DrawingArea.topY - yPos;
+		if (yPos < Canvas2D.topY) {
+			int k2 = Canvas2D.topY - yPos;
 			spriteHeight -= k2;
-			yPos = DrawingArea.topY;
+			yPos = Canvas2D.topY;
 			j1 += k2 * spriteWidth;
-			i1 += k2 * DrawingArea.width;
+			i1 += k2 * Canvas2D.width;
 		}
-		if (yPos + spriteHeight > DrawingArea.bottomY)
-			spriteHeight -= (yPos + spriteHeight) - DrawingArea.bottomY;
-		if (xPos < DrawingArea.topX) {
-			int l2 = DrawingArea.topX - xPos;
+		if (yPos + spriteHeight > Canvas2D.bottomY)
+			spriteHeight -= (yPos + spriteHeight) - Canvas2D.bottomY;
+		if (xPos < Canvas2D.topX) {
+			int l2 = Canvas2D.topX - xPos;
 			spriteWidth -= l2;
-			xPos = DrawingArea.topX;
+			xPos = Canvas2D.topX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
 			i2 += l2;
 		}
-		if (xPos + spriteWidth > DrawingArea.bottomX) {
-			int i3 = (xPos + spriteWidth) - DrawingArea.bottomX;
+		if (xPos + spriteWidth > Canvas2D.bottomX) {
+			int i3 = (xPos + spriteWidth) - Canvas2D.bottomX;
 			spriteWidth -= i3;
 			j2 += i3;
 			i2 += i3;
 		}
 		if (!(spriteWidth <= 0 || spriteHeight <= 0)) {
-			renderARGBPixels(spriteWidth, spriteHeight, myPixels, DrawingArea.pixels, i1, alphaValue, j1, j2, i2);
+			renderARGBPixels(spriteWidth, spriteHeight, myPixels, Canvas2D.pixels, i1, alphaValue, j1, j2, i2);
 		}
 	}
 
@@ -668,7 +668,7 @@ public class Sprite extends DrawingArea {
 	}
 
 	public void method343() {
-		DrawingArea.initDrawingArea(myHeight, myWidth, myPixels);
+		Canvas2D.initDrawingArea(myHeight, myWidth, myPixels);
 	}
 
 	public void decodePalette(int i, int j, int k) {
@@ -718,39 +718,39 @@ public class Sprite extends DrawingArea {
 		autoUpdate();
 		i += drawOffsetX;
 		j += drawOffsetY;
-		int l = i + j * DrawingArea.width;
+		int l = i + j * Canvas2D.width;
 		int i1 = 0;
 		int j1 = myHeight;
 		int k1 = myWidth;
-		int l1 = DrawingArea.width - k1;
+		int l1 = Canvas2D.width - k1;
 		int i2 = 0;
-		if (j < DrawingArea.topY) {
-			int j2 = DrawingArea.topY - j;
+		if (j < Canvas2D.topY) {
+			int j2 = Canvas2D.topY - j;
 			j1 -= j2;
-			j = DrawingArea.topY;
+			j = Canvas2D.topY;
 			i1 += j2 * k1;
-			l += j2 * DrawingArea.width;
+			l += j2 * Canvas2D.width;
 		}
-		if (j + j1 > DrawingArea.bottomY)
-			j1 -= (j + j1) - DrawingArea.bottomY;
-		if (i < DrawingArea.topX) {
-			int k2 = DrawingArea.topX - i;
+		if (j + j1 > Canvas2D.bottomY)
+			j1 -= (j + j1) - Canvas2D.bottomY;
+		if (i < Canvas2D.topX) {
+			int k2 = Canvas2D.topX - i;
 			k1 -= k2;
-			i = DrawingArea.topX;
+			i = Canvas2D.topX;
 			i1 += k2;
 			l += k2;
 			i2 += k2;
 			l1 += k2;
 		}
-		if (i + k1 > DrawingArea.bottomX) {
-			int l2 = (i + k1) - DrawingArea.bottomX;
+		if (i + k1 > Canvas2D.bottomX) {
+			int l2 = (i + k1) - Canvas2D.bottomX;
 			k1 -= l2;
 			i2 += l2;
 			l1 += l2;
 		}
 		if (k1 <= 0 || j1 <= 0) {
 		} else {
-			block_copy(l, k1, j1, i2, i1, l1, myPixels, DrawingArea.pixels);
+			block_copy(l, k1, j1, i2, i1, l1, myPixels, Canvas2D.pixels);
 		}
 	}
 
@@ -778,38 +778,38 @@ public class Sprite extends DrawingArea {
 		int k = 128;// was parameter
 		i += drawOffsetX;
 		j += drawOffsetY;
-		int i1 = i + j * DrawingArea.width;
+		int i1 = i + j * Canvas2D.width;
 		int j1 = 0;
 		int k1 = myHeight;
 		int l1 = myWidth;
-		int i2 = DrawingArea.width - l1;
+		int i2 = Canvas2D.width - l1;
 		int j2 = 0;
-		if (j < DrawingArea.topY) {
-			int k2 = DrawingArea.topY - j;
+		if (j < Canvas2D.topY) {
+			int k2 = Canvas2D.topY - j;
 			k1 -= k2;
-			j = DrawingArea.topY;
+			j = Canvas2D.topY;
 			j1 += k2 * l1;
-			i1 += k2 * DrawingArea.width;
+			i1 += k2 * Canvas2D.width;
 		}
-		if (j + k1 > DrawingArea.bottomY)
-			k1 -= (j + k1) - DrawingArea.bottomY;
-		if (i < DrawingArea.topX) {
-			int l2 = DrawingArea.topX - i;
+		if (j + k1 > Canvas2D.bottomY)
+			k1 -= (j + k1) - Canvas2D.bottomY;
+		if (i < Canvas2D.topX) {
+			int l2 = Canvas2D.topX - i;
 			l1 -= l2;
-			i = DrawingArea.topX;
+			i = Canvas2D.topX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
 			i2 += l2;
 		}
-		if (i + l1 > DrawingArea.bottomX) {
-			int i3 = (i + l1) - DrawingArea.bottomX;
+		if (i + l1 > Canvas2D.bottomX) {
+			int i3 = (i + l1) - Canvas2D.bottomX;
 			l1 -= i3;
 			j2 += i3;
 			i2 += i3;
 		}
 		if (!(l1 <= 0 || k1 <= 0)) {
-			block_copy_alpha(j1, l1, DrawingArea.pixels, myPixels, j2, k1, i2, k, i1);
+			block_copy_alpha(j1, l1, Canvas2D.pixels, myPixels, j2, k1, i2, k, i1);
 		}
 	}
 
@@ -817,77 +817,77 @@ public class Sprite extends DrawingArea {
 		int k = opacity;// was parameter
 		i += drawOffsetX;
 		j += drawOffsetY;
-		int i1 = i + j * DrawingArea.width;
+		int i1 = i + j * Canvas2D.width;
 		int j1 = 0;
 		int k1 = myHeight;
 		int l1 = myWidth;
-		int i2 = DrawingArea.width - l1;
+		int i2 = Canvas2D.width - l1;
 		int j2 = 0;
-		if (j < DrawingArea.topY) {
-			int k2 = DrawingArea.topY - j;
+		if (j < Canvas2D.topY) {
+			int k2 = Canvas2D.topY - j;
 			k1 -= k2;
-			j = DrawingArea.topY;
+			j = Canvas2D.topY;
 			j1 += k2 * l1;
-			i1 += k2 * DrawingArea.width;
+			i1 += k2 * Canvas2D.width;
 		}
-		if (j + k1 > DrawingArea.bottomY)
-			k1 -= (j + k1) - DrawingArea.bottomY;
-		if (i < DrawingArea.topX) {
-			int l2 = DrawingArea.topX - i;
+		if (j + k1 > Canvas2D.bottomY)
+			k1 -= (j + k1) - Canvas2D.bottomY;
+		if (i < Canvas2D.topX) {
+			int l2 = Canvas2D.topX - i;
 			l1 -= l2;
-			i = DrawingArea.topX;
+			i = Canvas2D.topX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
 			i2 += l2;
 		}
-		if (i + l1 > DrawingArea.bottomX) {
-			int i3 = (i + l1) - DrawingArea.bottomX;
+		if (i + l1 > Canvas2D.bottomX) {
+			int i3 = (i + l1) - Canvas2D.bottomX;
 			l1 -= i3;
 			j2 += i3;
 			i2 += i3;
 		}
 		if (!(l1 <= 0 || k1 <= 0)) {
-			block_copy_alpha(j1, l1, DrawingArea.pixels, myPixels, j2, k1, i2, k, i1);
+			block_copy_alpha(j1, l1, Canvas2D.pixels, myPixels, j2, k1, i2, k, i1);
 		}
 	}
 
 	public void drawSprite(int i, int k) {
 		i += drawOffsetX;
 		k += drawOffsetY;
-		int l = i + k * DrawingArea.width;
+		int l = i + k * Canvas2D.width;
 		int i1 = 0;
 		int j1 = myHeight;
 		int k1 = myWidth;
-		int l1 = DrawingArea.width - k1;
+		int l1 = Canvas2D.width - k1;
 		int i2 = 0;
-		if (k < DrawingArea.topY) {
-			int j2 = DrawingArea.topY - k;
+		if (k < Canvas2D.topY) {
+			int j2 = Canvas2D.topY - k;
 			j1 -= j2;
-			k = DrawingArea.topY;
+			k = Canvas2D.topY;
 			i1 += j2 * k1;
-			l += j2 * DrawingArea.width;
+			l += j2 * Canvas2D.width;
 		}
-		if (k + j1 > DrawingArea.bottomY)
-			j1 -= (k + j1) - DrawingArea.bottomY;
-		if (i < DrawingArea.topX) {
-			int k2 = DrawingArea.topX - i;
+		if (k + j1 > Canvas2D.bottomY)
+			j1 -= (k + j1) - Canvas2D.bottomY;
+		if (i < Canvas2D.topX) {
+			int k2 = Canvas2D.topX - i;
 			k1 -= k2;
-			i = DrawingArea.topX;
+			i = Canvas2D.topX;
 			i1 += k2;
 			l += k2;
 			i2 += k2;
 			l1 += k2;
 		}
-		if (i + k1 > DrawingArea.bottomX) {
-			int l2 = (i + k1) - DrawingArea.bottomX;
+		if (i + k1 > Canvas2D.bottomX) {
+			int l2 = (i + k1) - Canvas2D.bottomX;
 			k1 -= l2;
 			i2 += l2;
 			l1 += l2;
 		}
 		if (!(k1 <= 0 || j1 <= 0)) {
 			try {
-				block_copy_trans(DrawingArea.pixels, myPixels, i1, l, k1, j1, l1, i2);
+				block_copy_trans(Canvas2D.pixels, myPixels, i1, l, k1, j1, l1, i2);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -898,39 +898,39 @@ public class Sprite extends DrawingArea {
 		int alpha = opacity;
 		x += this.drawOffsetX;// offsetX
 		y += this.drawOffsetY;// offsetY
-		int destOffset = x + y * DrawingArea.width;
+		int destOffset = x + y * Canvas2D.width;
 		int srcOffset = 0;
 		int height = this.myHeight;
 		int width = this.myWidth;
-		int destStep = DrawingArea.width - width;
+		int destStep = Canvas2D.width - width;
 		int srcStep = 0;
-		if (y < DrawingArea.topY) {
-			int trimHeight = DrawingArea.topY - y;
+		if (y < Canvas2D.topY) {
+			int trimHeight = Canvas2D.topY - y;
 			height -= trimHeight;
-			y = DrawingArea.topY;
+			y = Canvas2D.topY;
 			srcOffset += trimHeight * width;
-			destOffset += trimHeight * DrawingArea.width;
+			destOffset += trimHeight * Canvas2D.width;
 		}
-		if (y + height > DrawingArea.bottomY) {
-			height -= (y + height) - DrawingArea.bottomY;
+		if (y + height > Canvas2D.bottomY) {
+			height -= (y + height) - Canvas2D.bottomY;
 		}
-		if (x < DrawingArea.topX) {
-			int trimLeft = DrawingArea.topX - x;
+		if (x < Canvas2D.topX) {
+			int trimLeft = Canvas2D.topX - x;
 			width -= trimLeft;
-			x = DrawingArea.topX;
+			x = Canvas2D.topX;
 			srcOffset += trimLeft;
 			destOffset += trimLeft;
 			srcStep += trimLeft;
 			destStep += trimLeft;
 		}
-		if (x + width > DrawingArea.bottomX) {
-			int trimRight = (x + width) - DrawingArea.bottomX;
+		if (x + width > Canvas2D.bottomX) {
+			int trimRight = (x + width) - Canvas2D.bottomX;
 			width -= trimRight;
 			srcStep += trimRight;
 			destStep += trimRight;
 		}
 		if (!((width <= 0) || (height <= 0))) {
-			setPixels(width, height, DrawingArea.pixels, myPixels, alpha, destOffset, srcOffset, destStep, srcStep);
+			setPixels(width, height, Canvas2D.pixels, myPixels, alpha, destOffset, srcOffset, destStep, srcStep);
 		}
 	}
 
@@ -988,39 +988,39 @@ public class Sprite extends DrawingArea {
 		k--;
 		i += drawOffsetX;
 		k += drawOffsetY;
-		int l = i + k * DrawingArea.width;
+		int l = i + k * Canvas2D.width;
 		int i1 = 0;
 		int j1 = tempHeight;
 		int k1 = tempWidth;
-		int l1 = DrawingArea.width - k1;
+		int l1 = Canvas2D.width - k1;
 		int i2 = 0;
-		if (k < DrawingArea.topY) {
-			int j2 = DrawingArea.topY - k;
+		if (k < Canvas2D.topY) {
+			int j2 = Canvas2D.topY - k;
 			j1 -= j2;
-			k = DrawingArea.topY;
+			k = Canvas2D.topY;
 			i1 += j2 * k1;
-			l += j2 * DrawingArea.width;
+			l += j2 * Canvas2D.width;
 		}
-		if (k + j1 > DrawingArea.bottomY) {
-			j1 -= (k + j1) - DrawingArea.bottomY;
+		if (k + j1 > Canvas2D.bottomY) {
+			j1 -= (k + j1) - Canvas2D.bottomY;
 		}
-		if (i < DrawingArea.topX) {
-			int k2 = DrawingArea.topX - i;
+		if (i < Canvas2D.topX) {
+			int k2 = Canvas2D.topX - i;
 			k1 -= k2;
-			i = DrawingArea.topX;
+			i = Canvas2D.topX;
 			i1 += k2;
 			l += k2;
 			i2 += k2;
 			l1 += k2;
 		}
-		if (i + k1 > DrawingArea.bottomX) {
-			int l2 = (i + k1) - DrawingArea.bottomX;
+		if (i + k1 > Canvas2D.bottomX) {
+			int l2 = (i + k1) - Canvas2D.bottomX;
 			k1 -= l2;
 			i2 += l2;
 			l1 += l2;
 		}
 		if (!(k1 <= 0 || j1 <= 0)) {
-			block_copy_trans(DrawingArea.pixels, tempArray, i1, l, k1, j1, l1, i2);
+			block_copy_trans(Canvas2D.pixels, tempArray, i1, l, k1, j1, l1, i2);
 		}
 	}
 
@@ -1028,38 +1028,38 @@ public class Sprite extends DrawingArea {
 		int k = 225;// was parameter
 		i += drawOffsetX;
 		j += drawOffsetY;
-		int i1 = i + j * DrawingArea.width;
+		int i1 = i + j * Canvas2D.width;
 		int j1 = 0;
 		int k1 = myHeight;
 		int l1 = myWidth;
-		int i2 = DrawingArea.width - l1;
+		int i2 = Canvas2D.width - l1;
 		int j2 = 0;
-		if (j < DrawingArea.topY) {
-			int k2 = DrawingArea.topY - j;
+		if (j < Canvas2D.topY) {
+			int k2 = Canvas2D.topY - j;
 			k1 -= k2;
-			j = DrawingArea.topY;
+			j = Canvas2D.topY;
 			j1 += k2 * l1;
-			i1 += k2 * DrawingArea.width;
+			i1 += k2 * Canvas2D.width;
 		}
-		if (j + k1 > DrawingArea.bottomY)
-			k1 -= (j + k1) - DrawingArea.bottomY;
-		if (i < DrawingArea.topX) {
-			int l2 = DrawingArea.topX - i;
+		if (j + k1 > Canvas2D.bottomY)
+			k1 -= (j + k1) - Canvas2D.bottomY;
+		if (i < Canvas2D.topX) {
+			int l2 = Canvas2D.topX - i;
 			l1 -= l2;
-			i = DrawingArea.topX;
+			i = Canvas2D.topX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
 			i2 += l2;
 		}
-		if (i + l1 > DrawingArea.bottomX) {
-			int i3 = (i + l1) - DrawingArea.bottomX;
+		if (i + l1 > Canvas2D.bottomX) {
+			int i3 = (i + l1) - Canvas2D.bottomX;
 			l1 -= i3;
 			j2 += i3;
 			i2 += i3;
 		}
 		if (!(l1 <= 0 || k1 <= 0)) {
-			block_copy_alpha(j1, l1, DrawingArea.pixels, myPixels, j2, k1, i2, k, i1);
+			block_copy_alpha(j1, l1, Canvas2D.pixels, myPixels, j2, k1, i2, k, i1);
 		}
 	}
 
@@ -1138,7 +1138,7 @@ public class Sprite extends DrawingArea {
 			i3 = i3 * zoom >> 8;
 		int j3 = (middle << 16) + (k2 * l2 + j2 * i3);
 		int k3 = (basePosition << 16) + (k2 * i3 - j2 * l2);
-		int l3 = xPosition + yPosition * DrawingArea.width;
+		int l3 = xPosition + yPosition * Canvas2D.width;
 		for (yPosition = 0; yPosition < dimension; yPosition++) {
 			int i4 = xPosArray[yPosition];
 			int j4 = l3 + i4;
@@ -1167,14 +1167,14 @@ public class Sprite extends DrawingArea {
 				(c3 >> 8 & 0xff) * a3 + (c4 >> 8 & 0xff) * a4 >> 8 & 0xff00;
 			int b = (c1 & 0xff) * a1 + (c2 & 0xff) * a2 +
 					(c3 & 0xff) * a3 + (c4 & 0xff) * a4 >> 16;
-		DrawingArea.pixels[j4++] = r | g | b;
+		Canvas2D.pixels[j4++] = r | g | b;
 		k4 += i3;
 		l4 -= l2;
 			}
 
 			j3 += l2;
 			k3 += i3;
-			l3 += DrawingArea.width;
+			l3 += Canvas2D.width;
 		}
 
 		} catch (Exception _ex) {
@@ -1199,7 +1199,7 @@ public class Sprite extends DrawingArea {
 			l2 = l2 * j1 >> 8;
 			int i3 = (l << 16) + (j2 * k2 + i2 * l2);
 			int j3 = (j << 16) + (j2 * l2 - i2 * k2);
-			int k3 = x + y * DrawingArea.width;
+			int k3 = x + y * Canvas2D.width;
 			for (y = 0; y < k1; y++) {
 				int l3 = k3;
 				int i4 = i3;
@@ -1207,7 +1207,7 @@ public class Sprite extends DrawingArea {
 				for (x = -k; x < 0; x++) {
 					int k4 = myPixels[(i4 >> 16) + (j4 >> 16) * myWidth];
 					if (k4 != 0)
-						DrawingArea.pixels[l3++] = k4;
+						Canvas2D.pixels[l3++] = k4;
 					else
 						l3++;
 					i4 += l2;
@@ -1216,7 +1216,7 @@ public class Sprite extends DrawingArea {
 
 				i3 += k2;
 				j3 += l2;
-				k3 += DrawingArea.width;
+				k3 += Canvas2D.width;
 			}
 
 		} catch (Exception _ex) {
@@ -1227,38 +1227,38 @@ public class Sprite extends DrawingArea {
 		autoUpdate();
 		j += drawOffsetX;
 		i += drawOffsetY;
-		int k = j + i * DrawingArea.width;
+		int k = j + i * Canvas2D.width;
 		int l = 0;
 		int i1 = myHeight;
 		int j1 = myWidth;
-		int k1 = DrawingArea.width - j1;
+		int k1 = Canvas2D.width - j1;
 		int l1 = 0;
-		if (i < DrawingArea.topY) {
-			int i2 = DrawingArea.topY - i;
+		if (i < Canvas2D.topY) {
+			int i2 = Canvas2D.topY - i;
 			i1 -= i2;
-			i = DrawingArea.topY;
+			i = Canvas2D.topY;
 			l += i2 * j1;
-			k += i2 * DrawingArea.width;
+			k += i2 * Canvas2D.width;
 		}
-		if (i + i1 > DrawingArea.bottomY)
-			i1 -= (i + i1) - DrawingArea.bottomY;
-		if (j < DrawingArea.topX) {
-			int j2 = DrawingArea.topX - j;
+		if (i + i1 > Canvas2D.bottomY)
+			i1 -= (i + i1) - Canvas2D.bottomY;
+		if (j < Canvas2D.topX) {
+			int j2 = Canvas2D.topX - j;
 			j1 -= j2;
-			j = DrawingArea.topX;
+			j = Canvas2D.topX;
 			l += j2;
 			k += j2;
 			l1 += j2;
 			k1 += j2;
 		}
-		if (j + j1 > DrawingArea.bottomX) {
-			int k2 = (j + j1) - DrawingArea.bottomX;
+		if (j + j1 > Canvas2D.bottomX) {
+			int k2 = (j + j1) - Canvas2D.bottomX;
 			j1 -= k2;
 			l1 += k2;
 			k1 += k2;
 		}
 		if (!(j1 <= 0 || i1 <= 0)) {
-			block_copy_mask(myPixels, j1, background.imgPixels, i1, DrawingArea.pixels, 0, k1, k, l1, l);
+			block_copy_mask(myPixels, j1, background.imgPixels, i1, Canvas2D.pixels, 0, k1, k, l1, l);
 		}
 	}
 
@@ -1278,38 +1278,38 @@ public class Sprite extends DrawingArea {
 		int opacity = o;// was parameter
 		xPos += drawOffsetX;
 		yPos += drawOffsetY;
-		int i1 = xPos + yPos * DrawingArea.width;
+		int i1 = xPos + yPos * Canvas2D.width;
 		int j1 = 0;
 		int k1 = myHeight;
 		int l1 = myWidth;
-		int i2 = DrawingArea.width - l1;
+		int i2 = Canvas2D.width - l1;
 		int j2 = 0;
-		if (yPos < DrawingArea.topY) {
-			int k2 = DrawingArea.topY - yPos;
+		if (yPos < Canvas2D.topY) {
+			int k2 = Canvas2D.topY - yPos;
 			k1 -= k2;
-			yPos = DrawingArea.topY;
+			yPos = Canvas2D.topY;
 			j1 += k2 * l1;
-			i1 += k2 * DrawingArea.width;
+			i1 += k2 * Canvas2D.width;
 		}
-		if (yPos + k1 > DrawingArea.bottomY)
-			k1 -= (yPos + k1) - DrawingArea.bottomY;
-		if (xPos < DrawingArea.topX) {
-			int l2 = DrawingArea.topX - xPos;
+		if (yPos + k1 > Canvas2D.bottomY)
+			k1 -= (yPos + k1) - Canvas2D.bottomY;
+		if (xPos < Canvas2D.topX) {
+			int l2 = Canvas2D.topX - xPos;
 			l1 -= l2;
-			xPos = DrawingArea.topX;
+			xPos = Canvas2D.topX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
 			i2 += l2;
 		}
-		if (xPos + l1 > DrawingArea.bottomX) {
-			int i3 = (xPos + l1) - DrawingArea.bottomX;
+		if (xPos + l1 > Canvas2D.bottomX) {
+			int i3 = (xPos + l1) - Canvas2D.bottomX;
 			l1 -= i3;
 			j2 += i3;
 			i2 += i3;
 		}
 		if (!(l1 <= 0 || k1 <= 0)) {
-			block_copy_alpha(j1, l1, DrawingArea.pixels, myPixels, j2, k1, i2, opacity, i1);
+			block_copy_alpha(j1, l1, Canvas2D.pixels, myPixels, j2, k1, i2, opacity, i1);
 		}
 	}
 

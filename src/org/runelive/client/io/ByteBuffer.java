@@ -312,7 +312,7 @@ public final class ByteBuffer extends NodeSub {
 		buffer[position++] = (byte) (i + cipher.next());
 	}
 	
-	public int method421() {
+	public int getUnsignedSmart() {
 		int i = buffer[position] & 0xFF;
 
 		if (i < 128) {

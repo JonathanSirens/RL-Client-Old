@@ -7,7 +7,7 @@ import org.runelive.client.constants.GameFrameConstants.GameFrameType;
 import org.runelive.client.graphics.CacheSpriteLoader;
 import org.runelive.client.graphics.Sprite;
 import org.runelive.client.graphics.gameframe.GameFrame;
-import org.runelive.client.world.Rasterizer;
+import org.runelive.client.world.Canvas3D;
 
 public class TabArea extends GameFrame {
 
@@ -321,7 +321,7 @@ public class TabArea extends GameFrame {
 				}
 			}
 
-			Rasterizer.lineOffsets = client.anIntArray1181;
+			Canvas3D.lineOffsets = client.anIntArray1181;
 
 			if (screenMode == ScreenMode.FIXED) {
 				if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
@@ -371,7 +371,7 @@ public class TabArea extends GameFrame {
 			if (client.tabAreaIP != null) {
 				client.gameScreenIP.initDrawingArea();
 			}
-			Rasterizer.lineOffsets = client.anIntArray1182;
+			Canvas3D.lineOffsets = client.anIntArray1182;
 		}
 	}
 

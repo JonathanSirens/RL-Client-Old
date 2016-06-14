@@ -13,7 +13,7 @@ public class Configuration {
 
 	/** FILE SERVER **/
 	public final static boolean FILE_SERVER_ENABLED = true;
-	public final static boolean DEVELOPER_FILE_SERVER = true;
+	public final static boolean DEVELOPER_FILE_SERVER = false;
 	public final static String JAGCACHED_HOST = "192.169.82.170";//"127.0.0.1";
 	public final static int JAGGRAB_PORT = DEVELOPER_FILE_SERVER ? 43596 : 43595;
 	public final static int ONDEMAND_PORT = DEVELOPER_FILE_SERVER ? 43592 : 43593;

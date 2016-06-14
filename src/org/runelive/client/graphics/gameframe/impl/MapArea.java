@@ -13,7 +13,7 @@ import org.runelive.client.cache.node.Deque;
 import org.runelive.client.entity.player.Player;
 import org.runelive.client.entity.player.PlayerHandler;
 import org.runelive.client.graphics.CacheSpriteLoader;
-import org.runelive.client.graphics.DrawingArea;
+import org.runelive.client.graphics.Canvas2D;
 import org.runelive.client.graphics.Sprite;
 import org.runelive.client.graphics.fonts.TextClass;
 import org.runelive.client.graphics.gameframe.GameFrame;
@@ -611,7 +611,7 @@ public class MapArea extends GameFrame {
 				CacheSpriteLoader.getCacheSprite(458).drawSprite(getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 128 : 204), 0);
 			}
 
-			DrawingArea.drawPixels(3, 76 + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 4 : 8) + getOffSetY(), 76 + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 9 : 29) + getOffSetX(), 0xffffff, 3);
+			Canvas2D.drawPixels(3, 76 + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 4 : 8) + getOffSetY(), 76 + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 9 : 29) + getOffSetX(), 0xffffff, 3);
 
 			if (client.menuOpen && client.menuScreenArea == 3) {
 				client.drawMenu();

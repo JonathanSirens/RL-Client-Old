@@ -53,7 +53,7 @@ public final class RSImageProducer implements ImageProducer, ImageObserver {
 	}
 
 	public void initDrawingArea() {
-		DrawingArea.initDrawingArea(anInt317, anInt316, anIntArray315);
+		Canvas2D.initDrawingArea(anInt317, anInt316, anIntArray315);
 	}
 
 	@Override

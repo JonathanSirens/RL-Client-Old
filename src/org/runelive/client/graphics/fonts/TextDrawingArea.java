@@ -3,10 +3,10 @@ package org.runelive.client.graphics.fonts;
 import java.util.Random;
 
 import org.runelive.client.cache.Archive;
-import org.runelive.client.graphics.DrawingArea;
+import org.runelive.client.graphics.Canvas2D;
 import org.runelive.client.io.ByteBuffer;
 
-public final class TextDrawingArea extends DrawingArea {
+public final class TextDrawingArea extends Canvas2D {
 
 	public TextDrawingArea(boolean flag, String s, Archive streamLoader) {
 		try {
@@ -77,11 +77,11 @@ public final class TextDrawingArea extends DrawingArea {
 	{
 		int l = getTextWidth(s) / 2;
 		int i1 = method44();
-		if(i - l > DrawingArea.bottomY)
+		if(i - l > Canvas2D.bottomY)
 			return;
-		if(i + l < DrawingArea.topX)
+		if(i + l < Canvas2D.topX)
 			return;
-		if(j - i1 > DrawingArea.bottomX)
+		if(j - i1 > Canvas2D.bottomX)
 			return;
 		if(j < 0)
 		{
@@ -134,31 +134,31 @@ public final class TextDrawingArea extends DrawingArea {
 	}
 
 	private void drawChar(byte text[], int x, int y, int width, int height, int color, int opacity) {
-		int newOffset = x + y * DrawingArea.width;
-		int place1 = DrawingArea.width - width;
+		int newOffset = x + y * Canvas2D.width;
+		int place1 = Canvas2D.width - width;
 		int place2 = 0;
 		int oldOffset = 0;
-		if (y < DrawingArea.topY) {
-			int Height2 = DrawingArea.topY - y;
+		if (y < Canvas2D.topY) {
+			int Height2 = Canvas2D.topY - y;
 			height -= Height2;
-			y = DrawingArea.topY;
+			y = Canvas2D.topY;
 			oldOffset += Height2 * width;
-			newOffset += Height2 * DrawingArea.width;
+			newOffset += Height2 * Canvas2D.width;
 		}
-		if (y + height >= DrawingArea.bottomY) {
-			height -= ((y + height) - DrawingArea.bottomY);
+		if (y + height >= Canvas2D.bottomY) {
+			height -= ((y + height) - Canvas2D.bottomY);
 		}
-		if (x < DrawingArea.topX) {
-			int toLeft = DrawingArea.topX - x;
+		if (x < Canvas2D.topX) {
+			int toLeft = Canvas2D.topX - x;
 			width -= toLeft;
-			x = DrawingArea.topX;
+			x = Canvas2D.topX;
 			oldOffset += toLeft;
 			newOffset += toLeft;
 			place2 += toLeft;
 			place1 += toLeft;
 		}
-		if (x + width >= DrawingArea.bottomX) {
-			int toRight = ((x + width) - DrawingArea.bottomX);
+		if (x + width >= Canvas2D.bottomX) {
+			int toRight = ((x + width) - Canvas2D.bottomX);
 			width -= toRight;
 			place2 += toRight;
 			place1 += toRight;
@@ -166,7 +166,7 @@ public final class TextDrawingArea extends DrawingArea {
 		if ((width <= 0) || (height <= 0)) {
 			return;
 		}
-		setPixelsInfo(width, height, opacity, DrawingArea.pixels, text, newOffset, oldOffset, place1, place2, color);
+		setPixelsInfo(width, height, opacity, Canvas2D.pixels, text, newOffset, oldOffset, place1, place2, color);
 	}
 
 	public void drawTransparentText(int i, String s, int j, int k, int l, int opacity) {
@@ -305,7 +305,7 @@ public final class TextDrawingArea extends DrawingArea {
 				i += rsb[c];
 			}
 		if (aBoolean1499)
-			DrawingArea.drawHorizontalLine(k + (int) ((double) anInt1497 * 0.69999999999999996D), 0x800000, i - l, l);
+			Canvas2D.drawHorizontalLine(k + (int) ((double) anInt1497 * 0.69999999999999996D), 0x800000, i - l, l);
 	}
 
 	public void method390(int i, int j, String s, int k, int i1) {
@@ -395,36 +395,36 @@ public final class TextDrawingArea extends DrawingArea {
 	}
 
 	private void method392(byte abyte0[], int i, int j, int k, int l, int i1) {
-		int j1 = i + j * DrawingArea.width;
-		int k1 = DrawingArea.width - k;
+		int j1 = i + j * Canvas2D.width;
+		int k1 = Canvas2D.width - k;
 		int l1 = 0;
 		int i2 = 0;
-		if (j < DrawingArea.topY) {
-			int j2 = DrawingArea.topY - j;
+		if (j < Canvas2D.topY) {
+			int j2 = Canvas2D.topY - j;
 			l -= j2;
-			j = DrawingArea.topY;
+			j = Canvas2D.topY;
 			i2 += j2 * k;
-			j1 += j2 * DrawingArea.width;
+			j1 += j2 * Canvas2D.width;
 		}
-		if (j + l >= DrawingArea.bottomY)
-			l -= ((j + l) - DrawingArea.bottomY) + 1;
-		if (i < DrawingArea.topX) {
-			int k2 = DrawingArea.topX - i;
+		if (j + l >= Canvas2D.bottomY)
+			l -= ((j + l) - Canvas2D.bottomY) + 1;
+		if (i < Canvas2D.topX) {
+			int k2 = Canvas2D.topX - i;
 			k -= k2;
-			i = DrawingArea.topX;
+			i = Canvas2D.topX;
 			i2 += k2;
 			j1 += k2;
 			l1 += k2;
 			k1 += k2;
 		}
-		if (i + k >= DrawingArea.bottomX) {
-			int l2 = ((i + k) - DrawingArea.bottomX) + 1;
+		if (i + k >= Canvas2D.bottomX) {
+			int l2 = ((i + k) - Canvas2D.bottomX) + 1;
 			k -= l2;
 			l1 += l2;
 			k1 += l2;
 		}
 		if (!(k <= 0 || l <= 0)) {
-			method393(DrawingArea.pixels, abyte0, i1, i2, j1, k, l, k1, l1);
+			method393(Canvas2D.pixels, abyte0, i1, i2, j1, k, l, k1, l1);
 		}
 	}
 
@@ -462,37 +462,37 @@ public final class TextDrawingArea extends DrawingArea {
 	}
 
 	private void method394(int i, int j, byte abyte0[], int k, int l, int i1, int j1) {
-		int k1 = j + l * DrawingArea.width;
-		int l1 = DrawingArea.width - k;
+		int k1 = j + l * Canvas2D.width;
+		int l1 = Canvas2D.width - k;
 		int i2 = 0;
 		int j2 = 0;
-		if (l < DrawingArea.topY) {
-			int k2 = DrawingArea.topY - l;
+		if (l < Canvas2D.topY) {
+			int k2 = Canvas2D.topY - l;
 			i1 -= k2;
-			l = DrawingArea.topY;
+			l = Canvas2D.topY;
 			j2 += k2 * k;
-			k1 += k2 * DrawingArea.width;
+			k1 += k2 * Canvas2D.width;
 		}
-		if (l + i1 >= DrawingArea.bottomY)
-			i1 -= ((l + i1) - DrawingArea.bottomY) + 1;
-		if (j < DrawingArea.topX) {
-			int l2 = DrawingArea.topX - j;
+		if (l + i1 >= Canvas2D.bottomY)
+			i1 -= ((l + i1) - Canvas2D.bottomY) + 1;
+		if (j < Canvas2D.topX) {
+			int l2 = Canvas2D.topX - j;
 			k -= l2;
-			j = DrawingArea.topX;
+			j = Canvas2D.topX;
 			j2 += l2;
 			k1 += l2;
 			i2 += l2;
 			l1 += l2;
 		}
-		if (j + k >= DrawingArea.bottomX) {
-			int i3 = ((j + k) - DrawingArea.bottomX) + 1;
+		if (j + k >= Canvas2D.bottomX) {
+			int i3 = ((j + k) - Canvas2D.bottomX) + 1;
 			k -= i3;
 			i2 += i3;
 			l1 += i3;
 		}
 		if (k <= 0 || i1 <= 0)
 			return;
-		method395(abyte0, i1, k1, DrawingArea.pixels, j2, k, i2, l1, j1, i);
+		method395(abyte0, i1, k1, Canvas2D.pixels, j2, k, i2, l1, j1, i);
 	}
 
 	private void method395(byte abyte0[], int i, int j, int ai[], int l, int i1, int j1, int k1, int l1, int i2) {

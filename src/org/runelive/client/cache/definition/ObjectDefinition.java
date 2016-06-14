@@ -1643,13 +1643,13 @@ public final class ObjectDefinition {
         }
         if (adjustToTerrain) {
             int l1 = (k + l + i1 + j1) / 4;
-            for (int i2 = 0; i2 < model.numberOfVerticeCoordinates; i2++) {
-                int j2 = model.verticesXCoordinate[i2];
-                int k2 = model.verticesZCoordinate[i2];
+            for (int i2 = 0; i2 < model.vertexCount; i2++) {
+                int j2 = model.vertexX[i2];
+                int k2 = model.vertexZ[i2];
                 int l2 = k + (l - k) * (j2 + 64) / 128;
                 int i3 = j1 + (i1 - j1) * (j2 + 64) / 128;
                 int j3 = l2 + (i3 - l2) * (k2 + 64) / 128;
-                model.verticesYCoordinate[i2] += j3 - l1;
+                model.vertexY[i2] += j3 - l1;
             }
 
             model.method467();
