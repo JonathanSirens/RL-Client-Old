@@ -248,7 +248,7 @@ public final class MobDefinition {
 			definition.npcSizeInSquares = 3;
 			break;	
 		case 1472:
-			definition.name = "Todd the wrath";
+			definition.name = "Death";
 			definition.description = "A master Attacker of RuneLive.".getBytes();
 			definition.combatLevel = 941;
 			definition.actions = new String[5];
@@ -465,27 +465,82 @@ public final class MobDefinition {
 			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
 			break;
 		case 132:
-			definition.name = "Jonny the froob";
+			definition.name = "Blitz";
 			definition.description = "A master attacker of RuneLive.".getBytes();
 			definition.combatLevel = 913;
 			definition.actions = new String[5];
 			definition.actions[1] = "Attack";
 			definition.npcModels = new int[9];
 			definition.npcModels[0] = 14395; //Hat
-			definition.npcModels[1] = 42628; //Platebody
-			definition.npcModels[2] = 42629; //Platelegs
-			definition.npcModels[3] = 9638; //Cape
-			definition.npcModels[4] = 13319; //Gloves
-			definition.npcModels[5] = 9802; //Boots
-			definition.npcModels[6] = 60692; //Amulet
-			definition.npcModels[7] = 56237; //Weapon
-			definition.npcModels[8] = 8948; //Shield
+			definition.npcModels[1] = 62746; //Platebody
+			definition.npcModels[2] = 62743; //Platelegs
+			definition.npcModels[3] = 62582; //Cape
+			definition.npcModels[4] = 13307; //Gloves
+			definition.npcModels[5] = 53327; //Boots
+			definition.npcModels[6] = 9642; //Amulet
+			definition.npcModels[7] = 2295; //Weapon
+			definition.npcModels[8] = 26423; //Shield
 			definition.standAnimation = 808;
 			definition.walkAnimation = 819;
 			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
 			definition.adjustVertextPointZ = 200;
 			definition.adjustVertextPointsXOrY = 200;
 			definition.npcSizeInSquares = 4;
+			break;
+		case 133:
+			definition.name = "Cobra";
+			definition.description = "A master mager of RuneLive.".getBytes();
+			definition.combatLevel = 903;
+			definition.actions = new String[5];
+			definition.actions[1] = "Attack";
+			definition.npcModels = new int[10];
+			definition.npcModels[0] = 3188; //Hat
+			definition.npcModels[1] = 58366; //Platebody
+			definition.npcModels[2] = 58333; //Platelegs
+			definition.npcModels[3] = 65297; //Cape
+			definition.npcModels[4] = 179; //Gloves
+			definition.npcModels[5] = 27738; //Boots
+			definition.npcModels[6] = 9642; //Amulet
+			definition.npcModels[7] = 56022; //Weapon
+			definition.npcModels[8] = 40942; //Shield
+			definition.npcModels[9] = 58316;
+			definition.standAnimation = 808;
+			definition.walkAnimation = 819;
+			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
+			definition.adjustVertextPointZ = 200;
+			definition.adjustVertextPointsXOrY = 200;
+			definition.npcSizeInSquares = 4;
+			definition.changedModelColours = new int[]{
+                    226770, 34503, 34503, 34503, 34503
+            };
+			definition.originalModelColours = new int[]{
+                    926, 65214, 65200, 65186, 62995
+            };
+			break;
+		case 135:
+			definition.name = "Fear";
+			definition.description = "A master ranger of RuneLive.".getBytes();
+			definition.combatLevel = 844;
+			definition.actions = new String[5];
+			definition.actions[1] = "Attack";
+			definition.npcModels = new int[9];
+			definition.npcModels[0] = 26632; //Hat
+			definition.npcModels[1] = 20157; //Platebody
+			definition.npcModels[2] = 20139; //Platelegs
+			definition.npcModels[3] = 65297; //Cape
+			definition.npcModels[4] = 20129; //Gloves
+			definition.npcModels[5] = 27738; //Boots
+			definition.npcModels[6] = 9642; //Amulet
+			definition.npcModels[7] = 58380; //Weapon
+			definition.npcModels[8] = 20121;
+			definition.standAnimation = 808;
+			definition.walkAnimation = 819;
+			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
+			definition.adjustVertextPointZ = 200;
+			definition.adjustVertextPointsXOrY = 200;
+			definition.npcSizeInSquares = 4;
+			definition.changedModelColours = ItemDefinition.get(10372).originalModelColors;
+			definition.originalModelColours = ItemDefinition.get(10372).modifiedModelColors;
 			break;
 		case 6830:
 		case 6841:

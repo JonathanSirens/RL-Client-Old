@@ -1324,6 +1324,11 @@ public final class ObjectDefinition {
 			definition.actions = new String[5];
 			definition.actions[0] = "Sail";
 		}
+		if(id == 11339) {
+			definition.hasActions = true;
+			definition.actions = new String[5];
+			definition.actions[0] = "Search";
+		}
 		if (id == 10284) {
 			definition.name = "Chest";
 			definition.hasActions = true;

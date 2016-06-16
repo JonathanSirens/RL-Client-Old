@@ -153,6 +153,45 @@ public final class ItemDefinition {
                 itemDef.actions = new String[5];
                 itemDef.actions[0] = "Shovel";
                 break;
+            case 9722:
+            	itemDef.name = "Key of Death";
+                itemDef.originalModelColors = new int[]{
+                		2866, 2858, 2870
+                };
+                itemDef.modifiedModelColors = new int[]{
+                		5194, 5186, 5198
+                };
+            	break;
+            case 9725:
+            	itemDef.immitate(get(9722));
+            	itemDef.name = "Key of Fear";
+                itemDef.originalModelColors = new int[]{
+                		933, 933 - 8, 933 + 12
+                };
+                itemDef.modifiedModelColors = new int[]{
+                		5194, 5186, 5198
+                };
+            	break;
+            case 9724:
+            	itemDef.immitate(get(9722));
+            	itemDef.name = "Key of Cobra";
+                itemDef.modifiedModelColors = new int[]{
+                		226770, 226764, 226774
+                };
+                itemDef.originalModelColors = new int[]{
+                		5194, 5186, 5198
+                };
+            	break;
+            case 9723:
+            	itemDef.immitate(get(9722));
+            	itemDef.name = "Key of Blitz";
+                itemDef.modifiedModelColors = new int[]{
+                		2866, 2858, 2870
+                };
+                itemDef.originalModelColors = new int[]{
+                		5194, 5186, 5198
+                };
+            	break;
             case 19670:
                 itemDef.name = "Vote scroll";
                 itemDef.actions = new String[5];
