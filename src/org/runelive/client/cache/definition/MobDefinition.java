@@ -248,10 +248,33 @@ public final class MobDefinition {
 			definition.npcSizeInSquares = 3;
 			break;	
 		case 1472:
-			definition.adjustVertextPointZ += 25;
-			definition.adjustVertextPointsXOrY += 25;
 			definition.name = "Todd the wrath";
-			definition.combatLevel = 583;
+			definition.description = "A master Attacker of RuneLive.".getBytes();
+			definition.combatLevel = 941;
+			definition.actions = new String[5];
+			definition.actions[1] = "Attack";
+			definition.npcModels = new int[9];
+			definition.npcModels[0] = 55770; //Hat
+			definition.npcModels[1] = 55851; //Platebody
+			definition.npcModels[2] = 55815; //Platelegs
+			definition.npcModels[3] = 65297; //Cape
+			definition.npcModels[4] = 55728; //Gloves
+			definition.npcModels[5] = 55673; //Boots
+			definition.npcModels[6] = 9642; //Amulet
+			definition.npcModels[7] = 56046; //Weapon
+			definition.npcModels[8] = 70013; //Shield
+			definition.standAnimation = 808;
+			definition.walkAnimation = 819;
+			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
+			definition.adjustVertextPointZ = 200;
+			definition.adjustVertextPointsXOrY = 200;
+			definition.npcSizeInSquares = 4;
+			definition.changedModelColours = new int[]{
+                    127, 127, 127, 127
+            };
+			definition.originalModelColours = new int[]{
+                    65214, 65200, 65186, 62995
+            };
 			break;
 		case 2004:
 			definition.npcModels = new int[1];
@@ -442,7 +465,7 @@ public final class MobDefinition {
 			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
 			break;
 		case 132:
-			definition.name = "Froob";
+			definition.name = "Jonny the froob";
 			definition.description = "A master attacker of RuneLive.".getBytes();
 			definition.combatLevel = 913;
 			definition.actions = new String[5];
