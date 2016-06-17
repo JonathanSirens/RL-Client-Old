@@ -33,7 +33,7 @@ public class Configuration {
 	public static final boolean DROPBOX_MODE = false;
 
 	/** MAIN CONSTANTS **/
-	public static final String CLIENT_VERSION = "2.49";
+	public static final String CLIENT_VERSION = "2.50";
 	public final static String CLIENT_NAME = "RuneLive " + CLIENT_VERSION + "";
 	public final static String CACHE_DIRECTORY_NAME = "runelive"; // Cache folder name
 	public final static int USELESS_VERSION = 3;
