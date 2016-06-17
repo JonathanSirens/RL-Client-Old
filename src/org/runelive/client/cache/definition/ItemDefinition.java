@@ -2053,6 +2053,12 @@ public final class ItemDefinition {
             case 5509:
                 itemDef.actions = new String[]{"Fill", null, "Empty", "Check", null, null};
                 break;
+            case 3849:
+                itemDef.actions = new String[]{"Open", null, null, null, null, null};
+                break;
+            case 3849:
+                itemDef.actions = new String[]{"Open", null, null, null, null, null};
+                break;
             case 11998:
                 itemDef.name = "Scimitar";
                 itemDef.actions = new String[]{null, null, null, null, null, null};
