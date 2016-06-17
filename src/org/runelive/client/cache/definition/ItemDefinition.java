@@ -508,7 +508,7 @@ public final class ItemDefinition {
                 break;
             case 21104:
                 itemDef.setDefaults();
-                itemDef.name = "Bloodbone spirit shield";
+                itemDef.name = "Dragonbone spirit shield";
                 itemDef.modelZoom = 1616; //Model Zoom
                 itemDef.maleWearId = 70013; //Male Equip 1
                 itemDef.femaleWearId = 70013; //Male Equip 2

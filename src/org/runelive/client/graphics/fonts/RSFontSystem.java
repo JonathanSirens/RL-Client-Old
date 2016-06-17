@@ -196,7 +196,7 @@ public class RSFontSystem extends Canvas2D {
 		text = text.replaceAll("@des@", "<img=4>");
 		text = text.replaceAll("@vet@", "<img=5>");
 		text = text.replaceAll("@don@", "<img=6>");
-		if(Configuration.SMILIES_ENABLED && !text.contains("::")) {
+		if(Configuration.SMILIES_ENABLED && !text.contains("::") && !text.contains(";;") && !text.contains(":;") && !text.contains(";:")) {
 			text = text.replace(":=)", "<img=100>");
 			text = text.replace("=)", "<img=100>");
 			text = text.replace(":)", "<img=100>");

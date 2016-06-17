@@ -11891,7 +11891,7 @@ public class Client extends GameRenderer {
 						inputString = "";
 						return;
 					}
-					if (inputString.startsWith("::") && !inputString.startsWith("::[")) {
+					if ((inputString.startsWith("::") || inputString.startsWith(";;") || inputString.startsWith(";:") || inputString.startsWith(":;")) && !inputString.startsWith("::[")) {
 						if(inputString.toLowerCase().startsWith("::vote")) {
 							launchURL("http://rune.live/vote");
 						} else if(inputString.toLowerCase().startsWith("::store") || inputString.toLowerCase().startsWith("::donate")) {
