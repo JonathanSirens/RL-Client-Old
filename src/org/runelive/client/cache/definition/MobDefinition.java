@@ -268,7 +268,7 @@ public final class MobDefinition {
 			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
 			definition.adjustVertextPointZ = 200;
 			definition.adjustVertextPointsXOrY = 200;
-			definition.npcSizeInSquares = 4;
+			definition.npcSizeInSquares = 2;
 			definition.changedModelColours = new int[]{
                     127, 127, 127, 127
             };
@@ -485,7 +485,7 @@ public final class MobDefinition {
 			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
 			definition.adjustVertextPointZ = 200;
 			definition.adjustVertextPointsXOrY = 200;
-			definition.npcSizeInSquares = 4;
+			definition.npcSizeInSquares = 2;
 			break;
 		case 133:
 			definition.name = "Cobra";
@@ -509,7 +509,7 @@ public final class MobDefinition {
 			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
 			definition.adjustVertextPointZ = 200;
 			definition.adjustVertextPointsXOrY = 200;
-			definition.npcSizeInSquares = 4;
+			definition.npcSizeInSquares = 2;
 			definition.changedModelColours = new int[]{
                     226770, 34503, 34503, 34503, 34503
             };
@@ -538,9 +538,9 @@ public final class MobDefinition {
 			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
 			definition.adjustVertextPointZ = 200;
 			definition.adjustVertextPointsXOrY = 200;
-			definition.npcSizeInSquares = 4;
 			definition.changedModelColours = ItemDefinition.get(10372).originalModelColors;
 			definition.originalModelColours = ItemDefinition.get(10372).modifiedModelColors;
+			definition.npcSizeInSquares = 2;
 			break;
 		case 6830:
 		case 6841:
