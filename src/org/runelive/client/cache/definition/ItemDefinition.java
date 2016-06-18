@@ -2053,9 +2053,6 @@ public final class ItemDefinition {
             case 5509:
                 itemDef.actions = new String[]{"Fill", null, "Empty", "Check", null, null};
                 break;
-            case 3849:
-                itemDef.actions = new String[]{"Open", null, null, null, null, null};
-                break;
             case 11998:
                 itemDef.name = "Scimitar";
                 itemDef.actions = new String[]{null, null, null, null, null, null};
@@ -2183,7 +2180,7 @@ public final class ItemDefinition {
             case 19672:
             case 19673:
             case 19674:
-                itemDef.groundActions = new String[]{null, null, "Take"};
+            	itemDef.groundActions = new String[]{null, null, "Take", null, null};
                 itemDef.actions = new String[]{null, "Wear", null, null, "Drop"};
                 break;
             case 21000:
@@ -2204,7 +2201,7 @@ public final class ItemDefinition {
                 itemDef.modifiedModelColors = new int[]{56428, 55404, 30338, 399, 16319};
                 break;
             case 21088:
-                itemDef.groundActions = new String[]{null, null, "Take"};
+            	itemDef.groundActions = new String[]{null, null, "Take", null, null};
                 itemDef.actions = new String[]{null, "Wield", null, null, "Drop"};
                 itemDef.originalModelColors = new int[1];
                 itemDef.modifiedModelColors = new int[1];
