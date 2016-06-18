@@ -2179,6 +2179,338 @@ public final class ItemDefinition {
                 itemDef.originalModelColors = new int[]{17350, 17350, 0, 17350, 17350, 17350};
                 itemDef.modifiedModelColors = new int[]{56428, 55404, 30338, 399, 16319};
                 break;
+            case 11601:
+            	itemDef.setDefaults();
+            	itemDef.name = "Dragonbone upgrade kit";
+            	itemDef.modelZoom = 1016;
+            	itemDef.modelRotation1 = 390;
+            	itemDef.modelRotation2 = 2043;
+            	itemDef.modelOffset1 = 3;
+            	itemDef.modelOffsetY = 1;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { "Info", null, null, null, "Drop" };
+            	itemDef.modelID = 70148;
+            break;
+            case 11602:
+            	itemDef.setDefaults();
+            	itemDef.name = "Dragonbone mage hat";
+            	itemDef.modelZoom = 1250;
+            	itemDef.modelRotation1 = 229;
+            	itemDef.modelRotation2 = 177;
+            	itemDef.modelOffset1 = 1;
+            	itemDef.modelOffsetY = -74;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
+            	itemDef.modelID = 70722;
+            	itemDef.maleWearId = 70657;
+            	itemDef.femaleWearId = 70686;
+            break;
+            case 11603:
+            	itemDef.setDefaults();
+            	itemDef.name = "Dragonbone mage top";
+            	itemDef.modelZoom = 1711;
+            	itemDef.modelRotation1 = 500;
+            	itemDef.modelRotation2 = 2047;
+            	itemDef.modelOffsetY = 3;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
+            	itemDef.modelID = 70723;
+            	itemDef.maleWearId = 70668;
+            	itemDef.femaleWearId = 70697;
+            break;
+            case 11604:
+            	itemDef.setDefaults();
+            	itemDef.name = "Dragonbone mage bottoms";
+            	itemDef.modelZoom = 1772;
+            	itemDef.modelRotation1 = 431;
+            	itemDef.modelRotation2 = 1818;
+            	itemDef.modelOffset1 = -1;
+            	itemDef.modelOffsetY = 1;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
+            	itemDef.modelID = 70716;
+            	itemDef.maleWearId = 70664;
+            	itemDef.femaleWearId = 70693;
+            break;
+            case 11605:
+            	itemDef.setDefaults();
+            	itemDef.name = "Dragonbone mage gloves";
+            	itemDef.modelZoom = 592;
+            	itemDef.modelRotation1 = 215;
+            	itemDef.modelRotation2 = 175;
+            	itemDef.modelOffset1 = 2;
+            	itemDef.modelOffsetY = -17;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
+            	itemDef.modelID = 70721;
+            	itemDef.maleWearId = 70654;
+            	itemDef.femaleWearId = 70683;
+            break;
+            case 11606:
+            	itemDef.setDefaults();
+            	itemDef.name = "Dragonbone mage boots";
+            	itemDef.modelZoom = 855;
+            	itemDef.modelRotation1 = 242;
+            	itemDef.modelRotation2 = 0;
+            	itemDef.modelOffset1 = 3;
+            	itemDef.modelOffsetY = 18;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
+            	itemDef.modelID = 70719;
+            	itemDef.maleWearId = 70652;
+            	itemDef.femaleWearId = 70681;
+            break;
+            case 11607:
+            	itemDef.setDefaults();
+            	itemDef.name = "Dragonbone full helm";
+            	itemDef.modelZoom = 780;
+            	itemDef.modelRotation1 = 229;
+            	itemDef.modelRotation2 = 177;
+            	itemDef.modelOffset1 = 1;
+            	itemDef.modelOffsetY = -34;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
+            	itemDef.modelID = 70729;
+            	itemDef.maleWearId = 70662;
+            	itemDef.femaleWearId = 70691;
+            break;
+            case 11608:
+            	itemDef.setDefaults();
+            	itemDef.name = "Dragonbone platebody";
+            	itemDef.modelZoom = 1758;
+            	itemDef.modelRotation1 = 512;
+            	itemDef.modelRotation2 = 0;
+            	itemDef.modelOffsetY = 1;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
+            	itemDef.modelID = 70730;
+            	itemDef.maleWearId = 70669;
+            	itemDef.femaleWearId = 70698;
+            break;
+            case 11609:
+            	itemDef.setDefaults();
+            	itemDef.name = "Dragonbone gloves";
+            	itemDef.modelZoom = 760;
+            	itemDef.modelRotation1 = 552;
+            	itemDef.modelRotation2 = 28;
+            	itemDef.modelOffset1 = 3;
+            	itemDef.modelOffsetY = 11;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
+            	itemDef.modelID = 70725;
+            	itemDef.maleWearId = 70655;
+            	itemDef.femaleWearId = 70684;
+            break;
+            case 11610:
+            	itemDef.setDefaults();
+            	itemDef.name = "Dragonbone boots";
+            	itemDef.modelZoom = 921;
+            	itemDef.modelRotation1 = 303;
+            	itemDef.modelRotation2 = 257;
+            	itemDef.modelOffset1 = 12;
+            	itemDef.modelOffsetY = 18;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
+            	itemDef.modelID = 70731;
+            	itemDef.maleWearId = 70653;
+            	itemDef.femaleWearId = 70682;
+            break;
+            case 11611:
+            	itemDef.setDefaults();
+            	itemDef.name = "Dragonbone platelegs";
+            	itemDef.modelZoom = 1772;
+            	itemDef.modelRotation1 = 512;
+            	itemDef.modelRotation2 = 0;
+            	itemDef.modelOffsetY = 5;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
+            	itemDef.modelID = 70728;
+            	itemDef.maleWearId = 70665;
+            	itemDef.femaleWearId = 70695;
+            break;
+            case 11612:
+            	itemDef.setDefaults();
+            	itemDef.name = "Dragonbone plateskirt";
+            	itemDef.modelZoom = 1772;
+            	itemDef.modelRotation1 = 512;
+            	itemDef.modelRotation2 = 0;
+            	itemDef.modelOffsetY = 5;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
+            	itemDef.modelID = 70724;
+            	itemDef.maleWearId = 70666;
+            	itemDef.femaleWearId = 70694;
+            break;
+            case 11613:
+            	itemDef.setDefaults();
+            	itemDef.name = "Dragon kiteshield";
+            	itemDef.modelZoom = 1378;
+            	itemDef.modelRotation1 = 264;
+            	itemDef.modelRotation2 = 1913;
+            	itemDef.modelOffset1 = 7;
+            	itemDef.modelOffsetY = 58;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
+            	itemDef.modelID = 70128;
+            	itemDef.maleWearId = 70672;
+            	itemDef.femaleWearId = 70672;
+            break;
+            case 11614:
+            	itemDef.setDefaults();
+            	itemDef.name = "Royal dragonhide";
+            	itemDef.modelZoom = 1190;
+            	itemDef.modelRotation1 = 440;
+            	itemDef.modelRotation2 = 116;
+            	itemDef.modelOffset1 = -1;
+            	itemDef.modelOffsetY = -2;
+            	itemDef.modifiedModelColors = new int[] { 49950, 49997 };
+            	itemDef.originalModelColors  = new int[] { 22416, 22424 };
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, null, null, null, "Drop" };
+            	itemDef.modelID = 2356;
+            break;
+            case 11615:
+            	itemDef.setDefaults();
+            	itemDef.name = "Royal dragon leather";
+            	itemDef.modelZoom = 1190;
+            	itemDef.modelRotation1 = 440;
+            	itemDef.modelRotation2 = 116;
+            	itemDef.modelOffset1 = -1;
+            	itemDef.modelOffsetY = -2;
+            	itemDef.modifiedModelColors = new int[] { 49950 };
+            	itemDef.originalModelColors  = new int[] { 127 };
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { "Craft", null, null, null, "Drop" };
+            	itemDef.modelID = 2338;
+            break;
+            case 11616:
+            	itemDef.setDefaults();
+            	itemDef.name = "Royal d'hide vambraces";
+            	itemDef.modelZoom = 537;
+            	itemDef.modelRotation1 = 215;
+            	itemDef.modelRotation2 = 175;
+            	itemDef.modelOffset1 = 2;
+            	itemDef.modelOffsetY = -9;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+            	itemDef.modelID = 70738;
+            	itemDef.maleWearId = 70656;
+            	itemDef.femaleWearId = 70685;
+            break;
+            case 11617:
+            	itemDef.setDefaults();
+            	itemDef.name = "Royal d'hide chaps";
+            	itemDef.modelZoom = 1772;
+            	itemDef.modelRotation1 = 512;
+            	itemDef.modelRotation2 = 0;
+            	itemDef.modelOffsetY = 5;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+            	itemDef.modelID = 70735;
+            	itemDef.maleWearId = 70667;
+            	itemDef.femaleWearId = 70696;
+            break;
+            case 11618:
+            	itemDef.setDefaults();
+            	itemDef.name = "Royal d'hide body";
+            	itemDef.modelZoom = 1758;
+            	itemDef.modelRotation1 = 512;
+            	itemDef.modelRotation2 = 0;
+            	itemDef.modelOffset1 = 1;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+            	itemDef.modelID = 70736;
+            	itemDef.maleWearId = 70670;
+            	itemDef.femaleWearId = 70699;
+            break;
+            case 11619:
+            	itemDef.setDefaults();
+            	itemDef.name = "Royal d'hide coif 100";
+            	itemDef.modelZoom = 780;
+            	itemDef.modelRotation1 = 229;
+            	itemDef.modelRotation2 = 177;
+            	itemDef.modelOffset1 = 1;
+            	itemDef.modelOffsetY = -34;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+            	itemDef.modelID = 70733;
+            	itemDef.maleWearId = 70663;
+            	itemDef.femaleWearId = 70692;
+            break;
+            case 11620:
+            	itemDef.setDefaults();
+            	itemDef.name = "Royal bolt stabiliser";
+            	itemDef.modelZoom = 789;
+            	itemDef.modelRotation1 = 175;
+            	itemDef.modelRotation2 = 81;
+            	itemDef.modelOffset1 = 5;
+            	itemDef.modelOffsetY = 3;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, null, null, null, "Drop" };
+            	itemDef.modelID = 70153;
+            break;
+            case 11621:
+            	itemDef.setDefaults();
+            	itemDef.name = "Royal frame";
+            	itemDef.modelZoom = 946;
+            	itemDef.modelRotation1 = 337;
+            	itemDef.modelRotation2 = 444;
+            	itemDef.modelOffset1 = 2;
+            	itemDef.modelOffsetY = -17;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, null, null, null, "Drop" };
+            	itemDef.modelID = 70130;
+            break;
+            case 11622:
+            	itemDef.setDefaults();
+            	itemDef.name = "Royal sight";
+            	itemDef.modelZoom = 1045;
+            	itemDef.modelRotation1 = 229;
+            	itemDef.modelRotation2 = 450;
+            	itemDef.modelOffset1 = -3;
+            	itemDef.modelOffsetY = 28;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, null, null, null, "Drop" };
+            	itemDef.modelID = 70258;
+            break;
+            case 11623:
+            	itemDef.setDefaults();
+            	itemDef.name = "Royal torsion spring";
+            	itemDef.modelZoom = 724;
+            	itemDef.modelRotation1 = 175;
+            	itemDef.modelRotation2 = 350;
+            	itemDef.modelOffset1 = -1;
+            	itemDef.modelOffsetY = 5;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, null, null, null, "Drop" };
+            	itemDef.modelID = 70146;
+            break;
+            case 11624:
+            	itemDef.setDefaults();
+            	itemDef.name = "Royal crossbow";
+            	itemDef.modelZoom = 1250;
+            	itemDef.modelRotation1 = 269;
+            	itemDef.modelRotation2 = 2007;
+            	itemDef.modelOffset1 = 1;
+            	itemDef.modelOffsetY = 29;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wield", "Check state", null, "Destroy" };
+            	itemDef.modelID = 70257;
+            	itemDef.maleWearId = 70671;
+            	itemDef.femaleWearId = 70671;
+            break;
+            case 11625:
+            	itemDef.setDefaults();
+            	itemDef.name = "Royal bolts";
+            	itemDef.modelZoom = 1220;
+            	itemDef.modelRotation1 = 216;
+            	itemDef.modelRotation2 = 100;
+            	itemDef.modelOffset1 = 6;
+            	itemDef.modelOffsetY = -29;
+            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
+            	itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
+            	itemDef.modelID = 70140;
+            break;
             case 21088:
             	itemDef.groundActions = new String[]{null, null, "Take", null, null};
                 itemDef.actions = new String[]{null, "Wield", null, null, "Drop"};
@@ -5383,7 +5715,6 @@ public final class ItemDefinition {
             case 11912:
             case 11914:
             case 11916:
-            case 11618:
             case 11920:
             case 11922:
             case 11924:

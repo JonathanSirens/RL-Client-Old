@@ -7,13 +7,13 @@ package org.runelive;
 public class Configuration {
 
 	/** CONNECTION **/
-	public final static boolean LOCAL = false;
+	public final static boolean LOCAL = true;
 	public final static String SERVER_HOST = LOCAL ? "127.0.0.1" : "158.69.125.71"; // 158.69.125.71
 	public final static int SERVER_PORT = 59018;
 
 	/** FILE SERVER **/
 	public final static boolean FILE_SERVER_ENABLED = true;
-	public final static boolean DEVELOPER_FILE_SERVER = false;
+	public final static boolean DEVELOPER_FILE_SERVER = true;
 	public final static String JAGCACHED_HOST = "149.56.107.79";//"127.0.0.1";
 	public final static int JAGGRAB_PORT = DEVELOPER_FILE_SERVER ? 43596 : 43595;
 	public final static int ONDEMAND_PORT = DEVELOPER_FILE_SERVER ? 43592 : 43593;
