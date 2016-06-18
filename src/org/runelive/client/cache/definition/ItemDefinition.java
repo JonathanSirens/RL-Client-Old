@@ -260,11 +260,6 @@ public final class ItemDefinition {
                 itemDef.actions[1] = "Wield";
                 itemDef.actions[4] = "Drop";
                 break;
-            case 13740:
-//		System.out.println("male: "+itemDef.maleWearId);
-//		System.out.println("female: "+itemDef.femaleWearId);
-//		System.out.println("inventory: "+itemDef.modelID);
-                break;
             case 21092:
                 itemDef.modelID = 67004;
                 itemDef.name = "Off-hand Drygore Rapier";
@@ -2180,15 +2175,10 @@ public final class ItemDefinition {
                 itemDef.modelRotation1 = 280;
                 itemDef.modelRotation2 = 0;
                 itemDef.modelOffsetY = 56;
-                //itemDef.maleXOffset = 7;
                 itemDef.maleWieldY = -7;
                 itemDef.originalModelColors = new int[]{17350, 17350, 0, 17350, 17350, 17350};
                 itemDef.modifiedModelColors = new int[]{56428, 55404, 30338, 399, 16319};
                 break;
-            case 13101:
-            	System.out.println("model "+itemDef.modelID);
-            	System.out.println("wear "+itemDef.maleWearId);
-            	break;
             case 21088:
             	itemDef.groundActions = new String[]{null, null, "Take", null, null};
                 itemDef.actions = new String[]{null, "Wield", null, null, "Drop"};
