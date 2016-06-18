@@ -664,6 +664,8 @@ public final class ItemDefinition {
                 itemDef.groundActions[2] = "Take";
                 itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
                 break;
+                
+                
 
             case 11519:
                 itemDef.setDefaults();
@@ -743,6 +745,19 @@ public final class ItemDefinition {
                 itemDef.groundActions[2] = "Take";
                 itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
                 break;
+            case 11526:
+                itemDef.setDefaults();
+                itemDef.modelID = 2429;
+                itemDef.name = "Anti-venom (4)";
+                itemDef.actions = new String[]{null, null, null, null, null, null};
+                itemDef.modelZoom = 760;
+                itemDef.modelRotation2 = 28;
+                itemDef.modelRotation1 = 552;
+                itemDef.modelOffsetX = itemDef.modelOffset1 = 0;
+                itemDef.stackable = true;
+                itemDef.certID = 11525;
+                itemDef.certTemplateID = 799;
+                break;
             case 11527:
                 itemDef.setDefaults();
                 itemDef.modelID = 2697;
@@ -762,7 +777,19 @@ public final class ItemDefinition {
                 itemDef.groundActions[2] = "Take";
                 itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
                 break;
-
+            case 11528:
+                itemDef.setDefaults();
+                itemDef.modelID = 2429;
+                itemDef.name = "Anti-venom (3)";
+                itemDef.actions = new String[]{null, null, null, null, null, null};
+                itemDef.modelZoom = 760;
+                itemDef.modelRotation2 = 28;
+                itemDef.modelRotation1 = 552;
+                itemDef.modelOffsetX = itemDef.modelOffset1 = 0;
+                itemDef.stackable = true;
+                itemDef.certID = 11527;
+                itemDef.certTemplateID = 799;
+                break;
             case 11529:
                 itemDef.setDefaults();
                 itemDef.modelID = 2384;
@@ -782,7 +809,19 @@ public final class ItemDefinition {
                 itemDef.groundActions[2] = "Take";
                 itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
                 break;
-
+            case 11530:
+                itemDef.setDefaults();
+                itemDef.modelID = 2429;
+                itemDef.name = "Anti-venom (2)";
+                itemDef.actions = new String[]{null, null, null, null, null, null};
+                itemDef.modelZoom = 760;
+                itemDef.modelRotation2 = 28;
+                itemDef.modelRotation1 = 552;
+                itemDef.modelOffsetX = itemDef.modelOffset1 = 0;
+                itemDef.stackable = true;
+                itemDef.certID = 11529;
+                itemDef.certTemplateID = 799;
+                break;
             case 11531:
                 itemDef.setDefaults();
                 itemDef.modelID = 2621;
@@ -801,6 +840,19 @@ public final class ItemDefinition {
                 itemDef.groundActions = new String[5];
                 itemDef.groundActions[2] = "Take";
                 itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
+                break;
+            case 11532:
+                itemDef.setDefaults();
+                itemDef.modelID = 2429;
+                itemDef.name = "Anti-venom (1)";
+                itemDef.actions = new String[]{null, null, null, null, null, null};
+                itemDef.modelZoom = 760;
+                itemDef.modelRotation2 = 28;
+                itemDef.modelRotation1 = 552;
+                itemDef.modelOffsetX = itemDef.modelOffset1 = 0;
+                itemDef.stackable = true;
+                itemDef.certID = 11531;
+                itemDef.certTemplateID = 799;
                 break;
             case 21077:
                 itemDef.setDefaults();
