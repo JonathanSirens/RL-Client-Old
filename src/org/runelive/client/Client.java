@@ -16340,7 +16340,7 @@ public class Client extends GameRenderer {
 			case 49: 
 				return "@325@Wiki Manager";
 			case 50: 
-				return "@cmm@Com. Manager";
+				return "@red@Manager";
 			case 51: 
 				return "@hbd@Hybrid";
 			case 52: 
