@@ -2355,7 +2355,7 @@ public final class ItemDefinition {
             	itemDef.maleWearId = 70672;
             	itemDef.femaleWearId = 70672;
             break;
-            case 11614:
+            case 21043:
             	itemDef.setDefaults();
             	itemDef.name = "Royal dragonhide";
             	itemDef.modelZoom = 1190;
@@ -2383,7 +2383,7 @@ public final class ItemDefinition {
             	itemDef.actions = new String[] { "Craft", null, null, null, "Drop" };
             	itemDef.modelID = 2338;
             break;
-            case 11616:
+            case 21046:
             	itemDef.setDefaults();
             	itemDef.name = "Royal d'hide vambraces";
             	itemDef.modelZoom = 537;
@@ -2397,7 +2397,7 @@ public final class ItemDefinition {
             	itemDef.maleWearId = 70656;
             	itemDef.femaleWearId = 70685;
             break;
-            case 11617:
+            case 21045:
             	itemDef.setDefaults();
             	itemDef.name = "Royal d'hide chaps";
             	itemDef.modelZoom = 1772;
@@ -2410,7 +2410,7 @@ public final class ItemDefinition {
             	itemDef.maleWearId = 70667;
             	itemDef.femaleWearId = 70696;
             break;
-            case 11618:
+            case 21044:
             	itemDef.setDefaults();
             	itemDef.name = "Royal d'hide body";
             	itemDef.modelZoom = 1758;
@@ -3034,17 +3034,6 @@ public final class ItemDefinition {
                 };
                 itemDef.name = "Black partyhat";
                 break;
-            case 21043:
-                itemDef.setDefaults();
-                itemDef.immitate(get(1747));
-                itemDef.modifiedModelColors = new int[]{
-                        22416, 22424
-                };
-                itemDef.originalModelColors = new int[]{
-                        100, 226770
-                };
-                itemDef.name = "White dragonhide";
-                break;
             case 21047:
                 itemDef.setDefaults();
                 itemDef.name = "Abyssal tentacle";
@@ -3075,39 +3064,6 @@ public final class ItemDefinition {
                 itemDef.immitate(get(12458));
                 itemDef.groundActions = new String[]{null, null, "Take", null, null};
                 itemDef.actions = new String[]{null, null, "Summon", null, "Drop"};
-                break;
-            case 21044:
-                itemDef.setDefaults();
-                itemDef.immitate(get(2503));
-                itemDef.modifiedModelColors = new int[]{
-                        22416, 22424
-                };
-                itemDef.originalModelColors = new int[]{
-                        100, 226770
-                };
-                itemDef.name = "White d'hide body";
-                break;
-            case 21045:
-                itemDef.setDefaults();
-                itemDef.immitate(get(2497));
-                itemDef.modifiedModelColors = new int[]{
-                        22416, 22424, 7566, 57, 61, 1821, 5907, 21898, 20884, 926, 5012
-                };
-                itemDef.originalModelColors = new int[]{
-                        100, 226770, 100, 100, 100, 100, 226770, 226770, 226770, 226770, 100
-                };
-                itemDef.name = "White d'hide chaps";
-                break;
-            case 21046:
-                itemDef.setDefaults();
-                itemDef.immitate(get(2491));
-                itemDef.modifiedModelColors = new int[]{
-                        8472, 8720, 22416
-                };
-                itemDef.originalModelColors = new int[]{
-                        100, 226770, 100
-                };
-                itemDef.name = "White d'hide vamb";
                 break;
             case 1053:
                 itemDef.name = "Green halloween mask";
