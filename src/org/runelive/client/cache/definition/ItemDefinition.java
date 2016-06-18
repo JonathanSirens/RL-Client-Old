@@ -226,11 +226,6 @@ public final class ItemDefinition {
                 itemDef.actions[1] = "Wield";
                 itemDef.actions[4] = "Drop";
                 break;
-
-            case 6666:
-                System.out.println("" + itemDef.maleWearId);
-                break;
-
             case 21090:
                 itemDef.modelID = 66998;
                 itemDef.name = "Off-hand Drygore Longsword";
@@ -455,16 +450,6 @@ public final class ItemDefinition {
                 };
                 itemDef.modifiedModelColors = new int[]{
                         40
-                };
-                break;
-            case 21105:
-                itemDef.setDefaults();
-                itemDef.immitate(get(6666));
-                itemDef.originalModelColors = new int[]{
-                        22418
-                };
-                itemDef.modifiedModelColors = new int[]{
-                        11175, 11171
                 };
                 break;
             case 7887:
@@ -2200,6 +2185,10 @@ public final class ItemDefinition {
                 itemDef.originalModelColors = new int[]{17350, 17350, 0, 17350, 17350, 17350};
                 itemDef.modifiedModelColors = new int[]{56428, 55404, 30338, 399, 16319};
                 break;
+            case 13101:
+            	System.out.println("model "+itemDef.modelID);
+            	System.out.println("wear "+itemDef.maleWearId);
+            	break;
             case 21088:
             	itemDef.groundActions = new String[]{null, null, "Take", null, null};
                 itemDef.actions = new String[]{null, "Wield", null, null, "Drop"};
@@ -5890,7 +5879,111 @@ public final class ItemDefinition {
                 itemDef.maleWearId = 77654;
                 itemDef.femaleWearId = 77654;
                 break;
-
+            
+            case 21121:
+            	itemDef.setDefaults();
+            	itemDef.immitate(get(6666));
+            	itemDef.name = "Pink flippers";
+                itemDef.modifiedModelColors = new int[]{11171, 11175};
+                itemDef.originalModelColors = new int[]{123770, 123770 + 4};
+            	break;
+            	
+            case 21122:
+            	itemDef.setDefaults();
+            	itemDef.immitate(get(6666));
+            	itemDef.name = "Black flippers";
+                itemDef.modifiedModelColors = new int[]{11171, 11175};
+                itemDef.originalModelColors = new int[]{6020, 6020 + 4};
+            	break;
+            	
+            case 21123:
+            	itemDef.setDefaults();
+            	itemDef.immitate(get(6666));
+            	itemDef.name = "Aqua flippers";
+                itemDef.modifiedModelColors = new int[]{11171, 11175};
+                itemDef.originalModelColors = new int[]{226770, 226770 + 4};
+            	break;
+            	
+            case 21124:
+            	itemDef.setDefaults();
+            	itemDef.immitate(get(6666));
+            	itemDef.name = "Red flippers";
+                itemDef.modifiedModelColors = new int[]{11171, 11175};
+                itemDef.originalModelColors = new int[]{933, 933 + 4};
+            	break;
+            	
+            case 21125:
+            	itemDef.setDefaults();
+            	itemDef.immitate(get(6666));
+            	itemDef.name = "Lime flippers";
+                itemDef.modifiedModelColors = new int[]{11171, 11175};
+                itemDef.originalModelColors = new int[]{17350, 17350 + 4};
+            	break;
+            	
+            case 21126:
+            	itemDef.setDefaults();
+            	itemDef.immitate(get(6666));
+            	itemDef.name = "White flippers";
+                itemDef.modifiedModelColors = new int[]{11171, 11175};
+                itemDef.originalModelColors = new int[]{100, 100 + 4};
+            	break;
+            	
+            case 21127:
+            	itemDef.setDefaults();
+            	itemDef.immitate(get(6666));
+            	itemDef.name = "Purple flippers";
+                itemDef.modifiedModelColors = new int[]{11171, 11175};
+                itemDef.originalModelColors = new int[]{49950, 49950 + 4};
+            	break;
+            	
+            case 21128:
+            	itemDef.setDefaults();
+            	itemDef.immitate(get(13101));
+            	itemDef.name = "White top hat";
+                itemDef.modifiedModelColors = new int[]{0, 4, 8, 12, 16, 20, 24};
+                itemDef.originalModelColors = new int[]{100, 100 + 4, 100 + 8, 100 + 12, 100 + 16, 100 + 20, 100 + 24};
+            	break;
+            	
+            case 21129:
+            	itemDef.setDefaults();
+            	itemDef.immitate(get(13101));
+            	itemDef.name = "Pink top hat";
+                itemDef.modifiedModelColors = new int[]{0, 4, 8, 12, 16, 20, 24};
+                itemDef.originalModelColors = new int[]{123770, 123770, 123770, 123770, 123770, 123770, 123770};
+            	break;
+            	
+            case 21130:
+            	itemDef.setDefaults();
+            	itemDef.immitate(get(13101));
+            	itemDef.name = "Purple top hat";
+                itemDef.modifiedModelColors = new int[]{0, 4, 8, 12, 16, 20, 24};
+                itemDef.originalModelColors = new int[]{49950, 49950 + 4, 49950 + 8, 49950 + 12, 49950 + 16, 49950 + 20, 49950 + 24};
+            	break;	
+            	
+            case 21131:
+            	itemDef.setDefaults();
+            	itemDef.immitate(get(13101));
+            	itemDef.name = "Lime top hat";
+                itemDef.modifiedModelColors = new int[]{0, 4, 8, 12, 16, 20, 24};
+                itemDef.originalModelColors = new int[]{17350, 17350 + 4, 17350 + 8, 17350 + 12, 17350 + 16, 17350 + 20, 17350 + 24};
+            	break;	
+            	
+            case 21132:
+            	itemDef.setDefaults();
+            	itemDef.immitate(get(13101));
+            	itemDef.name = "Aqua top hat";
+                itemDef.modifiedModelColors = new int[]{0, 4, 8, 12, 16, 20, 24};
+                itemDef.originalModelColors = new int[]{226770, 226770 + 4, 226770 + 8, 226770 + 12, 226770 + 16, 226770 + 20, 226770 + 24};
+            	break;	
+            	
+            case 21133:
+            	itemDef.setDefaults();
+            	itemDef.immitate(get(13101));
+            	itemDef.name = "Premium top hat";
+                itemDef.modifiedModelColors = new int[]{0, 4, 8, 12, 16, 20, 24, 549, 553, 673, 668};
+                itemDef.originalModelColors = new int[]{933, 933 + 4, 933 + 8, 933 + 12, 933 + 16, 933 + 20, 933 + 24, 11200, 11204, 11324, 11324 - 5};
+            	break;	
+            	
             case 20147:
                 itemDef.modifiedModelColors = new int[2];
                 itemDef.originalModelColors = new int[2];
