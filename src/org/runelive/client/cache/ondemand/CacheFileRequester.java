@@ -76,7 +76,7 @@ public final class CacheFileRequester implements Runnable {
 	public String statusString;
 	private int writeLoopCycle;
 	private long openSocketTime;
-	private int[] mapIndices3;
+	public int[] mapIndices3;
 	private final CRC32 crc32;
 	private final byte[] inputBuffer;
 	private final byte[][] fileStatus;
@@ -85,7 +85,7 @@ public final class CacheFileRequester implements Runnable {
 	private int completedSize;
 	private int currentFileSize;
 	private int[] anIntArray1348;
-	private int[] mapIndices2;
+	public int[] mapIndices2;
 	private int filesLoaded;
 	private boolean running;
 	private OutputStream out;
@@ -381,6 +381,15 @@ public final class CacheFileRequester implements Runnable {
 					return mapCount3;
 				}
 			}
+		return -1;
+	}
+	
+	public int getRegionIndex(int regionId) {
+		for (int index = 0; index < mapIndices1.length; index++) {
+			if (mapIndices1[index] == regionId) {
+				return index;
+			}
+		}
 		return -1;
 	}
 

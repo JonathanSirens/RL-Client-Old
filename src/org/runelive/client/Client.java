@@ -5423,7 +5423,12 @@ public class Client extends GameRenderer {
 
 		return type != 1;
 	}
-
+    public int getRegionId() {
+    	int localX = this.anInt1069 / 8;
+    	int localY = this.anInt1070 / 8;
+    	int id = (localX << 8) + localY;
+    	return id;
+    }
 	private void draw3dScreen() {
 		fadingScreen.draw();
 		if (!chatArea.componentHidden()) {
@@ -5539,9 +5544,9 @@ public class Client extends GameRenderer {
 			if (super.fps < 15) {
 				textColor = 0xff0000;
 			}
-			newRegularFont.drawRightAlignedString("Object Maps: " + objectMaps, textX + 75, textY, 0xffff00, 0);
-			textY += 15;
-			newRegularFont.drawRightAlignedString("Floor Maps: " + floorMaps, textX + 75, textY, 0xffff00, 0);
+			int regionId = getRegionId();
+			int regionIndex = onDemandFetcher.getRegionIndex(regionId);
+			newRegularFont.drawRightAlignedString("Terrain, Landscape: " + (regionIndex >= 0 ? (onDemandFetcher.mapIndices2[regionIndex] + ", " + onDemandFetcher.mapIndices3[regionIndex]) : "-1"), textX + 75, textY, 0xffff00, 0);
 			textY += 15;
 			normalText.method385(textColor, "Fps:" + super.fps, textY, textX);
 			textY += 15;
