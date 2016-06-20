@@ -2568,7 +2568,7 @@ public final class ItemDefinition {
             case 11625:
             	itemDef.setDefaults();
                 itemDef.stackable = true;
-            	itemDef.name = "Royal bolts";
+            	itemDef.name = "Dragonbone bolts";
             	itemDef.modelZoom = 1220;
             	itemDef.modelRotation1 = 216;
             	itemDef.modelRotation2 = 100;
