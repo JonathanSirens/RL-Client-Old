@@ -2492,16 +2492,16 @@ public final class ItemDefinition {
             case 11617:
                 itemDef.setDefaults();
                 itemDef.name = "Dragonbone boots (ranged)";
-                itemDef.modelZoom = 855;
-                itemDef.modelRotation1 = 242;
-                itemDef.modelRotation2 = 0;
-                itemDef.modelOffset1 = 3;
+                itemDef.modelZoom = 921;
+                itemDef.modelRotation1 = 303;
+                itemDef.modelRotation2 = 257;
+                itemDef.modelOffset1 = 12;
                 itemDef.modelOffsetY = 18;
                 itemDef.groundActions = new String[] { null, null, "Take", null, null };
                 itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
-                itemDef.modelID = 70719;
-                itemDef.maleWearId = 70652;
-                itemDef.femaleWearId = 70681;
+                itemDef.modelID = 70731;
+                itemDef.maleWearId = 70653;
+                itemDef.femaleWearId = 70682;
                 break;
             case 11620:
             	itemDef.setDefaults();
@@ -2553,7 +2553,7 @@ public final class ItemDefinition {
             break;
             case 11624:
             	itemDef.setDefaults();
-            	itemDef.name = "Royal crossbow";
+            	itemDef.name = "Dragonbone crossbow";
             	itemDef.modelZoom = 1250;
             	itemDef.modelRotation1 = 269;
             	itemDef.modelRotation2 = 2007;
@@ -2567,6 +2567,7 @@ public final class ItemDefinition {
             break;
             case 11625:
             	itemDef.setDefaults();
+                itemDef.stackable = true;
             	itemDef.name = "Royal bolts";
             	itemDef.modelZoom = 1220;
             	itemDef.modelRotation1 = 216;
