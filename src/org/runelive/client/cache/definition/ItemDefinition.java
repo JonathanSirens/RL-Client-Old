@@ -2240,7 +2240,7 @@ public final class ItemDefinition {
             	itemDef.modelOffset1 = 3;
             	itemDef.modelOffsetY = 1;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { "Info", null, null, null, "Drop" };
+            	itemDef.actions = new String[] { null, null, null, null, "Drop" };
             	itemDef.modelID = 70148;
             break;
             case 11602:
