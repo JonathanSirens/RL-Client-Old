@@ -2286,7 +2286,7 @@ public final class ItemDefinition {
             break;
             case 11605:
             	itemDef.setDefaults();
-            	itemDef.name = "Dragonbone mage gloves";
+            	itemDef.name = "Dragonbone gloves (magic)";
             	itemDef.modelZoom = 592;
             	itemDef.modelRotation1 = 215;
             	itemDef.modelRotation2 = 175;
@@ -2300,7 +2300,7 @@ public final class ItemDefinition {
             break;
             case 11606:
             	itemDef.setDefaults();
-            	itemDef.name = "Dragonbone mage boots";
+            	itemDef.name = "Dragonbone boots (magic)";
             	itemDef.modelZoom = 855;
             	itemDef.modelRotation1 = 242;
             	itemDef.modelRotation2 = 0;
@@ -2341,7 +2341,7 @@ public final class ItemDefinition {
             break;
             case 11609:
             	itemDef.setDefaults();
-            	itemDef.name = "Dragonbone gloves";
+            	itemDef.name = "Dragonbone gloves (melee)";
             	itemDef.modelZoom = 760;
             	itemDef.modelRotation1 = 552;
             	itemDef.modelRotation2 = 28;
@@ -2355,7 +2355,7 @@ public final class ItemDefinition {
             break;
             case 11610:
             	itemDef.setDefaults();
-            	itemDef.name = "Dragonbone boots";
+            	itemDef.name = "Dragonbone boots (melee)";
             	itemDef.modelZoom = 921;
             	itemDef.modelRotation1 = 303;
             	itemDef.modelRotation2 = 257;
@@ -2421,7 +2421,7 @@ public final class ItemDefinition {
             	itemDef.actions = new String[] { null, null, null, null, "Drop" };
             	itemDef.modelID = 2356;
             break;
-            case 11615:
+            case 116150:
             	itemDef.setDefaults();
             	itemDef.name = "Royal dragon leather";
             	itemDef.modelZoom = 1190;
@@ -2435,9 +2435,9 @@ public final class ItemDefinition {
             	itemDef.actions = new String[] { "Craft", null, null, null, "Drop" };
             	itemDef.modelID = 2338;
             break;
-            case 21046:
+            case 11614:
             	itemDef.setDefaults();
-            	itemDef.name = "Royal d'hide vambraces";
+            	itemDef.name = "Dragonbone vambraces";
             	itemDef.modelZoom = 537;
             	itemDef.modelRotation1 = 215;
             	itemDef.modelRotation2 = 175;
@@ -2449,9 +2449,9 @@ public final class ItemDefinition {
             	itemDef.maleWearId = 70656;
             	itemDef.femaleWearId = 70685;
             break;
-            case 21045:
+            case 11615:
             	itemDef.setDefaults();
-            	itemDef.name = "Royal d'hide chaps";
+            	itemDef.name = "Dragonbone chaps";
             	itemDef.modelZoom = 1772;
             	itemDef.modelRotation1 = 512;
             	itemDef.modelRotation2 = 0;
@@ -2462,9 +2462,9 @@ public final class ItemDefinition {
             	itemDef.maleWearId = 70667;
             	itemDef.femaleWearId = 70696;
             break;
-            case 21044:
+            case 11618:
             	itemDef.setDefaults();
-            	itemDef.name = "Royal d'hide body";
+            	itemDef.name = "Dragonbone body";
             	itemDef.modelZoom = 1758;
             	itemDef.modelRotation1 = 512;
             	itemDef.modelRotation2 = 0;
@@ -2475,9 +2475,9 @@ public final class ItemDefinition {
             	itemDef.maleWearId = 70670;
             	itemDef.femaleWearId = 70699;
             break;
-            case 11619:
+            case 11616:
             	itemDef.setDefaults();
-            	itemDef.name = "Royal d'hide coif 100";
+            	itemDef.name = "Dragonbone coif";
             	itemDef.modelZoom = 780;
             	itemDef.modelRotation1 = 229;
             	itemDef.modelRotation2 = 177;
@@ -2489,6 +2489,20 @@ public final class ItemDefinition {
             	itemDef.maleWearId = 70663;
             	itemDef.femaleWearId = 70692;
             break;
+            case 11617:
+                itemDef.setDefaults();
+                itemDef.name = "Dragonbone boots (ranged)";
+                itemDef.modelZoom = 855;
+                itemDef.modelRotation1 = 242;
+                itemDef.modelRotation2 = 0;
+                itemDef.modelOffset1 = 3;
+                itemDef.modelOffsetY = 18;
+                itemDef.groundActions = new String[] { null, null, "Take", null, null };
+                itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
+                itemDef.modelID = 70719;
+                itemDef.maleWearId = 70652;
+                itemDef.femaleWearId = 70681;
+                break;
             case 11620:
             	itemDef.setDefaults();
             	itemDef.name = "Royal bolt stabiliser";
