@@ -2505,7 +2505,7 @@ public final class ItemDefinition {
                 break;
             case 11620:
             	itemDef.setDefaults();
-            	itemDef.name = "Dragonbone stabiliser";
+            	itemDef.name = "Dragonbone bolt stabiliser";
             	itemDef.modelZoom = 789;
             	itemDef.modelRotation1 = 175;
             	itemDef.modelRotation2 = 81;
