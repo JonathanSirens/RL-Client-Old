@@ -2407,7 +2407,7 @@ public final class ItemDefinition {
             	itemDef.maleWearId = 70672;
             	itemDef.femaleWearId = 70672;
             break;
-            case 21043:
+            case 21134:
             	itemDef.setDefaults();
             	itemDef.name = "Royal dragonhide";
             	itemDef.modelZoom = 1190;
@@ -2421,20 +2421,17 @@ public final class ItemDefinition {
             	itemDef.actions = new String[] { null, null, null, null, "Drop" };
             	itemDef.modelID = 2356;
             break;
-            case 116150:
-            	itemDef.setDefaults();
-            	itemDef.name = "Royal dragon leather";
-            	itemDef.modelZoom = 1190;
-            	itemDef.modelRotation1 = 440;
-            	itemDef.modelRotation2 = 116;
-            	itemDef.modelOffset1 = -1;
-            	itemDef.modelOffsetY = -2;
-            	itemDef.modifiedModelColors = new int[] { 49950 };
-            	itemDef.originalModelColors  = new int[] { 127 };
-            	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { "Craft", null, null, null, "Drop" };
-            	itemDef.modelID = 2338;
-            break;
+    		case 21043:
+    			itemDef.setDefaults();
+    			itemDef.immitate(get(1747));
+    			itemDef.modifiedModelColors = new int[] {
+    				22416, 22424
+    			};
+    			itemDef.originalModelColors  = new int[] {
+    				100, 226770
+    			};
+    			itemDef.name = "White dragonhide";
+    			break;
             case 11614:
             	itemDef.setDefaults();
             	itemDef.name = "Dragonbone vambraces";
@@ -2462,6 +2459,39 @@ public final class ItemDefinition {
             	itemDef.maleWearId = 70667;
             	itemDef.femaleWearId = 70696;
             break;
+    		case 21044:
+    			itemDef.setDefaults();
+    			itemDef.immitate(get(2503));
+    			itemDef.modifiedModelColors = new int[] {
+    				22416, 22424
+    			};
+    			itemDef.originalModelColors  = new int[] {
+    				100, 226770
+    			};
+    			itemDef.name = "White d'hide body";
+    			break;
+    		case 21045:
+    			itemDef.setDefaults();
+    			itemDef.immitate(get(2497));
+    			itemDef.modifiedModelColors = new int[] {
+    				22416, 22424, 7566, 57, 61, 1821, 5907, 21898, 20884, 926, 5012
+    			};
+    			itemDef.originalModelColors  = new int[] {
+    				100, 226770, 100, 100, 100, 100, 226770, 226770, 226770, 226770, 100
+    			};
+    			itemDef.name = "White d'hide chaps";
+    			break;
+    		case 21046:
+    			itemDef.setDefaults();
+    			itemDef.immitate(get(2491));
+    			itemDef.modifiedModelColors = new int[] {
+    				8472, 8720, 22416
+    			};
+    			itemDef.originalModelColors  = new int[] {
+    				100, 226770, 100
+    			};
+    			itemDef.name = "White d'hide vamb";
+    			break;
             case 11618:
             	itemDef.setDefaults();
             	itemDef.name = "Dragonbone body";
