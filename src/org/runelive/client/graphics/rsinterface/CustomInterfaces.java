@@ -3,6 +3,7 @@ package org.runelive.client.graphics.rsinterface;
 import java.util.ArrayList;
 
 import org.runelive.client.cache.definition.ItemDefinition;
+import org.runelive.Configuration;
 import org.runelive.client.RSInterface;
 import org.runelive.client.Skills;
 import org.runelive.client.accounts.Account;
@@ -687,7 +688,7 @@ public class CustomInterfaces extends RSInterface {
 	private static void quest_tab() {
 		RSInterface tab = addTabInterface(55065);
 		RSInterface scroll = addTabInterface(55066);
-		addText(55067, "RuneLive", fonts, 2, 0x588CD5, false, true);
+		addText(55067, "RuneLive "+Configuration.CLIENT_VERSION+"", fonts, 2, 0x588CD5, false, true);
 		addSpriteLoader(55068, 650);
 		addSpriteLoader(55069, 651);
 		addSpriteLoader(55070, 650);
