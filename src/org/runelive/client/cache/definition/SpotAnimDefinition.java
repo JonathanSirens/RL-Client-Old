@@ -29,8 +29,7 @@ public final class SpotAnimDefinition {
 		cache[2274].animationId = cache[2281].animationId;
 		cache[2274].rotation = 90;
 		cache[2274].animation = cache[2281].animation;
-		
-		System.out.println(""+cache[2699].modelId);
+
 		//Cerberus
 		cache[1242].modelId = 29306;
 		cache[1242].animationId = 4497;
