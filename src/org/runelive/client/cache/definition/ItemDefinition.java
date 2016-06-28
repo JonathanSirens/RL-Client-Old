@@ -5593,6 +5593,11 @@ public final class ItemDefinition {
                 itemDef.actions = new String[5];
                 itemDef.actions[0] = "Open";
                 break;
+            case 3849:
+            	itemDef.name = "Casket of horror";
+                itemDef.actions = new String[5];
+                itemDef.actions[0] = "Open";
+                break;
             case 15501:
                 itemDef.name = "Legendary Mystery Box";
                 itemDef.actions = new String[5];
