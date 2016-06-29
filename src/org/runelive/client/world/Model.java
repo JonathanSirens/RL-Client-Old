@@ -6,6 +6,7 @@ import org.runelive.client.Class33;
 import org.runelive.client.Client;
 import org.runelive.client.FrameReader;
 import org.runelive.client.SkinList;
+import org.runelive.client.cache.ondemand.CacheFileRequest;
 import org.runelive.client.cache.ondemand.CacheFileRequester;
 import org.runelive.client.graphics.Canvas2D;
 import org.runelive.client.io.ByteBuffer;
@@ -162,10 +163,10 @@ public class Model extends Animable {
 		}
 		ModelHeader modelHeader = modelHeaderCache[fileId];
 		if (modelHeader == null) {
-			int cacheIndex = 0;//default model index
+			int cacheIndex = CacheFileRequest.MODEL;//default model index
 			if (fileId >= 65535) {
 				fileId -= 65535;
-				cacheIndex = 5;//model_extended index
+				cacheIndex = CacheFileRequest.MODEL_EXT;//model_extended index
 			}
 			onDemandRequester.pushRequest(cacheIndex, fileId);
 			return null;
@@ -180,10 +181,10 @@ public class Model extends Animable {
 		}
 		ModelHeader modelHeader = modelHeaderCache[fileId];
 		if (modelHeader == null) {
-			int cacheIndex = 0;//default model index
+			int cacheIndex = CacheFileRequest.MODEL;//default model index
 			if (fileId >= 65535) {
 				fileId -= 65535;
-				cacheIndex = 5;//model_extended index
+				cacheIndex = CacheFileRequest.MODEL_EXT;//model_extended index
 			}
 			onDemandRequester.pushRequest(cacheIndex, fileId);
 			return false;

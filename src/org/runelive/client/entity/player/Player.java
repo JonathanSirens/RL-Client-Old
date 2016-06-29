@@ -252,7 +252,7 @@ public final class Player extends Entity {
 					k2 = j1;
 				}
 
-				if (k2 >= 256 && k2 < 512 && !IdentityKit.cache[k2 - 256].method537()) {
+				if (k2 >= 256 && k2 < 512 && !IdentityKit.cache[k2 - 256].isBodyModelLoaded()) {
 					flag = true;
 				}
 
@@ -288,7 +288,7 @@ public final class Player extends Entity {
 				}
 
 				if (i3 >= 256 && i3 < 512) {
-					Model model_3 = IdentityKit.cache[i3 - 256].method538();
+					Model model_3 = IdentityKit.cache[i3 - 256].getBodyModel();
 
 					if (model_3 != null) {
 						aclass30_sub2_sub4_sub6s[j2++] = model_3;
@@ -353,7 +353,7 @@ public final class Player extends Entity {
 		boolean flag = false;
 		for (int i = 0; i < 12; i++) {
 			int j = equipment[i];
-			if (j >= 256 && j < 512 && !IdentityKit.cache[j - 256].method539()) {
+			if (j >= 256 && j < 512 && !IdentityKit.cache[j - 256].isDialogModelsLoaded()) {
 				flag = true;
 			}
 			if (j >= 512 && !ItemDefinition.get(j - 512).dialogueModelFetched(myGender)) {
@@ -369,7 +369,7 @@ public final class Player extends Entity {
 		for (int l = 0; l < 12; l++) {
 			int i1 = equipment[l];
 			if (i1 >= 256 && i1 < 512) {
-				Model model_1 = IdentityKit.cache[i1 - 256].method540();
+				Model model_1 = IdentityKit.cache[i1 - 256].getDialogModel();
 				if (model_1 != null) {
 					models[k++] = model_1;
 				}

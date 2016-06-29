@@ -4,11 +4,12 @@ import org.runelive.task.Task;
 import org.runelive.task.TaskManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public final class PriorityRequestHandler {
 
-    private final List<Integer> priorityMapFiles;
+    private List<Integer>[] priorityFiles;
     private final CacheFileRequester requester;
     private boolean running;
     private boolean checkTaskRunning;
@@ -18,27 +19,80 @@ public final class PriorityRequestHandler {
     }
 
     public PriorityRequestHandler(CacheFileRequester requester) {
-        this.priorityMapFiles = new ArrayList<>();
+        this.priorityFiles = new ArrayList[6];
+        for (int index = 0; index < this.priorityFiles.length; index++) {
+            this.priorityFiles[index] = new ArrayList<>();
+        }
         this.requester = requester;
     }
 
-    public void addMap(int mapFileId) {
-        if (this.priorityMapFiles.contains(mapFileId)) {
+    public void addFile(int fileIndex, int fileId) {
+        if (this.priorityFiles[fileIndex].contains(fileId)) {
             return;
         }
-        this.priorityMapFiles.add(mapFileId);
+        this.priorityFiles[fileIndex].add(fileId);
     }
 
-    public boolean containsMap(int mapFileId) {
-        return this.priorityMapFiles.contains(mapFileId);
+    public void addModel(int modelFileId) {
+        if (modelFileId >= 65535) {
+            modelFileId -= 65535;
+            this.addFile(CacheFileRequest.MODEL_EXT, modelFileId);
+            return;
+        }
+        this.addFile(CacheFileRequest.MODEL, modelFileId);
+    }
+
+    public void addAnim(int animFileId) {
+        this.addFile(CacheFileRequest.ANIM, animFileId);
+    }
+
+    public void addMap(int mapFileId) {
+        this.addFile(CacheFileRequest.MAP, mapFileId);
     }
 
     public void requestFiles() {
-        for (int mapFileId : this.priorityMapFiles) {
-            //System.out.println("Pushing priority request for map file: " + mapFileId);
-            this.requester.pushRequest(CacheFileRequest.MAP, mapFileId);
+        for (int index = 0; index < this.priorityFiles.length; index++) {
+            if (this.priorityFiles[index].isEmpty()) {
+                continue;
+            }
+            for (int fileId : this.priorityFiles[index]) {
+                this.requester.pushRequest(index, fileId);
+            }
         }
         this.running = true;
+    }
+
+    private boolean checkRequests() {
+        for (int index = 0; index < this.priorityFiles.length; index++) {
+            if (this.priorityFiles[index].isEmpty()) {
+                continue;
+            }
+            for (int fileId : this.priorityFiles[index]) {
+                if (this.requester.remainingContains(index, fileId)) {
+                    return false;
+                }
+            }
+        }
+        if (this.requester.getRemaining() == 0) {
+            System.out.println("All required files downloaded.");
+            this.running = false;
+            for (int list = 0; list < this.priorityFiles.length; list++) {
+                this.priorityFiles[list].clear();
+            }
+            this.priorityFiles = null;
+            System.gc();
+            return true;
+        }
+        return true;
+    }
+
+    public boolean process() {
+        if (!this.checkTaskRunning) {
+            this.checkTaskRunning = true;
+            startCheckTask();
+            return true;
+        }
+        return true;
     }
 
     private void startCheckTask() {
@@ -55,29 +109,6 @@ public final class PriorityRequestHandler {
                 }
             }
         });
-    }
-
-    private boolean checkRequests() {
-        for (int mapFileId : this.priorityMapFiles) {
-            if (this.requester.remainingContains(CacheFileRequest.MAP, mapFileId)) {
-                return false;
-            }
-        }
-        if (this.requester.getRemaining() == 0) {
-            System.out.println("All required files downloaded.");
-            this.running = false;
-            return true;
-        }
-        return true;
-    }
-
-    public boolean process() {
-        if (!this.checkTaskRunning) {
-            this.checkTaskRunning = true;
-            startCheckTask();
-            return true;
-        }
-        return true;
     }
 
 }

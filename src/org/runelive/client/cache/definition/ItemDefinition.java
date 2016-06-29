@@ -2,6 +2,7 @@ package org.runelive.client.cache.definition;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 import org.runelive.client.Client;
 import org.runelive.client.RandomColor;
@@ -6765,17 +6766,47 @@ public final class ItemDefinition {
         }
     }
 
+    public static void printModelIds() {
+        /*java.util.List<Integer> modelIds = new ArrayList<>();
+        for (int index = 0; index < totalItems; index++) {
+            ItemDefinition def = get(index);
+            if (def == null) {
+                continue;
+            }
+            //modelIds.add(def.modelID);
+            if (def.maleWearId > 0 && !modelIds.contains(def.maleWearId)) {
+                modelIds.add(def.maleWearId);
+            }
+            if (def.maleWearId2 > 0 && !modelIds.contains(def.maleWearId2)) {
+                modelIds.add(def.maleWearId2);
+            }
+            if (def.maleWearId3 > 0 && !modelIds.contains(def.maleWearId3)) {
+                modelIds.add(def.maleWearId3);
+            }
+            if (def.femaleWearId > 0 && !modelIds.contains(def.femaleWearId)) {
+                modelIds.add(def.femaleWearId);
+            }
+            if (def.femaleWearId2 > 0 && !modelIds.contains(def.femaleWearId2)) {
+                modelIds.add(def.femaleWearId2);
+            }
+            if (def.femaleWearId3 > 0 && !modelIds.contains(def.femaleWearId3)) {
+                modelIds.add(def.femaleWearId3);
+            }
+        }
+        System.out.println("Item models: " + modelIds.toString());*/
+    }
+
     public String[] actions;
-    private int anInt162;
-    int anInt164;
+    private int femaleWearId3;
+    int femaleWearId2;
     public int maleWearId;
     private int anInt166;
     private int anInt167;
     private int anInt173;
     private int maleDialogue;
     private int anInt184;
-    private int anInt185;
-    int anInt188;
+    private int maleWearId3;
+    int maleWearId2;
     private int anInt191;
     private int anInt192;
     private int anInt196;
@@ -6919,13 +6950,13 @@ public final class ItemDefinition {
 
     public boolean method195(int j) {
         int k = maleWearId;
-        int l = anInt188;
-        int i1 = anInt185;
+        int l = maleWearId2;
+        int i1 = maleWearId3;
 
         if (j == 1) {
             k = femaleWearId;
-            l = anInt164;
-            i1 = anInt162;
+            l = femaleWearId2;
+            i1 = femaleWearId3;
         }
 
         if (k == -1) {
@@ -6951,13 +6982,13 @@ public final class ItemDefinition {
 
     public Model method196(int i) {
         int j = maleWearId;
-        int k = anInt188;
-        int l = anInt185;
+        int k = maleWearId2;
+        int l = maleWearId3;
 
         if (i == 1) {
             j = femaleWearId;
-            k = anInt164;
-            l = anInt162;
+            k = femaleWearId2;
+            l = femaleWearId3;
         }
 
         if (j == -1) {
@@ -7043,11 +7074,11 @@ public final class ItemDefinition {
         modelID = other.modelID;
         actions = other.actions;
         maleWearId = other.maleWearId;
-        anInt188 = other.anInt188;
-        anInt185 = other.anInt185;
+        maleWearId2 = other.maleWearId2;
+        maleWearId3 = other.maleWearId3;
         femaleWearId = other.femaleWearId;
         femaleWearId = other.femaleWearId;
-        anInt162 = other.anInt162;
+        femaleWearId3 = other.femaleWearId3;
         maleDialogue = other.maleDialogue;
         anInt166 = other.anInt166;
         femaleDialogue = other.femaleDialogue;
@@ -7096,12 +7127,12 @@ public final class ItemDefinition {
                 maleWearId = buffer.getUnsignedShort();
                 maleWieldY = buffer.getSignedByte();
             } else if (opcode == 24) {
-                anInt188 = buffer.getUnsignedShort();
+                maleWearId2 = buffer.getUnsignedShort();
             } else if (opcode == 25) {
                 femaleWearId = buffer.getUnsignedShort();
                 femaleWieldY = buffer.getSignedByte();
             } else if (opcode == 26) {
-                anInt164 = buffer.getUnsignedShort();
+                femaleWearId2 = buffer.getUnsignedShort();
             } else if (opcode >= 30 && opcode < 35) {
                 if (groundActions == null) {
                     groundActions = new String[5];
@@ -7128,9 +7159,9 @@ public final class ItemDefinition {
                     originalModelColors[k] = buffer.getUnsignedShort();
                 }
             } else if (opcode == 78) {
-                anInt185 = buffer.getUnsignedShort();
+                maleWearId3 = buffer.getUnsignedShort();
             } else if (opcode == 79) {
-                anInt162 = buffer.getUnsignedShort();
+                femaleWearId3 = buffer.getUnsignedShort();
             } else if (opcode == 90) {
                 maleDialogue = buffer.getUnsignedShort();
             } else if (opcode == 91) {
@@ -7193,11 +7224,11 @@ public final class ItemDefinition {
         lendID = -1;
         lendTemplateID = -1;
         maleWearId = -1;
-        anInt188 = -1;
+        maleWearId2 = -1;
         femaleWearId = -1;
-        anInt164 = -1;
-        anInt185 = -1;
-        anInt162 = -1;
+        femaleWearId2 = -1;
+        maleWearId3 = -1;
+        femaleWearId3 = -1;
         maleDialogue = -1;
         anInt166 = -1;
         femaleDialogue = -1;
@@ -7234,18 +7265,18 @@ public final class ItemDefinition {
         ItemDefinition definition = get(lendID);
         anInt166 = definition.anInt166;
         originalModelColors = definition.originalModelColors;
-        anInt185 = definition.anInt185;
+        maleWearId3 = definition.maleWearId3;
         femaleWearId = definition.femaleWearId;
         anInt173 = definition.anInt173;
         maleDialogue = definition.maleDialogue;
         groundActions = definition.groundActions;
         maleWearId = definition.maleWearId;
         name = definition.name;
-        anInt188 = definition.anInt188;
+        maleWearId2 = definition.maleWearId2;
         membersObject = definition.membersObject;
         femaleDialogue = definition.femaleDialogue;
-        anInt164 = definition.anInt164;
-        anInt162 = definition.anInt162;
+        femaleWearId2 = definition.femaleWearId2;
+        femaleWearId3 = definition.femaleWearId3;
         modifiedModelColors = definition.modifiedModelColors;
         team = definition.team;
 

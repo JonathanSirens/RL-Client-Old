@@ -5862,7 +5862,7 @@ public class Client extends GameRenderer {
 				for (int k1 = 0; k1 < 7; k1++) {
 					int l1 = myAppearance[k1];
 
-					if (l1 >= 0 && !IdentityKit.cache[l1].method537()) {
+					if (l1 >= 0 && !IdentityKit.cache[l1].isBodyModelLoaded()) {
 						return;
 					}
 				}
@@ -5875,7 +5875,7 @@ public class Client extends GameRenderer {
 					int k2 = myAppearance[j2];
 
 					if (k2 >= 0) {
-						aclass30_sub2_sub4_sub6s[i2++] = IdentityKit.cache[k2].method538();
+						aclass30_sub2_sub4_sub6s[i2++] = IdentityKit.cache[k2].getBodyModel();
 					}
 				}
 
@@ -16088,6 +16088,8 @@ public class Client extends GameRenderer {
 			setLoadingText(80, "Unpacked config");
 			 //ItemDefinition.dumpItemModelsForId(13653);
 			// onDemandFetcher.dump();
+
+			//ItemDefinition.printModelIds();
 
 			if (!isLowDetail()) {
 				setLoadingText(85, "Unpacking sounds..");

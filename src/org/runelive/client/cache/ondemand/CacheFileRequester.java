@@ -919,13 +919,22 @@ public final class CacheFileRequester implements Runnable {
 			anIntArray1348[k2] = stream2.getUnsignedByte();
 		}
 
-		data = archive.get("map_priorities.dat");
+		data = archive.get("file_priorities.dat");
 		ByteBuffer buffer = new ByteBuffer(data);
-		int size = buffer.getMediumInt();
-		for (int index = 0; index < size; index++) {
-			int id = buffer.getMediumInt();
-			byte priority = buffer.getByte();
-			this.priorityRequestHandler.addMap(id);
+		int listCount = buffer.getByte();
+		for (int list = 0; list < listCount; list++) {
+			int size = buffer.getMediumInt();
+			for (int index = 0; index < size; index++) {
+				int id = buffer.getMediumInt();
+				byte priority = buffer.getByte();
+				if (list == 0) {
+					this.priorityRequestHandler.addModel(id);
+				} else if (list == 1) {
+					this.priorityRequestHandler.addAnim(id);
+				} else if (list == 3) {
+					this.priorityRequestHandler.addMap(id);
+				}
+			}
 		}
 
 		clientInstance = client1;
