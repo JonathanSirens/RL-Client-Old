@@ -415,9 +415,27 @@ public class MapArea extends GameFrame {
 			client.menuActionID[1] = 10003;
 			client.menuActionRow = 2;
 		}
-		
+		if (mouseInRegion(client, getScreenMode().ordinal() == 0 ? client.clientWidth - 74 : client.getOrbX(3),
+				client.getOrbY(3),
+				(getScreenMode().ordinal() == 0 ? client.clientWidth - 74 : client.getOrbX(3)) + 57,
+				client.getOrbY(3) + 34)) {
+			client.menuActionName[4] = "Take BoB";
+			client.menuActionID[4] = 1118;
+			client.menuActionName[3] = "Call Familiar";
+			client.menuActionID[3] = 1119;
+			client.menuActionName[2] = "Renew Familiar";
+			client.menuActionID[2] = 1120;
+			client.menuActionName[1] = "Dismiss Familiar";
+			client.menuActionID[1] = 1121;
+			client.menuActionRow = 5;
+		}
 	}
-
+	public boolean mouseInRegion(Client client, int x1, int y1, int x2, int y2) {
+		if (client.mouseX >= x1 && client.mouseX <= x2 && client.mouseY >= y1
+				&& client.mouseY <= y2)
+			return true;
+		return false;
+	}
 	/*
 	 * public void updateMinimapImage() { if(GameFrame.getScreenMode() ==
 	 * ScreenMode.FIXED) return; CacheSpriteLoader.getCacheSprite(449].drawSprite(getxPos(),
