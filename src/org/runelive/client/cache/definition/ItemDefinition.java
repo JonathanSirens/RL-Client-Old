@@ -140,6 +140,10 @@ public final class ItemDefinition {
                 itemDef.actions = new String[5];
                 itemDef.actions[0] = "Open";
                 break;
+            case 12437:
+                itemDef.actions = new String[5];
+                itemDef.actions[0] = "Activate";
+                break;
             case 11211:
                 itemDef.actions = new String[5];
                 itemDef.actions[0] = "Jiggle";
@@ -155,7 +159,7 @@ public final class ItemDefinition {
                 itemDef.actions[0] = "Shovel";
                 break;
             case 9722:
-            	itemDef.name = "Key of Death";
+            	itemDef.name = "Key of death";
                 itemDef.originalModelColors = new int[]{
                 		2866, 2858, 2870
                 };
@@ -165,7 +169,7 @@ public final class ItemDefinition {
             	break;
             case 9725:
             	itemDef.immitate(get(9722));
-            	itemDef.name = "Key of Fear";
+            	itemDef.name = "Key of fear";
                 itemDef.originalModelColors = new int[]{
                 		933, 933 - 8, 933 + 12
                 };
@@ -175,7 +179,7 @@ public final class ItemDefinition {
             	break;
             case 9724:
             	itemDef.immitate(get(9722));
-            	itemDef.name = "Key of Cobra";
+            	itemDef.name = "Key of cobra";
                 itemDef.modifiedModelColors = new int[]{
                 		226770, 226764, 226774
                 };
@@ -185,7 +189,7 @@ public final class ItemDefinition {
             	break;
             case 9723:
             	itemDef.immitate(get(9722));
-            	itemDef.name = "Key of Blitz";
+            	itemDef.name = "Key of blitz";
                 itemDef.modifiedModelColors = new int[]{
                 		2866, 2858, 2870
                 };
@@ -212,7 +216,7 @@ public final class ItemDefinition {
                 break;
             case 21089:
                 itemDef.modelID = 66994;
-                itemDef.name = "Drygore Longsword";
+                itemDef.name = "Drygore longsword";
                 itemDef.description2 = "A powerful sword made from the chitlin of the Kalphite King.";
                 itemDef.modelZoom = 1493;
                 itemDef.modelRotation1 = 618;
@@ -229,7 +233,7 @@ public final class ItemDefinition {
                 break;
             case 21090:
                 itemDef.modelID = 66998;
-                itemDef.name = "Off-hand Drygore Longsword";
+                itemDef.name = "Off-hand drygore longsword";
                 itemDef.description2 = "A powerful off-hand sword made from the chitlin of the Kalphite King.";
                 itemDef.modelZoom = 1493;
                 itemDef.modelRotation1 = 618;
@@ -246,7 +250,7 @@ public final class ItemDefinition {
                 break;
             case 21091:
                 itemDef.modelID = 67000;
-                itemDef.name = "Drygore Rapier";
+                itemDef.name = "Drygore rapier";
                 itemDef.description2 = "A powerful rapier made from the chitlin of the Kalphite King.";
                 itemDef.modelZoom = 1493;
                 itemDef.modelRotation1 = 618;
@@ -263,7 +267,7 @@ public final class ItemDefinition {
                 break;
             case 21092:
                 itemDef.modelID = 67004;
-                itemDef.name = "Off-hand Drygore Rapier";
+                itemDef.name = "Off-hand drygore rapier";
                 itemDef.description2 = "A powerful off-hand rapier made from the chitlin of the Kalphite King.";
                 itemDef.modelZoom = 1493;
                 itemDef.modelRotation1 = 618;
@@ -405,7 +409,7 @@ public final class ItemDefinition {
                 break;
             case 21100:
                 itemDef.modelID = 67007;
-                itemDef.name = "Drygore Mace";
+                itemDef.name = "Drygore mace";
                 itemDef.description2 = "A powerful mace made from the chitlin of the Kalphite King.";
                 itemDef.modelZoom = 1493;
                 itemDef.modelRotation1 = 618;
@@ -423,7 +427,7 @@ public final class ItemDefinition {
 
             case 21101:
                 itemDef.modelID = 67011;
-                itemDef.name = "Off-hand Drygore Mace";
+                itemDef.name = "Off-hand drygore mace";
                 itemDef.description2 = "A powerful off-hand mace made from the chitlin of the Kalphite King.";
                 itemDef.modelZoom = 1493;
                 itemDef.modelRotation1 = 618;
@@ -472,7 +476,7 @@ public final class ItemDefinition {
                 break;
             case 21117:
                 itemDef.immitate(get(6199));
-                itemDef.name = "Achievement Box";
+                itemDef.name = "Achievement box";
                 itemDef.groundActions[2] = "Take";
                 itemDef.actions = new String[]{"Open", null, null, null, null, "Drop"};
                 break;
@@ -517,7 +521,7 @@ public final class ItemDefinition {
                 break;
             case 13576:
                 itemDef.setDefaults();
-                itemDef.name = "Dragon Warhammer";
+                itemDef.name = "Dragon warhammer";
                 itemDef.modelID = 70010;
                 itemDef.modelRotation1 = 1510;
                 itemDef.modelRotation2 = 1785;
@@ -528,7 +532,7 @@ public final class ItemDefinition {
                 itemDef.femaleWearId = 70009;
                 break;
             case 12704:
-                itemDef.name = "Infernal Pickaxe";
+                itemDef.name = "Infernal pickaxe";
                 itemDef.modelID = 29393;
                 itemDef.maleWearId = 29260;
                 itemDef.femaleWearId = 29260;
@@ -566,7 +570,7 @@ public final class ItemDefinition {
                 break;
 
             case 12710:
-                itemDef.name = "Primordial Boots";
+                itemDef.name = "Primordial boots";
                 itemDef.modelID = 29397;
                 itemDef.modelZoom = 900;
                 itemDef.modelRotation1 = 165;
@@ -593,7 +597,7 @@ public final class ItemDefinition {
                 itemDef.actions[1] = "Wear";
                 break;
             case 691:
-                itemDef.name = "Proof of Kill";
+                itemDef.name = "Proof of kill";
                 itemDef.actions = new String[]{null, null, null, null, "Drop"};
                 itemDef.description2 = "I should give this to the king to prove my loyalty.";
                 break;
@@ -1982,69 +1986,6 @@ public final class ItemDefinition {
                 itemDef.groundActions = new String[]{null, null, "Take", null, null};
                 itemDef.actions = new String[]{null, null, "Summon", null, "Drop"};
                 break;
-            case 1853:
-                itemDef2 = ItemDefinition.get(10944);
-                itemDef.name = "Premium Scroll";
-                itemDef.description2 = "A scroll that can be claimed for Premium Donator.";
-                itemDef.modifiedModelColors = new int[]{
-                        9164, 6742
-                };
-                itemDef.originalModelColors = new int[]{
-                        957, 64278
-                };
-                itemDef.modelID = itemDef2.modelID;
-                itemDef.modelOffset1 = itemDef2.modelOffset1;
-                itemDef.modelOffsetX = itemDef2.modelOffsetX;
-                itemDef.modelOffsetY = itemDef2.modelOffsetY;
-                itemDef.modelRotation2 = itemDef2.modelRotation2;
-                itemDef.modelRotation1 = itemDef2.modelRotation1;
-                itemDef.modelZoom = itemDef2.modelZoom;
-                itemDef.actions = new String[5];
-                itemDef.actions[0] = "Claim";
-                itemDef.actions[4] = "Drop";
-                break;
-            case 1854:
-                itemDef2 = ItemDefinition.get(10944);
-                itemDef.name = "Prime Scroll";
-                itemDef.description2 = "A scroll that can be claimed for Prime Donator.";
-                itemDef.modifiedModelColors = new int[]{
-                        9164, 6742
-                };
-                itemDef.originalModelColors = new int[]{
-                        11057, 11057
-                };
-                itemDef.modelID = itemDef2.modelID;
-                itemDef.modelOffset1 = itemDef2.modelOffset1;
-                itemDef.modelOffsetX = itemDef2.modelOffsetX;
-                itemDef.modelOffsetY = itemDef2.modelOffsetY;
-                itemDef.modelRotation2 = itemDef2.modelRotation2;
-                itemDef.modelRotation1 = itemDef2.modelRotation1;
-                itemDef.modelZoom = itemDef2.modelZoom;
-                itemDef.actions = new String[5];
-                itemDef.actions[0] = "Claim";
-                itemDef.actions[4] = "Drop";
-                break;
-            case 1855:
-                itemDef2 = ItemDefinition.get(10944);
-                itemDef.name = "Platinum Scroll";
-                itemDef.description2 = "A scroll that can be claimed for Platinum Donator.";
-                itemDef.modifiedModelColors = new int[]{
-                        9164, 6742
-                };
-                itemDef.originalModelColors = new int[]{
-                        95, 95
-                };
-                itemDef.modelID = itemDef2.modelID;
-                itemDef.modelOffset1 = itemDef2.modelOffset1;
-                itemDef.modelOffsetX = itemDef2.modelOffsetX;
-                itemDef.modelOffsetY = itemDef2.modelOffsetY;
-                itemDef.modelRotation2 = itemDef2.modelRotation2;
-                itemDef.modelRotation1 = itemDef2.modelRotation1;
-                itemDef.modelZoom = itemDef2.modelZoom;
-                itemDef.actions = new String[5];
-                itemDef.actions[0] = "Claim";
-                itemDef.actions[4] = "Drop";
-                break;
             case 11979:
                 itemDef.setDefaults();
                 itemDef.immitate(get(12458));
@@ -2058,7 +1999,7 @@ public final class ItemDefinition {
             case 1546:
             case 1547:
             case 1548:
-                itemDef.name = "Wilderness Key";
+                itemDef.name = "Wilderness key";
                 itemDef.description2 = "This key is used in the deep wilderness.";
                 break;
             case 14667:
@@ -2117,7 +2058,7 @@ public final class ItemDefinition {
                 itemDef.actions = new String[]{null, null, null, null, null, null};
                 break;
             case 17402:
-                itemDef.name = "Damaged Hammer";
+                itemDef.name = "Damaged hammer";
                 itemDef.actions = new String[]{null, null, null, null, null, null};
                 itemDef.modelZoom = 760;
                 itemDef.modelRotation2 = 28;
@@ -2129,12 +2070,12 @@ public final class ItemDefinition {
                 itemDef.certTemplateID = 799;
                 break;
             case 15009:
-                itemDef.name = "Gold Ring";
+                itemDef.name = "Gold ring";
                 itemDef.actions = new String[]{null, null, null, null, null, null};
                 break;
             case 15010:
                 itemDef.modelID = 2429;
-                itemDef.name = "Gold Ring";
+                itemDef.name = "Gold ring";
                 itemDef.actions = new String[]{null, null, null, null, null, null};
                 itemDef.modelZoom = 760;
                 itemDef.modelRotation2 = 28;
@@ -5539,7 +5480,7 @@ public final class ItemDefinition {
                 itemDef.originalModelColors[0] = 924; // colors
                 itemDef.maleWearId = 15413;
                 itemDef.femaleWearId = 15413;
-                itemDef.name = "Dragon Defender";
+                itemDef.name = "Dragon defender";
                 itemDef.description2 = "A pointy off-hand knife.";
                 break;
             case 20072:
@@ -5551,7 +5492,7 @@ public final class ItemDefinition {
                 itemDef.originalModelColors[0] = 924; // colors
                 itemDef.maleWearId = 15413;
                 itemDef.femaleWearId = 15413;
-                itemDef.name = "Dragon Defender";
+                itemDef.name = "Dragon defender";
                 itemDef.description2 = "A pointy off-hand knife.";
                 break;
             case 10934:
@@ -5586,11 +5527,11 @@ public final class ItemDefinition {
                 itemDef.actions = new String[]{null, "Wear", null, null, null, null};
                 break;
             case 20084:
-                itemDef.name = "Golden Maul";
+                itemDef.name = "Golden maul";
                 break;
             
             case 6199:
-                itemDef.name = "Mystery Box";
+                itemDef.name = "Mystery box";
                 itemDef.actions = new String[5];
                 itemDef.actions[0] = "Open";
                 break;
@@ -5600,7 +5541,7 @@ public final class ItemDefinition {
                 itemDef.actions[0] = "Open";
                 break;
             case 15501:
-                itemDef.name = "Legendary Mystery Box";
+                itemDef.name = "Legendary mystery box";
                 itemDef.actions = new String[5];
                 itemDef.actions[0] = "Open";
                 break;
@@ -5655,7 +5596,7 @@ public final class ItemDefinition {
                 break;
             case 14019:
                 itemDef.modelID = 65262;
-                itemDef.name = "Max Cape";
+                itemDef.name = "Max cape";
                 itemDef.description2 = "A cape worn by those who've achieved 99 in all skills.";
                 itemDef.modelZoom = 1385;
                 itemDef.modelOffset1 = 0;
@@ -5685,7 +5626,7 @@ public final class ItemDefinition {
                 break;
             case 14021:
                 itemDef.modelID = 65261;
-                itemDef.name = "Veteran Cape";
+                itemDef.name = "Veteran cape";
                 itemDef.description2 = "A cape worn by Chivalry's veterans.";
                 itemDef.modelZoom = 760;
                 itemDef.modelOffset1 = 0;
