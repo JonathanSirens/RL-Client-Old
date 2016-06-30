@@ -34,6 +34,7 @@ public final class Player extends Entity {
 	public int anInt1722;
 	public final int[] anIntArray1700;
 	public int combatLevel;
+	public int summoningAdd;
 	public MobDefinition desc;
 	public final int[] equipment;
 	public int headIcon;
@@ -467,6 +468,7 @@ public final class Player extends Entity {
 		}
 		name = TextClass.fixName(TextClass.nameForLong(stream.getLong()));
 		combatLevel = stream.getUnsignedByte();
+		summoningAdd = stream.getUnsignedByte();
 		playerRights = stream.getUnsignedShort();
 		loyaltyRank = stream.getUnsignedShort();
 		visible = true;

@@ -2175,6 +2175,8 @@ public class Client extends GameRenderer {
 		if(player.loyaltyRank == 0) {
 			if (player.combatLevel == 0) {
 				menuTooltip = title + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel + ")";
+			} else if(player.summoningAdd > 0) {
+				menuTooltip += title + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel + "+"+player.summoningAdd+")";
 			} else {
 				menuTooltip += title + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel + ")";
 			}
@@ -2182,6 +2184,8 @@ public class Client extends GameRenderer {
 			String rank = loyaltyRank(player.loyaltyRank);
 			if (player.combatLevel == 0) {
 				menuTooltip = title + "@or2@" + rank + "@whi@" + (rank.length() > 0 ? " " : "") + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel + ")";
+			} else if(player.summoningAdd > 0) {
+				menuTooltip += title + "@or2@" + rank + "@whi@" + (rank.length() > 0 ? " " : "") + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel + "+"+player.summoningAdd+")";
 			} else {
 				menuTooltip += title + "@or2@" + rank + "@whi@" + (rank.length() > 0 ? " " : "") + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel + ")";
 			}
