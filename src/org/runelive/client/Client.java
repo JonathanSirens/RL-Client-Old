@@ -5616,9 +5616,9 @@ public class Client extends GameRenderer {
 			int j = announcementTimer / 50;
 			int l = j / announcementTimer;
 			j %= 60;
-			normalText.method385(0xff0000, announcement, GameFrame.isFixed() ? 329 : getScreenHeight() - 168, 4);
+			normalText.method385(0xffff00, announcement, GameFrame.isFixed() ? 329 : getScreenHeight() - 168, 4);
 		} else if(announcementTimer == 0) {
-			normalText.method385(0xff0000, "", GameFrame.isFixed() ? 329 : getScreenHeight() - 168, 4);
+			normalText.method385(0xffff00, "", GameFrame.isFixed() ? 329 : getScreenHeight() - 168, 4);
 		}
 	}
 
