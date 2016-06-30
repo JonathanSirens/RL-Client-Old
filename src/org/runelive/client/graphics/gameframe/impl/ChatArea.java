@@ -484,6 +484,9 @@ public class ChatArea extends GameFrame {
 									if(playerRights == 5) {
 										xPos += 4;
 									}
+									if(playerRights == 4) {
+										xPos += 2;
+									}
 									textDrawingArea.drawBasicString(name + ":", xPos + getOffSetX(), positionY + getOffSetY(), screenMode == ScreenMode.FIXED ? 0 : 0xffffff, screenMode == ScreenMode.FIXED ? -1 : 0, true);
 									xPos += textDrawingArea.getTextWidth(name) + 8;
 									textDrawingArea.drawBasicString(client.chatMessages[i], xPos + getOffSetX(), positionY + getOffSetY(), screenMode == ScreenMode.FIXED ? 0x800000 : 0xFF5256, screenMode == ScreenMode.FIXED ? -1 : 0x000000, true);
