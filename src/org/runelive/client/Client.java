@@ -16280,7 +16280,7 @@ public class Client extends GameRenderer {
 		modIcons[11] = CacheSpriteLoader.getCacheSprite2(38); //Uber Donator
 		modIcons[12] = CacheSpriteLoader.getCacheSprite(840); //Regular Ironman
 		modIcons[13] = CacheSpriteLoader.getCacheSprite(839); //Hardcore Ironman
-		modIcons[14] = CacheSpriteLoader.getCacheSprite2(72); //Community Manager
+		modIcons[14] = CacheSpriteLoader.getCacheSprite2(3); //Manager
 		modIcons[15] = CacheSpriteLoader.getCacheSprite2(66); //Wiki Editor
 		modIcons[16] = CacheSpriteLoader.getCacheSprite2(65); //Wiki Manager
 		modIcons[17] = CacheSpriteLoader.getCacheSprite2(90); //Staff Manager
