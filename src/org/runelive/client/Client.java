@@ -955,6 +955,7 @@ public class Client extends GameRenderer {
 	private int spinPacketConstantSpeed;
 	private int spinPacketVariableSpeed;
 	public int systemUpdateTimer;
+	public int systemRestartTimer;
 	public int announcementTimer;
 	public String announcement = "";
 	private int anInt1129;// 377
@@ -2942,7 +2943,7 @@ public class Client extends GameRenderer {
 
 		int yOffsetPos = 0;
 
-		if (systemUpdateTimer != 0 || announcementTimer != 0) {
+		if (systemUpdateTimer != 0 || announcementTimer != 0 || systemRestartTimer != 0) {
 			yOffsetPos = 1;
 		}
 
@@ -5619,7 +5620,6 @@ public class Client extends GameRenderer {
 		} else if(announcementTimer == 0) {
 			normalText.method385(0xffff00, "", GameFrame.isFixed() ? 329 : getScreenHeight() - 168, 4);
 		}
-		System.out.println(""+announcementTimer);
 	}
 
 	private void drawAnimatedWorldBackground(boolean display) {
@@ -7881,7 +7881,7 @@ public class Client extends GameRenderer {
 		}
 		TextDrawingArea textDrawingArea = normalText;
 		int messages = 0;
-		if (systemUpdateTimer != 0 || announcementTimer != 0) {
+		if (systemUpdateTimer != 0 || announcementTimer != 0 || systemRestartTimer != 0) {
 			messages = 1;
 		}
 		for (int index = 0; index < 100; index++) {
@@ -8848,6 +8848,9 @@ public class Client extends GameRenderer {
 		}
 		if (announcementTimer >= 1) {
 			announcementTimer--;
+		}
+		if (systemRestartTimer > 1) {
+			systemRestartTimer --;
 		}
 		if (anInt1011 > 0) {
 			anInt1011--;
@@ -13067,6 +13070,11 @@ public class Client extends GameRenderer {
 				pktType = -1;
 				return true;
 				
+			case 118:
+				systemRestartTimer = getInputBuffer().getShortBigEndian() * 30;
+				pktType = -1;
+				return true;
+				
 			case 116:
 				String textie = getInputBuffer().getString();
 				int time = getInputBuffer().getShort();
@@ -14735,6 +14743,7 @@ public class Client extends GameRenderer {
 		client.pktSize = 0;
 		client.anInt1009 = 0;
 		client.systemUpdateTimer = 0;
+		client.announcementTimer = 0;
 		client.anInt1011 = 0;
 		client.anInt855 = 0;
 		client.menuActionRow = 0;
