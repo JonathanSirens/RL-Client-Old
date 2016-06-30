@@ -955,6 +955,8 @@ public class Client extends GameRenderer {
 	private int spinPacketConstantSpeed;
 	private int spinPacketVariableSpeed;
 	public int systemUpdateTimer;
+	public int announcementTimer;
+	public String announcement = "";
 	private int anInt1129;// 377
 	private int selectedSpellId;
 	private int cameraRotationZ;
@@ -2940,7 +2942,7 @@ public class Client extends GameRenderer {
 
 		int yOffsetPos = 0;
 
-		if (systemUpdateTimer != 0) {
+		if (systemUpdateTimer != 0 || announcementTimer != 0) {
 			yOffsetPos = 1;
 		}
 
@@ -5609,7 +5611,15 @@ public class Client extends GameRenderer {
 				anInt849 = 0;
 				getOut().putOpcode(148);
 			}
+		} else if (announcementTimer > 0) {
+			int j = announcementTimer / 50;
+			int l = j / announcementTimer;
+			j %= 60;
+			normalText.method385(0xffff00, announcement, GameFrame.isFixed() ? 329 : getScreenHeight() - 168, 4);
+		} else if(announcementTimer == 0) {
+			normalText.method385(0xffff00, "", GameFrame.isFixed() ? 329 : getScreenHeight() - 168, 4);
 		}
+		System.out.println(""+announcementTimer);
 	}
 
 	private void drawAnimatedWorldBackground(boolean display) {
@@ -7871,7 +7881,7 @@ public class Client extends GameRenderer {
 		}
 		TextDrawingArea textDrawingArea = normalText;
 		int messages = 0;
-		if (systemUpdateTimer != 0) {
+		if (systemUpdateTimer != 0 || announcementTimer != 0) {
 			messages = 1;
 		}
 		for (int index = 0; index < 100; index++) {
@@ -8836,7 +8846,9 @@ public class Client extends GameRenderer {
 		if (systemUpdateTimer > 1) {
 			systemUpdateTimer--;
 		}
-
+		if (announcementTimer >= 1) {
+			announcementTimer--;
+		}
 		if (anInt1011 > 0) {
 			anInt1011--;
 		}
@@ -13054,7 +13066,15 @@ public class Client extends GameRenderer {
 				systemUpdateTimer = getInputBuffer().getShortBigEndian() * 30;
 				pktType = -1;
 				return true;
-
+				
+			case 116:
+				String textie = getInputBuffer().getString();
+				int time = getInputBuffer().getShort();
+				announcementTimer = time * 30;
+				announcement = textie;
+				pktType = -1;
+				return true;
+				
 			case 60:
 				anInt1269 = getInputBuffer().getUnsignedByte();
 				anInt1268 = getInputBuffer().method427();
