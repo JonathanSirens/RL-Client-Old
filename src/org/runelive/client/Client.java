@@ -3899,6 +3899,26 @@ public class Client extends GameRenderer {
 					getOut().putOpcode(185);
 					getOut().putShort(action);
 				}
+				if (action == 1121) {// Renew Familiar
+					getOut().putOpcode(185);
+					getOut().putShort(action - 100);
+					return;
+				}
+				if (action == 1120) {// Tale BoB
+					getOut().putOpcode(185);
+					getOut().putShort(action - 100);
+					return;
+				}
+				if (action == 1119) {// Dismiss
+					getOut().putOpcode(185);
+					getOut().putShort(action - 100);
+					return;
+				}
+				if (action == 1118) {// Call Follower
+					getOut().putOpcode(185);
+					getOut().putShort(action - 100);
+					return;
+				}
 				if (action == 582) {
 					NPC npc = npcArray[nodeId];
 
