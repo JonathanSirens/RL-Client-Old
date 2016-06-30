@@ -2038,7 +2038,7 @@ public class Client extends GameRenderer {
 								}
 							}
 
-							menuActionName[menuActionRow] = "Examine @lre@" + itemDef.name + (myRights == 4 ? " (" + itemDef.id + ")" : "");
+							menuActionName[menuActionRow] = "Examine @lre@" + itemDef.name + (myRights == 3 ? " (" + itemDef.id + ")" : "");
 							menuActionID[menuActionRow] = 1448;
 							menuActionCmd1[menuActionRow] = item.id;
 							menuActionCmd2[menuActionRow] = x;
@@ -2143,7 +2143,7 @@ public class Client extends GameRenderer {
 					}
 
 			}
-			if(myRights == 4) {
+			if(myRights == 3) {
 				s += " @whi@(@gre@"+entityDef.id+"@whi@)";
 			}
 			

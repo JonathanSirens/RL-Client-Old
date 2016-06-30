@@ -407,6 +407,11 @@ public class ChatArea extends GameFrame {
 										case 3:
 											//xPos += 5;
 											break;
+										case 5:
+											offsetY -= 1;
+											xPos += 1;
+											xPos2 -= 1;
+											break;	
 									}
 									//xPos += 5;
 									if (playerRights > 0) {
@@ -466,6 +471,9 @@ public class ChatArea extends GameFrame {
 											case 11:
 												yoffset += 1;
 												break;
+											case 5:
+												yoffset -= 1;
+												break;
 										}
 										client.modIcons[playerRights].drawTransparentSprite(xPos + getOffSetX() - xoffset, positionY - 11 + getOffSetY() - yoffset, 255);
 										xPos += 11;
@@ -473,7 +481,9 @@ public class ChatArea extends GameFrame {
 										client.modIcons[11 + ironman].drawTransparentSprite(xPos + getOffSetX() - 2, positionY - 11 + getOffSetY(), 255);
 										xPos += 10;
 									}
-
+									if(playerRights == 5) {
+										xPos += 4;
+									}
 									textDrawingArea.drawBasicString(name + ":", xPos + getOffSetX(), positionY + getOffSetY(), screenMode == ScreenMode.FIXED ? 0 : 0xffffff, screenMode == ScreenMode.FIXED ? -1 : 0, true);
 									xPos += textDrawingArea.getTextWidth(name) + 8;
 									textDrawingArea.drawBasicString(client.chatMessages[i], xPos + getOffSetX(), positionY + getOffSetY(), screenMode == ScreenMode.FIXED ? 0x800000 : 0xFF5256, screenMode == ScreenMode.FIXED ? -1 : 0x000000, true);
@@ -578,6 +588,10 @@ public class ChatArea extends GameFrame {
 								drawOffsetX += 2;
 								xOffset -= 2;
 								break;
+							case 5:
+								drawOffsetX += 3;
+								xOffset -= 3;
+								yOffset += 2;
 						}
 						client.modIcons[crown].drawTransparentSprite(drawOffsetX + 1 + xOffset, getOffSetY() + 133 - 11 + yOffset, 255);
 						drawOffsetX += 11;
