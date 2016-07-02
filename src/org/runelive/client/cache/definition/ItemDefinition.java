@@ -2194,7 +2194,7 @@ public final class ItemDefinition {
             	itemDef.modelOffset1 = 1;
             	itemDef.modelOffsetY = -74;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+                itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70722;
             	itemDef.maleWearId = 70657;
             	itemDef.femaleWearId = 70686;
@@ -2207,7 +2207,7 @@ public final class ItemDefinition {
             	itemDef.modelRotation2 = 2047;
             	itemDef.modelOffsetY = 3;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+                itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70723;
             	itemDef.maleWearId = 70668;
             	itemDef.femaleWearId = 70697;
@@ -2221,7 +2221,7 @@ public final class ItemDefinition {
             	itemDef.modelOffset1 = -1;
             	itemDef.modelOffsetY = 1;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+                itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70716;
             	itemDef.maleWearId = 70664;
             	itemDef.femaleWearId = 70693;
@@ -2235,7 +2235,7 @@ public final class ItemDefinition {
             	itemDef.modelOffset1 = 2;
             	itemDef.modelOffsetY = -17;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+                itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70721;
             	itemDef.maleWearId = 70654;
             	itemDef.femaleWearId = 70683;
@@ -2249,7 +2249,7 @@ public final class ItemDefinition {
             	itemDef.modelOffset1 = 3;
             	itemDef.modelOffsetY = 18;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+                itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70719;
             	itemDef.maleWearId = 70652;
             	itemDef.femaleWearId = 70681;
@@ -2263,7 +2263,7 @@ public final class ItemDefinition {
             	itemDef.modelOffset1 = 1;
             	itemDef.modelOffsetY = -34;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+                itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70729;
             	itemDef.maleWearId = 70662;
             	itemDef.femaleWearId = 70691;
@@ -2276,7 +2276,7 @@ public final class ItemDefinition {
             	itemDef.modelRotation2 = 0;
             	itemDef.modelOffsetY = 1;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+                itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70730;
             	itemDef.maleWearId = 70669;
             	itemDef.femaleWearId = 70698;
@@ -2290,7 +2290,7 @@ public final class ItemDefinition {
             	itemDef.modelOffset1 = 3;
             	itemDef.modelOffsetY = 11;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+                itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70725;
             	itemDef.maleWearId = 70655;
             	itemDef.femaleWearId = 70684;
@@ -2304,7 +2304,7 @@ public final class ItemDefinition {
             	itemDef.modelOffset1 = 12;
             	itemDef.modelOffsetY = 18;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+                itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70731;
             	itemDef.maleWearId = 70653;
             	itemDef.femaleWearId = 70682;
@@ -2317,7 +2317,7 @@ public final class ItemDefinition {
             	itemDef.modelRotation2 = 0;
             	itemDef.modelOffsetY = 5;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+                itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70728;
             	itemDef.maleWearId = 70665;
             	itemDef.femaleWearId = 70695;
@@ -2330,7 +2330,7 @@ public final class ItemDefinition {
             	itemDef.modelRotation2 = 0;
             	itemDef.modelOffsetY = 5;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+                itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70724;
             	itemDef.maleWearId = 70666;
             	itemDef.femaleWearId = 70694;
@@ -2383,7 +2383,7 @@ public final class ItemDefinition {
             	itemDef.modelOffset1 = 2;
             	itemDef.modelOffsetY = -9;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+            	itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70738;
             	itemDef.maleWearId = 70656;
             	itemDef.femaleWearId = 70685;
@@ -2396,7 +2396,7 @@ public final class ItemDefinition {
             	itemDef.modelRotation2 = 0;
             	itemDef.modelOffsetY = 5;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+                itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70735;
             	itemDef.maleWearId = 70667;
             	itemDef.femaleWearId = 70696;
@@ -2442,7 +2442,7 @@ public final class ItemDefinition {
             	itemDef.modelRotation2 = 0;
             	itemDef.modelOffset1 = 1;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+            	itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70736;
             	itemDef.maleWearId = 70670;
             	itemDef.femaleWearId = 70699;
@@ -2456,7 +2456,7 @@ public final class ItemDefinition {
             	itemDef.modelOffset1 = 1;
             	itemDef.modelOffsetY = -34;
             	itemDef.groundActions = new String[] { null, null, "Take", null, null };
-            	itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+            	itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
             	itemDef.modelID = 70733;
             	itemDef.maleWearId = 70663;
             	itemDef.femaleWearId = 70692;
@@ -2470,7 +2470,7 @@ public final class ItemDefinition {
                 itemDef.modelOffset1 = 12;
                 itemDef.modelOffsetY = 18;
                 itemDef.groundActions = new String[] { null, null, "Take", null, null };
-                itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
+                itemDef.actions = new String[] { null, "Wear", "Split", null, "Drop" };
                 itemDef.modelID = 70731;
                 itemDef.maleWearId = 70653;
                 itemDef.femaleWearId = 70682;
