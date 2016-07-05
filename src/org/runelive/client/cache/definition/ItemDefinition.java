@@ -515,9 +515,17 @@ public final class ItemDefinition {
                 itemDef.modelRotation2 = 67;
                 itemDef.modelOffset1 = 9;
                 itemDef.modelOffsetY = -4;
-                itemDef.name = "Pet Venenatis";
+                itemDef.name = "Venenatis spiderling";
                 itemDef.groundActions = new String[]{null, null, "Take", null, null};
                 itemDef.actions = new String[]{null, null, "Summon", null, "Drop"};
+                break;
+            case 3040:
+                itemDef.originalModelColors = new int[]{
+                        2524
+                };
+                itemDef.modifiedModelColors = new int[]{
+                        61
+                };
                 break;
             case 13576:
                 itemDef.setDefaults();
