@@ -1507,6 +1507,10 @@ public class Client extends GameRenderer {
 			TextDrawingArea[] aclass30_sub2_sub1_sub4s = { smallText, normalText, boldText, fancyText };
 			RSInterface.unpack(streamLoader_1, aclass30_sub2_sub1_sub4s, mediaArchive);
 			break;
+		case "idf":
+			Archive streamLoader = getArchive(2, "config", "config", expectedCRCs[2], 30);
+			ItemDefinition.unpackConfig(streamLoader);
+			break;
 		}
 		/** Add Commands Here **/
 		if (loggedIn) {

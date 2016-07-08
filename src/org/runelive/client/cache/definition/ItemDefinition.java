@@ -6032,7 +6032,21 @@ public final class ItemDefinition {
 			itemDef.originalModelColors = new int[] { 933, 933 + 4, 933 + 8, 933 + 12, 933 + 16, 933 + 20, 933 + 24,
 					11200, 11204, 11324, 11324 - 5 };
 			break;
-
+		case 21136:
+			itemDef.setDefaults();
+			itemDef.name = "3rd age bow";
+			itemDef.modelZoom = 1979;
+			itemDef.modelRotation1 = 1589;
+			itemDef.modelRotation2 = 768;
+			itemDef.modelOffset1 = -20;
+			itemDef.modelOffsetY = -14;
+			itemDef.modelOffsetX = 835;
+			itemDef.groundActions = new String[] { null, null, "Take", null, null };
+			itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
+			itemDef.modelID = 28678;
+			itemDef.maleWearId = 28622;
+			itemDef.femaleWearId = 28622;
+			break;
 		case 20147:
 			itemDef.modifiedModelColors = new int[2];
 			itemDef.originalModelColors = new int[2];
