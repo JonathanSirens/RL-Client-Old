@@ -4,9 +4,6 @@ import org.runelive.client.cache.Archive;
 import org.runelive.client.io.ByteBuffer;
 import org.runelive.client.world.Model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class IdentityKit {
 
 	private static int length;
@@ -20,7 +17,7 @@ public final class IdentityKit {
 			cache = new IdentityKit[getLength()];
 		}
 
-//		List<Integer> modelIds = new ArrayList<>();
+		// List<Integer> modelIds = new ArrayList<>();
 		for (int j = 0; j < getLength(); j++) {
 			if (cache[j] == null) {
 				cache[j] = new IdentityKit();
@@ -28,11 +25,11 @@ public final class IdentityKit {
 
 			cache[j].readValues(stream);
 
-//			for (int id : cache[j].bodyModelIds) {
-//				modelIds.add(id);
-//			}
+			// for (int id : cache[j].bodyModelIds) {
+			// modelIds.add(id);
+			// }
 		}
-		//System.out.println("IDK models: " + modelIds.toString());
+		// System.out.println("IDK models: " + modelIds.toString());
 	}
 
 	private int anInt657;

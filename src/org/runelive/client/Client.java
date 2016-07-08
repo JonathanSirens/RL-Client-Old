@@ -1,36 +1,37 @@
 package org.runelive.client;
 
-import java.awt.*;
-
-import org.runelive.client.cache.CacheIndex;
-import org.runelive.client.graphics.*;
-
 import java.applet.AppletContext;
-
-import java.awt.image.RGBImageFilter;
-import java.awt.image.ImageProducer;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageProducer;
+import java.awt.image.RGBImageFilter;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-
-import org.runelive.alertify.Alertify;
-import org.runelive.alertify.AlertifyBuilder;
-
-import java.io.FileOutputStream;
-import java.net.*;
-import java.util.zip.GZIPOutputStream;
-import org.runelive.alertify.AlertifyType;
-import org.runelive.alertify.ui.*;
-import org.runelive.client.util.*;
-
-import java.awt.image.BufferedImage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,30 +41,45 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.regex.Pattern;
 import java.util.zip.CRC32;
+import java.util.zip.GZIPOutputStream;
+
 import javax.imageio.ImageIO;
 
 import org.runelive.Configuration;
+import org.runelive.alertify.Alertify;
+import org.runelive.alertify.AlertifyBuilder;
+import org.runelive.alertify.AlertifyType;
+import org.runelive.alertify.ui.AlertifyWindow;
+import org.runelive.alertify.ui.AlertifyWindowClick;
 import org.runelive.client.accounts.AccountManager;
 import org.runelive.client.cache.Archive;
+import org.runelive.client.cache.CacheIndex;
 import org.runelive.client.cache.definition.Animation;
+import org.runelive.client.cache.definition.FloorOverlay;
 import org.runelive.client.cache.definition.FloorUnderlay;
 import org.runelive.client.cache.definition.IdentityKit;
 import org.runelive.client.cache.definition.ItemDefinition;
 import org.runelive.client.cache.definition.MobDefinition;
 import org.runelive.client.cache.definition.ObjectDefinition;
-import org.runelive.client.cache.definition.FloorOverlay;
 import org.runelive.client.cache.definition.SpotAnimDefinition;
 import org.runelive.client.cache.definition.VarBit;
 import org.runelive.client.cache.definition.Varp;
 import org.runelive.client.cache.node.Deque;
 import org.runelive.client.cache.node.Node;
-import org.runelive.client.cache.ondemand.CacheFileRequester;
 import org.runelive.client.cache.ondemand.CacheFileRequest;
+import org.runelive.client.cache.ondemand.CacheFileRequester;
 import org.runelive.client.constants.GameFrameConstants;
-import org.runelive.client.constants.SizeConstants;
 import org.runelive.client.constants.GameFrameConstants.GameFrameType;
+import org.runelive.client.constants.SizeConstants;
 import org.runelive.client.entity.player.Player;
 import org.runelive.client.entity.player.PlayerHandler;
+import org.runelive.client.graphics.Background;
+import org.runelive.client.graphics.CacheSpriteLoader;
+import org.runelive.client.graphics.Canvas2D;
+import org.runelive.client.graphics.CursorData;
+import org.runelive.client.graphics.RSImageProducer;
+import org.runelive.client.graphics.ResourceLoader;
+import org.runelive.client.graphics.Sprite;
 import org.runelive.client.graphics.fonts.Censor;
 import org.runelive.client.graphics.fonts.RSFontSystem;
 import org.runelive.client.graphics.fonts.TextClass;
@@ -88,7 +104,12 @@ import org.runelive.client.renderable.Entity;
 import org.runelive.client.renderable.Item;
 import org.runelive.client.renderable.NPC;
 import org.runelive.client.renderable.PlayerProjectile;
+import org.runelive.client.util.ComputerAddress;
 import org.runelive.client.util.FileUtilities;
+import org.runelive.client.util.StopWatch;
+import org.runelive.client.util.SystemInfo;
+import org.runelive.client.util.SystemProfiler;
+import org.runelive.client.world.Canvas3D;
 import org.runelive.client.world.CollisionMap;
 import org.runelive.client.world.CustomObjects;
 import org.runelive.client.world.Model;
@@ -97,7 +118,6 @@ import org.runelive.client.world.Object2;
 import org.runelive.client.world.Object3;
 import org.runelive.client.world.Object5;
 import org.runelive.client.world.ObjectManager;
-import org.runelive.client.world.Canvas3D;
 import org.runelive.client.world.Texture;
 import org.runelive.client.world.WorldController;
 import org.runelive.client.world.background.ScriptManager;
@@ -121,27 +141,25 @@ import org.runelive.task.TaskManager;
 public class Client extends GameRenderer {
 
 	public static ResourceLoader resourceLoader;
-	public static final int ANIM_IDX = 2, AUDIO_IDX = 3, IMAGE_IDX = 5,
-			TEXTURE_IDX = 6;
+	public static final int ANIM_IDX = 2, AUDIO_IDX = 3, IMAGE_IDX = 5, TEXTURE_IDX = 6;
 	private AccountManager accountManager;
 	private GrandExchange grandExchange;
-	
+
 	public int mouseX() {
 		return super.mouseX;
 	}
-	
+
 	public int mouseY() {
 		return super.mouseY;
 	}
-	
+
 	public boolean mouseInRegion(int x1, int x2, int y1, int y2) {
-		if (super.mouseX >= x1 && super.mouseX <= x2 && super.mouseY >= y1
-				&& super.mouseY <= y2) {
+		if (super.mouseX >= x1 && super.mouseX <= x2 && super.mouseY >= y1 && super.mouseY <= y2) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public static int clientZoom = 0;
 
 	/**
@@ -197,39 +215,29 @@ public class Client extends GameRenderer {
 	private static int anInt924;
 	private static int anInt986;
 	private static final int[] anIntArray1019;
-	public static final int[] anIntArray1204 = { 9104, 10275, 7595, 3610, 7975,
-		8526, 918, 38802, 24466, 10145, 58654, 5027, 1457, 16565, 34991,
-		25486 };
+	public static final int[] anIntArray1204 = { 9104, 10275, 7595, 3610, 7975, 8526, 918, 38802, 24466, 10145, 58654,
+			5027, 1457, 16565, 34991, 25486 };
 	public static int[] anIntArray1232;
-	public static int[] anIntArray385 = new int[] { 12800, 12800, 12800, 12800,
-		12800, 12800, 12800, 12800, 12800, 12800, 12800, 12800, 12800,
-		12800, 12800, 12800 };
+	public static int[] anIntArray385 = new int[] { 12800, 12800, 12800, 12800, 12800, 12800, 12800, 12800, 12800,
+			12800, 12800, 12800, 12800, 12800, 12800, 12800 };
 	public static final int[][] anIntArrayArray1003 = {
-		{ 6798, 107, 10283, 16, 4797, 7744, 5799, 4634, 33697, 22433, 2983,
-			54193 },
-			{ 8741, 12, 64030, 43162, 7735, 8404, 1701, 38430, 24094, 10153,
-				56621, 4783, 1341, 16578, 35003, 25239 },
-				{ 25238, 8742, 12, 64030, 43162, 7735, 8404, 1701, 38430, 24094,
-					10153, 56621, 4783, 1341, 16578, 35003 },
-					{ 4626, 11146, 6439, 12, 4758, 10270 },
-					{ 4550, 4537, 5681, 5673, 5790, 6806, 8076, 4574 } };
-	//public static Sprite[] cacheSprite;
-	//public static Sprite[] cacheSprite2;
+			{ 6798, 107, 10283, 16, 4797, 7744, 5799, 4634, 33697, 22433, 2983, 54193 },
+			{ 8741, 12, 64030, 43162, 7735, 8404, 1701, 38430, 24094, 10153, 56621, 4783, 1341, 16578, 35003, 25239 },
+			{ 25238, 8742, 12, 64030, 43162, 7735, 8404, 1701, 38430, 24094, 10153, 56621, 4783, 1341, 16578, 35003 },
+			{ 4626, 11146, 6439, 12, 4758, 10270 }, { 4550, 4537, 5681, 5673, 5790, 6806, 8076, 4574 } };
+	// public static Sprite[] cacheSprite;
+	// public static Sprite[] cacheSprite2;
 	public static int clientHeight = 503;
 	public static int clientWidth = 765;
 	private static boolean fetchMusic = false;
 	public static boolean flagged;
-	private static final int[] IDs = { 1196, 1199, 1206, 1215, 1224, 1231,
-		1240, 1249, 1258, 1267, 1274, 1283, 1573, 1290, 1299, 1308, 1315,
-		1324, 1333, 1340, 1349, 1358, 1367, 1374, 1381, 1388, 1397, 1404,
-		1583, 12038, 1414, 1421, 1430, 1437, 1446, 1453, 1460, 1469, 15878,
-		1602, 1613, 1624, 7456, 1478, 1485, 1494, 1503, 1512, 1521, 1530,
-		1544, 1553, 1563, 1593, 1635, 12426, 12436, 12446, 12456, 6004,
-		18471,
-		/* Ancients */
-		12940, 12988, 13036, 12902, 12862, 13046, 12964, 13012, 13054,
-		12920, 12882, 13062, 12952, 13000, 13070, 12912, 12872, 13080,
-		12976, 13024, 13088, 12930, 12892, 13096, 32601, 32621, 32641, 32661};
+	private static final int[] IDs = { 1196, 1199, 1206, 1215, 1224, 1231, 1240, 1249, 1258, 1267, 1274, 1283, 1573,
+			1290, 1299, 1308, 1315, 1324, 1333, 1340, 1349, 1358, 1367, 1374, 1381, 1388, 1397, 1404, 1583, 12038, 1414,
+			1421, 1430, 1437, 1446, 1453, 1460, 1469, 15878, 1602, 1613, 1624, 7456, 1478, 1485, 1494, 1503, 1512, 1521,
+			1530, 1544, 1553, 1563, 1593, 1635, 12426, 12436, 12446, 12456, 6004, 18471,
+			/* Ancients */
+			12940, 12988, 13036, 12902, 12862, 13046, 12964, 13012, 13054, 12920, 12882, 13062, 12952, 13000, 13070,
+			12912, 12872, 13080, 12976, 13024, 13088, 12930, 12892, 13096, 32601, 32621, 32641, 32661 };
 	public static Client instance;
 	private static boolean isMembers = true;
 	private static ArrayList<Character> letterArray = new ArrayList<>();
@@ -245,35 +253,27 @@ public class Client extends GameRenderer {
 	public static int openInterfaceID;
 	private static ByteBuffer out;
 	public static int portOff;
-	private static final int[] runeChildren = { 1202, 1203, 1209, 1210, 1211,
-		1218, 1219, 1220, 1227, 1228, 1234, 1235, 1236, 1243, 1244, 1245,
-		1252, 1253, 1254, 1261, 1262, 1263, 1270, 1271, 1277, 1278, 1279,
-		1286, 1287, 1293, 1294, 1295, 1302, 1303, 1304, 1311, 1312, 1318,
-		1319, 1320, 1327, 1328, 1329, 1336, 1337, 1343, 1344, 1345, 1352,
-		1353, 1354, 1361, 1362, 1363, 1370, 1371, 1377, 1378, 1384, 1385,
-		1391, 1392, 1393, 1400, 1401, 1407, 1408, 1410, 1417, 1418, 1424,
-		1425, 1426, 1433, 1434, 1440, 1441, 1442, 1449, 1450, 1456, 1457,
-		1463, 1464, 1465, 1472, 1473, 1474, 1481, 1482, 1488, 1489, 1490,
-		1497, 1498, 1499, 1506, 1507, 1508, 1515, 1516, 1517, 1524, 1525,
-		1526, 1533, 1534, 1535, 1547, 1548, 1549, 1556, 1557, 1558, 1566,
-		1567, 1568, 1576, 1577, 1578, 1586, 1587, 1588, 1596, 1597, 1598,
-		1605, 1606, 1607, 1616, 1617, 1618, 1627, 1628, 1629, 1638, 1639,
-		1640, 6007, 6008, 6011, 8673, 8674, 12041, 12042, 12429, 12430,
-		12431, 12439, 12440, 12441, 12449, 12450, 12451, 12459, 12460,
-		15881, 15882, 15885, 18474, 18475, 18478 };
+	private static final int[] runeChildren = { 1202, 1203, 1209, 1210, 1211, 1218, 1219, 1220, 1227, 1228, 1234, 1235,
+			1236, 1243, 1244, 1245, 1252, 1253, 1254, 1261, 1262, 1263, 1270, 1271, 1277, 1278, 1279, 1286, 1287, 1293,
+			1294, 1295, 1302, 1303, 1304, 1311, 1312, 1318, 1319, 1320, 1327, 1328, 1329, 1336, 1337, 1343, 1344, 1345,
+			1352, 1353, 1354, 1361, 1362, 1363, 1370, 1371, 1377, 1378, 1384, 1385, 1391, 1392, 1393, 1400, 1401, 1407,
+			1408, 1410, 1417, 1418, 1424, 1425, 1426, 1433, 1434, 1440, 1441, 1442, 1449, 1450, 1456, 1457, 1463, 1464,
+			1465, 1472, 1473, 1474, 1481, 1482, 1488, 1489, 1490, 1497, 1498, 1499, 1506, 1507, 1508, 1515, 1516, 1517,
+			1524, 1525, 1526, 1533, 1534, 1535, 1547, 1548, 1549, 1556, 1557, 1558, 1566, 1567, 1568, 1576, 1577, 1578,
+			1586, 1587, 1588, 1596, 1597, 1598, 1605, 1606, 1607, 1616, 1617, 1618, 1627, 1628, 1629, 1638, 1639, 1640,
+			6007, 6008, 6011, 8673, 8674, 12041, 12042, 12429, 12430, 12431, 12439, 12440, 12441, 12449, 12450, 12451,
+			12459, 12460, 15881, 15882, 15885, 18474, 18475, 18478 };
 	private static final long serialVersionUID = -1913853327056220406L;
-	private static String[] skillNames = { "Attack", "Constitution", "Mining",
-		"Strength", "Agility", "Smithing", "Defence", "Herblore",
-		"Fishing", "Range", "Thieving", "Cooking", "Prayer", "Crafting",
-		"Firemaking", "Magic", "Fletching", "Woodcutting", "Runecrafting",
-		"Slayer", "Farming", "Construction", "Hunter", "Summoning" };
+	private static String[] skillNames = { "Attack", "Constitution", "Mining", "Strength", "Agility", "Smithing",
+			"Defence", "Herblore", "Fishing", "Range", "Thieving", "Cooking", "Prayer", "Crafting", "Firemaking",
+			"Magic", "Fletching", "Woodcutting", "Runecrafting", "Slayer", "Farming", "Construction", "Hunter",
+			"Summoning" };
 	private static int soundEffectVolume = 127;
 	private static int spellID = 0;
 	public static boolean tabAreaAltered;
 	public static int tabID;
 	public static boolean LOOP_MUSIC;
-	public final static int[] tabInterfaceIDs = { -1, -1, -1, -1, -1, -1, -1,
-		-1, -1, -1, -1, -1, -1, -1, -1, -1 };
+	public final static int[] tabInterfaceIDs = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 	private static final String validUserPassChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"\243$%^&*()-_=+[{]};:'@#~,<.>/?\\| ";
 	public static final boolean Z_BUFFER_REPRESENTATION = false;
 	public static final boolean GROUND_DECORATIONS = false;
@@ -325,8 +325,7 @@ public class Client extends GameRenderer {
 	}
 
 	public String indexLocation(int cacheIndex, int index) {
-		return Signlink.getCacheDirectory() + "/index" + cacheIndex + "/"
-				+ (index != -1 ? index + ".gz" : "");
+		return Signlink.getCacheDirectory() + "/index" + cacheIndex + "/" + (index != -1 ? index + ".gz" : "");
 	}
 
 	public void repackCacheIndex(int cacheIndex) {
@@ -335,16 +334,13 @@ public class Client extends GameRenderer {
 		File[] file = new File(indexLocation(cacheIndex, -1)).listFiles();
 		try {
 			for (int index = 0; index < indexLength; index++) {
-				int fileIndex = Integer
-						.parseInt(getFileNameWithoutExtension(file[index]
-								.toString()));
+				int fileIndex = Integer.parseInt(getFileNameWithoutExtension(file[index].toString()));
 				byte[] data = fileToByteArray(cacheIndex, fileIndex);
 				if (data != null && data.length > 0) {
 					cacheIndices[cacheIndex].put(data.length, data, fileIndex);
 					System.out.println("Repacked " + fileIndex + ".");
 				} else {
-					System.out.println("Unable to locate index " + fileIndex
-							+ ".");
+					System.out.println("Unable to locate index " + fileIndex + ".");
 				}
 			}
 		} catch (Exception e) {
@@ -352,7 +348,7 @@ public class Client extends GameRenderer {
 		}
 		System.out.println("Finished repacking " + cacheIndex + ".");
 	}
-	
+
 	public void updateSetting(int widgetId, boolean b) {
 		int configId = RSInterface.interfaceCache[widgetId].valueIndexArray[0][1];
 		variousSettings[configId] = b ? 1 : 0;
@@ -373,7 +369,7 @@ public class Client extends GameRenderer {
 		updateSetting(26035, Configuration.FOG_ENABLED);
 		updateSetting(26037, Configuration.TOGGLE_ROOF_OFF);
 	}
-	
+
 	private boolean hovered(RSInterface rsi) {
 		return (rsi.id == this.anInt886) && (rsi.hovers);
 	}
@@ -507,21 +503,19 @@ public class Client extends GameRenderer {
 	}
 
 	public static void main(String[] args) {
-		//System.out.println("Checking client version...");
-		/*ClientUpdate.checkVersion();
-		if(new File(Signlink.getCacheDirectory()).exists()) {
-			if(!new File(Signlink.getCacheDirectory() +"versions").exists()) {
-				new File(Signlink.getCacheDirectory() +"versions").mkdir();
-			}
-			System.out.println("Checking map version...");
-			MapUpdate.checkVersion();
-			System.out.println("Checking sprite version...");
-			SpriteUpdate.checkVersion();
-			System.out.println("Checking model version...");
-			ModelsUpdate.checkVersion();
-			System.out.println("Checking animation version...");
-			AnimationsUpdate.checkVersion();
-		}*/
+		// System.out.println("Checking client version...");
+		/*
+		 * ClientUpdate.checkVersion(); if(new
+		 * File(Signlink.getCacheDirectory()).exists()) { if(!new
+		 * File(Signlink.getCacheDirectory() +"versions").exists()) { new
+		 * File(Signlink.getCacheDirectory() +"versions").mkdir(); }
+		 * System.out.println("Checking map version...");
+		 * MapUpdate.checkVersion(); System.out.println(
+		 * "Checking sprite version..."); SpriteUpdate.checkVersion();
+		 * System.out.println("Checking model version...");
+		 * ModelsUpdate.checkVersion(); System.out.println(
+		 * "Checking animation version..."); AnimationsUpdate.checkVersion(); }
+		 */
 		portOff = 0;
 		if (!Configuration.HIGH_DETAIL) {
 			setLowDetail();
@@ -535,7 +529,7 @@ public class Client extends GameRenderer {
 		} catch (UnknownHostException e) {
 			System.err.printf("Unable to determine localhost for your machine [localhost=%s]%n", e.getMessage());
 		}
-		//System.out.println(SerialNumber.grabSerial());
+		// System.out.println(SerialNumber.grabSerial());
 		GameFrame.setScreenMode(ScreenMode.FIXED);
 		instance = new Client();
 		instance.createClientFrame(clientWidth, clientHeight);
@@ -1009,8 +1003,7 @@ public class Client extends GameRenderer {
 	private final int[] myAppearance;
 	public int[] anIntArray1072;
 	public int[] anIntArray1073;
-	private final int[] anIntArray1177 = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2,
-			2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 };
+	private final int[] anIntArray1177 = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 };
 	public int[] anIntArray1180;
 	public int[] anIntArray1181;
 	public int[] anIntArray1182;
@@ -1020,8 +1013,7 @@ public class Client extends GameRenderer {
 	private final int[] anIntArray873;
 	private int[] anIntArray894;
 	private final int[] anIntArray928;
-	private final int[] anIntArray965 = { 0xffff00, 0xff0000, 65280, 65535,
-			0xff00ff, 0xffffff };
+	private final int[] anIntArray965 = { 0xffff00, 0xff0000, 65280, 65535, 0xff00ff, 0xffffff };
 	private final int[] anIntArray976;
 	private final int[] anIntArray977;
 	private final int[] anIntArray978;
@@ -1254,14 +1246,13 @@ public class Client extends GameRenderer {
 	private int bankItemDragSpriteX, bankItemDragSpriteY;
 	public static int[] myHeadAndJaw = new int[2];
 
-	
 	private void setAutoCastOff() {
 		autoCast = false;
 		autocastId = 0;
 		getOut().putOpcode(185);
 		getOut().putShort(6667);
 	}
-	
+
 	public Client() {
 		accountManager = new AccountManager();
 		grandExchange = new GrandExchange();
@@ -1464,26 +1455,26 @@ public class Client extends GameRenderer {
 				consoleMessages[j] = null;
 			}
 		}
-		if(cmd.contains("dumpitem")) {
-			System.out.println("Command process: "+cmd+"");
+		if (cmd.contains("dumpitem")) {
+			System.out.println("Command process: " + cmd + "");
 			String[] cmd2 = cmd.split(" ");
 			ItemDefinition.dumpItemModelsForId(Integer.parseInt(cmd2[1]));
 		}
-		if(cmd.contains("itemimages")) {
-			System.out.println("Command process: "+cmd+"");
+		if (cmd.contains("itemimages")) {
+			System.out.println("Command process: " + cmd + "");
 			dumpItemImages(false);
 		}
-		switch(cmd) {
-			case "reloaditf":
-				try {
-					TextDrawingArea[] fonts = { smallText, normalText, boldText, fancyText};
-					Archive interfaceArchive = getArchive(3, "interface", "interface", expectedCRCs[3], 35);
-					Archive mediaArchive = getArchive(4, "2d graphics", "media", expectedCRCs[4], 40);
-					RSInterface.unpack(interfaceArchive, fonts, mediaArchive);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				break;
+		switch (cmd) {
+		case "reloaditf":
+			try {
+				TextDrawingArea[] fonts = { smallText, normalText, boldText, fancyText };
+				Archive interfaceArchive = getArchive(3, "interface", "interface", expectedCRCs[3], 35);
+				Archive mediaArchive = getArchive(4, "2d graphics", "media", expectedCRCs[4], 40);
+				RSInterface.unpack(interfaceArchive, fonts, mediaArchive);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
 		case "hitmarks":
 			Configuration.NEW_HITMARKS = !Configuration.NEW_HITMARKS;
 			break;
@@ -1500,7 +1491,7 @@ public class Client extends GameRenderer {
 			fpsOn = !fpsOn;
 			break;
 		case "noclip":
-			if(myRights == 3) {
+			if (myRights == 3) {
 				for (int k1 = 0; k1 < 4; k1++) {
 					for (int i2 = 1; i2 < 103; i2++) {
 						for (int k2 = 1; k2 < 103; k2++)
@@ -1512,8 +1503,8 @@ public class Client extends GameRenderer {
 			break;
 		case "rsi":
 			Archive streamLoader_1 = getArchive(3, "interface", "interface", expectedCRCs[3], 35);
-			Archive mediaArchive = getArchive(4, "2d graphics", "media", expectedCRCs[4], 40); 
-			TextDrawingArea[] aclass30_sub2_sub1_sub4s = { smallText, normalText, boldText, fancyText};
+			Archive mediaArchive = getArchive(4, "2d graphics", "media", expectedCRCs[4], 40);
+			TextDrawingArea[] aclass30_sub2_sub1_sub4s = { smallText, normalText, boldText, fancyText };
 			RSInterface.unpack(streamLoader_1, aclass30_sub2_sub1_sub4s, mediaArchive);
 			break;
 		}
@@ -1524,8 +1515,10 @@ public class Client extends GameRenderer {
 			getOut().putString(cmd);
 		}
 	}
+
 	/**
 	 * Dumps the item images for all items in the cache.
+	 * 
 	 * @param dumpByName
 	 */
 	public void dumpItemImages(boolean dumpByName) {
@@ -1537,6 +1530,7 @@ public class Client extends GameRenderer {
 
 	/**
 	 * Dumps a sprite with the specified name.
+	 * 
 	 * @param image
 	 */
 	public void dumpImage(Sprite image, String name) {
@@ -1544,7 +1538,7 @@ public class Client extends GameRenderer {
 		if (!directory.exists()) {
 			directory.mkdirs();
 		}
-		if(image == null)
+		if (image == null)
 			return;
 		BufferedImage bi = new BufferedImage(image.myWidth, image.myHeight, BufferedImage.TYPE_INT_RGB);
 		bi.setRGB(0, 0, image.myWidth, image.myHeight, image.myPixels, 0, image.myWidth);
@@ -1560,37 +1554,42 @@ public class Client extends GameRenderer {
 
 	/**
 	 * Turns an Image into a BufferedImage.
+	 * 
 	 * @param image
 	 * @return
 	 */
-    private static BufferedImage imageToBufferedImage(Image image) {
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = bufferedImage.createGraphics();
-        g2.drawImage(image, 0, 0, null);
-        g2.dispose();
-        return bufferedImage;
-    }
+	private static BufferedImage imageToBufferedImage(Image image) {
+		BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2 = bufferedImage.createGraphics();
+		g2.drawImage(image, 0, 0, null);
+		g2.dispose();
+		return bufferedImage;
+	}
 
-    /**
-     * Makes the specified color transparent in a buffered image.
-     * @param im
-     * @param color
-     * @return
-     */
-    public static Image makeColorTransparent(BufferedImage im, final Color color) {
-    	RGBImageFilter filter = new RGBImageFilter() {
-    		public int markerRGB = color.getRGB() | 0xFF000000;
-    		public final int filterRGB(int x, int y, int rgb) {
-    			if ((rgb | 0xFF000000) == markerRGB) {
-    				return 0x00FFFFFF & rgb;
-    			} else {
-    				return rgb;
-    			}
-    		}
-    	};
-    	ImageProducer ip = new FilteredImageSource(im.getSource(), filter);
-    	return Toolkit.getDefaultToolkit().createImage(ip);
-    }
+	/**
+	 * Makes the specified color transparent in a buffered image.
+	 * 
+	 * @param im
+	 * @param color
+	 * @return
+	 */
+	public static Image makeColorTransparent(BufferedImage im, final Color color) {
+		RGBImageFilter filter = new RGBImageFilter() {
+			public int markerRGB = color.getRGB() | 0xFF000000;
+
+			public final int filterRGB(int x, int y, int rgb) {
+				if ((rgb | 0xFF000000) == markerRGB) {
+					return 0x00FFFFFF & rgb;
+				} else {
+					return rgb;
+				}
+			}
+		};
+		ImageProducer ip = new FilteredImageSource(im.getSource(), filter);
+		return Toolkit.getDefaultToolkit().createImage(ip);
+	}
+
 	private void addFriend(long nameAsLong) {
 		try {
 			if (nameAsLong == 0L) {
@@ -1707,7 +1706,7 @@ public class Client extends GameRenderer {
 			int modelData = Model.anIntArray1688[k];// data
 			int x = modelData & 0x7f;// x
 			int y = modelData >> 7 & 0x7f;// y
-		int face = modelData >> 29 & 3;// face
+			int face = modelData >> 29 & 3;// face
 			int index = -1;// objId
 			if (face != 2) {
 				index = modelData >> 14 & 32767;
@@ -1718,17 +1717,17 @@ public class Client extends GameRenderer {
 			j = modelData;
 			int xx = baseX + x;
 			int yy = baseY + y;
-			//System.out.println(""+face);
+			// System.out.println(""+face);
 			// objects
 			if (face == 2 && worldController.fetchObjectIDTagForPosition(plane, x, y, modelData) >= 0) {
-				
+
 				index = Model.mapObjIds[k];
 				ObjectDefinition class46 = ObjectDefinition.forID(index);
-				
+
 				if (class46.configObjectIDs != null) {
 					class46 = class46.method580();
 				}
-				
+
 				if (baseX + x == 3090 && baseY + y == 3956) {
 					menuActionName[menuActionRow] = "Pull @cya@Lever";
 					menuActionID[menuActionRow] = 502;
@@ -1746,7 +1745,7 @@ public class Client extends GameRenderer {
 					menuActionCmd4[menuActionRow] = 5959;
 					menuActionRow++;
 					return;
-				}	
+				}
 				if (baseX + x == 3067 && baseY + y == 10253) {
 					menuActionName[menuActionRow] = "Pull @cya@Lever";
 					menuActionID[menuActionRow] = 502;
@@ -1837,19 +1836,19 @@ public class Client extends GameRenderer {
 					menuActionRow++;
 					return;
 				}
-				if(class46 == null) {
+				if (class46 == null) {
 					continue;
 				}
-				if(class46 != null) {
-					if(myRights != 3) {
-						if(class46.name == null) {
+				if (class46 != null) {
+					if (myRights != 3) {
+						if (class46.name == null) {
 							continue;
 						}
-						if(class46.name != null) {
-							if(class46.name.toLowerCase().equals("null") && myRights != 3) {
+						if (class46.name != null) {
+							if (class46.name.toLowerCase().equals("null") && myRights != 3) {
 								continue;
 							}
-						} 
+						}
 					}
 				}
 				if (itemSelected == 1) {
@@ -1904,11 +1903,9 @@ public class Client extends GameRenderer {
 							}
 						}
 					}
-					menuActionName[menuActionRow] = myRights == 3 ? "Examine @cya@"
-							+ class46.name + " @gre@(@whi@" + class46.id
-							+ "@gre@) (@whi@" + (x + baseX) + "," + (y + baseY)
-							+ "@gre@)" :  "Examine @cya@"
-							+ class46.name;
+					menuActionName[menuActionRow] = myRights == 3 ? "Examine @cya@" + class46.name + " @gre@(@whi@"
+							+ class46.id + "@gre@) (@whi@" + (x + baseX) + "," + (y + baseY) + "@gre@)"
+							: "Examine @cya@" + class46.name;
 					menuActionID[menuActionRow] = 1226;
 					menuActionCmd1[menuActionRow] = class46 == null ? -1 : class46.id << 14;
 					menuActionCmd2[menuActionRow] = x;
@@ -1926,7 +1923,8 @@ public class Client extends GameRenderer {
 				if (npc.definitionOverride.npcSizeInSquares == 1 && (npc.x & 0x7f) == 64 && (npc.y & 0x7f) == 64) {
 					for (int j2 = 0; j2 < npcCount; j2++) {
 						NPC npc2 = npcArray[npcIndices[j2]];
-						if (npc2 != null && npc2 != npc && npc2.definitionOverride.npcSizeInSquares == 1 && npc2.x == npc.x && npc2.y == npc.y) {
+						if (npc2 != null && npc2 != npc && npc2.definitionOverride.npcSizeInSquares == 1
+								&& npc2.x == npc.x && npc2.y == npc.y) {
 							buildAtNPCMenu(npc2.definitionOverride, npcIndices[j2], y, x);
 						}
 					}
@@ -1953,7 +1951,10 @@ public class Client extends GameRenderer {
 						NPC class30_sub2_sub4_sub1_sub1_2 = npcArray[npcIndices[k2]];
 
 						try {
-							if (class30_sub2_sub4_sub1_sub1_2 != null && class30_sub2_sub4_sub1_sub1_2.definitionOverride.npcSizeInSquares == 1 && class30_sub2_sub4_sub1_sub1_2.x == player.x && class30_sub2_sub4_sub1_sub1_2.y == player.y) {
+							if (class30_sub2_sub4_sub1_sub1_2 != null
+									&& class30_sub2_sub4_sub1_sub1_2.definitionOverride.npcSizeInSquares == 1
+									&& class30_sub2_sub4_sub1_sub1_2.x == player.x
+									&& class30_sub2_sub4_sub1_sub1_2.y == player.y) {
 								buildAtNPCMenu(class30_sub2_sub4_sub1_sub1_2.definitionOverride, npcIndices[k2], y, x);
 							}
 						} catch (Exception _ex) {
@@ -2041,7 +2042,8 @@ public class Client extends GameRenderer {
 								}
 							}
 
-							menuActionName[menuActionRow] = "Examine @lre@" + itemDef.name + (myRights == 3 ? " (" + itemDef.id + ")" : "");
+							menuActionName[menuActionRow] = "Examine @lre@" + itemDef.name
+									+ (myRights == 3 ? " (" + itemDef.id + ")" : "");
 							menuActionID[menuActionRow] = 1448;
 							menuActionCmd1[menuActionRow] = item.id;
 							menuActionCmd2[menuActionRow] = x;
@@ -2072,10 +2074,8 @@ public class Client extends GameRenderer {
 		}
 		String s = entityDef.name;
 		if (entityDef.combatLevel != 0)
-			s = s
-			+ combatDiffColor(myPlayer.combatLevel,
-					entityDef.combatLevel) + " (level: "
-					+ entityDef.combatLevel + ")";
+			s = s + combatDiffColor(myPlayer.combatLevel, entityDef.combatLevel) + " (level: " + entityDef.combatLevel
+					+ ")";
 
 		if (itemSelected == 1) {
 			menuActionName[menuActionRow] = "Use " + selectedItemName + " with @yel@" + s;
@@ -2099,10 +2099,8 @@ public class Client extends GameRenderer {
 		} else {
 			if (entityDef.actions != null) {
 				for (int l = 4; l >= 0; l--)
-					if (entityDef.actions[l] != null
-					&& !entityDef.actions[l].equalsIgnoreCase("attack")) {
-						menuActionName[menuActionRow] = entityDef.actions[l]
-								+ " @yel@" + s;
+					if (entityDef.actions[l] != null && !entityDef.actions[l].equalsIgnoreCase("attack")) {
+						menuActionName[menuActionRow] = entityDef.actions[l] + " @yel@" + s;
 						if (l == 0)
 							menuActionID[menuActionRow] = 20;
 						if (l == 1)
@@ -2122,13 +2120,12 @@ public class Client extends GameRenderer {
 			}
 			if (entityDef.actions != null) {
 				for (int i1 = 4; i1 >= 0; i1--)
-					if (entityDef.actions[i1] != null
-					&& entityDef.actions[i1].equalsIgnoreCase("attack")) {
+					if (entityDef.actions[i1] != null && entityDef.actions[i1].equalsIgnoreCase("attack")) {
 						char c = '\0';
-						//if (entityDef.combatLevel > myPlayer.combatLevel) 1 CLICK ATTACK
-							//c = '\u07D0';
-						menuActionName[menuActionRow] = entityDef.actions[i1]
-								+ " @yel@" + s;
+						// if (entityDef.combatLevel > myPlayer.combatLevel) 1
+						// CLICK ATTACK
+						// c = '\u07D0';
+						menuActionName[menuActionRow] = entityDef.actions[i1] + " @yel@" + s;
 						if (i1 == 0)
 							menuActionID[menuActionRow] = 20 + c;
 						if (i1 == 1)
@@ -2146,10 +2143,10 @@ public class Client extends GameRenderer {
 					}
 
 			}
-			if(myRights == 3) {
-				s += " @whi@(@gre@"+entityDef.id+"@whi@)";
+			if (myRights == 3) {
+				s += " @whi@(@gre@" + entityDef.id + "@whi@)";
 			}
-			
+
 			menuActionName[menuActionRow] = "Examine @yel@" + s;
 			menuActionID[menuActionRow] = 1025;
 			menuActionCmd1[menuActionRow] = index;
@@ -2172,22 +2169,31 @@ public class Client extends GameRenderer {
 
 		String menuTooltip = "";
 		String title = "";
-		if(player.loyaltyRank == 0) {
+		if (player.loyaltyRank == 0) {
 			if (player.combatLevel == 0) {
-				menuTooltip = title + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel + ")";
-			} else if(player.summoningAdd > 0) {
-				menuTooltip += title + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel + "+"+player.summoningAdd+")";
+				menuTooltip = title + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel)
+						+ " (level-" + player.combatLevel + ")";
+			} else if (player.summoningAdd > 0) {
+				menuTooltip += title + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel)
+						+ " (level-" + player.combatLevel + "+" + player.summoningAdd + ")";
 			} else {
-				menuTooltip += title + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel + ")";
+				menuTooltip += title + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel)
+						+ " (level-" + player.combatLevel + ")";
 			}
 		} else {
 			String rank = loyaltyRank(player.loyaltyRank);
 			if (player.combatLevel == 0) {
-				menuTooltip = title + "@or2@" + rank + "@whi@" + (rank.length() > 0 ? " " : "") + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel + ")";
-			} else if(player.summoningAdd > 0) {
-				menuTooltip += title + "@or2@" + rank + "@whi@" + (rank.length() > 0 ? " " : "") + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel + "+"+player.summoningAdd+")";
+				menuTooltip = title + "@or2@" + rank + "@whi@" + (rank.length() > 0 ? " " : "") + player.name
+						+ combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel
+						+ ")";
+			} else if (player.summoningAdd > 0) {
+				menuTooltip += title + "@or2@" + rank + "@whi@" + (rank.length() > 0 ? " " : "") + player.name
+						+ combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel
+						+ "+" + player.summoningAdd + ")";
 			} else {
-				menuTooltip += title + "@or2@" + rank + "@whi@" + (rank.length() > 0 ? " " : "") + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel + ")";
+				menuTooltip += title + "@or2@" + rank + "@whi@" + (rank.length() > 0 ? " " : "") + player.name
+						+ combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel
+						+ ")";
 			}
 		}
 
@@ -2214,9 +2220,10 @@ public class Client extends GameRenderer {
 					char c = '\0';
 
 					if (atPlayerActions[index].equalsIgnoreCase("attack")) {
-					//	if (player.combatLevel > myPlayer.combatLevel) { //1 CLICK ATTACK
-							//c = '\u07D0';
-					//	}
+						// if (player.combatLevel > myPlayer.combatLevel) { //1
+						// CLICK ATTACK
+						// c = '\u07D0';
+						// }
 						if (myPlayer.team != 0 && player.team != 0) {
 							if (myPlayer.team == player.team) {
 								c = '\u07D0';
@@ -2298,7 +2305,7 @@ public class Client extends GameRenderer {
 				buildDuelorTrade(yOffset);
 				break;
 			}
-			
+
 			if (inputDialogState == 3) {
 				getGrandExchange().buildItemSearch(yOffset);
 				break;
@@ -2321,8 +2328,10 @@ public class Client extends GameRenderer {
 				messages++;
 			}
 
-			if ((currentType == 1 || currentType == 2) && (currentType == 1 || publicChatMode == 0 || publicChatMode == 1 && isFriendOrSelf(player_name))) {
-				if (yOffset > k1 - 14 && yOffset <= k1 && !myPlayer.name.equals(NAME_PATTERN.matcher(player_name).replaceAll(""))) {
+			if ((currentType == 1 || currentType == 2) && (currentType == 1 || publicChatMode == 0
+					|| publicChatMode == 1 && isFriendOrSelf(player_name))) {
+				if (yOffset > k1 - 14 && yOffset <= k1
+						&& !myPlayer.name.equals(NAME_PATTERN.matcher(player_name).replaceAll(""))) {
 					if (!isFriendOrSelf(player_name)) {
 						menuActionName[menuActionRow] = "Add ignore @whi@" + player_name;
 						menuActionID[menuActionRow] = 42;
@@ -2340,7 +2349,8 @@ public class Client extends GameRenderer {
 				messages++;
 			}
 
-			if ((currentType == 3 || currentType == 7) && splitPrivateChat == 0 && (currentType == 7 || privateChatMode == 0 || privateChatMode == 1 && isFriendOrSelf(player_name))) {
+			if ((currentType == 3 || currentType == 7) && splitPrivateChat == 0 && (currentType == 7
+					|| privateChatMode == 0 || privateChatMode == 1 && isFriendOrSelf(player_name))) {
 				if (yOffset > k1 - 14 && yOffset <= k1) {
 					if (!isFriendOrSelf(player_name)) {
 						menuActionName[menuActionRow] = "Add ignore @whi@" + player_name;
@@ -2470,11 +2480,13 @@ public class Client extends GameRenderer {
 				}
 			}
 
-			if ((type == 5 || type == 6) && (splitPrivateChat == 0 || chatTypeView == 2) && (type == 6 || privateChatMode == 0 || privateChatMode == 1 && isFriendOrSelf(player_name))) {
+			if ((type == 5 || type == 6) && (splitPrivateChat == 0 || chatTypeView == 2)
+					&& (type == 6 || privateChatMode == 0 || privateChatMode == 1 && isFriendOrSelf(player_name))) {
 				count++;
 			}
 
-			if ((type == 3 || type == 7) && (splitPrivateChat == 0 || chatTypeView == 2) && (type == 7 || privateChatMode == 0 || privateChatMode == 1 && isFriendOrSelf(player_name))) {
+			if ((type == 3 || type == 7) && (splitPrivateChat == 0 || chatTypeView == 2)
+					&& (type == 7 || privateChatMode == 0 || privateChatMode == 1 && isFriendOrSelf(player_name))) {
 				if (yOffset > k1 - 14 && yOffset <= k1) {
 					if (!isFriendOrSelf(player_name)) {
 						menuActionName[menuActionRow] = "Add ignore @whi@" + player_name;
@@ -2527,8 +2539,9 @@ public class Client extends GameRenderer {
 			return false;
 		}
 	}
-	
-	private void buildInterfaceMenu(int xPadding, RSInterface rsInterface, int xPos, int yPadding, int yPos, int scrollPoint) {
+
+	private void buildInterfaceMenu(int xPadding, RSInterface rsInterface, int xPos, int yPadding, int yPos,
+			int scrollPoint) {
 		if (rsInterface == null) {
 			rsInterface = RSInterface.interfaceCache[21356];
 		}
@@ -2537,7 +2550,8 @@ public class Client extends GameRenderer {
 			return;
 		}
 
-		if (xPos < xPadding || yPos < yPadding || xPos > xPadding + rsInterface.width || yPos > yPadding + rsInterface.height) {
+		if (xPos < xPadding || yPos < yPadding || xPos > xPadding + rsInterface.width
+				|| yPos > yPadding + rsInterface.height) {
 			return;
 		}
 
@@ -2547,7 +2561,7 @@ public class Client extends GameRenderer {
 			int xSpritePos = rsInterface.childX[index] + xPadding;
 			int ySpritePos = rsInterface.childY[index] + yPadding - scrollPoint;
 			RSInterface children = RSInterface.interfaceCache[rsInterface.children[index]];
-			if(children == null)
+			if (children == null)
 				continue;
 			int offset = children.xOffset;
 			xSpritePos += offset;
@@ -2558,7 +2572,8 @@ public class Client extends GameRenderer {
 				yPos = super.clickY;
 			}
 
-			if ((children.hoverType >= 0 || children.anInt216 != 0) && xPos >= xSpritePos && yPos >= ySpritePos && xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
+			if ((children.hoverType >= 0 || children.anInt216 != 0) && xPos >= xSpritePos && yPos >= ySpritePos
+					&& xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
 				if (children.hoverType >= 0) {
 					anInt886 = children.hoverType;
 				} else {
@@ -2566,9 +2581,10 @@ public class Client extends GameRenderer {
 				}
 			}
 
-			if ((children.type == 8 || children.type == 10) && xPos >= xSpritePos && yPos >= ySpritePos && xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
+			if ((children.type == 8 || children.type == 10) && xPos >= xSpritePos && yPos >= ySpritePos
+					&& xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
 				anInt1315 = children.id;
-				if(children.id != skillTabHoverChild) {
+				if (children.id != skillTabHoverChild) {
 					skillTabHoverChild = children.id;
 				}
 			}
@@ -2576,11 +2592,13 @@ public class Client extends GameRenderer {
 				buildInterfaceMenu(xSpritePos, children, xPos, ySpritePos, yPos, children.scrollPosition);
 
 				if (children.scrollMax > children.height) {
-					method65(xSpritePos + children.width, children.height, xPos, yPos, children, ySpritePos, true, children.scrollMax);
+					method65(xSpritePos + children.width, children.height, xPos, yPos, children, ySpritePos, true,
+							children.scrollMax);
 				}
 			} else {
 
-				if (children.atActionType == 1 && xPos >= xSpritePos && yPos >= ySpritePos && xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
+				if (children.atActionType == 1 && xPos >= xSpritePos && yPos >= ySpritePos
+						&& xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
 					boolean flag = false, flag1 = false;
 
 					if (children.contentType != 0) {
@@ -2588,10 +2606,10 @@ public class Client extends GameRenderer {
 					}
 
 					if (!flag && !flag1) {
-						if(children.actions != null) {
-							for(int i = children.actions.length - 1; i >= 0; i--) {
+						if (children.actions != null) {
+							for (int i = children.actions.length - 1; i >= 0; i--) {
 								String s = children.actions[i];
-								if(s != null) {
+								if (s != null) {
 									menuActionName[menuActionRow] = s;
 									menuActionID[menuActionRow] = 222;
 									menuActionCmd3[menuActionRow] = children.id;
@@ -2601,11 +2619,11 @@ public class Client extends GameRenderer {
 							}
 						}
 						String tooltip = children.tooltip;
-						if(tooltip != null) {
+						if (tooltip != null) {
 							if (myRights == 3) {
 								tooltip += " - Id: " + children.id;
 							}
-							if(tooltip.contains("[GE")) {
+							if (tooltip.contains("[GE")) {
 								continue;
 							}
 							menuActionName[menuActionRow] = tooltip;
@@ -2615,34 +2633,44 @@ public class Client extends GameRenderer {
 						}
 					}
 				}
-				if (children.atActionType == 2 && xPos >= xSpritePos && yPos >= ySpritePos && xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
+				if (children.atActionType == 2 && xPos >= xSpritePos && yPos >= ySpritePos
+						&& xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
 					String s = children.selectedActionName;
 
 					if (s.indexOf(" ") != -1) {
 						s = s.substring(0, s.indexOf(" "));
 					}
 
-					if (children.spellName.endsWith("Rush") || children.spellName.endsWith("Burst") || children.spellName.endsWith("Blitz") || children.spellName.endsWith("Barrage") || children.spellName.endsWith("strike") || children.spellName.endsWith("bolt") || children.spellName.equals("Crumble undead") || children.spellName.endsWith("blast") || children.spellName.endsWith("wave") || children.spellName.equals("Claws of Guthix") || children.spellName.equals("Flames of Zamorak") || children.spellName.equals("Magic Dart")) {
+					if (children.spellName.endsWith("Rush") || children.spellName.endsWith("Burst")
+							|| children.spellName.endsWith("Blitz") || children.spellName.endsWith("Barrage")
+							|| children.spellName.endsWith("strike") || children.spellName.endsWith("bolt")
+							|| children.spellName.equals("Crumble undead") || children.spellName.endsWith("blast")
+							|| children.spellName.endsWith("wave") || children.spellName.equals("Claws of Guthix")
+							|| children.spellName.equals("Flames of Zamorak")
+							|| children.spellName.equals("Magic Dart")) {
 						menuActionName[menuActionRow] = "Autocast @gre@" + children.spellName;
 						menuActionID[menuActionRow] = 104;
 						menuActionCmd3[menuActionRow] = children.id;
 						menuActionRow++;
 					}
 
-					menuActionName[menuActionRow] = s + " @gre@" + children.spellName + (myRights == 3 ? ", " + children.id : "");
+					menuActionName[menuActionRow] = s + " @gre@" + children.spellName
+							+ (myRights == 3 ? ", " + children.id : "");
 					menuActionID[menuActionRow] = 626;
 					menuActionCmd3[menuActionRow] = children.id;
 					menuActionRow++;
 				}
 
-				if (children.atActionType == 3 && xPos >= xSpritePos && yPos >= ySpritePos && xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
+				if (children.atActionType == 3 && xPos >= xSpritePos && yPos >= ySpritePos
+						&& xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
 					menuActionName[menuActionRow] = "Close";
 					menuActionID[menuActionRow] = 200;
 					menuActionCmd3[menuActionRow] = children.id;
 					menuActionRow++;
 				}
 
-				if (children.atActionType == 4 && xPos >= xSpritePos && yPos >= ySpritePos && xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
+				if (children.atActionType == 4 && xPos >= xSpritePos && yPos >= ySpritePos
+						&& xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
 
 					menuActionName[menuActionRow] = children.tooltip + (myRights == 3 ? ", " + children.id : "");
 					menuActionID[menuActionRow] = 169;
@@ -2656,7 +2684,8 @@ public class Client extends GameRenderer {
 					}
 				}
 
-				if (children.atActionType == 5 && xPos >= xSpritePos && yPos >= ySpritePos && xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
+				if (children.atActionType == 5 && xPos >= xSpritePos && yPos >= ySpritePos
+						&& xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
 					// System.out.println("3"+class9_1.tooltip + ", " +
 					// class9_1.interfaceID);
 					menuActionName[menuActionRow] = children.tooltip + (myRights == 3 ? ", " + children.id : "");
@@ -2665,7 +2694,8 @@ public class Client extends GameRenderer {
 					menuActionRow++;
 				}
 
-				if (children.atActionType == 6 && !aBoolean1149 && xPos >= xSpritePos && yPos >= ySpritePos && xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
+				if (children.atActionType == 6 && !aBoolean1149 && xPos >= xSpritePos && yPos >= ySpritePos
+						&& xPos < xSpritePos + children.width && yPos < ySpritePos + children.height) {
 					// System.out.println("4"+class9_1.tooltip + ", " +
 					// class9_1.interfaceID);
 
@@ -2693,14 +2723,15 @@ public class Client extends GameRenderer {
 								lastActiveInvInterface = children.id;
 								if (children.inv[k2] > 0) {
 									int id = children.inv[k2] - 1;
-									if(id > ItemDefinition.totalItems) {
+									if (id > ItemDefinition.totalItems) {
 										continue;
 									}
 									ItemDefinition definition = ItemDefinition.get(id);
 
 									if (itemSelected == 1 && children.isInventoryInterface) {
 										if (children.id != anInt1284 || k2 != anInt1283) {
-											menuActionName[menuActionRow] = "Use " + selectedItemName + " with @lre@" + definition.name;
+											menuActionName[menuActionRow] = "Use " + selectedItemName + " with @lre@"
+													+ definition.name;
 											menuActionID[menuActionRow] = 870;
 											menuActionCmd1[menuActionRow] = definition.id;
 											menuActionCmd2[menuActionRow] = k2;
@@ -2720,14 +2751,16 @@ public class Client extends GameRenderer {
 										if (children.isInventoryInterface) {
 											if (openInterfaceID != 24700 && openInterfaceID != 2700) {
 												for (int l3 = 4; l3 >= 3; l3--) {
-													if (definition.actions != null && definition.actions[l3] != null || lootingBag) {
+													if (definition.actions != null && definition.actions[l3] != null
+															|| lootingBag) {
 														if (lootingBag) {
 															menuActionCmd1[menuActionRow] = definition.id;
 															menuActionCmd2[menuActionRow] = k2;
 															menuActionCmd3[menuActionRow] = children.id;
 
 															if (l3 == 1) {
-																menuActionName[menuActionRow] = "Deposit" + " @lre@" + definition.name;
+																menuActionName[menuActionRow] = "Deposit" + " @lre@"
+																		+ definition.name;
 															} else {
 																menuActionName[menuActionRow] = null;
 															}
@@ -2746,7 +2779,8 @@ public class Client extends GameRenderer {
 															menuActionRow++;
 															continue;
 														}
-														menuActionName[menuActionRow] = definition.actions[l3] + " @lre@" + definition.name;
+														menuActionName[menuActionRow] = definition.actions[l3]
+																+ " @lre@" + definition.name;
 
 														if (l3 == 3) {
 															menuActionID[menuActionRow] = 493;
@@ -2783,8 +2817,7 @@ public class Client extends GameRenderer {
 												menuActionID[menuActionRow] = 2700;
 												menuActionCmd1[menuActionRow] = definition.id;
 											} else {
-												menuActionName[menuActionRow] = "Use @lre@"
-														+ definition.name;
+												menuActionName[menuActionRow] = "Use @lre@" + definition.name;
 												menuActionID[menuActionRow] = 447;
 												menuActionCmd1[menuActionRow] = definition.id;
 											}
@@ -2793,10 +2826,12 @@ public class Client extends GameRenderer {
 											menuActionRow++;
 										}
 
-										if (openInterfaceID != 24700 && children.isInventoryInterface && definition.actions != null) {
+										if (openInterfaceID != 24700 && children.isInventoryInterface
+												&& definition.actions != null) {
 											for (int i4 = 2; i4 >= 0; i4--) {
 												if (definition.actions[i4] != null) {
-													menuActionName[menuActionRow] = definition.actions[i4] + " @lre@" + definition.name;
+													menuActionName[menuActionRow] = definition.actions[i4] + " @lre@"
+															+ definition.name;
 
 													if (i4 == 0) {
 														menuActionID[menuActionRow] = 74;
@@ -2817,23 +2852,34 @@ public class Client extends GameRenderer {
 												}
 											}
 										}
-										boolean ignoreExamine = children.parentID == 3822 && openInterfaceID == 3824 || openInterfaceID == 2700 || openInterfaceID == 24700 || openInterfaceID == 24600 && children.parentID == 3323 || children.parentID == 2901 || children.parentID == 2902 || children.parentID == 2903 || children.parentID == 2904;
+										boolean ignoreExamine = children.parentID == 3822 && openInterfaceID == 3824
+												|| openInterfaceID == 2700 || openInterfaceID == 24700
+												|| openInterfaceID == 24600 && children.parentID == 3323
+												|| children.parentID == 2901 || children.parentID == 2902
+												|| children.parentID == 2903 || children.parentID == 2904;
 										if (children.actions != null) {
-											for (int j4 = children.parentID == 5292 && children.actions.length == 6 ? 5 : 4; j4 >= 0; j4--) {
+											for (int j4 = children.parentID == 5292 && children.actions.length == 6 ? 5
+													: 4; j4 >= 0; j4--) {
 												if (children.actions[j4] != null) {
-													String s = myRights == 3 ? children.actions[j4] + " @lre@" + definition.name + " " + definition.id : children.actions[j4] + " @lre@" + definition.name;
-													if(children.parentID == 5292 && openInterfaceID == 5292) {
-														ignoreExamine = true; //Don't show examine option 
+													String s = myRights == 3
+															? children.actions[j4] + " @lre@" + definition.name + " "
+																	+ definition.id
+															: children.actions[j4] + " @lre@" + definition.name;
+													if (children.parentID == 5292 && openInterfaceID == 5292) {
+														ignoreExamine = true; // Don't
+																				// show
+																				// examine
+																				// option
 													}
 													int interfaceId = children.id;
-													if(children.parentID == 3321 && openInterfaceID == 42000) {
+													if (children.parentID == 3321 && openInterfaceID == 42000) {
 														s = s.replaceAll("Offer", "Pricecheck");
 														interfaceId = 2100;
-													} else if(children.parentID == 3321 && openInterfaceID == 2700) {
+													} else if (children.parentID == 3321 && openInterfaceID == 2700) {
 														s = s.replaceAll("Offer", "Store");
 														interfaceId = 2700;
 													}
-													
+
 													menuActionName[menuActionRow] = s;
 													if (j4 == 0) {
 														menuActionID[menuActionRow] = 632;
@@ -2861,16 +2907,17 @@ public class Client extends GameRenderer {
 												}
 											}
 										}
-										if(openInterfaceID != 24700) {
+										if (openInterfaceID != 24700) {
 											if (!children.hideExamine && !ignoreExamine) {
-												menuActionName[menuActionRow] = "Examine @lre@" + definition.name + (myRights == 3 ? " (" + definition.id +")" : "");
+												menuActionName[menuActionRow] = "Examine @lre@" + definition.name
+														+ (myRights == 3 ? " (" + definition.id + ")" : "");
 												menuActionID[menuActionRow] = 1125;
 												menuActionCmd1[menuActionRow] = definition.id;
 												menuActionCmd2[menuActionRow] = k2;
 												menuActionCmd3[menuActionRow] = children.id;
 												menuActionRow++;
 											} else {
-												if(children.parentID == 3822 && openInterfaceID == 3824) {
+												if (children.parentID == 3822 && openInterfaceID == 3824) {
 													menuActionName[menuActionRow] = "Sell All @lre@" + definition.name;
 													menuActionID[menuActionRow] = 1126;
 													menuActionCmd1[menuActionRow] = definition.id;
@@ -2919,7 +2966,8 @@ public class Client extends GameRenderer {
 				}
 			}
 
-			if ((type == 1 || type == 2) && (type == 1 || publicChatMode == 0 || publicChatMode == 1 && isFriendOrSelf(name))) {
+			if ((type == 1 || type == 2)
+					&& (type == 1 || publicChatMode == 0 || publicChatMode == 1 && isFriendOrSelf(name))) {
 				if (yOffset > k1 - 14 && yOffset <= k1 && !name.equals(myPlayer.name)) {
 					if (!isFriendOrSelf(name)) {
 						menuActionName[menuActionRow] = "Add ignore @whi@" + name;
@@ -2961,10 +3009,12 @@ public class Client extends GameRenderer {
 					name = NAME_PATTERN.matcher(name).replaceAll("");
 				}
 
-				if ((type == 3 || type == 7) && (type == 7 || privateChatMode == 0 || privateChatMode == 1 && isFriendOrSelf(name))) {
+				if ((type == 3 || type == 7)
+						&& (type == 7 || privateChatMode == 0 || privateChatMode == 1 && isFriendOrSelf(name))) {
 					int l = chatArea.getyPos() - 9 - yOffsetPos * 13;
 
-					if (super.mouseX > (fixed ? 4 : 0) && super.mouseY - (fixed ? 4 : 0) > l - 10 && super.mouseY - (fixed ? 4 : 0) <= l + 3) {
+					if (super.mouseX > (fixed ? 4 : 0) && super.mouseY - (fixed ? 4 : 0) > l - 10
+							&& super.mouseY - (fixed ? 4 : 0) <= l + 3) {
 						int i1 = normalText.getTextWidth("From:  " + name + chatMessages[index]) + 25;
 
 						if (i1 > 450) {
@@ -3217,7 +3267,7 @@ public class Client extends GameRenderer {
 		} catch (Exception _ex) {
 		}
 
-		//cacheSprite = null;
+		// cacheSprite = null;
 		setConnection(null);
 		stopMidi();
 
@@ -3349,7 +3399,7 @@ public class Client extends GameRenderer {
 		while (expectedCRCs[9] == 0) {
 			String error = "Unknown problem";
 			setLoadingText(20, "Connecting to web server");
-			////drawSmoothLoading(20, "Connecting to web server");
+			//// drawSmoothLoading(20, "Connecting to web server");
 
 			try {
 				DataInputStream in = openJagGrabInputStream("crc" + (int) (Math.random() * 99999999D) + "-" + 317);
@@ -3394,11 +3444,13 @@ public class Client extends GameRenderer {
 				for (int seconds = secondsToWait; seconds > 0; seconds--) {
 					if (checksumCount >= 10) {
 						setLoadingText(10, "Game updated - please reload the client");
-						//drawSmoothLoading(10, "Game updated - please reload page");
+						// drawSmoothLoading(10, "Game updated - please reload
+						// page");
 						seconds = 10;
 					} else {
 						setLoadingText(10, error + " - Will retry in " + seconds + " secs.");
-						//drawSmoothLoading(10, error + " - Will retry in " + seconds + " secs.");
+						// drawSmoothLoading(10, error + " - Will retry in " +
+						// seconds + " secs.");
 					}
 
 					try {
@@ -3425,27 +3477,24 @@ public class Client extends GameRenderer {
 	public Socket createGameServerSocket(int port) throws IOException {
 		return new Socket(InetAddress.getByName(Configuration.SERVER_HOST), port);
 	}
-	
+
 	public void hitmarkDrawOld(int spriteDrawX, int spriteDrawY, int j1, Entity e) {
-		if(spriteDrawX > -1)
-		{
-			if(j1 == 1)
+		if (spriteDrawX > -1) {
+			if (j1 == 1)
 				spriteDrawY -= 20;
-			if(j1 == 2)
-			{
+			if (j1 == 2) {
 				spriteDrawX -= 15;
 				spriteDrawY -= 10;
 			}
-			if(j1 == 3)
-			{
+			if (j1 == 3) {
 				spriteDrawX += 15;
 				spriteDrawY -= 10;
 			}
 			int dmg = e.hitArray[j1];
-			if(dmg > 0) {
-				if(!Configuration.CONSTITUTION_ENABLED) {
-					dmg = dmg / 10; 
-					if(dmg == 0)
+			if (dmg > 0) {
+				if (!Configuration.CONSTITUTION_ENABLED) {
+					dmg = dmg / 10;
+					if (dmg == 0)
 						dmg = 1;
 				}
 				CacheSpriteLoader.getCacheSprite(784).drawSprite(spriteDrawX - 11, spriteDrawY - 12);
@@ -3457,8 +3506,8 @@ public class Client extends GameRenderer {
 		}
 	}
 
-	public void hitmarkDrawNew(Entity e, int hitLength, int type, int icon,
-			int damage, int soak, int move, int opacity, int mask) {
+	public void hitmarkDrawNew(Entity e, int hitLength, int type, int icon, int damage, int soak, int move, int opacity,
+			int mask) {
 		if (spriteDrawX > -1) {
 			int drawPos = 0;
 			if (mask == 0) {
@@ -3469,18 +3518,18 @@ public class Client extends GameRenderer {
 				e.hitMarkPos[mask] = e.hitMarkPos[0] + (19 * mask);
 				drawPos = e.hitMarkPos[mask];
 			}
-			if(soak > 0) {
-				//if(!getOption("absorb_damage")) {
-				//	soak = 0;
-				//}
+			if (soak > 0) {
+				// if(!getOption("absorb_damage")) {
+				// soak = 0;
+				// }
 				soak = 0;
 			}
 			if (damage > 0) {
 				Sprite end1 = null, middle = null, end2 = null;
 				int x = 0;
-				if(!Configuration.CONSTITUTION_ENABLED) {
+				if (!Configuration.CONSTITUTION_ENABLED) {
 					damage = (damage / 10);
-					if(damage == 0) {
+					if (damage == 0) {
 						damage = 1;
 					}
 				}
@@ -3503,20 +3552,19 @@ public class Client extends GameRenderer {
 				middle = CacheSpriteLoader.getCacheSprite(792 + (type * 3) + 1);
 				end2 = CacheSpriteLoader.getCacheSprite(792 + (type * 3) + 2);
 				if (icon != 255 && icon != 8) {
-					CacheSpriteLoader.getCacheSprite(786 + icon).drawSprite3(spriteDrawX
-							- 31 + x, drawPos - 9, opacity);
+					CacheSpriteLoader.getCacheSprite(786 + icon).drawSprite3(spriteDrawX - 31 + x, drawPos - 9,
+							opacity);
 				}
 				end1.drawSprite3(spriteDrawX - 12 + x, drawPos - 12, opacity);
 				x += 4;
 				for (int i = 0; i < hitLength * 2; i++) {
-						middle.drawSprite3(spriteDrawX - 12 + x, drawPos - 12, opacity);
+					middle.drawSprite3(spriteDrawX - 12 + x, drawPos - 12, opacity);
 					x += 4;
 				}
 				end2.drawSprite3(spriteDrawX - 12 + x, drawPos - 12, opacity);
-				(type == 1 ? bigHit : smallHit).drawOpacityText(0xffffff,
-						String.valueOf(damage), drawPos + (type == 1 ? 2 : 32),
-						spriteDrawX + 4 + (soak > 0 ? -16 : 0), opacity);
-				 if (soak > 0)
+				(type == 1 ? bigHit : smallHit).drawOpacityText(0xffffff, String.valueOf(damage),
+						drawPos + (type == 1 ? 2 : 32), spriteDrawX + 4 + (soak > 0 ? -16 : 0), opacity);
+				if (soak > 0)
 					drawSoak(soak, opacity, drawPos, x);
 			} else {
 				int decrX = soak > 0 ? 26 : 12;
@@ -3527,34 +3575,29 @@ public class Client extends GameRenderer {
 			}
 		}
 	}
-	
+
 	public void drawSoak(int damage, int opacity, int drawPos, int x) {
 		x -= 12;
 		int soakLength = String.valueOf(damage).length();
-		CacheSpriteLoader.getCacheSprite(793 + 5).drawSprite3(spriteDrawX + x,
-				drawPos - 12, opacity);
+		CacheSpriteLoader.getCacheSprite(793 + 5).drawSprite3(spriteDrawX + x, drawPos - 12, opacity);
 		x += 20;
-		CacheSpriteLoader.getCacheSprite(792 + 30).drawSprite3(spriteDrawX + x,
-				drawPos - 12, opacity);
+		CacheSpriteLoader.getCacheSprite(792 + 30).drawSprite3(spriteDrawX + x, drawPos - 12, opacity);
 		x += 4;
 		for (int i = 0; i < soakLength * 2; i++) {
-			CacheSpriteLoader.getCacheSprite(792 + 31).drawSprite3(spriteDrawX + x,
-					drawPos - 12, opacity);
+			CacheSpriteLoader.getCacheSprite(792 + 31).drawSprite3(spriteDrawX + x, drawPos - 12, opacity);
 			x += 4;
 		}
-		CacheSpriteLoader.getCacheSprite(792 + 32).drawSprite3(spriteDrawX + x,
-				drawPos - 10, opacity);
-		if(damage > 99) {
+		CacheSpriteLoader.getCacheSprite(792 + 32).drawSprite3(spriteDrawX + x, drawPos - 10, opacity);
+		if (damage > 99) {
 			x -= 5;
 		}
-		if(damage > 999) {
+		if (damage > 999) {
 			x -= 5;
 		}
-		smallHit.drawOpacityText(0xffffff, String.valueOf(damage),
-				drawPos + 32, spriteDrawX - 8 + x + (soakLength == 1 ? 5 : 0),
-				opacity);
+		smallHit.drawOpacityText(0xffffff, String.valueOf(damage), drawPos + 32,
+				spriteDrawX - 8 + x + (soakLength == 1 ? 5 : 0), opacity);
 	}
-	
+
 	private TextDrawingArea smallHit;
 	private TextDrawingArea bigHit;
 
@@ -3713,7 +3756,8 @@ public class Client extends GameRenderer {
 				menuHeight = 15 * menuActionRow + 22;
 			}
 		} else {
-			if (super.saveClickX > 0 && super.saveClickY > 0 && super.saveClickX < getScreenWidth() && super.saveClickY < getScreenHeight()) {
+			if (super.saveClickX > 0 && super.saveClickY > 0 && super.saveClickX < getScreenWidth()
+					&& super.saveClickY < getScreenHeight()) {
 				int offsetX = super.saveClickX - 0 - width / 2;
 				if (offsetX + width > getScreenWidth()) {
 					offsetX = getScreenWidth() - width;
@@ -3737,14 +3781,14 @@ public class Client extends GameRenderer {
 			}
 		}
 	}
-	
+
 	public String getMoneyInPouch() {
 		String Cash = RSInterface.interfaceCache[8135].message;
 		long convertedMoney = Long.parseLong(Cash);
 		Cash = formatAmount(convertedMoney);
 		return Cash;
 	}
-	
+
 	public final String formatAmount(long amount) {
 		String format = "Too high!";
 		if (amount >= 0 && amount < 100000) {
@@ -3763,8 +3807,8 @@ public class Client extends GameRenderer {
 			format = amount / 1000000000000000000L + "QT";
 		}
 		return format;
-	}	
-	
+	}
+
 	private int currentActionMenu;
 
 	public void doAction(int actionId) {
@@ -3776,9 +3820,9 @@ public class Client extends GameRenderer {
 			inputDialogState = 0;
 			inputTaken = true;
 		}
-		
+
 		bankItemDragSprite = null;
-		
+
 		int nodeId = menuActionCmd1[actionId];
 		int slot = menuActionCmd2[actionId];
 		int interfaceId = menuActionCmd3[actionId];
@@ -3794,9 +3838,7 @@ public class Client extends GameRenderer {
 				if ((currentStats[5] / 10) > 0)
 					handleQuickAidsActive();
 				else
-					pushMessage(
-							"You need to recharge your Prayer points at an altar.", 0,
-							"");
+					pushMessage("You need to recharge your Prayer points at an altar.", 0, "");
 				return;
 			}
 			return;
@@ -3804,285 +3846,474 @@ public class Client extends GameRenderer {
 			toggleQuickAidsSelection();
 			return;
 		}
-		
-				if (action >= 2000) {
-					action -= 2000;
-				}
 
-				if(interfaceId == 24630 || interfaceId == 24632) {
-					if(inputDialogState == 3) {
-						getGrandExchange().searching = false;
-						getGrandExchange().totalItemResults = 0;
-						amountOrNameInput = "";
-					}
-				}
-				
-				if(action == 22700 || action == 1251) {
-					getGrandExchange().searching = false;
-					getOut().putOpcode(204);
-					getOut().putShort(getGrandExchange().itemSelected);
-					return;
-				}
-				
-				if(action >= 990 && action <= 992) {
-					getOut().putOpcode(8);
-					getOut().putInt(action);
-					inputString = "";
-					privateChatMode = action - 990;
-					return;
-				}
-				
-				if (action == 712) {
-					Configuration.MONEY_POUCH_ENABLED = !Configuration.MONEY_POUCH_ENABLED;
-				} else if(action == 713) {
-					if(openInterfaceID > 0 && openInterfaceID != 3323 && openInterfaceID != 6575) {
-						pushMessage("Please close the interface you have open before opening another one.", 0, "");
-						return;
-					}
-					inputTitle = "Enter amount of coins to withdraw:";
-					amountOrNameInput = "";
-					interfaceButtonAction = 557;
-					inputDialogState = 1;
+		if (action >= 2000) {
+			action -= 2000;
+		}
+
+		if (interfaceId == 24630 || interfaceId == 24632) {
+			if (inputDialogState == 3) {
+				getGrandExchange().searching = false;
+				getGrandExchange().totalItemResults = 0;
+				amountOrNameInput = "";
+			}
+		}
+
+		if (action == 22700 || action == 1251) {
+			getGrandExchange().searching = false;
+			getOut().putOpcode(204);
+			getOut().putShort(getGrandExchange().itemSelected);
+			return;
+		}
+
+		if (action >= 990 && action <= 992) {
+			getOut().putOpcode(8);
+			getOut().putInt(action);
+			inputString = "";
+			privateChatMode = action - 990;
+			return;
+		}
+
+		if (action == 712) {
+			Configuration.MONEY_POUCH_ENABLED = !Configuration.MONEY_POUCH_ENABLED;
+		} else if (action == 713) {
+			if (openInterfaceID > 0 && openInterfaceID != 3323 && openInterfaceID != 6575) {
+				pushMessage("Please close the interface you have open before opening another one.", 0, "");
+				return;
+			}
+			inputTitle = "Enter amount of coins to withdraw:";
+			amountOrNameInput = "";
+			interfaceButtonAction = 557;
+			inputDialogState = 1;
+			inputTaken = true;
+			withdrawingMoneyFromPouch = true;
+			return;
+		} else if (action == 715) {
+			String cash = getMoneyInPouch();
+			pushMessage("Your money pouch currently contains " + cash + " ("
+					+ Long.parseLong(RSInterface.interfaceCache[8135].message) + ") coins.", 0, "");
+		} else {
+			withdrawingMoneyFromPouch = false;
+		}
+
+		// System.out.println(action);
+
+		switch (action) {
+		case 1050:
+			getOut().putOpcode(185);
+			getOut().putShort(152);
+			break;
+		case 1013:
+			PlayerHandler.totalXP = 0;
+			getOut().putOpcode(185);
+			getOut().putShort(1013);
+			break;
+		case 1036:
+			getOut().putOpcode(185);
+			getOut().putShort(1036);
+			break;
+		}
+
+		if (action == 1014) {
+			setNorth();
+		}
+
+		if (action == 1007) {
+			PlayerHandler.canGainXP = PlayerHandler.canGainXP ? false : true;
+		}
+
+		if (action == 1006 && !PlayerHandler.showBonus) {
+			if (!PlayerHandler.gains.isEmpty()) {
+				PlayerHandler.gains.removeAll(PlayerHandler.gains);
+			}
+			PlayerHandler.showXP = PlayerHandler.showXP ? false : true;
+		}
+
+		if (action == 1030 && !PlayerHandler.showXP) {
+			PlayerHandler.showBonus = PlayerHandler.showBonus ? false : true;
+		}
+
+		if (action == 104) {
+			spellID = interfaceId;
+			if (!autoCast || (autocastId != spellID)) {
+				autoCast = true;
+				autocastId = spellID;
+				sendPacket185(autocastId, -1, 135);
+				// pushMessage("Autocast spell selected.", 0, "");
+			} else if (autocastId == spellID) {
+				setAutoCastOff();
+			}
+		}
+		if (action == 8003) {
+			getOut().putOpcode(185);
+			getOut().putShort(action);
+		}
+		if (action == 1121) {// Renew Familiar
+			getOut().putOpcode(185);
+			getOut().putShort(action - 100);
+			return;
+		}
+		if (action == 1120) {// Tale BoB
+			getOut().putOpcode(185);
+			getOut().putShort(action - 100);
+			return;
+		}
+		if (action == 1119) {// Dismiss
+			getOut().putOpcode(185);
+			getOut().putShort(action - 100);
+			return;
+		}
+		if (action == 1118) {// Call Follower
+			getOut().putOpcode(185);
+			getOut().putShort(action - 100);
+			return;
+		}
+		if (action == 582) {
+			NPC npc = npcArray[nodeId];
+
+			if (npc != null) {
+				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0], myPlayer.smallX[0], false, npc.smallX[0]);
+				crossX = super.saveClickX;
+				crossY = super.saveClickY;
+				crossType = 2;
+				crossIndex = 0;
+				getOut().putOpcode(57);
+				getOut().writeUnsignedWordA(anInt1285);
+				getOut().writeUnsignedWordBigEndian(nodeId);
+				getOut().writeUnsignedWordBigEndian(anInt1283);
+				getOut().writeUnsignedWordA(anInt1284);
+			}
+		}
+
+		if (action == 234) {
+			boolean flag1 = doWalkTo(2, 0, 0, 0, myPlayer.smallY[0], 0, 0, interfaceId, myPlayer.smallX[0], false, x);
+
+			if (!flag1) {
+				flag1 = doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, interfaceId, myPlayer.smallX[0], false, x);
+			}
+
+			crossX = super.saveClickX;
+			crossY = super.saveClickY;
+			crossType = 2;
+			crossIndex = 0;
+			getOut().putOpcode(236);
+			getOut().writeUnsignedWordBigEndian(interfaceId + baseY);
+			getOut().putShort(nodeId);
+			getOut().writeUnsignedWordBigEndian(slot + baseX);
+		}
+
+		if (action == 62 && method66(nodeId, y, x, id)) {
+			getOut().putOpcode(192);
+			getOut().putShort(anInt1284);
+			getOut().putShort(id);
+			getOut().writeSignedBigEndian(y + baseY);
+			getOut().writeUnsignedWordBigEndian(anInt1283);
+			getOut().writeSignedBigEndian(x + baseX);
+			getOut().putShort(anInt1285);
+		}
+
+		if (action == 511) {
+			boolean flag2 = doWalkTo(2, 0, 0, 0, myPlayer.smallY[0], 0, 0, y, myPlayer.smallX[0], false, x);
+
+			if (!flag2) {
+				flag2 = doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, y, myPlayer.smallX[0], false, x);
+			}
+
+			crossX = super.saveClickX;
+			crossY = super.saveClickY;
+			crossType = 2;
+			crossIndex = 0;
+			getOut().putOpcode(109);
+			getOut().writeUnsignedWordBigEndian(anInt1284);
+			getOut().writeUnsignedWordA(anInt1285);
+			getOut().putShort(nodeId);
+			getOut().writeUnsignedWordA(y + baseY);
+			getOut().writeSignedBigEndian(anInt1283);
+			getOut().putShort(x + baseX);
+		}
+
+		if (action == 74) {
+			getOut().putOpcode(122);
+			getOut().putShort(interfaceId);
+			getOut().putShort(slot);
+			getOut().putShort(nodeId);
+			atInventoryLoopCycle = 0;
+			atInventoryInterface = y;
+			atInventoryIndex = x;
+			atInventoryInterfaceType = 2;
+
+			if (RSInterface.interfaceCache[y].parentID == openInterfaceID) {
+				atInventoryInterfaceType = 1;
+			}
+
+			if (RSInterface.interfaceCache[y].parentID == backDialogID) {
+				atInventoryInterfaceType = 3;
+			}
+		}
+		if (action == 222) {
+			getOut().putOpcode(222);
+			getOut().putShort(interfaceId);
+			getOut().putByte(currentActionMenu);
+		}
+		if (action == 315) {
+			switch (interfaceId) {
+			case 24654:
+				amountOrNameInput = "";
+				getGrandExchange().totalItemResults = 0;
+				getGrandExchange().searching = !getGrandExchange().searching;// inputDialogState
+																				// ==
+																				// 3
+																				// ?
+																				// false
+																				// :
+																				// true;
+				inputDialogState = inputDialogState == 3 ? 0 : 3;
+				break;
+			case 26016: // fixed
+				toggleSize(ScreenMode.FIXED);
+				break;
+
+			case 26019: // resizable
+				toggleSize(ScreenMode.RESIZABLE);
+				break;
+
+			case 26022: // fullscreen
+				toggleSize(ScreenMode.FULLSCREEN);
+			}
+
+			RSInterface class9 = RSInterface.interfaceCache[interfaceId];
+			boolean flag8 = true;
+			if ((class9.contentType == 1321) || (class9.contentType == 1322) || (class9.contentType == 1323)) {
+				int index = class9.id - 79924;
+				if (index >= 50)
+					index -= 50;
+				if (index >= 25)
+					index -= 25;
+				Skills.selectedSkillId = Skills.SKILL_ID_NAME(Skills.SKILL_NAMES[index]);
+			}
+			if (class9.contentType > 0) {
+				flag8 = promptUserForInput(class9);
+			}
+
+			if (flag8) {
+				switch (interfaceId) {
+				case 21341:
+					sendFrame248(21172, 3213);
+					resetInterfaceAnimation(21172);
 					inputTaken = true;
-					withdrawingMoneyFromPouch = true;
-					return;
-				} else if(action == 715) {
-					String cash = getMoneyInPouch();
-					pushMessage("Your money pouch currently contains "+cash+" ("+Long.parseLong(RSInterface.interfaceCache[8135].message)+") coins.", 0, "");
-				} else {
-					withdrawingMoneyFromPouch = false;
-				}
-				
-				//System.out.println(action);
-
-				switch (action) {
-				case 1050:
-					getOut().putOpcode(185);
-					getOut().putShort(152);
 					break;
-				case 1013:
-					PlayerHandler.totalXP = 0;
-					getOut().putOpcode(185);
-					getOut().putShort(1013);
+				case 17231:// Quick prayer confirm
+					saveQuickSelection();
 					break;
-				case 1036:
-					getOut().putOpcode(185);
-					getOut().putShort(1036);
-					break;
-				}
-
-				if (action == 1014) {
-					setNorth();
-				}
-
-
-				if (action == 1007) {
-					PlayerHandler.canGainXP = PlayerHandler.canGainXP ? false : true;
-				}
-
-				if (action == 1006 && !PlayerHandler.showBonus) {
-					if (!PlayerHandler.gains.isEmpty()) {
-						PlayerHandler.gains.removeAll(PlayerHandler.gains);
-					}
-					PlayerHandler.showXP = PlayerHandler.showXP ? false : true;
-				}
-
-				if (action == 1030 && !PlayerHandler.showXP) {
-					PlayerHandler.showBonus = PlayerHandler.showBonus ? false : true;
-				}
-
-				if (action == 104) {
-					spellID = interfaceId;
-					if (!autoCast || (autocastId != spellID)) {
-						autoCast = true;
-						autocastId = spellID;
-						sendPacket185(autocastId, -1, 135);
-						//pushMessage("Autocast spell selected.", 0, "");
-					} else if (autocastId == spellID) {
-						setAutoCastOff();
-					}
-				}
-				if(action == 8003) {
-					getOut().putOpcode(185);
-					getOut().putShort(action);
-				}
-				if (action == 1121) {// Renew Familiar
-					getOut().putOpcode(185);
-					getOut().putShort(action - 100);
-					return;
-				}
-				if (action == 1120) {// Tale BoB
-					getOut().putOpcode(185);
-					getOut().putShort(action - 100);
-					return;
-				}
-				if (action == 1119) {// Dismiss
-					getOut().putOpcode(185);
-					getOut().putShort(action - 100);
-					return;
-				}
-				if (action == 1118) {// Call Follower
-					getOut().putOpcode(185);
-					getOut().putShort(action - 100);
-					return;
-				}
-				if (action == 582) {
-					NPC npc = npcArray[nodeId];
-
-					if (npc != null) {
-						doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0], myPlayer.smallX[0], false, npc.smallX[0]);
-						crossX = super.saveClickX;
-						crossY = super.saveClickY;
-						crossType = 2;
-						crossIndex = 0;
-						getOut().putOpcode(57);
-						getOut().writeUnsignedWordA(anInt1285);
-						getOut().writeUnsignedWordBigEndian(nodeId);
-						getOut().writeUnsignedWordBigEndian(anInt1283);
-						getOut().writeUnsignedWordA(anInt1284);
-					}
-				}
-
-				if (action == 234) {
-					boolean flag1 = doWalkTo(2, 0, 0, 0, myPlayer.smallY[0], 0, 0, interfaceId, myPlayer.smallX[0], false, x);
-
-					if (!flag1) {
-						flag1 = doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, interfaceId, myPlayer.smallX[0], false, x);
-					}
-
-					crossX = super.saveClickX;
-					crossY = super.saveClickY;
-					crossType = 2;
-					crossIndex = 0;
-					getOut().putOpcode(236);
-					getOut().writeUnsignedWordBigEndian(interfaceId + baseY);
-					getOut().putShort(nodeId);
-					getOut().writeUnsignedWordBigEndian(slot + baseX);
-				}
-
-				if (action == 62 && method66(nodeId, y, x, id)) {
-					getOut().putOpcode(192);
-					getOut().putShort(anInt1284);
-					getOut().putShort(id);
-					getOut().writeSignedBigEndian(y + baseY);
-					getOut().writeUnsignedWordBigEndian(anInt1283);
-					getOut().writeSignedBigEndian(x + baseX);
-					getOut().putShort(anInt1285);
-				}
-
-				if (action == 511) {
-					boolean flag2 = doWalkTo(2, 0, 0, 0, myPlayer.smallY[0], 0, 0, y, myPlayer.smallX[0], false, x);
-
-					if (!flag2) {
-						flag2 = doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, y, myPlayer.smallX[0], false, x);
-					}
-
-					crossX = super.saveClickX;
-					crossY = super.saveClickY;
-					crossType = 2;
-					crossIndex = 0;
-					getOut().putOpcode(109);
-					getOut().writeUnsignedWordBigEndian(anInt1284);
-					getOut().writeUnsignedWordA(anInt1285);
-					getOut().putShort(nodeId);
-					getOut().writeUnsignedWordA(y + baseY);
-					getOut().writeSignedBigEndian(anInt1283);
-					getOut().putShort(x + baseX);
-				}
-				
-				if (action == 74) {
-					getOut().putOpcode(122);
-					getOut().putShort(interfaceId);
-					getOut().putShort(slot);
-					getOut().putShort(nodeId);
-					atInventoryLoopCycle = 0;
-					atInventoryInterface = y;
-					atInventoryIndex = x;
-					atInventoryInterfaceType = 2;
-
-					if (RSInterface.interfaceCache[y].parentID == openInterfaceID) {
-						atInventoryInterfaceType = 1;
-					}
-
-					if (RSInterface.interfaceCache[y].parentID == backDialogID) {
-						atInventoryInterfaceType = 3;
-					}
-				}
-				if (action == 222) {
-					getOut().putOpcode(222);
-					getOut().putShort(interfaceId);
-					getOut().putByte(currentActionMenu);
-				}
-				if (action == 315) {
-					switch (interfaceId) {
-					case 24654:
-						amountOrNameInput = "";
-						getGrandExchange().totalItemResults = 0;
-						getGrandExchange().searching = !getGrandExchange().searching;//inputDialogState == 3 ? false : true;
-						inputDialogState = inputDialogState == 3 ? 0 : 3;
-						break;
-					case 26016: // fixed
-						toggleSize(ScreenMode.FIXED);
-						break;
-
-					case 26019: // resizable
-						toggleSize(ScreenMode.RESIZABLE);
-						break;
-
-					case 26022: // fullscreen
-						toggleSize(ScreenMode.FULLSCREEN);
-					}
-
-					RSInterface class9 = RSInterface.interfaceCache[interfaceId];
-					boolean flag8 = true;
-					if ((class9.contentType == 1321) || (class9.contentType == 1322) || (class9.contentType == 1323)) {
-						int index = class9.id - 79924;
-						if (index >= 50)
-							index -= 50;
-						if (index >= 25)
-							index -= 25;
-						Skills.selectedSkillId = Skills.SKILL_ID_NAME(Skills.SKILL_NAMES[index]);
-					}
-					if (class9.contentType > 0) {
-						flag8 = promptUserForInput(class9);
-					}
-
-					if (flag8) {
-						switch (interfaceId) {
-						case 21341:
-							sendFrame248(21172, 3213);
-							resetInterfaceAnimation(21172);
-							inputTaken = true;
-							break;
-						case 17231://Quick prayer confirm
-							saveQuickSelection();
-							break;
-						default:
-							if(interfaceId >= 17202 && interfaceId <= 17227 || interfaceId == 17279 || interfaceId == 17280) {
-								try {
-									togglePrayerState(interfaceId);
-								} catch(Exception e) {
-									e.printStackTrace();
-								}
-							} else {
-								getOut().putOpcode(185);
-								getOut().putShort(interfaceId);
-							}
-							break;
+				default:
+					if (interfaceId >= 17202 && interfaceId <= 17227 || interfaceId == 17279 || interfaceId == 17280) {
+						try {
+							togglePrayerState(interfaceId);
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
+					} else {
+						getOut().putOpcode(185);
+						getOut().putShort(interfaceId);
 					}
+					break;
+				}
+			}
+		}
+
+		if (action == 561) {
+			Player player = playerArray[nodeId];
+
+			if (player != null) {
+				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, player.smallY[0], myPlayer.smallX[0], false,
+						player.smallX[0]);
+				crossX = super.saveClickX;
+				crossY = super.saveClickY;
+				crossType = 2;
+				crossIndex = 0;
+				setAnInt1188(getAnInt1188() + id);
+
+				if (getAnInt1188() >= 90) {
+					getOut().putOpcode(136);
+					setAnInt1188(0);
 				}
 
-				if (action == 561) {
-					Player player = playerArray[nodeId];
+				getOut().putOpcode(128);
+				getOut().putShort(nodeId);
+			}
+		}
 
-					if (player != null) {
-						doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, player.smallY[0], myPlayer.smallX[0], false, player.smallX[0]);
-						crossX = super.saveClickX;
-						crossY = super.saveClickY;
-						crossType = 2;
-						crossIndex = 0;
-						setAnInt1188(getAnInt1188() + id);
+		if (action == 20) {
+			NPC npc = npcArray[nodeId];
+			if (npc != null) {
+				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0], myPlayer.smallX[0], false, npc.smallX[0]);
+				crossX = super.saveClickX;
+				crossY = super.saveClickY;
+				crossType = 2;
+				crossIndex = 0;
+				getOut().putOpcode(155);
+				getOut().writeUnsignedWordBigEndian(nodeId);
+			}
+		}
+
+		if (action == 779) {
+			Player player = playerArray[nodeId];
+
+			if (player != null) {
+				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, player.smallY[0], myPlayer.smallX[0], false,
+						player.smallX[0]);
+				crossX = super.saveClickX;
+				crossY = super.saveClickY;
+				crossType = 2;
+				crossIndex = 0;
+				getOut().putOpcode(153);
+				getOut().writeUnsignedWordBigEndian(nodeId);
+			}
+		}
+
+		if (action == 516) {
+			if (!menuOpen) {
+				worldController.method312(super.saveClickY - 4, super.saveClickX - 4);
+			} else {
+				worldController.method312(interfaceId - 4, slot - 4);
+			}
+		}
+
+		if (action == 1062) {
+			setAnInt924(getAnInt924() + baseX);
+
+			if (getAnInt924() >= 113) {
+				getOut().putOpcode(183);
+				getOut().putDWordBigEndian(0xe63271);
+				setAnInt924(0);
+			}
+
+			method66(nodeId, y, x, id);
+			getOut().putOpcode(228);
+			getOut().writeUnsignedWordA(id);
+			getOut().writeUnsignedWordA(y + baseY);
+			getOut().putShort(x + baseX);
+		}
+		if (action == 679 && !aBoolean1149) {
+			getOut().putOpcode(40);
+			getOut().putShort(interfaceId);
+			aBoolean1149 = true;
+		}
+
+		if (action == 431) {
+			getOut().putOpcode(129);
+			getOut().writeUnsignedWordA(slot);
+			getOut().putShort(interfaceId);
+			getOut().writeUnsignedWordA(nodeId);
+			atInventoryLoopCycle = 0;
+			atInventoryInterface = interfaceId;
+			atInventoryIndex = slot;
+			atInventoryInterfaceType = 2;
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
+				atInventoryInterfaceType = 1;
+			}
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
+				atInventoryInterfaceType = 3;
+			}
+		}
+
+		if (action == 337 || action == 42 || action == 792 || action == 322) {
+			String s = menuActionName[actionId];
+			int k1 = s.indexOf("@whi@");
+
+			if (k1 != -1) {
+				long l3 = TextClass.longForName(NAME_PATTERN.matcher(s.substring(k1 + 5)).replaceAll(""));
+
+				if (action == 337) {
+					addFriend(l3);
+				} else if (action == 42) {
+					addIgnore(l3);
+				} else if (action == 792) {
+					delFriend(l3);
+				} else if (action == 322) {
+					delIgnore(l3);
+				}
+			}
+		}
+
+		if (action == 53) {
+			getOut().putOpcode(135);
+			getOut().writeUnsignedWordBigEndian(slot);
+			getOut().writeUnsignedWordA(interfaceId);
+			getOut().writeUnsignedWordBigEndian(nodeId);
+			atInventoryLoopCycle = 0;
+			atInventoryInterface = interfaceId;
+			atInventoryIndex = slot;
+			atInventoryInterfaceType = 2;
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
+				atInventoryInterfaceType = 1;
+			}
+			if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
+				atInventoryInterfaceType = 3;
+			}
+		}
+		if (action == 54) {
+			getOut().createFrame(135);
+			getOut().writeUnsignedWordBigEndian(slot);
+			getOut().writeUnsignedWordA(11);
+			getOut().writeUnsignedWordBigEndian(nodeId);
+			atInventoryLoopCycle = 0;
+			atInventoryInterface = interfaceId;
+			atInventoryIndex = slot;
+			atInventoryInterfaceType = 2;
+			if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID)
+				atInventoryInterfaceType = 1;
+			if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID)
+				atInventoryInterfaceType = 3;
+		}
+		if (action == 539) {
+			getOut().putOpcode(16);
+			getOut().writeUnsignedWordA(nodeId);
+			getOut().writeSignedBigEndian(slot);
+			getOut().writeSignedBigEndian(interfaceId);
+			atInventoryLoopCycle = 0;
+			atInventoryInterface = interfaceId;
+			atInventoryIndex = slot;
+			atInventoryInterfaceType = 2;
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
+				atInventoryInterfaceType = 1;
+			}
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
+				atInventoryInterfaceType = 3;
+			}
+		}
+
+		if (action == 484 || action == 6) {
+			String s1 = menuActionName[actionId];
+			int l1 = s1.indexOf("@whi@");
+
+			if (l1 != -1) {
+				s1 = s1.substring(l1 + 5).trim();
+				String s7 = TextClass.fixName(TextClass.nameForLong(TextClass.longForName(s1)));
+				boolean flag9 = false;
+
+				for (int j3 = 0; j3 < playerCount; j3++) {
+					Player player = playerArray[playerIndices[j3]];
+
+					if (player == null || player.name == null || !player.name.equalsIgnoreCase(s7)) {
+						continue;
+					}
+
+					doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, player.smallY[0], myPlayer.smallX[0], false,
+							player.smallX[0]);
+
+					if (action == 484) {
+						getOut().putOpcode(139);
+						getOut().writeUnsignedWordBigEndian(playerIndices[j3]);
+					}
+
+					if (action == 6) {
+						setAnInt1188(getAnInt1188() + nodeId);
 
 						if (getAnInt1188() >= 90) {
 							getOut().putOpcode(136);
@@ -4090,1122 +4321,958 @@ public class Client extends GameRenderer {
 						}
 
 						getOut().putOpcode(128);
-						getOut().putShort(nodeId);
+						getOut().putShort(playerIndices[j3]);
 					}
+
+					flag9 = true;
+					break;
 				}
 
-				if (action == 20) {
-					NPC npc = npcArray[nodeId];
-					if (npc != null) {
-						doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0], myPlayer.smallX[0], false, npc.smallX[0]);
-						crossX = super.saveClickX;
-						crossY = super.saveClickY;
-						crossType = 2;
-						crossIndex = 0;
-						getOut().putOpcode(155);
-						getOut().writeUnsignedWordBigEndian(nodeId);
-					}
+				if (!flag9) {
+					pushMessage("Unable to find " + s7, 0, "");
+				}
+			}
+		}
+
+		if (action == 870) {
+			getOut().putOpcode(53);
+			getOut().putShort(slot);
+			getOut().writeUnsignedWordA(anInt1283);
+			getOut().writeSignedBigEndian(nodeId);
+			getOut().putShort(anInt1284);
+			getOut().writeUnsignedWordBigEndian(anInt1285);
+			getOut().putShort(interfaceId);
+			atInventoryLoopCycle = 0;
+			atInventoryInterface = interfaceId;
+			atInventoryIndex = slot;
+			atInventoryInterfaceType = 2;
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
+				atInventoryInterfaceType = 1;
+			}
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
+				atInventoryInterfaceType = 3;
+			}
+		}
+
+		if (action == 847) {
+			getOut().putOpcode(87);
+			getOut().writeUnsignedWordA(nodeId);
+			getOut().putShort(interfaceId);
+			getOut().writeUnsignedWordA(slot);
+			atInventoryLoopCycle = 0;
+			atInventoryInterface = interfaceId;
+			atInventoryIndex = slot;
+			atInventoryInterfaceType = 2;
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
+				atInventoryInterfaceType = 1;
+			}
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
+				atInventoryInterfaceType = 3;
+			}
+		}
+
+		if (action == 626) {
+			RSInterface class9_1 = RSInterface.interfaceCache[interfaceId];
+			int childId = interfaceId;
+			spellSelected = 1;
+			spellUsableOn = Integer.parseInt(MagicInterfaceData.getSpellData(childId, "spellUsableOn"));
+			itemSelected = 0;
+			spellID = childId;
+			String s4 = MagicInterfaceData.getSpellData(childId, "selectedActionName");
+			if (s4.indexOf(" ") != -1)
+				s4 = s4.substring(0, s4.indexOf(" "));
+			String s8 = MagicInterfaceData.getSpellData(childId, "selectedActionName");
+			if (s8.indexOf(" ") != -1)
+				s8 = s8.substring(s8.indexOf(" ") + 1);
+			spellTooltip = s4 + " " + MagicInterfaceData.getSpellData(childId, "spellname") + " " + s8;
+			if (spellUsableOn == 16) {
+				tabID = 3;
+				tabAreaAltered = true;
+			}
+			selectedSpellId = spellID;
+			return;
+		}
+
+		if (action == 78) {
+			getOut().putOpcode(117);
+			getOut().writeSignedBigEndian(interfaceId);
+			getOut().writeSignedBigEndian(nodeId);
+			getOut().writeUnsignedWordBigEndian(slot);
+			atInventoryLoopCycle = 0;
+			atInventoryInterface = interfaceId;
+			atInventoryIndex = slot;
+			atInventoryInterfaceType = 2;
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
+				atInventoryInterfaceType = 1;
+			}
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
+				atInventoryInterfaceType = 3;
+			}
+		}
+
+		if (action == 27) {
+			Player class30_sub2_sub4_sub1_sub2_2 = playerArray[nodeId];
+
+			if (class30_sub2_sub4_sub1_sub2_2 != null) {
+				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, class30_sub2_sub4_sub1_sub2_2.smallY[0],
+						myPlayer.smallX[0], false, class30_sub2_sub4_sub1_sub2_2.smallX[0]);
+				crossX = super.saveClickX;
+				crossY = super.saveClickY;
+				crossType = 2;
+				crossIndex = 0;
+				setAnInt986(getAnInt986() + nodeId);
+
+				if (getAnInt986() >= 54) {
+					getOut().putOpcode(189);
+					getOut().putByte(234);
+					setAnInt986(0);
 				}
 
-				if (action == 779) {
-					Player player = playerArray[nodeId];
+				getOut().putOpcode(73);
+				getOut().writeUnsignedWordBigEndian(nodeId);
+			}
+		}
 
-					if (player != null) {
-						doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, player.smallY[0], myPlayer.smallX[0], false, player.smallX[0]);
-						crossX = super.saveClickX;
-						crossY = super.saveClickY;
-						crossType = 2;
-						crossIndex = 0;
-						getOut().putOpcode(153);
-						getOut().writeUnsignedWordBigEndian(nodeId);
-					}
+		if (action == 213) {
+			boolean flag3 = doWalkTo(2, 0, 0, 0, myPlayer.smallY[0], 0, 0, interfaceId, myPlayer.smallX[0], false,
+					slot);
+
+			if (!flag3) {
+				flag3 = doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, interfaceId, myPlayer.smallX[0], false, slot);
+			}
+
+			crossX = super.saveClickX;
+			crossY = super.saveClickY;
+			crossType = 2;
+			crossIndex = 0;
+			getOut().putOpcode(79);
+			getOut().writeUnsignedWordBigEndian(interfaceId + baseY);
+			getOut().putShort(nodeId);
+			getOut().writeUnsignedWordA(slot + baseX);
+		}
+
+		if (action == 632) {
+			if (openInterfaceID == 53700 || openInterfaceID == 54700) {
+				if (interfaceId == 53781) {
+					interfaceId = 2901;
+					slot = 0;
+				} else if (interfaceId == 53782) {
+					interfaceId = 2901;
+					slot = 1;
+				} else if (interfaceId == 54781) {
+					interfaceId = 2902;
+					slot = 0;
+				} else if (interfaceId == 54782) {
+					interfaceId = 2902;
+					slot = 1;
+				}
+			}
+			getOut().putOpcode(145);
+			getOut().writeUnsignedWordA(interfaceId);
+			getOut().writeUnsignedWordA(slot);
+			getOut().writeUnsignedWordA(nodeId);
+			atInventoryLoopCycle = 0;
+			atInventoryInterface = interfaceId;
+			atInventoryIndex = slot;
+			atInventoryInterfaceType = 2;
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
+				atInventoryInterfaceType = 1;
+			}
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
+				atInventoryInterfaceType = 3;
+			}
+		}
+
+		if (action == 1004) {
+			if (tabInterfaceIDs[10] != -1) {
+				tabID = 10;
+				tabAreaAltered = true;
+			}
+		}
+
+		if (action == 1003) {
+			inputTaken = true;
+		}
+
+		if (action == 1002) {
+			inputTaken = true;
+		}
+
+		if (action == 1001) {
+			inputTaken = true;
+		}
+
+		if (action == 1000) {
+			chatArea.toggleButton(this, 4);
+			cButtonCPos = 4;
+			chatTypeView = 11;
+			inputTaken = true;
+		}
+
+		if (action == 999) {
+			chatArea.toggleButton(this, 0);
+			cButtonCPos = 0;
+			chatTypeView = 0;
+			inputTaken = true;
+		}
+
+		if (action == 998) {
+			chatArea.toggleButton(this, 1);
+			cButtonCPos = 1;
+			chatTypeView = 5;
+			inputTaken = true;
+		}
+
+		if (action == 997) {
+			publicChatMode = 3;
+			inputTaken = true;
+		}
+
+		if (action == 996) {
+			publicChatMode = 2;
+			inputTaken = true;
+		}
+
+		if (action == 995) {
+			publicChatMode = 1;
+			inputTaken = true;
+		}
+
+		if (action == 994) {
+			publicChatMode = 0;
+			inputTaken = true;
+		}
+
+		if (action == 993) {
+			chatArea.toggleButton(this, 2);
+			cButtonCPos = 2;
+			chatTypeView = 1;
+			inputTaken = true;
+		}
+
+		if (action == 992) {
+			privateChatMode = 2;
+			inputTaken = true;
+			privateChatMode = 2;
+			getOut().putOpcode(95);
+			getOut().putByte(publicChatMode);
+			getOut().putByte(privateChatMode);
+			getOut().putByte(tradeMode);
+		}
+
+		if (action == 991) {
+			privateChatMode = 1;
+			inputTaken = true;
+			getOut().putOpcode(95);
+			getOut().putByte(publicChatMode);
+			getOut().putByte(privateChatMode);
+			getOut().putByte(tradeMode);
+		}
+
+		if (action == 990) {
+			privateChatMode = 0;
+			inputTaken = true;
+			getOut().putOpcode(95);
+			getOut().putByte(publicChatMode);
+			getOut().putByte(privateChatMode);
+			getOut().putByte(tradeMode);
+		}
+
+		if (action == 989) {
+			chatArea.toggleButton(this, 3);
+			cButtonCPos = 3;
+			chatTypeView = 2;
+			inputTaken = true;
+			getOut().putOpcode(95);
+			getOut().putByte(publicChatMode);
+			getOut().putByte(privateChatMode);
+			getOut().putByte(tradeMode);
+		}
+
+		if (action == 987) {
+			tradeMode = 2;
+			inputTaken = true;
+		}
+
+		if (action == 986) {
+			tradeMode = 1;
+			inputTaken = true;
+		}
+
+		if (action == 985) {
+			tradeMode = 0;
+			inputTaken = true;
+		}
+
+		if (action == 984) {
+			chatArea.toggleButton(this, 5);
+			cButtonCPos = 5;
+			chatTypeView = 3;
+			inputTaken = true;
+		}
+
+		if (action == 983) {
+			duelStatus = 2;
+		}
+		if (action == 982) {
+			duelStatus = 1;
+		}
+		if (action == 981) {
+			duelStatus = 0;
+		}
+
+		if (action == 980) {
+			chatArea.toggleButton(this, 6);
+			cButtonCPos = 6;
+			chatTypeView = 14;
+			inputTaken = true;
+		}
+
+		if (action == 983) {
+			inputTaken = true;
+		}
+
+		if (action == 982) {
+			inputTaken = true;
+		}
+
+		if (action == 981) {
+			inputTaken = true;
+		}
+
+		if (action == 980) {
+			chatArea.toggleButton(this, 6);
+			cButtonCPos = 6;
+			chatTypeView = 4;
+			inputTaken = true;
+		}
+
+		if (action == 493) {
+			getOut().putOpcode(75);
+			getOut().writeSignedBigEndian(interfaceId);
+			getOut().writeUnsignedWordBigEndian(slot);
+			getOut().writeUnsignedWordA(nodeId);
+			atInventoryLoopCycle = 0;
+			atInventoryInterface = interfaceId;
+			atInventoryIndex = slot;
+			atInventoryInterfaceType = 2;
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
+				atInventoryInterfaceType = 1;
+			}
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
+				atInventoryInterfaceType = 3;
+			}
+		}
+
+		if (action == 652) {
+			boolean flag4 = doWalkTo(2, 0, 0, 0, myPlayer.smallY[0], 0, 0, interfaceId, myPlayer.smallX[0], false,
+					slot);
+
+			if (!flag4) {
+				flag4 = doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, interfaceId, myPlayer.smallX[0], false, slot);
+			}
+
+			crossX = super.saveClickX;
+			crossY = super.saveClickY;
+			crossType = 2;
+			crossIndex = 0;
+			getOut().putOpcode(156);
+			getOut().writeUnsignedWordA(slot + baseX);
+			getOut().writeUnsignedWordBigEndian(interfaceId + baseY);
+			getOut().writeSignedBigEndian(nodeId);
+		}
+
+		if (action == 94) {
+			boolean flag5 = doWalkTo(2, 0, 0, 0, myPlayer.smallY[0], 0, 0, interfaceId, myPlayer.smallX[0], false,
+					slot);
+
+			if (!flag5) {
+				flag5 = doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, interfaceId, myPlayer.smallX[0], false, slot);
+			}
+
+			crossX = super.saveClickX;
+			crossY = super.saveClickY;
+			crossType = 2;
+			crossIndex = 0;
+			getOut().putOpcode(181);
+			getOut().writeUnsignedWordBigEndian(interfaceId + baseY);
+			getOut().putShort(nodeId);
+			getOut().writeUnsignedWordBigEndian(slot + baseX);
+			getOut().writeUnsignedWordA(selectedSpellId);
+		}
+
+		if (action == 646) {
+			getOut().putOpcode(185);
+			getOut().putShort(interfaceId);
+			RSInterface class9_2 = RSInterface.interfaceCache[interfaceId];
+
+			if (class9_2.valueIndexArray != null && class9_2.valueIndexArray[0][0] == 5) {
+				int i2 = class9_2.valueIndexArray[0][1];
+
+				if (variousSettings[i2] != class9_2.requiredValues[0]) {
+					variousSettings[i2] = class9_2.requiredValues[0];
+					updateConfig(i2);
 				}
 
-				if (action == 516) {
-					if (!menuOpen) {
-						worldController.method312(super.saveClickY - 4, super.saveClickX - 4);
+				switch (interfaceId) {
+				case 25841:// More options
+					i2 = openInterfaceID == 26000 ? 0 : 1;
+					sendFrame36(175, i2);
+
+					if (i2 == 1) {
+						openInterfaceID = 26000;
 					} else {
-						worldController.method312(interfaceId - 4, slot - 4);
-					}
-				}
-
-				if (action == 1062) {
-					setAnInt924(getAnInt924() + baseX);
-
-					if (getAnInt924() >= 113) {
-						getOut().putOpcode(183);
-						getOut().putDWordBigEndian(0xe63271);
-						setAnInt924(0);
+						openInterfaceID = -1;
 					}
 
-					method66(nodeId, y, x, id);
-					getOut().putOpcode(228);
-					getOut().writeUnsignedWordA(id);
-					getOut().writeUnsignedWordA(y + baseY);
-					getOut().putShort(x + baseX);
+					break;
 				}
-				if (action == 679 && !aBoolean1149) {
-					getOut().putOpcode(40);
+			}
+		}
+
+		if (action == 225) {
+			NPC npc = npcArray[nodeId];
+
+			if (npc != null) {
+				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0], myPlayer.smallX[0], false, npc.smallX[0]);
+				crossX = super.saveClickX;
+				crossY = super.saveClickY;
+				crossType = 2;
+				crossIndex = 0;
+				setAnInt1226(getAnInt1226() + nodeId);
+				getOut().putOpcode(17);
+				getOut().writeSignedBigEndian(nodeId);
+			}
+		}
+
+		if (action == 965) {
+			NPC npc = npcArray[nodeId];
+
+			if (npc != null) {
+				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0], myPlayer.smallX[0], false, npc.smallX[0]);
+				crossX = super.saveClickX;
+				crossY = super.saveClickY;
+				crossType = 2;
+				crossIndex = 0;
+				setAnInt1134(getAnInt1134() + 1);
+				getOut().putOpcode(21);
+				getOut().putShort(nodeId);
+			}
+		}
+
+		if (action == 413) {
+			NPC npc = npcArray[nodeId];
+
+			if (npc != null) {
+				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0], myPlayer.smallX[0], false, npc.smallX[0]);
+				crossX = super.saveClickX;
+				crossY = super.saveClickY;
+				crossType = 2;
+				crossIndex = 0;
+				getOut().putOpcode(131);
+				getOut().writeSignedBigEndian(nodeId);
+				getOut().writeUnsignedWordA(selectedSpellId);
+			}
+		}
+
+		if (action == 200) {
+			closeGameInterfaces();
+		}
+
+		if (action == 1025) {
+			NPC npc = npcArray[nodeId];
+			if (npc != null) {
+				MobDefinition entityDef = npc.definitionOverride;
+				if (entityDef != null) {
+					getOut().putOpcode(6); // examine npc
+					getOut().putShort(entityDef.id);
+				}
+			}
+		}
+
+		if (action == 900) {
+			method66(nodeId, y, x, id);
+			getOut().putOpcode(252);
+			getOut().writeSignedBigEndian(id);
+			getOut().writeUnsignedWordBigEndian(y + baseY);
+			getOut().writeUnsignedWordA(x + baseX);
+		}
+
+		if (action == 412) {
+			NPC npc = npcArray[nodeId];
+
+			if (npc != null) {
+				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0], myPlayer.smallX[0], false, npc.smallX[0]);
+				crossX = super.saveClickX;
+				crossY = super.saveClickY;
+				crossType = 2;
+				crossIndex = 0;
+				getOut().putOpcode(72);
+				getOut().writeUnsignedWordA(nodeId);
+			}
+		}
+
+		if (action == 365) {
+			Player player = playerArray[nodeId];
+
+			if (player != null) {
+				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, player.smallY[0], myPlayer.smallX[0], false,
+						player.smallX[0]);
+				crossX = super.saveClickX;
+				crossY = super.saveClickY;
+				crossType = 2;
+				crossIndex = 0;
+				getOut().putOpcode(249);
+				getOut().writeUnsignedWordA(nodeId);
+				getOut().writeUnsignedWordBigEndian(selectedSpellId);
+			}
+		}
+
+		if (action == 729) {
+			Player player = playerArray[nodeId];
+
+			if (player != null) {
+				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, player.smallY[0], myPlayer.smallX[0], false,
+						player.smallX[0]);
+				crossX = super.saveClickX;
+				crossY = super.saveClickY;
+				crossType = 2;
+				crossIndex = 0;
+				getOut().putOpcode(39);
+				getOut().writeUnsignedWordBigEndian(nodeId);
+			}
+		}
+
+		if (action == 577) {
+			Player player = playerArray[nodeId];
+
+			if (player != null) {
+				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, player.smallY[0], myPlayer.smallX[0], false,
+						player.smallX[0]);
+				crossX = super.saveClickX;
+				crossY = super.saveClickY;
+				crossType = 2;
+				crossIndex = 0;
+				getOut().putOpcode(139);
+				getOut().writeUnsignedWordBigEndian(nodeId);
+			}
+		}
+
+		if (action == 956 && method66(nodeId, y, x, id)) {
+			getOut().putOpcode(35);
+			getOut().writeUnsignedWordBigEndian(slot + baseX);
+			getOut().writeUnsignedWordA(selectedSpellId);
+			getOut().writeUnsignedWordA(interfaceId + baseY);
+			getOut().writeUnsignedWordBigEndian(id);
+		}
+
+		if (action == 567) {
+			boolean flag6 = doWalkTo(2, 0, 0, 0, myPlayer.smallY[0], 0, 0, interfaceId, myPlayer.smallX[0], false,
+					slot);
+
+			if (!flag6) {
+				flag6 = doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, interfaceId, myPlayer.smallX[0], false, slot);
+			}
+
+			crossX = super.saveClickX;
+			crossY = super.saveClickY;
+			crossType = 2;
+			crossIndex = 0;
+			getOut().putOpcode(23);
+			getOut().writeUnsignedWordBigEndian(interfaceId + baseY);
+			getOut().writeUnsignedWordBigEndian(nodeId);
+			getOut().writeUnsignedWordBigEndian(slot + baseX);
+		}
+
+		if (action == 867) {
+			if ((id & 3) == 0) {
+				setAnInt1175(getAnInt1175() + 1);
+			}
+
+			if (getAnInt1175() >= 59) {
+				getOut().putOpcode(200);
+				getOut().putShort(25501);
+				setAnInt1175(0);
+			}
+
+			getOut().putOpcode(43);
+			getOut().writeUnsignedWordBigEndian(interfaceId);
+			getOut().writeUnsignedWordA(nodeId);
+			getOut().writeUnsignedWordA(slot);
+			atInventoryLoopCycle = 0;
+			atInventoryInterface = interfaceId;
+			atInventoryIndex = slot;
+			atInventoryInterfaceType = 2;
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
+				atInventoryInterfaceType = 1;
+			}
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
+				atInventoryInterfaceType = 3;
+			}
+		}
+
+		if (action == 543) {
+			getOut().putOpcode(237);
+			getOut().putShort(slot);
+			getOut().writeUnsignedWordA(nodeId);
+			getOut().putShort(interfaceId);
+			getOut().writeUnsignedWordA(selectedSpellId);
+			atInventoryLoopCycle = 0;
+			atInventoryInterface = interfaceId;
+			atInventoryIndex = slot;
+			atInventoryInterfaceType = 2;
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
+				atInventoryInterfaceType = 1;
+			}
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
+				atInventoryInterfaceType = 3;
+			}
+		}
+
+		if (action == 491) {
+			Player player = playerArray[nodeId];
+
+			if (player != null) {
+				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, player.smallY[0], myPlayer.smallX[0], false,
+						player.smallX[0]);
+				crossX = super.saveClickX;
+				crossY = super.saveClickY;
+				crossType = 2;
+				crossIndex = 0;
+				getOut().putOpcode(14);
+				getOut().writeUnsignedWordA(anInt1284);
+				getOut().putShort(nodeId);
+				getOut().putShort(anInt1285);
+				getOut().writeUnsignedWordBigEndian(anInt1283);
+			}
+		}
+
+		if (action == 639) {
+			String s3 = menuActionName[actionId];
+			int k2 = s3.indexOf("@whi@");
+
+			if (k2 != -1) {
+				long l4 = TextClass.longForName(s3.substring(k2 + 5).trim());
+				int k3 = -1;
+
+				for (int i4 = 0; i4 < friendCount; i4++) {
+					if (friendsListAsLongs[i4] != l4) {
+						continue;
+					}
+					k3 = i4;
+					break;
+				}
+
+				if (k3 != -1 && friendsNodeIDs[k3] > 0) {
+					inputTaken = true;
+					inputDialogState = 0;
+					messagePromptRaised = true;
+					promptInput = "";
+					friendsListAction = 3;
+					aLong953 = friendsListAsLongs[k3];
+					promptMessage = "Enter message to send to " + friendsList[k3];
+				}
+			}
+		}
+
+		if (action == 454) {
+			getOut().putOpcode(41);
+			getOut().putShort(nodeId);
+			getOut().writeUnsignedWordA(slot);
+			getOut().writeUnsignedWordA(interfaceId);
+			atInventoryLoopCycle = 0;
+			atInventoryInterface = interfaceId;
+			atInventoryIndex = slot;
+			atInventoryInterfaceType = 2;
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
+				atInventoryInterfaceType = 1;
+			}
+
+			if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
+				atInventoryInterfaceType = 3;
+			}
+		}
+
+		if (action == 478) {
+			NPC npc = npcArray[nodeId];
+
+			if (npc != null) {
+				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0], myPlayer.smallX[0], false, npc.smallX[0]);
+				crossX = super.saveClickX;
+				crossY = super.saveClickY;
+				crossType = 2;
+				crossIndex = 0;
+
+				if ((id & 3) == 0) {
+					setAnInt1155(getAnInt1155() + 1);
+				}
+
+				if (getAnInt1155() >= 53) {
+					getOut().putOpcode(85);
+					getOut().putByte(66);
+					setAnInt1155(0);
+				}
+
+				getOut().putOpcode(18);
+				getOut().writeUnsignedWordBigEndian(nodeId);
+			}
+		}
+
+		if (action == 113) {
+			method66(nodeId, y, x, id);
+			getOut().putOpcode(70);
+			getOut().writeUnsignedWordBigEndian(slot + baseX);
+			getOut().putShort(interfaceId + baseY);
+			getOut().writeSignedBigEndian(id);
+		}
+
+		if (action == 872) {
+			method66(nodeId, y, x, id);
+			getOut().putOpcode(234);
+			getOut().writeSignedBigEndian(x + baseX);
+			getOut().writeUnsignedWordA(id);
+			getOut().writeSignedBigEndian(y + baseY);
+		}
+
+		if (action == 502) {
+			method66(nodeId, y, x, id);
+			getOut().putOpcode(132);
+			getOut().writeSignedBigEndian(x + baseX);
+			getOut().putShort(id);
+			getOut().writeUnsignedWordA(y + baseY);
+		}
+		if (menuActionName[actionId].toLowerCase().startsWith("withdraw-x")) {
+			action = 1126;
+		}
+		if (action == 1125) {
+			ItemDefinition definition = ItemDefinition.get(nodeId);
+			if (menuActionName[actionId].toLowerCase().startsWith("withdraw-x")) {
+				action = 1126;
+			} else {
+				if (interfaceId == 38274) {
+					getOut().putOpcode(122);
 					getOut().putShort(interfaceId);
-					aBoolean1149 = true;
-				}
-
-				if (action == 431) {
-					getOut().putOpcode(129);
-					getOut().writeUnsignedWordA(slot);
-					getOut().putShort(interfaceId);
-					getOut().writeUnsignedWordA(nodeId);
-					atInventoryLoopCycle = 0;
-					atInventoryInterface = interfaceId;
-					atInventoryIndex = slot;
-					atInventoryInterfaceType = 2;
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
-						atInventoryInterfaceType = 1;
-					}
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
-						atInventoryInterfaceType = 3;
-					}
-				}
-
-				if (action == 337 || action == 42 || action == 792 || action == 322) {
-					String s = menuActionName[actionId];
-					int k1 = s.indexOf("@whi@");
-
-					if (k1 != -1) {
-						long l3 = TextClass.longForName(NAME_PATTERN.matcher(s.substring(k1 + 5)).replaceAll(""));
-
-						if (action == 337) {
-							addFriend(l3);
-						} else if (action == 42) {
-							addIgnore(l3);
-						} else if (action == 792) {
-							delFriend(l3);
-						} else if (action == 322) {
-							delIgnore(l3);
-						}
-					}
-				}
-
-				if (action == 53) {
-					getOut().putOpcode(135);
-					getOut().writeUnsignedWordBigEndian(slot);
-					getOut().writeUnsignedWordA(interfaceId);
-					getOut().writeUnsignedWordBigEndian(nodeId);
-					atInventoryLoopCycle = 0;
-					atInventoryInterface = interfaceId;
-					atInventoryIndex = slot;
-					atInventoryInterfaceType = 2;
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
-						atInventoryInterfaceType = 1;
-					}
-					if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
-						atInventoryInterfaceType = 3;
-					}
-				}
-				if (action == 54) {
-					getOut().createFrame(135);
-					getOut().writeUnsignedWordBigEndian(slot);
-					getOut().writeUnsignedWordA(11);
-					getOut().writeUnsignedWordBigEndian(nodeId);
-					atInventoryLoopCycle = 0;
-					atInventoryInterface = interfaceId;
-					atInventoryIndex = slot;
-					atInventoryInterfaceType = 2;
-					if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID)
-						atInventoryInterfaceType = 1;
-					if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID)
-						atInventoryInterfaceType = 3;
-				}
-				if (action == 539) {
-					getOut().putOpcode(16);
-					getOut().writeUnsignedWordA(nodeId);
-					getOut().writeSignedBigEndian(slot);
-					getOut().writeSignedBigEndian(interfaceId);
-					atInventoryLoopCycle = 0;
-					atInventoryInterface = interfaceId;
-					atInventoryIndex = slot;
-					atInventoryInterfaceType = 2;
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
-						atInventoryInterfaceType = 1;
-					}
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
-						atInventoryInterfaceType = 3;
-					}
-				}
-
-				if (action == 484 || action == 6) {
-					String s1 = menuActionName[actionId];
-					int l1 = s1.indexOf("@whi@");
-
-					if (l1 != -1) {
-						s1 = s1.substring(l1 + 5).trim();
-						String s7 = TextClass.fixName(TextClass.nameForLong(TextClass.longForName(s1)));
-						boolean flag9 = false;
-
-						for (int j3 = 0; j3 < playerCount; j3++) {
-							Player player = playerArray[playerIndices[j3]];
-
-							if (player == null || player.name == null || !player.name.equalsIgnoreCase(s7)) {
-								continue;
-							}
-
-							doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, player.smallY[0], myPlayer.smallX[0], false, player.smallX[0]);
-
-							if (action == 484) {
-								getOut().putOpcode(139);
-								getOut().writeUnsignedWordBigEndian(playerIndices[j3]);
-							}
-
-							if (action == 6) {
-								setAnInt1188(getAnInt1188() + nodeId);
-
-								if (getAnInt1188() >= 90) {
-									getOut().putOpcode(136);
-									setAnInt1188(0);
-								}
-
-								getOut().putOpcode(128);
-								getOut().putShort(playerIndices[j3]);
-							}
-
-							flag9 = true;
-							break;
-						}
-
-						if (!flag9) {
-							pushMessage("Unable to find " + s7, 0, "");
-						}
-					}
-				}
-
-				if (action == 870) {
-					getOut().putOpcode(53);
 					getOut().putShort(slot);
-					getOut().writeUnsignedWordA(anInt1283);
-					getOut().writeSignedBigEndian(nodeId);
-					getOut().putShort(anInt1284);
-					getOut().writeUnsignedWordBigEndian(anInt1285);
-					getOut().putShort(interfaceId);
-					atInventoryLoopCycle = 0;
-					atInventoryInterface = interfaceId;
-					atInventoryIndex = slot;
-					atInventoryInterfaceType = 2;
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
-						atInventoryInterfaceType = 1;
-					}
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
-						atInventoryInterfaceType = 3;
-					}
+					getOut().putShort(nodeId);
+				} else {
+					getOut().putOpcode(2); // examine item
+					getOut().putShort(definition.id);
 				}
-
-				if (action == 847) {
-					getOut().putOpcode(87);
-					getOut().writeUnsignedWordA(nodeId);
-					getOut().putShort(interfaceId);
-					getOut().writeUnsignedWordA(slot);
-					atInventoryLoopCycle = 0;
-					atInventoryInterface = interfaceId;
-					atInventoryIndex = slot;
-					atInventoryInterfaceType = 2;
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
-						atInventoryInterfaceType = 1;
-					}
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
-						atInventoryInterfaceType = 3;
-					}
+			}
+		}
+		if (action == 1126) {
+			getOut().putOpcode(138);
+			getOut().writeUnsignedWordA(interfaceId);
+			getOut().writeUnsignedWordA(slot);
+			getOut().writeUnsignedWordA(nodeId);
+			atInventoryLoopCycle = 0;
+			atInventoryInterface = interfaceId;
+			atInventoryIndex = slot;
+			atInventoryInterfaceType = 2;
+			if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID)
+				atInventoryInterfaceType = 1;
+			if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID)
+				atInventoryInterfaceType = 3;
+		}
+		if (action == 169) {
+			switch (interfaceId) {
+			case 26026:
+				Configuration.DISPLAY_HP_ABOVE_HEAD = !Configuration.DISPLAY_HP_ABOVE_HEAD;
+				pushMessage(
+						"Displaying hp above head turned " + (Configuration.DISPLAY_HP_ABOVE_HEAD ? "on" : "off") + ".",
+						0, "");
+				Settings.save();
+				updateSetting(interfaceId, !Configuration.DISPLAY_HP_ABOVE_HEAD);
+				break;
+			case 26027:
+				Configuration.DISPLAY_USERNAMES_ABOVE_HEAD = !Configuration.DISPLAY_USERNAMES_ABOVE_HEAD;
+				pushMessage("Displaying usernames above head turned "
+						+ (Configuration.DISPLAY_USERNAMES_ABOVE_HEAD ? "on" : "off") + ".", 0, "");
+				Settings.save();
+				updateSetting(interfaceId, !Configuration.DISPLAY_USERNAMES_ABOVE_HEAD);
+				break;
+			case 26031:
+				GameFrameConstants.gameframeType = GameFrameConstants.gameframeType == GameFrameType.FRAME_525
+						? GameFrameType.FRAME_554 : GameFrameType.FRAME_525;
+				pushMessage("Gameframe toggled.", 0, "");
+				Settings.save();
+				updateSetting(interfaceId, GameFrameConstants.gameframeType == GameFrameType.FRAME_525);
+				break;
+			case 26035:
+				Configuration.FOG_ENABLED = !Configuration.FOG_ENABLED;
+				pushMessage("HD Fog toggled.", 0, "");
+				Settings.save();
+				updateSetting(interfaceId, !Configuration.FOG_ENABLED);
+				break;
+			case 26037:
+				Configuration.TOGGLE_ROOF_OFF = !Configuration.TOGGLE_ROOF_OFF;
+				pushMessage("Roofs have been toggled.", 0, "");
+				Settings.save();
+				updateSetting(interfaceId, !Configuration.TOGGLE_ROOF_OFF);
+				loadRegion();
+				break;
+			case 26014:
+				Configuration.NEW_HITMARKS = !Configuration.NEW_HITMARKS;
+				pushMessage("New hitmarks turned " + (Configuration.NEW_HITMARKS ? "on" : "off") + ".", 0, "");
+				Settings.save();
+				updateSetting(interfaceId, !Configuration.NEW_HITMARKS);
+				break;
+			case 26007:
+				Configuration.NEW_FUNCTION_KEYS = !Configuration.NEW_FUNCTION_KEYS;
+				pushMessage("New function keys turned " + (Configuration.NEW_FUNCTION_KEYS ? "on" : "off") + ".", 0,
+						"");
+				Settings.save();
+				updateSetting(interfaceId, !Configuration.NEW_FUNCTION_KEYS);
+				break;
+			case 26010:
+				Configuration.NEW_CURSORS = !Configuration.NEW_CURSORS;
+				pushMessage("New cursors turned " + (Configuration.NEW_CURSORS ? "on" : "off") + ".", 0, "");
+				Settings.save();
+				updateSetting(interfaceId, !Configuration.NEW_CURSORS);
+				oldCursor = null;
+				if (!Configuration.NEW_CURSORS) {
+					getGameComponent().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				} else {
+					super.setCursor(CursorData.CURSOR_0);
 				}
+				break;
+			case 26008:
+				Configuration.NEW_HEALTH_BARS = !Configuration.NEW_HEALTH_BARS;
+				pushMessage("New health bars turned " + (Configuration.NEW_HEALTH_BARS ? "on" : "off") + ".", 0, "");
+				Settings.save();
+				updateSetting(interfaceId, !Configuration.NEW_HEALTH_BARS);
+				break;
+			case 26029:
+				Configuration.CONSTITUTION_ENABLED = !Configuration.CONSTITUTION_ENABLED;
+				pushMessage("Constitution turned " + (Configuration.CONSTITUTION_ENABLED ? "on" : "off") + ".", 0, "");
+				Settings.save();
+				updateSetting(interfaceId, !Configuration.CONSTITUTION_ENABLED);
+				break;
+			case 26033:
+				Configuration.NOTIFICATIONS_ENABLED = !Configuration.NOTIFICATIONS_ENABLED;
+				pushMessage("Push notifications turned " + (Configuration.NOTIFICATIONS_ENABLED ? "on" : "off") + ".",
+						0, "");
+				Settings.save();
+				updateSetting(interfaceId, !Configuration.NOTIFICATIONS_ENABLED);
+				break;
+			case 26054:
+				setLowDetail();
+				loadRegion();
+				pushMessage("Set to low detail.", 0, "");
+				Settings.save();
+				updateSetting(interfaceId, false);
+				updateSetting(26058, false);
+				break;
+			case 26058:
+				setHighDetail();
+				loadRegion();
+				pushMessage("Set to high detail.", 0, "");
+				Settings.save();
+				updateSetting(interfaceId, false);
+				updateSetting(26054, false);
+				break;
 
-				if (action == 626) {
-					RSInterface class9_1 = RSInterface.interfaceCache[interfaceId];
-					int childId = interfaceId;
-					spellSelected = 1;
-					spellUsableOn = Integer.parseInt(MagicInterfaceData.getSpellData(childId, "spellUsableOn"));
-					itemSelected = 0;
-					spellID = childId;
-					String s4 = MagicInterfaceData.getSpellData(childId, "selectedActionName");
-					if (s4.indexOf(" ") != -1)
-						s4 = s4.substring(0, s4.indexOf(" "));
-					String s8 = MagicInterfaceData.getSpellData(childId, "selectedActionName");
-					if (s8.indexOf(" ") != -1)
-						s8 = s8.substring(s8.indexOf(" ") + 1);
-					spellTooltip = s4 + " " + MagicInterfaceData.getSpellData(childId, "spellname") + " " + s8;
-					if (spellUsableOn == 16) {
-						tabID = 3;
-						tabAreaAltered = true;
-					}
-					selectedSpellId = spellID;
+			default:
+				getOut().putOpcode(185);
+				getOut().putShort(interfaceId);
+				if (interfaceId == 26003) {
 					return;
 				}
-
-				if (action == 78) {
-					getOut().putOpcode(117);
-					getOut().writeSignedBigEndian(interfaceId);
-					getOut().writeSignedBigEndian(nodeId);
-					getOut().writeUnsignedWordBigEndian(slot);
-					atInventoryLoopCycle = 0;
-					atInventoryInterface = interfaceId;
-					atInventoryIndex = slot;
-					atInventoryInterfaceType = 2;
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
-						atInventoryInterfaceType = 1;
-					}
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
-						atInventoryInterfaceType = 3;
-					}
-				}
-
-				if (action == 27) {
-					Player class30_sub2_sub4_sub1_sub2_2 = playerArray[nodeId];
-
-					if (class30_sub2_sub4_sub1_sub2_2 != null) {
-						doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, class30_sub2_sub4_sub1_sub2_2.smallY[0], myPlayer.smallX[0], false, class30_sub2_sub4_sub1_sub2_2.smallX[0]);
-						crossX = super.saveClickX;
-						crossY = super.saveClickY;
-						crossType = 2;
-						crossIndex = 0;
-						setAnInt986(getAnInt986() + nodeId);
-
-						if (getAnInt986() >= 54) {
-							getOut().putOpcode(189);
-							getOut().putByte(234);
-							setAnInt986(0);
-						}
-
-						getOut().putOpcode(73);
-						getOut().writeUnsignedWordBigEndian(nodeId);
-					}
-				}
-
-				if (action == 213) {
-					boolean flag3 = doWalkTo(2, 0, 0, 0, myPlayer.smallY[0], 0, 0, interfaceId, myPlayer.smallX[0], false, slot);
-
-					if (!flag3) {
-						flag3 = doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, interfaceId, myPlayer.smallX[0], false, slot);
-					}
-
-					crossX = super.saveClickX;
-					crossY = super.saveClickY;
-					crossType = 2;
-					crossIndex = 0;
-					getOut().putOpcode(79);
-					getOut().writeUnsignedWordBigEndian(interfaceId + baseY);
-					getOut().putShort(nodeId);
-					getOut().writeUnsignedWordA(slot + baseX);
-				}
-
-				if (action == 632) {
-					if(openInterfaceID == 53700 || openInterfaceID == 54700) {
-						if(interfaceId == 53781) {
-							interfaceId = 2901;
-							slot = 0;
-						} else if(interfaceId == 53782) {
-							interfaceId = 2901;
-							slot = 1;
-						} else if(interfaceId == 54781) {
-							interfaceId = 2902;
-							slot = 0;
-						} else if(interfaceId == 54782) {
-							interfaceId = 2902;
-							slot = 1;
-						}
-					}
-					getOut().putOpcode(145);
-					getOut().writeUnsignedWordA(interfaceId);
-					getOut().writeUnsignedWordA(slot);
-					getOut().writeUnsignedWordA(nodeId);
-					atInventoryLoopCycle = 0;
-					atInventoryInterface = interfaceId;
-					atInventoryIndex = slot;
-					atInventoryInterfaceType = 2;
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
-						atInventoryInterfaceType = 1;
-					}
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
-						atInventoryInterfaceType = 3;
-					}
-				}
-
-				if (action == 1004) {
-					if (tabInterfaceIDs[10] != -1) {
-						tabID = 10;
-						tabAreaAltered = true;
-					}
-				}
-
-				if (action == 1003) {
-					inputTaken = true;
-				}
-
-				if (action == 1002) {
-					inputTaken = true;
-				}
-
-				if (action == 1001) {
-					inputTaken = true;
-				}
-
-				if (action == 1000) {
-					chatArea.toggleButton(this, 4);
-					cButtonCPos = 4;
-					chatTypeView = 11;
-					inputTaken = true;
-				}
-
-				if (action == 999) {
-					chatArea.toggleButton(this, 0);
-					cButtonCPos = 0;
-					chatTypeView = 0;
-					inputTaken = true;
-				}
-
-				if (action == 998) {
-					chatArea.toggleButton(this, 1);
-					cButtonCPos = 1;
-					chatTypeView = 5;
-					inputTaken = true;
-				}
-
-				if (action == 997) {
-					publicChatMode = 3;
-					inputTaken = true;
-				}
-
-				if (action == 996) {
-					publicChatMode = 2;
-					inputTaken = true;
-				}
-
-				if (action == 995) {
-					publicChatMode = 1;
-					inputTaken = true;
-				}
-
-				if (action == 994) {
-					publicChatMode = 0;
-					inputTaken = true;
-				}
-
-				if (action == 993) {
-					chatArea.toggleButton(this, 2);
-					cButtonCPos = 2;
-					chatTypeView = 1;
-					inputTaken = true;
-				}
-
-				if (action == 992) {
-					privateChatMode = 2;
-					inputTaken = true;
-					privateChatMode = 2;
-					getOut().putOpcode(95);
-					getOut().putByte(publicChatMode);
-					getOut().putByte(privateChatMode);
-					getOut().putByte(tradeMode);
-				}
-
-				if (action == 991) {
-					privateChatMode = 1;
-					inputTaken = true;
-					getOut().putOpcode(95);
-					getOut().putByte(publicChatMode);
-					getOut().putByte(privateChatMode);
-					getOut().putByte(tradeMode);
-				}
-
-				if (action == 990) {
-					privateChatMode = 0;
-					inputTaken = true;
-					getOut().putOpcode(95);
-					getOut().putByte(publicChatMode);
-					getOut().putByte(privateChatMode);
-					getOut().putByte(tradeMode);
-				}
-
-				if (action == 989) {
-					chatArea.toggleButton(this, 3);
-					cButtonCPos = 3;
-					chatTypeView = 2;
-					inputTaken = true;
-					getOut().putOpcode(95);
-					getOut().putByte(publicChatMode);
-					getOut().putByte(privateChatMode);
-					getOut().putByte(tradeMode);
-				}
-
-				if (action == 987) {
-					tradeMode = 2;
-					inputTaken = true;
-				}
-
-				if (action == 986) {
-					tradeMode = 1;
-					inputTaken = true;
-				}
-
-				if (action == 985) {
-					tradeMode = 0;
-					inputTaken = true;
-				}
-
-				if (action == 984) {
-					chatArea.toggleButton(this, 5);
-					cButtonCPos = 5;
-					chatTypeView = 3;
-					inputTaken = true;
-				}
-
-				if (action == 983) {
-					duelStatus = 2;
-				}
-				if (action == 982) {
-					duelStatus = 1;
-				}
-				if (action == 981) {
-					duelStatus = 0;
-				}
-
-				if (action == 980) {
-					chatArea.toggleButton(this, 6);
-					cButtonCPos = 6;
-					chatTypeView = 14;
-					inputTaken = true;
-				}
-
-				if (action == 983) {
-					inputTaken = true;
-				}
-
-				if (action == 982) {
-					inputTaken = true;
-				}
-
-				if (action == 981) {
-					inputTaken = true;
-				}
-
-				if (action == 980) {
-					chatArea.toggleButton(this, 6);
-					cButtonCPos = 6;
-					chatTypeView = 4;
-					inputTaken = true;
-				}
-
-				if (action == 493) {
-					getOut().putOpcode(75);
-					getOut().writeSignedBigEndian(interfaceId);
-					getOut().writeUnsignedWordBigEndian(slot);
-					getOut().writeUnsignedWordA(nodeId);
-					atInventoryLoopCycle = 0;
-					atInventoryInterface = interfaceId;
-					atInventoryIndex = slot;
-					atInventoryInterfaceType = 2;
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
-						atInventoryInterfaceType = 1;
-					}
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
-						atInventoryInterfaceType = 3;
-					}
-				}
-
-				if (action == 652) {
-					boolean flag4 = doWalkTo(2, 0, 0, 0, myPlayer.smallY[0], 0, 0, interfaceId, myPlayer.smallX[0], false, slot);
-
-					if (!flag4) {
-						flag4 = doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, interfaceId, myPlayer.smallX[0], false, slot);
-					}
-
-					crossX = super.saveClickX;
-					crossY = super.saveClickY;
-					crossType = 2;
-					crossIndex = 0;
-					getOut().putOpcode(156);
-					getOut().writeUnsignedWordA(slot + baseX);
-					getOut().writeUnsignedWordBigEndian(interfaceId + baseY);
-					getOut().writeSignedBigEndian(nodeId);
-				}
-
-				if (action == 94) {
-					boolean flag5 = doWalkTo(2, 0, 0, 0, myPlayer.smallY[0], 0, 0, interfaceId, myPlayer.smallX[0], false, slot);
-
-					if (!flag5) {
-						flag5 = doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, interfaceId, myPlayer.smallX[0], false, slot);
-					}
-
-					crossX = super.saveClickX;
-					crossY = super.saveClickY;
-					crossType = 2;
-					crossIndex = 0;
-					getOut().putOpcode(181);
-					getOut().writeUnsignedWordBigEndian(interfaceId + baseY);
-					getOut().putShort(nodeId);
-					getOut().writeUnsignedWordBigEndian(slot + baseX);
-					getOut().writeUnsignedWordA(selectedSpellId);
-				}
-
-				if (action == 646) {
-					getOut().putOpcode(185);
-					getOut().putShort(interfaceId);
-					RSInterface class9_2 = RSInterface.interfaceCache[interfaceId];
-
-					if (class9_2.valueIndexArray != null && class9_2.valueIndexArray[0][0] == 5) {
-						int i2 = class9_2.valueIndexArray[0][1];
-
-						if (variousSettings[i2] != class9_2.requiredValues[0]) {
-							variousSettings[i2] = class9_2.requiredValues[0];
-							updateConfig(i2);
-						}
-
-						switch (interfaceId) {
-						case 25841:// More options
-							i2 = openInterfaceID == 26000 ? 0 : 1;
-							sendFrame36(175, i2);
-
-							if (i2 == 1) {
-								openInterfaceID = 26000;
-							} else {
-								openInterfaceID = -1;
-							}
-
-							break;
-						}
-					}
-				}
-
-				if (action == 225) {
-					NPC npc = npcArray[nodeId];
-
-					if (npc != null) {
-						doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0], myPlayer.smallX[0], false, npc.smallX[0]);
-						crossX = super.saveClickX;
-						crossY = super.saveClickY;
-						crossType = 2;
-						crossIndex = 0;
-						setAnInt1226(getAnInt1226() + nodeId);
-						getOut().putOpcode(17);
-						getOut().writeSignedBigEndian(nodeId);
-					}
-				}
-
-				if (action == 965) {
-					NPC npc = npcArray[nodeId];
-
-					if (npc != null) {
-						doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0], myPlayer.smallX[0], false, npc.smallX[0]);
-						crossX = super.saveClickX;
-						crossY = super.saveClickY;
-						crossType = 2;
-						crossIndex = 0;
-						setAnInt1134(getAnInt1134() + 1);
-						getOut().putOpcode(21);
-						getOut().putShort(nodeId);
-					}
-				}
-
-				if (action == 413) {
-					NPC npc = npcArray[nodeId];
-
-					if (npc != null) {
-						doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0], myPlayer.smallX[0], false, npc.smallX[0]);
-						crossX = super.saveClickX;
-						crossY = super.saveClickY;
-						crossType = 2;
-						crossIndex = 0;
-						getOut().putOpcode(131);
-						getOut().writeSignedBigEndian(nodeId);
-						getOut().writeUnsignedWordA(selectedSpellId);
-					}
-				}
-
-				if (action == 200) {
-					closeGameInterfaces();
-				}
-
-				if (action == 1025) {
-					NPC npc = npcArray[nodeId];
-					if (npc != null) {
-						MobDefinition entityDef = npc.definitionOverride;
-						if (entityDef != null) {
-							getOut().putOpcode(6); //examine npc
-							getOut().putShort(entityDef.id);
-						}
-					}
-				}
-
-				if (action == 900) {
-					method66(nodeId, y, x, id);
-					getOut().putOpcode(252);
-					getOut().writeSignedBigEndian(id);
-					getOut().writeUnsignedWordBigEndian(y + baseY);
-					getOut().writeUnsignedWordA(x + baseX);
-				}
-
-				if (action == 412) {
-					NPC npc = npcArray[nodeId];
-
-					if (npc != null) {
-						doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0], myPlayer.smallX[0], false, npc.smallX[0]);
-						crossX = super.saveClickX;
-						crossY = super.saveClickY;
-						crossType = 2;
-						crossIndex = 0;
-						getOut().putOpcode(72);
-						getOut().writeUnsignedWordA(nodeId);
-					}
-				}
-
-				if (action == 365) {
-					Player player = playerArray[nodeId];
-
-					if (player != null) {
-						doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, player.smallY[0], myPlayer.smallX[0], false, player.smallX[0]);
-						crossX = super.saveClickX;
-						crossY = super.saveClickY;
-						crossType = 2;
-						crossIndex = 0;
-						getOut().putOpcode(249);
-						getOut().writeUnsignedWordA(nodeId);
-						getOut().writeUnsignedWordBigEndian(selectedSpellId);
-					}
-				}
-
-				if (action == 729) {
-					Player player = playerArray[nodeId];
-
-					if (player != null) {
-						doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, player.smallY[0], myPlayer.smallX[0], false, player.smallX[0]);
-						crossX = super.saveClickX;
-						crossY = super.saveClickY;
-						crossType = 2;
-						crossIndex = 0;
-						getOut().putOpcode(39);
-						getOut().writeUnsignedWordBigEndian(nodeId);
-					}
-				}
-
-				if (action == 577) {
-					Player player = playerArray[nodeId];
-
-					if (player != null) {
-						doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, player.smallY[0], myPlayer.smallX[0], false, player.smallX[0]);
-						crossX = super.saveClickX;
-						crossY = super.saveClickY;
-						crossType = 2;
-						crossIndex = 0;
-						getOut().putOpcode(139);
-						getOut().writeUnsignedWordBigEndian(nodeId);
-					}
-				}
-
-				if (action == 956 && method66(nodeId, y, x, id)) {
-					getOut().putOpcode(35);
-					getOut().writeUnsignedWordBigEndian(slot + baseX);
-					getOut().writeUnsignedWordA(selectedSpellId);
-					getOut().writeUnsignedWordA(interfaceId + baseY);
-					getOut().writeUnsignedWordBigEndian(id);
-				}
-
-				if (action == 567) {
-					boolean flag6 = doWalkTo(2, 0, 0, 0, myPlayer.smallY[0], 0, 0, interfaceId, myPlayer.smallX[0], false, slot);
-
-					if (!flag6) {
-						flag6 = doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, interfaceId, myPlayer.smallX[0], false, slot);
-					}
-
-					crossX = super.saveClickX;
-					crossY = super.saveClickY;
-					crossType = 2;
-					crossIndex = 0;
-					getOut().putOpcode(23);
-					getOut().writeUnsignedWordBigEndian(interfaceId + baseY);
-					getOut().writeUnsignedWordBigEndian(nodeId);
-					getOut().writeUnsignedWordBigEndian(slot + baseX);
-				}
-
-				if (action == 867) {
-					if ((id & 3) == 0) {
-						setAnInt1175(getAnInt1175() + 1);
-					}
-
-					if (getAnInt1175() >= 59) {
-						getOut().putOpcode(200);
-						getOut().putShort(25501);
-						setAnInt1175(0);
-					}
-
-					getOut().putOpcode(43);
-					getOut().writeUnsignedWordBigEndian(interfaceId);
-					getOut().writeUnsignedWordA(nodeId);
-					getOut().writeUnsignedWordA(slot);
-					atInventoryLoopCycle = 0;
-					atInventoryInterface = interfaceId;
-					atInventoryIndex = slot;
-					atInventoryInterfaceType = 2;
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
-						atInventoryInterfaceType = 1;
-					}
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
-						atInventoryInterfaceType = 3;
-					}
-				}
-
-				if (action == 543) {
-					getOut().putOpcode(237);
-					getOut().putShort(slot);
-					getOut().writeUnsignedWordA(nodeId);
-					getOut().putShort(interfaceId);
-					getOut().writeUnsignedWordA(selectedSpellId);
-					atInventoryLoopCycle = 0;
-					atInventoryInterface = interfaceId;
-					atInventoryIndex = slot;
-					atInventoryInterfaceType = 2;
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
-						atInventoryInterfaceType = 1;
-					}
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
-						atInventoryInterfaceType = 3;
-					}
-				}
-
-				if (action == 491) {
-					Player player = playerArray[nodeId];
-
-					if (player != null) {
-						doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, player.smallY[0], myPlayer.smallX[0], false, player.smallX[0]);
-						crossX = super.saveClickX;
-						crossY = super.saveClickY;
-						crossType = 2;
-						crossIndex = 0;
-						getOut().putOpcode(14);
-						getOut().writeUnsignedWordA(anInt1284);
-						getOut().putShort(nodeId);
-						getOut().putShort(anInt1285);
-						getOut().writeUnsignedWordBigEndian(anInt1283);
-					}
-				}
-
-				if (action == 639) {
-					String s3 = menuActionName[actionId];
-					int k2 = s3.indexOf("@whi@");
-
-					if (k2 != -1) {
-						long l4 = TextClass.longForName(s3.substring(k2 + 5).trim());
-						int k3 = -1;
-
-						for (int i4 = 0; i4 < friendCount; i4++) {
-							if (friendsListAsLongs[i4] != l4) {
-								continue;
-							}
-							k3 = i4;
-							break;
-						}
-
-						if (k3 != -1 && friendsNodeIDs[k3] > 0) {
-							inputTaken = true;
-							inputDialogState = 0;
-							messagePromptRaised = true;
-							promptInput = "";
-							friendsListAction = 3;
-							aLong953 = friendsListAsLongs[k3];
-							promptMessage = "Enter message to send to " + friendsList[k3];
-						}
-					}
-				}
-
-				if (action == 454) {
-					getOut().putOpcode(41);
-					getOut().putShort(nodeId);
-					getOut().writeUnsignedWordA(slot);
-					getOut().writeUnsignedWordA(interfaceId);
-					atInventoryLoopCycle = 0;
-					atInventoryInterface = interfaceId;
-					atInventoryIndex = slot;
-					atInventoryInterfaceType = 2;
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID) {
-						atInventoryInterfaceType = 1;
-					}
-
-					if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID) {
-						atInventoryInterfaceType = 3;
-					}
-				}
-
-				if (action == 478) {
-					NPC npc = npcArray[nodeId];
-
-					if (npc != null) {
-						doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0], myPlayer.smallX[0], false, npc.smallX[0]);
-						crossX = super.saveClickX;
-						crossY = super.saveClickY;
-						crossType = 2;
-						crossIndex = 0;
-
-						if ((id & 3) == 0) {
-							setAnInt1155(getAnInt1155() + 1);
-						}
-
-						if (getAnInt1155() >= 53) {
-							getOut().putOpcode(85);
-							getOut().putByte(66);
-							setAnInt1155(0);
-						}
-
-						getOut().putOpcode(18);
-						getOut().writeUnsignedWordBigEndian(nodeId);
-					}
-				}
-
-				if (action == 113) {
-					method66(nodeId, y, x, id);
-					getOut().putOpcode(70);
-					getOut().writeUnsignedWordBigEndian(slot + baseX);
-					getOut().putShort(interfaceId + baseY);
-					getOut().writeSignedBigEndian(id);
-				}
-
-				if (action == 872) {
-					method66(nodeId, y, x, id);
-					getOut().putOpcode(234);
-					getOut().writeSignedBigEndian(x + baseX);
-					getOut().writeUnsignedWordA(id);
-					getOut().writeSignedBigEndian(y + baseY);
-				}
-
-				if (action == 502) {
-					method66(nodeId, y, x, id);
-					getOut().putOpcode(132);
-					getOut().writeSignedBigEndian(x + baseX);
-					getOut().putShort(id);
-					getOut().writeUnsignedWordA(y + baseY);
-				}
-				if(menuActionName[actionId].toLowerCase().startsWith("withdraw-x")) {
-					action = 1126;
-				}
-				if (action == 1125) {
-					ItemDefinition definition = ItemDefinition.get(nodeId);
-					if(menuActionName[actionId].toLowerCase().startsWith("withdraw-x")) {
-						action = 1126;
-					} else {
-						if (interfaceId == 38274) {
-							getOut().putOpcode(122);
-							getOut().putShort(interfaceId);
-							getOut().putShort(slot);
-							getOut().putShort(nodeId);
-						} else {
-							getOut().putOpcode(2); //examine item
-							getOut().putShort(definition.id);
-						}
-					}
-				}
-				if (action == 1126) {
-					getOut().putOpcode(138);
-					getOut().writeUnsignedWordA(interfaceId);
-					getOut().writeUnsignedWordA(slot);
-					getOut().writeUnsignedWordA(nodeId);
-					atInventoryLoopCycle = 0;
-					atInventoryInterface = interfaceId;
-					atInventoryIndex = slot;
-					atInventoryInterfaceType = 2;
-					if (RSInterface.interfaceCache[interfaceId].parentID == openInterfaceID)
-						atInventoryInterfaceType = 1;
-					if (RSInterface.interfaceCache[interfaceId].parentID == backDialogID)
-						atInventoryInterfaceType = 3;
-				}
-				if (action == 169) {
-					switch (interfaceId) {
-					case 26026:
-						Configuration.DISPLAY_HP_ABOVE_HEAD = !Configuration.DISPLAY_HP_ABOVE_HEAD;
-						pushMessage("Displaying hp above head turned " + (Configuration.DISPLAY_HP_ABOVE_HEAD ? "on" : "off") + ".", 0, "");
-						Settings.save();
-						updateSetting(interfaceId, !Configuration.DISPLAY_HP_ABOVE_HEAD);
-						break;
-					case 26027:
-						Configuration.DISPLAY_USERNAMES_ABOVE_HEAD = !Configuration.DISPLAY_USERNAMES_ABOVE_HEAD;
-						pushMessage("Displaying usernames above head turned " + (Configuration.DISPLAY_USERNAMES_ABOVE_HEAD ? "on" : "off") + ".", 0, "");
-						Settings.save();
-						updateSetting(interfaceId, !Configuration.DISPLAY_USERNAMES_ABOVE_HEAD);
-						break;
-					case 26031:
-						GameFrameConstants.gameframeType = GameFrameConstants.gameframeType == GameFrameType.FRAME_525 ? GameFrameType.FRAME_554 : GameFrameType.FRAME_525;
-						pushMessage("Gameframe toggled.", 0, "");
-						Settings.save();
-						updateSetting(interfaceId, GameFrameConstants.gameframeType == GameFrameType.FRAME_525);
-						break;
-					case 26035:
-						Configuration.FOG_ENABLED = !Configuration.FOG_ENABLED;
-						pushMessage("HD Fog toggled.", 0, "");
-						Settings.save();
-						updateSetting(interfaceId, !Configuration.FOG_ENABLED);
-						break;
-					case 26037:
-						Configuration.TOGGLE_ROOF_OFF = !Configuration.TOGGLE_ROOF_OFF;
-						pushMessage("Roofs have been toggled.", 0, "");
-						Settings.save();
-						updateSetting(interfaceId, !Configuration.TOGGLE_ROOF_OFF);
-						loadRegion();
-						break;
-					case 26014:
-						Configuration.NEW_HITMARKS = !Configuration.NEW_HITMARKS;
-						pushMessage("New hitmarks turned " + (Configuration.NEW_HITMARKS ? "on" : "off") + ".", 0, "");
-						Settings.save();
-						updateSetting(interfaceId, !Configuration.NEW_HITMARKS);
-						break;
-					case 26007:
-						Configuration.NEW_FUNCTION_KEYS = !Configuration.NEW_FUNCTION_KEYS;
-						pushMessage("New function keys turned " + (Configuration.NEW_FUNCTION_KEYS ? "on" : "off") + ".", 0, "");
-						Settings.save();
-						updateSetting(interfaceId, !Configuration.NEW_FUNCTION_KEYS);
-						break;
-					case 26010:
-						Configuration.NEW_CURSORS = !Configuration.NEW_CURSORS;
-						pushMessage("New cursors turned " + (Configuration.NEW_CURSORS ? "on" : "off") + ".", 0, "");
-						Settings.save();
-						updateSetting(interfaceId, !Configuration.NEW_CURSORS);
-						oldCursor = null;
-						if(!Configuration.NEW_CURSORS) {
-							getGameComponent().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-						} else {
-							super.setCursor(CursorData.CURSOR_0);
-						}
-						break;
-					case 26008:
-						Configuration.NEW_HEALTH_BARS = !Configuration.NEW_HEALTH_BARS;
-						pushMessage("New health bars turned " + (Configuration.NEW_HEALTH_BARS ? "on" : "off") + ".", 0, "");
-						Settings.save();
-						updateSetting(interfaceId, !Configuration.NEW_HEALTH_BARS);
-						break;
-					case 26029:
-						Configuration.CONSTITUTION_ENABLED = !Configuration.CONSTITUTION_ENABLED;
-						pushMessage("Constitution turned " + (Configuration.CONSTITUTION_ENABLED ? "on" : "off") + ".", 0, "");
-						Settings.save();
-						updateSetting(interfaceId, !Configuration.CONSTITUTION_ENABLED);
-						break;
-					case 26033:
-						Configuration.NOTIFICATIONS_ENABLED = !Configuration.NOTIFICATIONS_ENABLED;
-						pushMessage("Push notifications turned " + (Configuration.NOTIFICATIONS_ENABLED ? "on" : "off") + ".", 0, "");
-						Settings.save();
-						updateSetting(interfaceId, !Configuration.NOTIFICATIONS_ENABLED);
-						break;
-					case 26054:
-						setLowDetail();
-						loadRegion();
-						pushMessage("Set to low detail.", 0, "");
-						Settings.save();
-						updateSetting(interfaceId, false);
-						updateSetting(26058, false);
-						break;
-					case 26058:
-						setHighDetail();
-						loadRegion();
-						pushMessage("Set to high detail.", 0, "");
-						Settings.save();
-						updateSetting(interfaceId, false);
-						updateSetting(26054, false);
-						break;
-
-					default:
-						getOut().putOpcode(185);
-						getOut().putShort(interfaceId);
-						if(interfaceId == 26003) {
-							return;
-						}
-					}
-
-					RSInterface rsinterface = RSInterface.interfaceCache[interfaceId];
-
-					if (rsinterface.valueIndexArray != null && rsinterface.valueIndexArray[0][0] == 5) {
-						int l2 = rsinterface.valueIndexArray[0][1];
-						variousSettings[l2] = 1 - variousSettings[l2];
-						updateConfig(l2);
-					}
-				}
-
-				if (action == 447) {
-					itemSelected = 1;
-					anInt1283 = slot;
-					anInt1284 = interfaceId;
-					anInt1285 = nodeId;
-					selectedItemName = ItemDefinition.get(nodeId).name;
-					spellSelected = 0;
-					return;
-				}
-
-				if (action == 1226) {
-					ObjectDefinition definition = ObjectDefinition.forID(id);
-					String examine;
-
-					if (definition.description != null) {
-						examine = new String(definition.description);
-					} else {
-						examine = "It's a " + definition.name + ".";
-					}
-
-					pushMessage(examine, 0, "");
-				}
-
-				if (action == 244) {
-					boolean flag7 = doWalkTo(2, 0, 0, 0, myPlayer.smallY[0], 0, 0, interfaceId, myPlayer.smallX[0], false, slot);
-
-					if (!flag7) {
-						flag7 = doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, interfaceId, myPlayer.smallX[0], false, slot);
-					}
-
-					crossX = super.saveClickX;
-					crossY = super.saveClickY;
-					crossType = 2;
-					crossIndex = 0;
-					getOut().putOpcode(253);
-					getOut().writeUnsignedWordBigEndian(slot + baseX);
-					getOut().writeSignedBigEndian(interfaceId + baseY);
-					getOut().writeUnsignedWordA(nodeId);
-				}
-
-				if (action == 1448) {
-					ItemDefinition definition = ItemDefinition.get(nodeId);
-					String examine;
-
-					if (definition.description != null) {
-						examine = new String(definition.description);
-					} else {
-						examine = "It's a " + definition.name + ".";
-					}
-
-					pushMessage(examine, 0, "");
-				}
-
-				itemSelected = 0; // RIGHT HERE
-
-				if (action != 626) {
-					spellSelected = 0;
-				}
-				if(interfaceId == 957) {
-					variousSettings[287] = variousSettings[502] = variousSettings[502] == 1 ? 0 : 1;
-					updateConfig(287);
-					Settings.save();
-				}
+			}
+
+			RSInterface rsinterface = RSInterface.interfaceCache[interfaceId];
+
+			if (rsinterface.valueIndexArray != null && rsinterface.valueIndexArray[0][0] == 5) {
+				int l2 = rsinterface.valueIndexArray[0][1];
+				variousSettings[l2] = 1 - variousSettings[l2];
+				updateConfig(l2);
+			}
+		}
+
+		if (action == 447) {
+			itemSelected = 1;
+			anInt1283 = slot;
+			anInt1284 = interfaceId;
+			anInt1285 = nodeId;
+			selectedItemName = ItemDefinition.get(nodeId).name;
+			spellSelected = 0;
+			return;
+		}
+
+		if (action == 1226) {
+			ObjectDefinition definition = ObjectDefinition.forID(id);
+			String examine;
+
+			if (definition.description != null) {
+				examine = new String(definition.description);
+			} else {
+				examine = "It's a " + definition.name + ".";
+			}
+
+			pushMessage(examine, 0, "");
+		}
+
+		if (action == 244) {
+			boolean flag7 = doWalkTo(2, 0, 0, 0, myPlayer.smallY[0], 0, 0, interfaceId, myPlayer.smallX[0], false,
+					slot);
+
+			if (!flag7) {
+				flag7 = doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, interfaceId, myPlayer.smallX[0], false, slot);
+			}
+
+			crossX = super.saveClickX;
+			crossY = super.saveClickY;
+			crossType = 2;
+			crossIndex = 0;
+			getOut().putOpcode(253);
+			getOut().writeUnsignedWordBigEndian(slot + baseX);
+			getOut().writeSignedBigEndian(interfaceId + baseY);
+			getOut().writeUnsignedWordA(nodeId);
+		}
+
+		if (action == 1448) {
+			ItemDefinition definition = ItemDefinition.get(nodeId);
+			String examine;
+
+			if (definition.description != null) {
+				examine = new String(definition.description);
+			} else {
+				examine = "It's a " + definition.name + ".";
+			}
+
+			pushMessage(examine, 0, "");
+		}
+
+		itemSelected = 0; // RIGHT HERE
+
+		if (action != 626) {
+			spellSelected = 0;
+		}
+		if (interfaceId == 957) {
+			variousSettings[287] = variousSettings[502] = variousSettings[502] == 1 ? 0 : 1;
+			updateConfig(287);
+			Settings.save();
+		}
 	}
 
 	private void doFlamesDrawing() {
 	}
-	
+
 	public void sendPacket185(int button, int toggle, int type) {
 		switch (type) {
 		case 135:
@@ -5220,8 +5287,9 @@ public class Client extends GameRenderer {
 			break;
 		}
 	}
-	
-	private boolean doWalkTo(int type, int j, int k, int i1, int j1, int k1, int l1, int i2, int j2, boolean flag, int k2) {
+
+	private boolean doWalkTo(int type, int j, int k, int i1, int j1, int k1, int l1, int i2, int j2, boolean flag,
+			int k2) {
 		byte byte0 = 104;
 		byte byte1 = 104;
 
@@ -5305,7 +5373,8 @@ public class Client extends GameRenderer {
 				anIntArrayArray825[j3][k3 + 1] = l4;
 			}
 
-			if (j3 > 0 && k3 > 0 && anIntArrayArray901[j3 - 1][k3 - 1] == 0 && (ai[j3 - 1][k3 - 1] & 0x128010e) == 0 && (ai[j3 - 1][k3] & 0x1280108) == 0 && (ai[j3][k3 - 1] & 0x1280102) == 0) {
+			if (j3 > 0 && k3 > 0 && anIntArrayArray901[j3 - 1][k3 - 1] == 0 && (ai[j3 - 1][k3 - 1] & 0x128010e) == 0
+					&& (ai[j3 - 1][k3] & 0x1280108) == 0 && (ai[j3][k3 - 1] & 0x1280102) == 0) {
 				bigX[l3] = j3 - 1;
 				bigY[l3] = k3 - 1;
 				l3 = (l3 + 1) % j4;
@@ -5313,7 +5382,9 @@ public class Client extends GameRenderer {
 				anIntArrayArray825[j3 - 1][k3 - 1] = l4;
 			}
 
-			if (j3 < byte0 - 1 && k3 > 0 && anIntArrayArray901[j3 + 1][k3 - 1] == 0 && (ai[j3 + 1][k3 - 1] & 0x1280183) == 0 && (ai[j3 + 1][k3] & 0x1280180) == 0 && (ai[j3][k3 - 1] & 0x1280102) == 0) {
+			if (j3 < byte0 - 1 && k3 > 0 && anIntArrayArray901[j3 + 1][k3 - 1] == 0
+					&& (ai[j3 + 1][k3 - 1] & 0x1280183) == 0 && (ai[j3 + 1][k3] & 0x1280180) == 0
+					&& (ai[j3][k3 - 1] & 0x1280102) == 0) {
 				bigX[l3] = j3 + 1;
 				bigY[l3] = k3 - 1;
 				l3 = (l3 + 1) % j4;
@@ -5321,7 +5392,9 @@ public class Client extends GameRenderer {
 				anIntArrayArray825[j3 + 1][k3 - 1] = l4;
 			}
 
-			if (j3 > 0 && k3 < byte1 - 1 && anIntArrayArray901[j3 - 1][k3 + 1] == 0 && (ai[j3 - 1][k3 + 1] & 0x1280138) == 0 && (ai[j3 - 1][k3] & 0x1280108) == 0 && (ai[j3][k3 + 1] & 0x1280120) == 0) {
+			if (j3 > 0 && k3 < byte1 - 1 && anIntArrayArray901[j3 - 1][k3 + 1] == 0
+					&& (ai[j3 - 1][k3 + 1] & 0x1280138) == 0 && (ai[j3 - 1][k3] & 0x1280108) == 0
+					&& (ai[j3][k3 + 1] & 0x1280120) == 0) {
 				bigX[l3] = j3 - 1;
 				bigY[l3] = k3 + 1;
 				l3 = (l3 + 1) % j4;
@@ -5329,7 +5402,9 @@ public class Client extends GameRenderer {
 				anIntArrayArray825[j3 - 1][k3 + 1] = l4;
 			}
 
-			if (j3 < byte0 - 1 && k3 < byte1 - 1 && anIntArrayArray901[j3 + 1][k3 + 1] == 0 && (ai[j3 + 1][k3 + 1] & 0x12801e0) == 0 && (ai[j3 + 1][k3] & 0x1280180) == 0 && (ai[j3][k3 + 1] & 0x1280120) == 0) {
+			if (j3 < byte0 - 1 && k3 < byte1 - 1 && anIntArrayArray901[j3 + 1][k3 + 1] == 0
+					&& (ai[j3 + 1][k3 + 1] & 0x12801e0) == 0 && (ai[j3 + 1][k3] & 0x1280180) == 0
+					&& (ai[j3][k3 + 1] & 0x1280120) == 0) {
 				bigX[l3] = j3 + 1;
 				bigY[l3] = k3 + 1;
 				l3 = (l3 + 1) % j4;
@@ -5450,12 +5525,14 @@ public class Client extends GameRenderer {
 
 		return type != 1;
 	}
-    public int getRegionId() {
-    	int localX = this.anInt1069 / 8;
-    	int localY = this.anInt1070 / 8;
-    	int id = (localX << 8) + localY;
-    	return id;
-    }
+
+	public int getRegionId() {
+		int localX = this.anInt1069 / 8;
+		int localY = this.anInt1070 / 8;
+		int id = (localX << 8) + localY;
+		return id;
+	}
+
 	private void draw3dScreen() {
 		fadingScreen.draw();
 		if (!chatArea.componentHidden()) {
@@ -5478,14 +5555,18 @@ public class Client extends GameRenderer {
 		if (getWalkableInterfaceId() > 0) {
 			processInterfaceAnimation(anInt945, getWalkableInterfaceId());
 			if (getWalkableInterfaceId() == 15892 && GameFrame.getScreenMode() != ScreenMode.FIXED) {
-				drawInterface(0, getScreenWidth() / 2 - RSInterface.interfaceCache[getWalkableInterfaceId()].width + 20, RSInterface.interfaceCache[getWalkableInterfaceId()], 0);
-			} else if ((getWalkableInterfaceId() == 201 || getWalkableInterfaceId() == 197) && GameFrame.getScreenMode() != ScreenMode.FIXED) {
-				drawInterface(0, getScreenWidth() - 765 + 15, RSInterface.interfaceCache[getWalkableInterfaceId()], 0 - 255 + 10 + 4);
+				drawInterface(0, getScreenWidth() / 2 - RSInterface.interfaceCache[getWalkableInterfaceId()].width + 20,
+						RSInterface.interfaceCache[getWalkableInterfaceId()], 0);
+			} else if ((getWalkableInterfaceId() == 201 || getWalkableInterfaceId() == 197)
+					&& GameFrame.getScreenMode() != ScreenMode.FIXED) {
+				drawInterface(0, getScreenWidth() - 765 + 15, RSInterface.interfaceCache[getWalkableInterfaceId()],
+						0 - 255 + 10 + 4);
 			} else {
 				drawInterface(0, 0, RSInterface.interfaceCache[getWalkableInterfaceId()], 0);
 			}
 			if (getWalkableInterfaceId() == 197) {
-				drawInterface(0, getScreenWidth() - 765 - (GameFrame.getScreenMode() != ScreenMode.FIXED ? 30 : 0), RSInterface.interfaceCache[42020], 10);
+				drawInterface(0, getScreenWidth() - 765 - (GameFrame.getScreenMode() != ScreenMode.FIXED ? 30 : 0),
+						RSInterface.interfaceCache[42020], 10);
 			}
 		}
 
@@ -5500,23 +5581,23 @@ public class Client extends GameRenderer {
 			} else {
 				drawInterface(0, 0, rsInterface, 0);// first 1
 			}
-			
-			if(openInterfaceID == 5292) {
-				if(bankItemDragSprite != null) {
-					if(GameFrame.getScreenMode() == ScreenMode.FIXED) {
-						if(super.mouseY < 74) {
+
+			if (openInterfaceID == 5292) {
+				if (bankItemDragSprite != null) {
+					if (GameFrame.getScreenMode() == ScreenMode.FIXED) {
+						if (super.mouseY < 74) {
 							bankItemDragSpriteY -= 14;
 							bankItemDragSpriteX -= 14;
-							
+
 							bankItemDragSprite.drawSprite(bankItemDragSpriteX, bankItemDragSpriteY);
 						} else {
 							bankItemDragSprite.drawSprite(bankItemDragSpriteX, bankItemDragSpriteY);
 						}
 					} else {
-						if(super.mouseY < 269) {
+						if (super.mouseY < 269) {
 							bankItemDragSpriteY -= 14;
 							bankItemDragSpriteX -= 14;
-							
+
 							bankItemDragSprite.drawSprite(bankItemDragSpriteX, bankItemDragSpriteY);
 						} else {
 							bankItemDragSprite.drawSprite(bankItemDragSpriteX, bankItemDragSpriteY);
@@ -5526,7 +5607,7 @@ public class Client extends GameRenderer {
 			}
 			getGrandExchange().drawGrandExchange();
 		}
-		if(openInterfaceID == 5292)
+		if (openInterfaceID == 5292)
 			drawOnBankInterface();
 		method70();
 
@@ -5538,32 +5619,34 @@ public class Client extends GameRenderer {
 		}
 
 		if (drawMultiwayIcon == 1) {
-			multiOverlay.drawSprite(GameFrame.getScreenMode() == ScreenMode.FIXED ? 472 : 516 + getScreenWidth() - 765 + 52 + 157, GameFrame.getScreenMode() == ScreenMode.FIXED ? 296 : 175);
+			multiOverlay.drawSprite(
+					GameFrame.getScreenMode() == ScreenMode.FIXED ? 472 : 516 + getScreenWidth() - 765 + 52 + 157,
+					GameFrame.getScreenMode() == ScreenMode.FIXED ? 296 : 175);
 		}
-		
-		if(Objects.nonNull(currentTarget)) {
+
+		if (Objects.nonNull(currentTarget)) {
 			showCombatBox();
 		}
-		
+
 		int x = baseX + (myPlayer.x - 6 >> 7);
 		int y = baseY + (myPlayer.y - 6 >> 7);
-	/*	if (isDebugMode()) {
-			int minus = 45;
-			normalText.method385(0xffff00, "Fps: " + super.fps, 285 - minus, 5);
-			Runtime runtime = Runtime.getRuntime();
-			int textColor = 0xFFFF00;
-			int memory = (int) ((runtime.totalMemory() - runtime.freeMemory()) / 1024L);
-			if (memory > 0x2000000 && lowDetail) {
-				textColor = 0xff0000;
-			}
-
-			normalText.method385(textColor, "Mem: " + memory + "k", 299 - minus, 5);
-			normalText.method385(0xffff00, "Mouse X: " + super.mouseX + " , Mouse Y: " + super.mouseY, 314 - minus, 5);
-			normalText.method385(0xffff00, "Coords: " + x + ", " + y, 329 - minus, 5);
-			normalText.method385(0xffff00, "Client resolution: " + getScreenWidth() + "x" + getScreenHeight(), 344 - minus, 5);
-			normalText.method385(0xffff00, "Object Maps: " + objectMaps + ";", 359 - minus, 5);
-			normalText.method385(0xffff00, "Floor Maps: " + floorMaps + ";", 374 - minus, 5);
-		}*/
+		/*
+		 * if (isDebugMode()) { int minus = 45; normalText.method385(0xffff00,
+		 * "Fps: " + super.fps, 285 - minus, 5); Runtime runtime =
+		 * Runtime.getRuntime(); int textColor = 0xFFFF00; int memory = (int)
+		 * ((runtime.totalMemory() - runtime.freeMemory()) / 1024L); if (memory
+		 * > 0x2000000 && lowDetail) { textColor = 0xff0000; }
+		 * 
+		 * normalText.method385(textColor, "Mem: " + memory + "k", 299 - minus,
+		 * 5); normalText.method385(0xffff00, "Mouse X: " + super.mouseX +
+		 * " , Mouse Y: " + super.mouseY, 314 - minus, 5);
+		 * normalText.method385(0xffff00, "Coords: " + x + ", " + y, 329 -
+		 * minus, 5); normalText.method385(0xffff00, "Client resolution: " +
+		 * getScreenWidth() + "x" + getScreenHeight(), 344 - minus, 5);
+		 * normalText.method385(0xffff00, "Object Maps: " + objectMaps + ";",
+		 * 359 - minus, 5); normalText.method385(0xffff00, "Floor Maps: " +
+		 * floorMaps + ";", 374 - minus, 5); }
+		 */
 		if (dataOn) {
 			int textX = mapArea.getxPos() - 90;
 			int textY = 20;
@@ -5573,7 +5656,11 @@ public class Client extends GameRenderer {
 			}
 			int regionId = getRegionId();
 			int regionIndex = onDemandFetcher.getRegionIndex(regionId);
-			newRegularFont.drawRightAlignedString("Terrain, Landscape: " + (regionIndex >= 0 ? (onDemandFetcher.mapIndices2[regionIndex] + ", " + onDemandFetcher.mapIndices3[regionIndex]) : "-1"), textX + 75, textY, 0xffff00, 0);
+			newRegularFont
+					.drawRightAlignedString(
+							"Terrain, Landscape: " + (regionIndex >= 0 ? (onDemandFetcher.mapIndices2[regionIndex]
+									+ ", " + onDemandFetcher.mapIndices3[regionIndex]) : "-1"),
+							textX + 75, textY, 0xffff00, 0);
 			textY += 15;
 			normalText.method385(textColor, "Fps:" + super.fps, textY, textX);
 			textY += 15;
@@ -5589,12 +5676,12 @@ public class Client extends GameRenderer {
 			normalText.method385(textColor, "MouseY:" + super.mouseY + "", textY, textX);
 			textY += 15;
 			normalText.method385(textColor, "File queue:" + onDemandFetcher.getRemaining() + "", textY, textX);
-		} else if(fpsOn) {
+		} else if (fpsOn) {
 			int textColor = 0xffff00;
 			if (super.fps < 15) {
 				textColor = 0xff0000;
 			}
-			if(GameFrame.getScreenMode() == ScreenMode.RESIZABLE) {
+			if (GameFrame.getScreenMode() == ScreenMode.RESIZABLE) {
 				normalText.method385(textColor, "Fps:" + super.fps, 25, getScreenWidth() - 260);
 			} else {
 				normalText.method385(textColor, "Fps:" + super.fps, 25, getScreenWidth() - 300);
@@ -5607,9 +5694,11 @@ public class Client extends GameRenderer {
 			j %= 60;
 
 			if (j < 10) {
-				normalText.method385(0xffff00, "System update in: " + l + ":0" + j, GameFrame.isFixed() ? 329 : getScreenHeight() - 168, 4);
+				normalText.method385(0xffff00, "System update in: " + l + ":0" + j,
+						GameFrame.isFixed() ? 329 : getScreenHeight() - 168, 4);
 			} else {
-				normalText.method385(0xffff00, "System update in: " + l + ":" + j, GameFrame.isFixed() ? 329 : getScreenHeight() - 168, 4);
+				normalText.method385(0xffff00, "System update in: " + l + ":" + j,
+						GameFrame.isFixed() ? 329 : getScreenHeight() - 168, 4);
 			}
 
 			if (++anInt849 > 75) {
@@ -5621,7 +5710,7 @@ public class Client extends GameRenderer {
 			int l = j / announcementTimer;
 			j %= 60;
 			normalText.method385(0xffff00, announcement, GameFrame.isFixed() ? 329 : getScreenHeight() - 168, 4);
-		} else if(announcementTimer == 0) {
+		} else if (announcementTimer == 0) {
 			normalText.method385(0xffff00, "", GameFrame.isFixed() ? 329 : getScreenHeight() - 168, 4);
 		}
 	}
@@ -5660,7 +5749,7 @@ public class Client extends GameRenderer {
 			if (!loggedIn && loadingStage == 1) {
 				getMapLoadingState();
 			}
-			
+
 			if (!loggedIn && loadingStage == 2 && plane != getLastKnownPlane()) {
 				setLastKnownPlane(plane);
 				renderedMapScene(plane);
@@ -5668,7 +5757,8 @@ public class Client extends GameRenderer {
 
 			if (loadingStage == 2) {
 				try {
-					worldController.method313(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, method121(), yCameraCurve, Configuration.FOG_ENABLED);
+					worldController.method313(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, method121(),
+							yCameraCurve, Configuration.FOG_ENABLED);
 					worldController.clearObj5Cache();
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -5698,7 +5788,7 @@ public class Client extends GameRenderer {
 	}
 
 	public String inputTitle = null;
-	
+
 	private void drawChatArea() {
 		chatArea.setxPos(0);
 		chatArea.setyPos(GameFrame.getScreenMode() == ScreenMode.FIXED ? 338 : getScreenHeight() - 165);
@@ -5935,41 +6025,39 @@ public class Client extends GameRenderer {
 
 			return;
 		}
-		
+
 		if (j == 3291) {
-			if(!(PetSystem.petSelected > 0)) {
+			if (!(PetSystem.petSelected > 0)) {
 				return;
 			}
-		    PetSystem petDef = new PetSystem(MobDefinition.get(PetSystem.petSelected));
-		    RSInterface rsInterface = class9;
-		    int verticleTilt = 150;
-		    rsInterface.modelRotation1 = verticleTilt;
-		    rsInterface.modelRotation2 = (int)(double)(loopCycle / 100D * 1024D) & 2047;
-		    Model model;
-		    final Model[] parts = new Model[petDef.getModelArrayLength()];
-		    for (int i = 0; i < petDef.getModelArrayLength(); i++) {
-		        parts[i] = Model.fetchModel(petDef.getModelArray()[i]);
-		    }
-		    if (parts.length == 1) {
-		        model = parts[0];
-		    } else {
-		        model = new Model(parts.length, parts);
-		    }
+			PetSystem petDef = new PetSystem(MobDefinition.get(PetSystem.petSelected));
+			RSInterface rsInterface = class9;
+			int verticleTilt = 150;
+			rsInterface.modelRotation1 = verticleTilt;
+			rsInterface.modelRotation2 = (int) (double) (loopCycle / 100D * 1024D) & 2047;
+			Model model;
+			final Model[] parts = new Model[petDef.getModelArrayLength()];
+			for (int i = 0; i < petDef.getModelArrayLength(); i++) {
+				parts[i] = Model.fetchModel(petDef.getModelArray()[i]);
+			}
+			if (parts.length == 1) {
+				model = parts[0];
+			} else {
+				model = new Model(parts.length, parts);
+			}
 
+			if (model == null) {
+				return;
+			}
 
-		    if (model == null) {
-		        return;
-		    }
-
-
-		    model.createBones();
-		    model.scale2((int) 1.5);
-		    model.applyTransform(Animation.cache[petDef.getAnimation()].frameIDs[PetSystem.animationFrame]);
-		    model.light(64, 850, -30, -50, -30, true);
-		    rsInterface.mediaType = 5;
-		    rsInterface.mediaID = 0;
-		    RSInterface.clearModelCache(aBoolean994, model);
-		    return;
+			model.createBones();
+			model.scale2((int) 1.5);
+			model.applyTransform(Animation.cache[petDef.getAnimation()].frameIDs[PetSystem.animationFrame]);
+			model.light(64, 850, -30, -50, -30, true);
+			rsInterface.mediaType = 5;
+			rsInterface.mediaID = 0;
+			RSInterface.clearModelCache(aBoolean994, model);
+			return;
 		}
 
 		if (j == 328) {
@@ -5984,7 +6072,8 @@ public class Client extends GameRenderer {
 
 				for (int l2 = 0; l2 < 5; l2++) {
 					if (anIntArray990[l2] != 0) {
-						characterDisplay.method476(anIntArrayArray1003[l2][0], anIntArrayArray1003[l2][anIntArray990[l2]]);
+						characterDisplay.method476(anIntArrayArray1003[l2][0],
+								anIntArrayArray1003[l2][anIntArray990[l2]]);
 						if (l2 == 1) {
 							characterDisplay.method476(anIntArray1204[0], anIntArray1204[anIntArray990[l2]]);
 						}
@@ -6190,10 +6279,8 @@ public class Client extends GameRenderer {
 		if (backDialogID == -1 && inputDialogState == 3) {
 			int position = getGrandExchange().totalItemResults * 14 + 7;
 			aClass9_1059.scrollPosition = getGrandExchange().itemResultScrollPos;
-			if (super.mouseX > 478 && super.mouseX < 580
-					&& super.mouseY > (clientHeight - 161)) {
-				method65(494, 110, super.mouseX - 0, super.mouseY
-						- (clientHeight - 155), aClass9_1059, 0, false,
+			if (super.mouseX > 478 && super.mouseX < 580 && super.mouseY > (clientHeight - 161)) {
+				method65(494, 110, super.mouseX - 0, super.mouseY - (clientHeight - 155), aClass9_1059, 0, false,
 						getGrandExchange().totalItemResults);
 			}
 			int scrollPosition = aClass9_1059.scrollPosition;
@@ -6210,8 +6297,10 @@ public class Client extends GameRenderer {
 		}
 		if (backDialogID == -1 && inputDialogState != 3) {
 			aClass9_1059.scrollPosition = anInt1211 - anInt1089 - 110;
-			if (super.mouseX > chatArea.getxPos() + 478 && super.mouseX < chatArea.getxPos() + 580 && super.mouseY > chatArea.getyPos() + 4) {
-				method65(494, 110, super.mouseX - chatArea.getxPos(), super.mouseY - chatArea.getyPos() - 10, aClass9_1059, 0, false, anInt1211);
+			if (super.mouseX > chatArea.getxPos() + 478 && super.mouseX < chatArea.getxPos() + 580
+					&& super.mouseY > chatArea.getyPos() + 4) {
+				method65(494, 110, super.mouseX - chatArea.getxPos(), super.mouseY - chatArea.getyPos() - 10,
+						aClass9_1059, 0, false, anInt1211);
 			}
 			int i = anInt1211 - 110 - aClass9_1059.scrollPosition;
 			if (i < 0) {
@@ -6302,7 +6391,6 @@ public class Client extends GameRenderer {
 		}
 	}
 
-
 	public void drawHoverBox(int xPos, int yPos, String text) {
 		String[] results = text.split("\n");
 		int height = (results.length * 16) + 6;
@@ -6316,11 +6404,11 @@ public class Client extends GameRenderer {
 		Canvas2D.fillPixels(xPos, width, height, 0, yPos);
 		yPos += 14;
 		for (int i = 0; i < results.length; i++) {
-			normalText.drawRegularText(false, xPos + 3, 0, results[i],
-					yPos + 1);
+			normalText.drawRegularText(false, xPos + 3, 0, results[i], yPos + 1);
 			yPos += 16;
 		}
 	}
+
 	public void drawInterface(int scrollOffset, int interfaceX, RSInterface class9, int interfaceY) {
 		if (class9 == null)
 			return;
@@ -6343,9 +6431,9 @@ public class Client extends GameRenderer {
 			int childX = class9.childX[j2] + interfaceX;
 			int childY = class9.childY[j2] + interfaceY - scrollOffset;
 			RSInterface childInterface = RSInterface.interfaceCache[class9.children[j2]];
-			if(childInterface == null)
+			if (childInterface == null)
 				continue;
-			//System.out.println(childInterface.type);
+			// System.out.println(childInterface.type);
 			childX += childInterface.xOffset;
 			childY += childInterface.yOffset;
 
@@ -6357,7 +6445,7 @@ public class Client extends GameRenderer {
 				if (childInterface.id == IDs[m5] + 1) {
 					if (m5 > 61 && IDs[m5] < 32600) {
 						drawBlackBox(childX + 1, childY);
-					} else if(IDs[m5] >= 32601) {
+					} else if (IDs[m5] >= 32601) {
 						drawBlackBox(childX - 87, childY + 1);
 					} else {
 						drawBlackBox(childX, childY + 1);
@@ -6370,10 +6458,17 @@ public class Client extends GameRenderer {
 					childInterface.modelZoom = 775;
 				}
 			}
-			if(childInterface.id == 1194 || childInterface.id == 12856) //Removes black box when not hovering in spellbooks
+			if (childInterface.id == 1194 || childInterface.id == 12856) // Removes
+																			// black
+																			// box
+																			// when
+																			// not
+																			// hovering
+																			// in
+																			// spellbooks
 				continue;
 			if (childInterface.type == 0) {
-				//System.out.println(childInterface.id);
+				// System.out.println(childInterface.id);
 				if (childInterface.scrollPosition > childInterface.scrollMax - childInterface.height) {
 					childInterface.scrollPosition = childInterface.scrollMax - childInterface.height;
 				}
@@ -6385,7 +6480,8 @@ public class Client extends GameRenderer {
 				drawInterface(childInterface.scrollPosition, childX, childInterface, childY);
 
 				if (childInterface.scrollMax > childInterface.height) {
-					drawScrollbar(childInterface.height, childInterface.scrollPosition, childY, childX + childInterface.width, childInterface.scrollMax, false, false);
+					drawScrollbar(childInterface.height, childInterface.scrollPosition, childY,
+							childX + childInterface.width, childInterface.scrollMax, false, false);
 				}
 			} else if (childInterface.type != 1) {
 				if (childInterface.type == 2) {
@@ -6405,16 +6501,19 @@ public class Client extends GameRenderer {
 								int j7 = 0;
 								int j9 = childInterface.inv[i3] - 1;
 
-								if (k5 > Canvas2D.topX - 32 && k5 < Canvas2D.bottomX && j6 > Canvas2D.topY - 32 && j6 < Canvas2D.bottomY || activeInterfaceType != 0 && anInt1085 == i3) {
+								if (k5 > Canvas2D.topX - 32 && k5 < Canvas2D.bottomX && j6 > Canvas2D.topY - 32
+										&& j6 < Canvas2D.bottomY || activeInterfaceType != 0 && anInt1085 == i3) {
 									int l9 = 0;
 									if (itemSelected == 1 && anInt1283 == i3 && anInt1284 == childInterface.id) {
 										l9 = 0xffffff;
 									}
 
-									Sprite selectedItem = ItemDefinition.getSprite(j9, childInterface.invStackSizes[i3], l9);
-									
+									Sprite selectedItem = ItemDefinition.getSprite(j9, childInterface.invStackSizes[i3],
+											l9);
+
 									if (selectedItem != null) {
-										if (activeInterfaceType != 0 && anInt1085 == i3 && anInt1084 == childInterface.id) {
+										if (activeInterfaceType != 0 && anInt1085 == i3
+												&& anInt1084 == childInterface.id) {
 											k6 = super.mouseX - anInt1087;
 											j7 = super.mouseY - anInt1088;
 
@@ -6432,12 +6531,13 @@ public class Client extends GameRenderer {
 											}
 
 											selectedItem.drawSprite1(k5 + k6, j6 + j7);
-											int yy = GameFrame.getScreenMode() == ScreenMode.FIXED ? 40 : 40 + (clientHeight / 2) - 167;
-											if(GameFrame.getScreenMode() != ScreenMode.FIXED) {
+											int yy = GameFrame.getScreenMode() == ScreenMode.FIXED ? 40
+													: 40 + (clientHeight / 2) - 167;
+											if (GameFrame.getScreenMode() != ScreenMode.FIXED) {
 												yy = 232;
 											}
-											if(openInterfaceID == 5292) {
-												if(super.mouseY >= yy && super.mouseY <= yy + 37) {
+											if (openInterfaceID == 5292) {
+												if (super.mouseY >= yy && super.mouseY <= yy + 37) {
 													bankItemDragSprite = selectedItem;
 													bankItemDragSpriteX = super.mouseX;
 													bankItemDragSpriteY = super.mouseY;
@@ -6460,7 +6560,8 @@ public class Client extends GameRenderer {
 												anInt1088 += i10;
 											}
 
-											if (j6 + j7 + 32 > Canvas2D.bottomY && class9.scrollPosition < class9.scrollMax - class9.height) {
+											if (j6 + j7 + 32 > Canvas2D.bottomY
+													&& class9.scrollPosition < class9.scrollMax - class9.height) {
 												int j10 = anInt945 * (j6 + j7 + 32 - Canvas2D.bottomY) / 3;
 
 												if (j10 > anInt945 * 10) {
@@ -6474,7 +6575,8 @@ public class Client extends GameRenderer {
 												class9.scrollPosition += j10;
 												anInt1088 -= j10;
 											}
-										} else if (atInventoryInterfaceType != 0 && atInventoryIndex == i3 && atInventoryInterface == childInterface.id) {
+										} else if (atInventoryInterfaceType != 0 && atInventoryIndex == i3
+												&& atInventoryInterface == childInterface.id) {
 											selectedItem.drawSprite1(k5, j6);
 										} else {
 											selectedItem.drawSprite(k5, j6);
@@ -6484,34 +6586,18 @@ public class Client extends GameRenderer {
 											int k10 = childInterface.invStackSizes[i3];
 
 											if (!childInterface.hideStackSize) {
-												if(k10 >= 1500000000 && childInterface.drawInfinity) {
+												if (k10 >= 1500000000 && childInterface.drawInfinity) {
 													CacheSpriteLoader.getCacheSprite(780).drawSprite(k5, j6);
 												} else {
-													smallText.method385(0,
-															intToKOrMil(k10),
-															j6 + 10 + j7,
-															k5 + 1 + k6);
-													if (k10 > 99999
-															&& k10 < 10000000)
-														smallText.method385(
-																0xFFFFFF,
-																intToKOrMil(k10),
-																j6 + 9
-																+ j7,
+													smallText.method385(0, intToKOrMil(k10), j6 + 10 + j7, k5 + 1 + k6);
+													if (k10 > 99999 && k10 < 10000000)
+														smallText.method385(0xFFFFFF, intToKOrMil(k10), j6 + 9 + j7,
 																k5 + k6);
 													else if (k10 > 9999999)
-														smallText.method385(
-																0x00ff80,
-																intToKOrMil(k10),
-																j6 + 9
-																+ j7,
+														smallText.method385(0x00ff80, intToKOrMil(k10), j6 + 9 + j7,
 																k5 + k6);
 													else
-														smallText.method385(
-																0xFFFF00,
-																intToKOrMil(k10),
-																j6 + 9
-																+ j7,
+														smallText.method385(0xFFFF00, intToKOrMil(k10), j6 + 9 + j7,
 																k5 + k6);
 												}
 											}
@@ -6531,7 +6617,8 @@ public class Client extends GameRenderer {
 					}
 				} else if (childInterface.type == 3) {
 					boolean flag = false;
-					if ((this.anInt1039 == childInterface.id) || (this.anInt1048 == childInterface.id) || (this.anInt1026 == childInterface.id)) {
+					if ((this.anInt1039 == childInterface.id) || (this.anInt1048 == childInterface.id)
+							|| (this.anInt1026 == childInterface.id)) {
 						flag = true;
 					}
 					boolean enabled = (interfaceIsSelected(childInterface)) || (hovered(childInterface));
@@ -6550,7 +6637,7 @@ public class Client extends GameRenderer {
 						}
 						opacity = childInterface.opacity;
 					}
-					
+
 					if (opacity != 256) {
 						if (opacity == 0) {
 							if (childInterface.filled) {
@@ -6559,48 +6646,47 @@ public class Client extends GameRenderer {
 								Canvas2D.fillPixels(childX, childInterface.width, childInterface.height, j3, childY);
 							}
 						} else if (childInterface.filled) {
-							Canvas2D.fillRect(j3, childY, childInterface.width, childInterface.height, 256 - (opacity & 0xFF), childX);
+							Canvas2D.fillRect(j3, childY, childInterface.width, childInterface.height,
+									256 - (opacity & 0xFF), childX);
 						} else {
-							Canvas2D.method338(childY, childInterface.height, 256 - (opacity & 0xFF), j3, childInterface.width, childX);
+							Canvas2D.method338(childY, childInterface.height, 256 - (opacity & 0xFF), j3,
+									childInterface.width, childX);
 						}
 					}
 
 					/*
-					boolean flag = false;
+					 * boolean flag = false;
+					 * 
+					 * if (anInt1039 == childInterface.id || anInt1048 ==
+					 * childInterface.id || anInt1026 == childInterface.id) {
+					 * flag = true; }
+					 * 
+					 * int j3;
+					 * 
+					 * if (interfaceIsSelected(childInterface)) { j3 =
+					 * childInterface.anInt219;
+					 * 
+					 * if (flag && childInterface.anInt239 != 0) { j3 =
+					 * childInterface.anInt239; } } else { j3 =
+					 * childInterface.textColor;
+					 * 
+					 * if (flag && childInterface.anInt216 != 0) { j3 =
+					 * childInterface.anInt216; } }
+					 * 
+					 * if (childInterface.opacity == 0) { if
+					 * (childInterface.filled) {
+					 * Canvas2D.drawPixels(childInterface.height, childY,
+					 * childX, j3, childInterface.width); } else {
+					 * Canvas2D.fillPixels(childX, childInterface.width,
+					 * childInterface.height, j3, childY); } } else if
+					 * (childInterface.filled) { Canvas2D.method335(j3, childY,
+					 * childInterface.width, childInterface.height, 256 -
+					 * (childInterface.opacity & 0xff), childX); } else {
+					 * Canvas2D.method338(childY, childInterface.height, 256 -
+					 * (childInterface.opacity & 0xff), j3,
+					 * childInterface.width, childX); }
+					 */
 
-					if (anInt1039 == childInterface.id || anInt1048 == childInterface.id || anInt1026 == childInterface.id) {
-						flag = true;
-					}
-
-					int j3;
-
-					if (interfaceIsSelected(childInterface)) {
-						j3 = childInterface.anInt219;
-
-						if (flag && childInterface.anInt239 != 0) {
-							j3 = childInterface.anInt239;
-						}
-					} else {
-						j3 = childInterface.textColor;
-
-						if (flag && childInterface.anInt216 != 0) {
-							j3 = childInterface.anInt216;
-						}
-					}
-
-					if (childInterface.opacity == 0) {
-						if (childInterface.filled) {
-							Canvas2D.drawPixels(childInterface.height, childY, childX, j3, childInterface.width);
-						} else {
-							Canvas2D.fillPixels(childX, childInterface.width, childInterface.height, j3, childY);
-						}
-					} else if (childInterface.filled) {
-						Canvas2D.method335(j3, childY, childInterface.width, childInterface.height, 256 - (childInterface.opacity & 0xff), childX);
-					} else {
-						Canvas2D.method338(childY, childInterface.height, 256 - (childInterface.opacity & 0xff), j3, childInterface.width, childX);
-					}
-					*/
-					
 				} else if (childInterface.type == 4) {
 					TextDrawingArea textDrawingArea = childInterface.textDrawingAreas;
 					String s = childInterface.message;
@@ -6615,19 +6701,22 @@ public class Client extends GameRenderer {
 							s = s.replaceAll(s.substring(prefix + 5, suffix), "");
 							s = s.replaceAll("</img>", "");
 							s = s.replaceAll("<img=>", "");
-						} catch (NumberFormatException nfe) { 
-							//System.out.println("Unable to draw player crown on interface. Unable to read rights.");
+						} catch (NumberFormatException nfe) {
+							// System.out.println("Unable to draw player crown
+							// on interface. Unable to read rights.");
 							s = INITIAL_MESSAGE;
 						} catch (IllegalStateException ise) {
-							//System.out.println("Unable to draw player crown on interface, rights too low or high.");
+							// System.out.println("Unable to draw player crown
+							// on interface, rights too low or high.");
 							s = INITIAL_MESSAGE;
 						}
-						if(suffix > prefix) {
+						if (suffix > prefix) {
 							xOffset += 14;
 						}
 					}
 					boolean flag1 = false;
-					if (anInt1039 == childInterface.id || anInt1048 == childInterface.id || anInt1026 == childInterface.id) {
+					if (anInt1039 == childInterface.id || anInt1048 == childInterface.id
+							|| anInt1026 == childInterface.id) {
 						flag1 = true;
 					}
 					int i4;
@@ -6678,10 +6767,15 @@ public class Client extends GameRenderer {
 								if (k7 == -1) {
 									break;
 								}
-								if (childInterface.id < 4000 || childInterface.id > 5000 && childInterface.id != 13921 && childInterface.id != 13922 && childInterface.id != 12171 && childInterface.id != 12172) {
-									s = s.substring(0, k7) + methodR(extractInterfaceValues(childInterface, 0)) + s.substring(k7 + 2);
+								if (childInterface.id < 4000 || childInterface.id > 5000 && childInterface.id != 13921
+										&& childInterface.id != 13922 && childInterface.id != 12171
+										&& childInterface.id != 12172) {
+									s = s.substring(0, k7) + methodR(extractInterfaceValues(childInterface, 0))
+											+ s.substring(k7 + 2);
 								} else {
-									s = s.substring(0, k7) + interfaceIntToString(extractInterfaceValues(childInterface, 0)) + s.substring(k7 + 2);
+									s = s.substring(0, k7)
+											+ interfaceIntToString(extractInterfaceValues(childInterface, 0))
+											+ s.substring(k7 + 2);
 								}
 							} while (true);
 							do {
@@ -6689,28 +6783,32 @@ public class Client extends GameRenderer {
 								if (l7 == -1) {
 									break;
 								}
-								s = s.substring(0, l7) + interfaceIntToString(extractInterfaceValues(childInterface, 1)) + s.substring(l7 + 2);
+								s = s.substring(0, l7) + interfaceIntToString(extractInterfaceValues(childInterface, 1))
+										+ s.substring(l7 + 2);
 							} while (true);
 							do {
 								int i8 = s.indexOf("%3");
 								if (i8 == -1) {
 									break;
 								}
-								s = s.substring(0, i8) + interfaceIntToString(extractInterfaceValues(childInterface, 2)) + s.substring(i8 + 2);
+								s = s.substring(0, i8) + interfaceIntToString(extractInterfaceValues(childInterface, 2))
+										+ s.substring(i8 + 2);
 							} while (true);
 							do {
 								int j8 = s.indexOf("%4");
 								if (j8 == -1) {
 									break;
 								}
-								s = s.substring(0, j8) + interfaceIntToString(extractInterfaceValues(childInterface, 3)) + s.substring(j8 + 2);
+								s = s.substring(0, j8) + interfaceIntToString(extractInterfaceValues(childInterface, 3))
+										+ s.substring(j8 + 2);
 							} while (true);
 							do {
 								int k8 = s.indexOf("%5");
 								if (k8 == -1) {
 									break;
 								}
-								s = s.substring(0, k8) + interfaceIntToString(extractInterfaceValues(childInterface, 4)) + s.substring(k8 + 2);
+								s = s.substring(0, k8) + interfaceIntToString(extractInterfaceValues(childInterface, 4))
+										+ s.substring(k8 + 2);
 							} while (true);
 						}
 						int l8 = s.indexOf("\\n");
@@ -6724,65 +6822,83 @@ public class Client extends GameRenderer {
 						}
 						if (imageDraw > 0 && xOffset > 0) {
 							int drawImageY = childY + 14;
-							if(imageDraw >= 841 && imageDraw <= 849) { // Clan chat images
+							if (imageDraw >= 841 && imageDraw <= 849) { // Clan
+																		// chat
+																		// images
 								xOffset -= 5;
 								drawImageY -= 7;
 							}
-							newRegularFont.drawBasicString("<img="+imageDraw+">", childX, drawImageY, true);
+							newRegularFont.drawBasicString("<img=" + imageDraw + ">", childX, drawImageY, true);
 						}
-						//s1 = String.valueOf (childInterface.id);
+						// s1 = String.valueOf (childInterface.id);
 						if (childInterface.centerText) {
-							textDrawingArea.drawCenteredText(i4, childX + childInterface.width / 2 + xOffset, s1, l6, childInterface.textShadow);
+							textDrawingArea.drawCenteredText(i4, childX + childInterface.width / 2 + xOffset, s1, l6,
+									childInterface.textShadow);
 						} else {
 							textDrawingArea.drawRegularText(childInterface.textShadow, childX + xOffset, i4, s1, l6);
 						}
 					}
 				} else if (childInterface.type == 5) {
-					if(childInterface.id == 13822) {
-						//System.out.println(""+childInterface.tooltip+"");
-						//System.out.println(""+childInterface.sprite1);
-						//System.out.println(""+childInterface.sprite2);
-						
-						//childInterface.sprite1 = CacheSpriteLoader.getCacheSprite2(56];
-						//childInterface.sprite2 = CacheSpriteLoader.getCacheSprite2(57];
+					if (childInterface.id == 13822) {
+						// System.out.println(""+childInterface.tooltip+"");
+						// System.out.println(""+childInterface.sprite1);
+						// System.out.println(""+childInterface.sprite2);
+
+						// childInterface.sprite1 =
+						// CacheSpriteLoader.getCacheSprite2(56];
+						// childInterface.sprite2 =
+						// CacheSpriteLoader.getCacheSprite2(57];
 					}
 					Sprite sprite;
 					/*
-					if (child.enabledSpriteId != -1 && SpriteCache.spriteCache[child.enabledSpriteId] == null) {
-						onDemandFetcher.pushRequest(IMAGE_IDX - 1, child.enabledSpriteId);
-					}
-					if (child.disabledSpriteId != -1 && SpriteCache.spriteCache[child.disabledSpriteId] == null) {
-						onDemandFetcher.pushRequest(IMAGE_IDX - 1, child.disabledSpriteId);
-					}
-					*/
-					if (childInterface.itemSpriteId > 0 && childInterface.sprite1 == null && childInterface.sprite2 == null) {
-						childInterface.sprite1 = ItemDefinition.getSprite(childInterface.itemSpriteId, 1, (childInterface.itemSpriteZoom == -1) ? 0 : -1, childInterface.itemSpriteZoom);
-						childInterface.sprite2 = ItemDefinition.getSprite(childInterface.itemSpriteId, 1, (childInterface.itemSpriteZoom == -1) ? 0 : -1, childInterface.itemSpriteZoom);
+					 * if (child.enabledSpriteId != -1 &&
+					 * SpriteCache.spriteCache[child.enabledSpriteId] == null) {
+					 * onDemandFetcher.pushRequest(IMAGE_IDX - 1,
+					 * child.enabledSpriteId); } if (child.disabledSpriteId !=
+					 * -1 && SpriteCache.spriteCache[child.disabledSpriteId] ==
+					 * null) { onDemandFetcher.pushRequest(IMAGE_IDX - 1,
+					 * child.disabledSpriteId); }
+					 */
+					if (childInterface.itemSpriteId > 0 && childInterface.sprite1 == null
+							&& childInterface.sprite2 == null) {
+						childInterface.sprite1 = ItemDefinition.getSprite(childInterface.itemSpriteId, 1,
+								(childInterface.itemSpriteZoom == -1) ? 0 : -1, childInterface.itemSpriteZoom);
+						childInterface.sprite2 = ItemDefinition.getSprite(childInterface.itemSpriteId, 1,
+								(childInterface.itemSpriteZoom == -1) ? 0 : -1, childInterface.itemSpriteZoom);
 					}
 					if (interfaceIsSelected(childInterface)) {
 						sprite = childInterface.sprite2;
 					} else {
 						sprite = childInterface.sprite1;
 					}
-					if (childInterface.id == 1164 || childInterface.id == 1167 || childInterface.id == 1170 || childInterface.id == 1174 || childInterface.id == 30226 || childInterface.id == 1540 || childInterface.id == 30138 || childInterface.id == 30266 || childInterface.id == 30250 || childInterface.id == 1541 || childInterface.id == 7455 || childInterface.id == 18470 || childInterface.id == 13035 || childInterface.id == 13045 || childInterface.id == 13053 || childInterface.id == 13061 || childInterface.id == 13069 || childInterface.id == 13079 || childInterface.id == 30064 || childInterface.id == 30083 || childInterface.id == 30106 || childInterface.id == 30106 || childInterface.id == 13087 || childInterface.id == 30162 || childInterface.id == 13095) {
+					if (childInterface.id == 1164 || childInterface.id == 1167 || childInterface.id == 1170
+							|| childInterface.id == 1174 || childInterface.id == 30226 || childInterface.id == 1540
+							|| childInterface.id == 30138 || childInterface.id == 30266 || childInterface.id == 30250
+							|| childInterface.id == 1541 || childInterface.id == 7455 || childInterface.id == 18470
+							|| childInterface.id == 13035 || childInterface.id == 13045 || childInterface.id == 13053
+							|| childInterface.id == 13061 || childInterface.id == 13069 || childInterface.id == 13079
+							|| childInterface.id == 30064 || childInterface.id == 30083 || childInterface.id == 30106
+							|| childInterface.id == 30106 || childInterface.id == 13087 || childInterface.id == 30162
+							|| childInterface.id == 13095) {
 						sprite = childInterface.sprite2;
 					}
-					
-					if(childInterface.summonReq > 0 && childInterface.sprite1 != null && childInterface.sprite2 != null) {
+
+					if (childInterface.summonReq > 0 && childInterface.sprite1 != null
+							&& childInterface.sprite2 != null) {
 						childInterface.greyScale = (childInterface.summonReq > maxStats[23]);
-						if(childInterface.greyScale) {
+						if (childInterface.greyScale) {
 							childInterface.sprite1.greyScale();
 							sprite = childInterface.sprite1;
 						} else {
 							sprite = childInterface.sprite2;
 						}
 					}
-					
+
 					if (spellSelected == 1 && childInterface.id == spellID && spellID != 0 && sprite != null) {
 						sprite.drawSprite(childX, childY, 0xffffff);
 					} else {
 						if (sprite != null) {
-							if(childInterface.advancedSprite) {
+							if (childInterface.advancedSprite) {
 								sprite.drawAdvancedSprite(childX, childY);
 							} else {
 								sprite.drawSprite(childX, childY);
@@ -6798,26 +6914,27 @@ public class Client extends GameRenderer {
 					Canvas3D.centerX = childX + childInterface.width / 2;
 					Canvas3D.centerY = childY + childInterface.height / 2;
 					int i5 = Canvas3D.SINE[childInterface.modelRotation1] * childInterface.modelZoom >> 16;
-		int l5 = Canvas3D.COSINE[childInterface.modelRotation1] * childInterface.modelZoom >> 16;
-		boolean flag2 = interfaceIsSelected(childInterface);
-		int i7;
-		if (flag2) {
-			i7 = childInterface.enabledAnimationId;
-		} else {
-			i7 = childInterface.disabledAnimationId;
-		}
-		Model model;
-		if (i7 == -1) {
-			model = childInterface.method209(-1, -1, flag2);
-		} else {
-			Animation animation = Animation.cache[i7];
-			model = childInterface.method209(animation.frameIDs2[childInterface.anInt246], animation.frameIDs[childInterface.anInt246], flag2);
-		}
-		if (model != null) {
-			model.renderSingle(childInterface.modelRotation2, 0, childInterface.modelRotation1, 0, i5, l5);
-		}
-		Canvas3D.centerX = k3;
-		Canvas3D.centerY = j4;
+					int l5 = Canvas3D.COSINE[childInterface.modelRotation1] * childInterface.modelZoom >> 16;
+					boolean flag2 = interfaceIsSelected(childInterface);
+					int i7;
+					if (flag2) {
+						i7 = childInterface.enabledAnimationId;
+					} else {
+						i7 = childInterface.disabledAnimationId;
+					}
+					Model model;
+					if (i7 == -1) {
+						model = childInterface.method209(-1, -1, flag2);
+					} else {
+						Animation animation = Animation.cache[i7];
+						model = childInterface.method209(animation.frameIDs2[childInterface.anInt246],
+								animation.frameIDs[childInterface.anInt246], flag2);
+					}
+					if (model != null) {
+						model.renderSingle(childInterface.modelRotation2, 0, childInterface.modelRotation1, 0, i5, l5);
+					}
+					Canvas3D.centerX = k3;
+					Canvas3D.centerY = j4;
 				} else if (childInterface.type == 7) {
 					TextDrawingArea textDrawingArea_1 = childInterface.textDrawingAreas;
 					int k4 = 0;
@@ -6832,15 +6949,18 @@ public class Client extends GameRenderer {
 								int i9 = childX + i6 * (115 + childInterface.invSpritePadX);
 								int k9 = childY + j5 * (12 + childInterface.invSpritePadY);
 								if (childInterface.centerText) {
-									textDrawingArea_1.drawCenteredText(childInterface.textColor, i9 + childInterface.width / 2, s2, k9, childInterface.textShadow);
+									textDrawingArea_1.drawCenteredText(childInterface.textColor,
+											i9 + childInterface.width / 2, s2, k9, childInterface.textShadow);
 								} else {
-									textDrawingArea_1.drawRegularText(childInterface.textShadow, i9, childInterface.textColor, s2, k9);
+									textDrawingArea_1.drawRegularText(childInterface.textShadow, i9,
+											childInterface.textColor, s2, k9);
 								}
 							}
 							k4++;
 						}
 					}
-				} else if (childInterface.type == 8 && (anInt1500 == childInterface.id || anInt1044 == childInterface.id || anInt1129 == childInterface.id) && anInt1501 == 30 && !menuOpen) {
+				} else if (childInterface.type == 8 && (anInt1500 == childInterface.id || anInt1044 == childInterface.id
+						|| anInt1129 == childInterface.id) && anInt1501 == 30 && !menuOpen) {
 					int boxWidth = 0;
 					int boxHeight = 0;
 					TextDrawingArea textDrawingArea_2 = normalText;
@@ -6851,35 +6971,45 @@ public class Client extends GameRenderer {
 								if (k7 == -1) {
 									break;
 								}
-								s1 = s1.substring(0, k7) + interfaceIntToString(extractInterfaceValues(childInterface, 0)) + s1.substring(k7 + 2);
+								s1 = s1.substring(0, k7)
+										+ interfaceIntToString(extractInterfaceValues(childInterface, 0))
+										+ s1.substring(k7 + 2);
 							} while (true);
 							do {
 								int l7 = s1.indexOf("%2");
 								if (l7 == -1) {
 									break;
 								}
-								s1 = s1.substring(0, l7) + interfaceIntToString(extractInterfaceValues(childInterface, 1)) + s1.substring(l7 + 2);
+								s1 = s1.substring(0, l7)
+										+ interfaceIntToString(extractInterfaceValues(childInterface, 1))
+										+ s1.substring(l7 + 2);
 							} while (true);
 							do {
 								int i8 = s1.indexOf("%3");
 								if (i8 == -1) {
 									break;
 								}
-								s1 = s1.substring(0, i8) + interfaceIntToString(extractInterfaceValues(childInterface, 2)) + s1.substring(i8 + 2);
+								s1 = s1.substring(0, i8)
+										+ interfaceIntToString(extractInterfaceValues(childInterface, 2))
+										+ s1.substring(i8 + 2);
 							} while (true);
 							do {
 								int j8 = s1.indexOf("%4");
 								if (j8 == -1) {
 									break;
 								}
-								s1 = s1.substring(0, j8) + interfaceIntToString(extractInterfaceValues(childInterface, 3)) + s1.substring(j8 + 2);
+								s1 = s1.substring(0, j8)
+										+ interfaceIntToString(extractInterfaceValues(childInterface, 3))
+										+ s1.substring(j8 + 2);
 							} while (true);
 							do {
 								int k8 = s1.indexOf("%5");
 								if (k8 == -1) {
 									break;
 								}
-								s1 = s1.substring(0, k8) + interfaceIntToString(extractInterfaceValues(childInterface, 4)) + s1.substring(k8 + 2);
+								s1 = s1.substring(0, k8)
+										+ interfaceIntToString(extractInterfaceValues(childInterface, 4))
+										+ s1.substring(k8 + 2);
 							} while (true);
 						}
 						int l7 = s1.indexOf("\\n");
@@ -6913,42 +7043,53 @@ public class Client extends GameRenderer {
 					Canvas2D.drawPixels(boxHeight, yPos, xPos, 0xFFFFA0, boxWidth);
 					Canvas2D.fillPixels(xPos, boxWidth, boxHeight, 0, yPos);
 					String s2 = childInterface.message;
-					for (int j11 = yPos + textDrawingArea_2.anInt1497 + 2; s2.length() > 0; j11 += textDrawingArea_2.anInt1497 + 1) {// anInt1497
+					for (int j11 = yPos + textDrawingArea_2.anInt1497 + 2; s2
+							.length() > 0; j11 += textDrawingArea_2.anInt1497 + 1) {// anInt1497
 						if (s2.indexOf("%") != -1) {
 							do {
 								int k7 = s2.indexOf("%1");
 								if (k7 == -1) {
 									break;
 								}
-								s2 = s2.substring(0, k7) + interfaceIntToString(extractInterfaceValues(childInterface, 0)) + s2.substring(k7 + 2);
+								s2 = s2.substring(0, k7)
+										+ interfaceIntToString(extractInterfaceValues(childInterface, 0))
+										+ s2.substring(k7 + 2);
 							} while (true);
 							do {
 								int l7 = s2.indexOf("%2");
 								if (l7 == -1) {
 									break;
 								}
-								s2 = s2.substring(0, l7) + interfaceIntToString(extractInterfaceValues(childInterface, 1)) + s2.substring(l7 + 2);
+								s2 = s2.substring(0, l7)
+										+ interfaceIntToString(extractInterfaceValues(childInterface, 1))
+										+ s2.substring(l7 + 2);
 							} while (true);
 							do {
 								int i8 = s2.indexOf("%3");
 								if (i8 == -1) {
 									break;
 								}
-								s2 = s2.substring(0, i8) + interfaceIntToString(extractInterfaceValues(childInterface, 2)) + s2.substring(i8 + 2);
+								s2 = s2.substring(0, i8)
+										+ interfaceIntToString(extractInterfaceValues(childInterface, 2))
+										+ s2.substring(i8 + 2);
 							} while (true);
 							do {
 								int j8 = s2.indexOf("%4");
 								if (j8 == -1) {
 									break;
 								}
-								s2 = s2.substring(0, j8) + interfaceIntToString(extractInterfaceValues(childInterface, 3)) + s2.substring(j8 + 2);
+								s2 = s2.substring(0, j8)
+										+ interfaceIntToString(extractInterfaceValues(childInterface, 3))
+										+ s2.substring(j8 + 2);
 							} while (true);
 							do {
 								int k8 = s2.indexOf("%5");
 								if (k8 == -1) {
 									break;
 								}
-								s2 = s2.substring(0, k8) + interfaceIntToString(extractInterfaceValues(childInterface, 4)) + s2.substring(k8 + 2);
+								s2 = s2.substring(0, k8)
+										+ interfaceIntToString(extractInterfaceValues(childInterface, 4))
+										+ s2.substring(k8 + 2);
 							} while (true);
 						}
 						int l11 = s2.indexOf("\\n");
@@ -6975,13 +7116,13 @@ public class Client extends GameRenderer {
 						}
 					}
 				} else if (childInterface.type == 9) {
-						try {
-							drawHoverBox(childX, childY, childInterface.tooltipBoxText);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-				}  else if (childInterface.type == 10 && !menuOpen && skillTabHoverChild > 0 && anInt1501 == 30) {
-					if(childInterface.id != skillTabHoverChild)
+					try {
+						drawHoverBox(childX, childY, childInterface.tooltipBoxText);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else if (childInterface.type == 10 && !menuOpen && skillTabHoverChild > 0 && anInt1501 == 30) {
+					if (childInterface.id != skillTabHoverChild)
 						continue;
 					int boxWidth = 0;
 					int boxHeight = 0;
@@ -7004,16 +7145,19 @@ public class Client extends GameRenderer {
 					}
 					boxWidth += 6;
 					boxHeight += 7;
-					boolean canDrawPercent = currentExp[skillIdForButton(childInterface.id)] < 1000000000 && Skills.goalData[skillIdForButton(childInterface.id)][0] != -1 && Skills.goalData[skillIdForButton(childInterface.id)][1] != -1 && Skills.goalData[skillIdForButton(childInterface.id)][2] != -1;
+					boolean canDrawPercent = currentExp[skillIdForButton(childInterface.id)] < 1000000000
+							&& Skills.goalData[skillIdForButton(childInterface.id)][0] != -1
+							&& Skills.goalData[skillIdForButton(childInterface.id)][1] != -1
+							&& Skills.goalData[skillIdForButton(childInterface.id)][2] != -1;
 					int xPos = (childX + childInterface.width) - 5 - boxWidth;
 					int yPos = childY + childInterface.height + 5;
 					if (canDrawPercent && Skills.SKILL_ID(childInterface.id) == childInterface.id) {
 						boxHeight += canDrawPercent ? 11 : 0;
 					} else {
-						boxHeight += - 2;
+						boxHeight += -2;
 						canDrawPercent = false;
 					}
-					if(GameFrame.getScreenMode() == ScreenMode.FIXED) {
+					if (GameFrame.getScreenMode() == ScreenMode.FIXED) {
 						if (xPos < childX + 5) {
 							xPos = childX + 5;
 						}
@@ -7023,32 +7167,49 @@ public class Client extends GameRenderer {
 						if (yPos + boxHeight > interfaceY + class9.height) {
 							yPos = (childY - boxHeight);
 						}
-						if (Skills.SKILL_ID(childInterface.id) == childInterface.id && xPos + boxWidth + interfaceX + class9.width > 765) {
+						if (Skills.SKILL_ID(childInterface.id) == childInterface.id
+								&& xPos + boxWidth + interfaceX + class9.width > 765) {
 							xPos = 765 - boxWidth - interfaceX - class9.width - 3;
 						}
-						if (Skills.SKILL_ID(childInterface.id) == childInterface.id && yPos + boxHeight > 503 - yPos + boxHeight - 118) {
+						if (Skills.SKILL_ID(childInterface.id) == childInterface.id
+								&& yPos + boxHeight > 503 - yPos + boxHeight - 118) {
 							yPos -= boxHeight + 35;
 						}
 					} else {
 						if (xPos < childX + 5) {
 							xPos = childX + 5;
 						}
-						if(xPos > 1560 && xPos < 1600) {
+						if (xPos > 1560 && xPos < 1600) {
 							xPos -= 40;
-						} else if(xPos >= 1600) {
+						} else if (xPos >= 1600) {
 							xPos -= 90;
 						}
 					}
 					Canvas2D.drawPixels(boxHeight, yPos, xPos, 0xFFFFA0, boxWidth);
-					if (canDrawPercent && currentExp[skillIdForButton(childInterface.id)] < 1000000000 && Skills.goalData[skillIdForButton(childInterface.id)][0] != -1 && Skills.goalData[skillIdForButton(childInterface.id)][1] != -1 && Skills.goalData[skillIdForButton(childInterface.id)][2] != -1) {
+					if (canDrawPercent && currentExp[skillIdForButton(childInterface.id)] < 1000000000
+							&& Skills.goalData[skillIdForButton(childInterface.id)][0] != -1
+							&& Skills.goalData[skillIdForButton(childInterface.id)][1] != -1
+							&& Skills.goalData[skillIdForButton(childInterface.id)][2] != -1) {
 						int goalPercentage = Skills.goalData[skillIdForButton(childInterface.id)][2];
 						Canvas2D.fillPixels(xPos + 4, boxWidth - 7, 12, 0, yPos + boxHeight - 14);
 						Canvas2D.drawPixels(10, yPos + boxHeight - 13, 4 + xPos + 1, Color.RED.getRGB(), boxWidth - 9);
-						Canvas2D.drawPixels(10, yPos + boxHeight - 13, 4 + xPos + 1, Color.GREEN.getRGB(), (int) ((boxWidth - 7) * .01 * goalPercentage) - 2);
+						Canvas2D.drawPixels(10, yPos + boxHeight - 13, 4 + xPos + 1, Color.GREEN.getRGB(),
+								(int) ((boxWidth - 7) * .01 * goalPercentage) - 2);
 						if (goalPercentage == 100) {
-							smallText.drawText(0, "Goal Completed!", yPos - 3 + boxHeight, (int) (xPos + (boxWidth - 7 - (textDrawingArea_2.getTextWidth("Goal Completed!") + 10)) / 2.0 + 54));
+							smallText
+									.drawText(0, "Goal Completed!", yPos - 3 + boxHeight,
+											(int) (xPos + (boxWidth - 7
+													- (textDrawingArea_2.getTextWidth("Goal Completed!") + 10)) / 2.0
+													+ 54));
 						} else {
-							smallText.drawText(0, goalPercentage + "%", yPos - 3 + boxHeight, (int) (xPos + (boxWidth - 6 - (textDrawingArea_2.getTextWidth(goalPercentage + "%") + 10)) / 2.0 + 24));
+							smallText
+									.drawText(0,
+											goalPercentage
+													+ "%",
+											yPos - 3 + boxHeight,
+											(int) (xPos + (boxWidth - 6
+													- (textDrawingArea_2.getTextWidth(goalPercentage + "%") + 10)) / 2.0
+													+ 24));
 						}
 					}
 					Canvas2D.fillPixels(xPos, boxWidth, boxHeight, 0, yPos);
@@ -7064,107 +7225,98 @@ public class Client extends GameRenderer {
 							s5 = s2;
 							s2 = "";
 						}
-						textDrawingArea_2.drawRegularText(false, xPos + 3, 0,
-										s5, j11);
+						textDrawingArea_2.drawRegularText(false, xPos + 3, 0, s5, j11);
 					}
 				} else if (childInterface.type == 12) {
-					//if (interfaceIsSelected(childInterface)) {
-				//	} else {
-						try {
-							drawHoverBox(childX, childY, childInterface.message);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-				///	}
-				} else if(childInterface.type == 13) {
-						Sprite sprite;
-							if (interfaceIsSelected(childInterface)) {
-								sprite = childInterface.sprite1;
-							} else {
-								sprite = childInterface.sprite2;
-							}
-							if (sprite != null) {
-								if(childInterface.drawsTransparent)
-									sprite.drawTransparentSprite(childX, childY, childInterface.customOpacity);
-								else
-									sprite.drawSprite(childX, childY);
-							}
+					// if (interfaceIsSelected(childInterface)) {
+					// } else {
+					try {
+						drawHoverBox(childX, childY, childInterface.message);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					/// }
+				} else if (childInterface.type == 13) {
+					Sprite sprite;
+					if (interfaceIsSelected(childInterface)) {
+						sprite = childInterface.sprite1;
+					} else {
+						sprite = childInterface.sprite2;
+					}
+					if (sprite != null) {
+						if (childInterface.drawsTransparent)
+							sprite.drawTransparentSprite(childX, childY, childInterface.customOpacity);
+						else
+							sprite.drawSprite(childX, childY);
+					}
 				}
 			}
 		}
 		Canvas2D.setBounds(i1, j1, k1, l1);
 	}
 
-	public void drawOnBankInterface()
-	{
-		if(openInterfaceID == 5292 && RSInterface.interfaceCache[27000].message.equals("1"))
-		{
+	public void drawOnBankInterface() {
+		if (openInterfaceID == 5292 && RSInterface.interfaceCache[27000].message.equals("1")) {
 			int i = Integer.parseInt(RSInterface.interfaceCache[27001].message);
 			int j = Integer.parseInt(RSInterface.interfaceCache[27002].message);
-			for(int k = 0; k <= i; k++)
-			{
-				RSInterface.interfaceCache[27014 + k].sprite1  = CacheSpriteLoader.getCacheSprite(1009);
-				RSInterface.interfaceCache[27014 + k].message = (new StringBuilder()).append("Click here to select tab ").append(k + 1).toString();
+			for (int k = 0; k <= i; k++) {
+				RSInterface.interfaceCache[27014 + k].sprite1 = CacheSpriteLoader.getCacheSprite(1009);
+				RSInterface.interfaceCache[27014 + k].message = (new StringBuilder())
+						.append("Click here to select tab ").append(k + 1).toString();
 			}
 
-			for(int l = i + 1; l <= 8; l++)
-			{
-				RSInterface.interfaceCache[27014+ l].sprite1 = null;
+			for (int l = i + 1; l <= 8; l++) {
+				RSInterface.interfaceCache[27014 + l].sprite1 = null;
 				RSInterface.interfaceCache[27014 + l].message = "";
 			}
 
-			if(i != 8)
-			{
+			if (i != 8) {
 				RSInterface.interfaceCache[27015 + i].sprite1 = CacheSpriteLoader.getCacheSprite(1010);
 				RSInterface.interfaceCache[27015 + i].message = "Drag an item here to create a new tab";
 			}
-			if(j == -1)
-			{
+			if (j == -1) {
 				RSInterface.interfaceCache[27013].sprite1 = CacheSpriteLoader.getCacheSprite(1011);
-			} else
-				if(j > 0)
-				{
-					RSInterface.interfaceCache[27014 + j].sprite1 = CacheSpriteLoader.getCacheSprite(1012);
-					RSInterface.interfaceCache[27014].sprite1 =  CacheSpriteLoader.getCacheSprite(1011);
-				} else
-				{
-					RSInterface.interfaceCache[27014].sprite1 = CacheSpriteLoader.getCacheSprite(1008);
-				}
+			} else if (j > 0) {
+				RSInterface.interfaceCache[27014 + j].sprite1 = CacheSpriteLoader.getCacheSprite(1012);
+				RSInterface.interfaceCache[27014].sprite1 = CacheSpriteLoader.getCacheSprite(1011);
+			} else {
+				RSInterface.interfaceCache[27014].sprite1 = CacheSpriteLoader.getCacheSprite(1008);
+			}
 			RSInterface.interfaceCache[27000].message = "0";
 		}
 	}
-	
+
 	public static String loadingText = "Initiating game..";
 	public static int loadingPercentage;
 	private BufferedImage[] loadingImages;
-	
+
 	private int lastPercentage = -1;
-	
+
 	void drawLoadingText(int percent, String text) {
 		if (percent == lastPercentage) {
 			return;
 		}
 		lastPercentage = percent;
-        if (loadingImages[0] == null) {
+		if (loadingImages[0] == null) {
 			super.prepareGraphics();
-            return;
+			return;
 		}
-        super.graphics.drawImage(loadingImages[0], 0, 0, null);
-        Graphics2D graphics2D = (Graphics2D)super.graphics;
-        super.graphics.setColor(Color.WHITE);
-        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Font font = new Font("Verdana", 0, 10);
-        graphics2D.setFont(font);
+		super.graphics.drawImage(loadingImages[0], 0, 0, null);
+		Graphics2D graphics2D = (Graphics2D) super.graphics;
+		super.graphics.setColor(Color.WHITE);
+		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		Font font = new Font("Verdana", 0, 10);
+		graphics2D.setFont(font);
 		boolean dont_show_last_percentage = false;
-		int n5 = 317; //X Position
-		if(text.toLowerCase().contains("downloading")) {
+		int n5 = 317; // X Position
+		if (text.toLowerCase().contains("downloading")) {
 			n5 = 285;
 			super.graphics.drawString(String.valueOf(text) + "", n5, 177);
 		} else {
-			super.graphics.drawString(String.valueOf(text) + " "+percent+"%", n5, 177);
+			super.graphics.drawString(String.valueOf(text) + " " + percent + "%", n5, 177);
 		}
 		if (percent > 0) {
-			int n6 = percent = (int)((double)percent * 1.93);
+			int n6 = percent = (int) ((double) percent * 1.93);
 			percent = 25;
 			int n7 = n6;
 			Image image = loadingImages[2];
@@ -7176,10 +7328,12 @@ public class Client extends GameRenderer {
 			super.graphics.drawImage(image, 287, 182, null);
 		}
 	}
-	
+
 	public int skillIdForButton(int buttonId) {
-		int[] buttonIds = { 4040, 4076, 4112, 4046, 4082, 4118, 4052, 4088, 4124, 4058, 4094, 4130, 4064, 4100, 4136, 4070, 4106, 4142, 4160, 2832, 13917, 28173, 28174, 28175, 28176 };
-		int[] skillID = { 0, 3, 14, 2, 16, 13, 1, 15, 10, 4, 17, 7, 5, 12, 11, 6, 9, 8, 20, 18, 19, 21, 22, 23, 24, 25 };
+		int[] buttonIds = { 4040, 4076, 4112, 4046, 4082, 4118, 4052, 4088, 4124, 4058, 4094, 4130, 4064, 4100, 4136,
+				4070, 4106, 4142, 4160, 2832, 13917, 28173, 28174, 28175, 28176 };
+		int[] skillID = { 0, 3, 14, 2, 16, 13, 1, 15, 10, 4, 17, 7, 5, 12, 11, 6, 9, 8, 20, 18, 19, 21, 22, 23, 24,
+				25 };
 		for (int i = 0; i < buttonIds.length; i++) {
 			if (buttonIds[i] == buttonId) {
 				buttonId = i;
@@ -7193,111 +7347,105 @@ public class Client extends GameRenderer {
 	public boolean shiftLogin;
 	public int duelStatus;
 	private boolean resizing;
-	public final int REGULAR_WIDTH = 765, REGULAR_HEIGHT = 503,
-			RESIZABLE_WIDTH = 800, RESIZABLE_HEIGHT = 600;
+	public final int REGULAR_WIDTH = 765, REGULAR_HEIGHT = 503, RESIZABLE_WIDTH = 800, RESIZABLE_HEIGHT = 600;
 	public int gameScreenDrawX = 4, gameScreenDrawY = 4;
 
-	public void recreateClientFrame(boolean undecorative, int width, int height, boolean resizable, int displayMode, boolean toggle) {
+	public void recreateClientFrame(boolean undecorative, int width, int height, boolean resizable, int displayMode,
+			boolean toggle) {
 		recreateClientFrame(undecorative, width, height, resizable);
 	}
-	
-	boolean homeHover, forumHover, profileclose3hover, profileclose2hover, profileclose1hover, ahover, bhover, chover, dhover, profile1hover, profile2hover, profile3hover, profile4hover, worldButtonHover, voteHover, storeHover, hiscoresHover, recoveryHover, loginButtonHover, input1Hover, input2Hover, rememberMeButtonHover, backButtonHover;
-	
+
+	boolean homeHover, forumHover, profileclose3hover, profileclose2hover, profileclose1hover, ahover, bhover, chover,
+			dhover, profile1hover, profile2hover, profile3hover, profile4hover, worldButtonHover, voteHover, storeHover,
+			hiscoresHover, recoveryHover, loginButtonHover, input1Hover, input2Hover, rememberMeButtonHover,
+			backButtonHover;
+
 	public void setLoadingAndLoginHovers() {
 		homeHover = ahover = bhover = chover = dhover = profileclose3hover = profileclose2hover = profileclose1hover = profile1hover = profile2hover = profile3hover = profile4hover = forumHover = voteHover = storeHover = worldButtonHover = hiscoresHover = recoveryHover = loginButtonHover = input1Hover = rememberMeButtonHover = backButtonHover = input2Hover = false;
-		
+
 		boolean handCursor = false, textCursor = false;
-		if(!isLoading && !(loginMessage1.length() > 0)) {
-			if(super.mouseX >= 300 && super.mouseX <= 300 + 167 && super.mouseY >= 328 && super.mouseY <= 328 + 34) {
+		if (!isLoading && !(loginMessage1.length() > 0)) {
+			if (super.mouseX >= 300 && super.mouseX <= 300 + 167 && super.mouseY >= 328 && super.mouseY <= 328 + 34) {
 				loginButtonHover = handCursor = true;
 			}
-			/*if(super.mouseX >= 260 && super.mouseX <= 503 && super.mouseY >= 264 && super.mouseY <= 290) {
-				worldButtonHover = handCursor = true;
-			}*/
-			if(super.mouseX >= 235 && super.mouseX <= 532) {
-				if(super.mouseY >= 207 && super.mouseY <= 207 + 30) {
+			/*
+			 * if(super.mouseX >= 260 && super.mouseX <= 503 && super.mouseY >=
+			 * 264 && super.mouseY <= 290) { worldButtonHover = handCursor =
+			 * true; }
+			 */
+			if (super.mouseX >= 235 && super.mouseX <= 532) {
+				if (super.mouseY >= 207 && super.mouseY <= 207 + 30) {
 					input1Hover = textCursor = true;
-				} else if(super.mouseY >= 207 + 52 && super.mouseY <= 207 + 52 + 30) {
+				} else if (super.mouseY >= 207 + 52 && super.mouseY <= 207 + 52 + 30) {
 					input2Hover = textCursor = true;
 				}
 			}
-			if(super.mouseX >= 235 && super.mouseX <= 235 + 23 + 100 && super.mouseY >= 295 && super.mouseY <= 295 + 23) {
+			if (super.mouseX >= 235 && super.mouseX <= 235 + 23 + 100 && super.mouseY >= 295
+					&& super.mouseY <= 295 + 23) {
 				rememberMeButtonHover = handCursor = true;
 			}
 		} else {
-			if(super.mouseX >= 511 + 38 && super.mouseX <= 522 + 38 && super.mouseY >= 123 + 15 && super.mouseY <= 137 + 15) {
+			if (super.mouseX >= 511 + 38 && super.mouseX <= 522 + 38 && super.mouseY >= 123 + 15
+					&& super.mouseY <= 137 + 15) {
 				backButtonHover = handCursor = true;
 			}
 		}
-			if(super.mouseX >= 312 && super.mouseX <= 342 && super.mouseY >= 458 && super.mouseY <= 489) {
-				ahover = handCursor = true;
-			}
-			if(super.mouseX >= 346 && super.mouseX <= 378 && super.mouseY >= 458 && super.mouseY <= 489) {
-				bhover = handCursor = true;
-			}
-			if(super.mouseX >= 380 && super.mouseX <= 413 && super.mouseY >= 458 && super.mouseY <= 489) {
-				chover = handCursor = true;
-			}
-			if(super.mouseX >= 415 && super.mouseX <= 448 && super.mouseY >= 458 && super.mouseY <= 489) {
-				dhover = handCursor = true;
-			}
-		if(super.mouseX >= 264 && super.mouseX <= 340 && super.mouseY >= 372 && super.mouseY <= 446) {
-			if(!saved_characters_usernames[0].equals("Empty")) {
+		if (super.mouseX >= 312 && super.mouseX <= 342 && super.mouseY >= 458 && super.mouseY <= 489) {
+			ahover = handCursor = true;
+		}
+		if (super.mouseX >= 346 && super.mouseX <= 378 && super.mouseY >= 458 && super.mouseY <= 489) {
+			bhover = handCursor = true;
+		}
+		if (super.mouseX >= 380 && super.mouseX <= 413 && super.mouseY >= 458 && super.mouseY <= 489) {
+			chover = handCursor = true;
+		}
+		if (super.mouseX >= 415 && super.mouseX <= 448 && super.mouseY >= 458 && super.mouseY <= 489) {
+			dhover = handCursor = true;
+		}
+		if (super.mouseX >= 264 && super.mouseX <= 340 && super.mouseY >= 372 && super.mouseY <= 446) {
+			if (!saved_characters_usernames[0].equals("Empty")) {
 				profile1hover = handCursor = true;
 			}
 		}
-		if(super.mouseX >= 325 && super.mouseX <= 338 && super.mouseY >= 374 && super.mouseY <= 389) {
+		if (super.mouseX >= 325 && super.mouseX <= 338 && super.mouseY >= 374 && super.mouseY <= 389) {
 			profileclose1hover = handCursor = true;
 		}
-		if(super.mouseX >= 343 && super.mouseX <= 418 && super.mouseY >= 372 && super.mouseY <= 446) {
-			if(!saved_characters_usernames[1].equals("Empty")) {
+		if (super.mouseX >= 343 && super.mouseX <= 418 && super.mouseY >= 372 && super.mouseY <= 446) {
+			if (!saved_characters_usernames[1].equals("Empty")) {
 				profile2hover = handCursor = true;
 			}
 		}
-		if(super.mouseX >= 404 && super.mouseX <= 417 && super.mouseY >= 374 && super.mouseY <= 389) {
+		if (super.mouseX >= 404 && super.mouseX <= 417 && super.mouseY >= 374 && super.mouseY <= 389) {
 			profileclose2hover = handCursor = true;
 		}
-		if(super.mouseX >= 421 && super.mouseX <= 498 && super.mouseY >= 372 && super.mouseY <= 446) {
-			if(!saved_characters_usernames[2].equals("Empty")) {
+		if (super.mouseX >= 421 && super.mouseX <= 498 && super.mouseY >= 372 && super.mouseY <= 446) {
+			if (!saved_characters_usernames[2].equals("Empty")) {
 				profile3hover = handCursor = true;
 			}
 		}
-		if(super.mouseX >= 484 && super.mouseX <= 496 && super.mouseY >= 374 && super.mouseY <= 389) {
+		if (super.mouseX >= 484 && super.mouseX <= 496 && super.mouseY >= 374 && super.mouseY <= 389) {
 			profileclose3hover = handCursor = true;
 		}
 		/*
-		if(handCursor) {
-			getGameComponent().setCursor(new Cursor(Cursor.HAND_CURSOR));
-		} else if(textCursor) {
-			getGameComponent().setCursor(new Cursor(Cursor.TEXT_CURSOR));
-		} else {
-			if(Configuration.NEW_CURSORS) {
-				getGameComponent().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			} else {
-				getGameComponent().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-		}
-		*/
+		 * if(handCursor) { getGameComponent().setCursor(new
+		 * Cursor(Cursor.HAND_CURSOR)); } else if(textCursor) {
+		 * getGameComponent().setCursor(new Cursor(Cursor.TEXT_CURSOR)); } else
+		 * { if(Configuration.NEW_CURSORS) { getGameComponent().setCursor(new
+		 * Cursor(Cursor.DEFAULT_CURSOR)); } else {
+		 * getGameComponent().setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); } }
+		 */
 	}
-	
-	String[] saved_characters_usernames = {
-		"Empty",
-		"Empty",
-		"Empty"
-	};
-	
-	String[] saved_characters_passwords = {
-		"none",
-		"none",
-		"none"
-	};
-	
+
+	String[] saved_characters_usernames = { "Empty", "Empty", "Empty" };
+
+	String[] saved_characters_passwords = { "none", "none", "none" };
+
 	boolean rememberMe = true;
-	
+
 	public void drawLoginScreen() {
-		
+
 		resetImageProducers();
-				
+
 		titleScreenIP.initDrawingArea();
 		setLoadingAndLoginHovers();
 
@@ -7312,109 +7460,107 @@ public class Client extends GameRenderer {
 			titleScreenIP.drawGraphics(0, super.graphics, 0);
 			return;
 		}
-		
-		if(loginMessage1.length() > 0) {
-			
+
+		if (loginMessage1.length() > 0) {
+
 			CacheSpriteLoader.getCacheSprite2(0).drawAdvancedSprite(0, 0);
-			//CacheSpriteLoader.getCacheSprite2(20).drawAdvancedSprite(240, 124);
+			// CacheSpriteLoader.getCacheSprite2(20).drawAdvancedSprite(240,
+			// 124);
 
 			Canvas2D.drawAlphaBox(199, 137, 366, 234, 0, 100);
-			
-			if(backButtonHover) {
+
+			if (backButtonHover) {
 				CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(511 + 38, 125 + 15);
 			} else {
 				CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(511 + 38, 125 + 15);
 			}
-			
-			if(loginMessage1 != null && loginMessage1.length() != 0) {
+
+			if (loginMessage1 != null && loginMessage1.length() != 0) {
 				int y_1 = (clientHeight / 2) + 28;
 				boldText.drawCenteredText(0xefefef, 381, loginMessage1, y_1 - 30, true);
 			}
-			if(loginMessage2 != null && loginMessage2.length() != 0) {
+			if (loginMessage2 != null && loginMessage2.length() != 0) {
 				int y_2 = (clientHeight / 2) + (1 * 20) + 28;
 				boldText.drawCenteredText(0xefefef, 381, loginMessage2, y_2 - 30, true);
 			}
-			if(ahover) {
+			if (ahover) {
 				CacheSpriteLoader.getCacheSprite2(28).drawAdvancedSprite(312, 458);
-			}	
-			
-			if(bhover) {
+			}
+
+			if (bhover) {
 				CacheSpriteLoader.getCacheSprite2(29).drawAdvancedSprite(347, 458);
 			}
-			
-			if(chover) {
+
+			if (chover) {
 				CacheSpriteLoader.getCacheSprite2(30).drawAdvancedSprite(382, 458);
-			}	
-			
-			if(dhover) {
+			}
+
+			if (dhover) {
 				CacheSpriteLoader.getCacheSprite2(31).drawAdvancedSprite(417, 458);
 			}
 		} else {
-			/*CacheSpriteLoader.getCacheSprite2(0].drawAdvancedSprite(0, 0);
-
-			if(loginButtonHover) {
-				CacheSpriteLoader.getCacheSprite2(27].drawAdvancedSprite(259, 309);
-			} else {
-			
-			}
-			
-			if(worldButtonHover) {
-
-			} else {
-			
-			}
-			
-			if(input1Hover) {
-				CacheSpriteLoader.getCacheSprite2(23].drawAdvancedSprite(259, 153);
-			} else {
-				CacheSpriteLoader.getCacheSprite2(22].drawAdvancedSprite(259, 153);
-			}	
-			
-			if(input2Hover) {
-				CacheSpriteLoader.getCacheSprite2(23].drawAdvancedSprite(259, 203);
-			} else {
-				CacheSpriteLoader.getCacheSprite2(22].drawAdvancedSprite(259, 203);
-			}
-			
-			if(ahover) {
-				CacheSpriteLoader.getCacheSprite2(28].drawAdvancedSprite(312, 458);
-			}	
-			
-			if(bhover) {
-				CacheSpriteLoader.getCacheSprite2(29].drawAdvancedSprite(347, 458);
-			}
-			
-			if(chover) {
-				CacheSpriteLoader.getCacheSprite2(30].drawAdvancedSprite(382, 458);
-			}	
-			
-			if(dhover) {
-				CacheSpriteLoader.getCacheSprite2(31].drawAdvancedSprite(417, 458);
-			}
-			
-			if(rememberMeButtonHover) {
-				if(rememberMe) {
-					CacheSpriteLoader.getCacheSprite2(35].drawAdvancedSprite(258, 234);
-				} else {
-					CacheSpriteLoader.getCacheSprite2(34].drawAdvancedSprite(258, 234);
-				}
-			} else {
-				if(rememberMe) {
-					CacheSpriteLoader.getCacheSprite2(25].drawAdvancedSprite(256, 231);
-				}
-			}
-			
-			if(loginScreenCursorPos == 0 && loopCycle % 45 < 10) {
-				boldText.drawRegularText(true, 265, 14335390, myUsername + "|", 169);
-			} else {
-				boldText.drawRegularText(true, 265, 14335390, myUsername, 169);
-			}
-			
-			if(loginScreenCursorPos == 1 && loopCycle % 45 < 10) {
-				boldText.drawRegularText(true, 265, 14335390, getStars(password)+"|", 221);
-			} else {
-				boldText.drawRegularText(true, 265, 14335390, getStars(password), 221);
-			}*/
+			/*
+			 * CacheSpriteLoader.getCacheSprite2(0].drawAdvancedSprite(0, 0);
+			 * 
+			 * if(loginButtonHover) {
+			 * CacheSpriteLoader.getCacheSprite2(27].drawAdvancedSprite(259,
+			 * 309); } else {
+			 * 
+			 * }
+			 * 
+			 * if(worldButtonHover) {
+			 * 
+			 * } else {
+			 * 
+			 * }
+			 * 
+			 * if(input1Hover) {
+			 * CacheSpriteLoader.getCacheSprite2(23].drawAdvancedSprite(259,
+			 * 153); } else {
+			 * CacheSpriteLoader.getCacheSprite2(22].drawAdvancedSprite(259,
+			 * 153); }
+			 * 
+			 * if(input2Hover) {
+			 * CacheSpriteLoader.getCacheSprite2(23].drawAdvancedSprite(259,
+			 * 203); } else {
+			 * CacheSpriteLoader.getCacheSprite2(22].drawAdvancedSprite(259,
+			 * 203); }
+			 * 
+			 * if(ahover) {
+			 * CacheSpriteLoader.getCacheSprite2(28].drawAdvancedSprite(312,
+			 * 458); }
+			 * 
+			 * if(bhover) {
+			 * CacheSpriteLoader.getCacheSprite2(29].drawAdvancedSprite(347,
+			 * 458); }
+			 * 
+			 * if(chover) {
+			 * CacheSpriteLoader.getCacheSprite2(30].drawAdvancedSprite(382,
+			 * 458); }
+			 * 
+			 * if(dhover) {
+			 * CacheSpriteLoader.getCacheSprite2(31].drawAdvancedSprite(417,
+			 * 458); }
+			 * 
+			 * if(rememberMeButtonHover) { if(rememberMe) {
+			 * CacheSpriteLoader.getCacheSprite2(35].drawAdvancedSprite(258,
+			 * 234); } else {
+			 * CacheSpriteLoader.getCacheSprite2(34].drawAdvancedSprite(258,
+			 * 234); } } else { if(rememberMe) {
+			 * CacheSpriteLoader.getCacheSprite2(25].drawAdvancedSprite(256,
+			 * 231); } }
+			 * 
+			 * if(loginScreenCursorPos == 0 && loopCycle % 45 < 10) {
+			 * boldText.drawRegularText(true, 265, 14335390, myUsername + "|",
+			 * 169); } else { boldText.drawRegularText(true, 265, 14335390,
+			 * myUsername, 169); }
+			 * 
+			 * if(loginScreenCursorPos == 1 && loopCycle % 45 < 10) {
+			 * boldText.drawRegularText(true, 265, 14335390,
+			 * getStars(password)+"|", 221); } else {
+			 * boldText.drawRegularText(true, 265, 14335390, getStars(password),
+			 * 221); }
+			 */
 
 			CacheSpriteLoader.getCacheSprite2(0).drawAdvancedSprite(0, 0);
 			boldText.drawCenteredText(0xffbb18, 765 / 2, "Welcome to RuneLive", 155, true);
@@ -7425,7 +7571,7 @@ public class Client extends GameRenderer {
 			boldText.drawText(0, "Username:", y + 1, 268);
 			boldText.drawText(0xffcb18, "Username:", y, 267);
 			CacheSpriteLoader.getCacheSprite2(input1Hover ? 96 : 94).drawCenteredARGBImage(765 / 2, y + 19);
-			if(loginScreenCursorPos == 0 && loopCycle % 45 < 10) {
+			if (loginScreenCursorPos == 0 && loopCycle % 45 < 10) {
 				boldText.drawRegularText(true, 243, 0xefefef, myUsername + "|", y + 24);
 			} else {
 				boldText.drawRegularText(true, 243, 0xefefef, myUsername, y + 24);
@@ -7436,25 +7582,26 @@ public class Client extends GameRenderer {
 			boldText.drawText(0xffcb18, "Password:", y, 267);
 			CacheSpriteLoader.getCacheSprite2(input2Hover ? 96 : 94).drawCenteredARGBImage(765 / 2, y + 19);
 
-			if(loginScreenCursorPos == 1 && loopCycle % 45 < 10) {
-				boldText.drawRegularText(true, 243, 0xefefef, getStars(password)+"|", y + 24);
+			if (loginScreenCursorPos == 1 && loopCycle % 45 < 10) {
+				boldText.drawRegularText(true, 243, 0xefefef, getStars(password) + "|", y + 24);
 			} else {
 				boldText.drawRegularText(true, 243, 0xefefef, getStars(password), y + 24);
 			}
 
-			CacheSpriteLoader.getCacheSprite2(rememberMeButtonHover ? (rememberMe ? 102 : 98) : (rememberMe ? 101 : 97)).drawARGBImage(234, y + 40);
+			CacheSpriteLoader.getCacheSprite2(rememberMeButtonHover ? (rememberMe ? 102 : 98) : (rememberMe ? 101 : 97))
+					.drawARGBImage(234, y + 40);
 			normalText.drawRegularText(true, 261, 0xefefef, "Remember me", y + 56);
 
 			y += 90;
 			CacheSpriteLoader.getCacheSprite2(loginButtonHover ? 95 : 93).drawCenteredARGBImage(765 / 2, y);
 			boldText.drawCenteredText(0xffbb18, 765 / 2, "Login", y + 5, true);
-			
+
 		}
 		CacheSpriteLoader.getCacheSprite2(99).drawAdvancedSprite(264, 373);
-		if(profile1hover) {
-			if(!saved_characters_usernames[0].equals("Empty")) {
+		if (profile1hover) {
+			if (!saved_characters_usernames[0].equals("Empty")) {
 				CacheSpriteLoader.getCacheSprite2(100).drawAdvancedSprite(264, 373);
-				if(profileclose1hover) {
+				if (profileclose1hover) {
 					CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(326, 374);
 				} else {
 					CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(326, 374);
@@ -7463,8 +7610,8 @@ public class Client extends GameRenderer {
 		}
 		CacheSpriteLoader.getCacheSprite2(33).drawAdvancedSprite(264 + 22, 373 + 5);
 
-		if(!saved_characters_usernames[0].equals("Empty")) {
-			if(profileclose1hover) {
+		if (!saved_characters_usernames[0].equals("Empty")) {
+			if (profileclose1hover) {
 				CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(326, 374);
 			} else {
 				CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(326, 374);
@@ -7473,13 +7620,13 @@ public class Client extends GameRenderer {
 		smallText.drawCenteredText(0xefefef, 301, saved_characters_usernames[0], 442, true);
 
 		CacheSpriteLoader.getCacheSprite2(99).drawAdvancedSprite(343, 373);
-		if(profile2hover) {
-			if(!saved_characters_usernames[1].equals("Empty")) {
+		if (profile2hover) {
+			if (!saved_characters_usernames[1].equals("Empty")) {
 				CacheSpriteLoader.getCacheSprite2(100).drawAdvancedSprite(343, 373);
 			}
 		}
-		if(!saved_characters_usernames[1].equals("Empty")) {
-			if(profileclose2hover) {
+		if (!saved_characters_usernames[1].equals("Empty")) {
+			if (profileclose2hover) {
 				CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(405, 374);
 			} else {
 				CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(405, 374);
@@ -7489,13 +7636,13 @@ public class Client extends GameRenderer {
 		smallText.drawCenteredText(0xefefef, 380, saved_characters_usernames[1], 442, true);
 
 		CacheSpriteLoader.getCacheSprite2(99).drawAdvancedSprite(422, 373);
-		if(profile3hover) {
-			if(!saved_characters_usernames[2].equals("Empty")) {
+		if (profile3hover) {
+			if (!saved_characters_usernames[2].equals("Empty")) {
 				CacheSpriteLoader.getCacheSprite2(100).drawAdvancedSprite(422, 373);
 			}
 		}
-		if(!saved_characters_usernames[2].equals("Empty")) {
-			if(profileclose3hover) {
+		if (!saved_characters_usernames[2].equals("Empty")) {
+			if (profileclose3hover) {
 				CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(485, 374);
 			} else {
 				CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(485, 374);
@@ -7503,14 +7650,13 @@ public class Client extends GameRenderer {
 		}
 		CacheSpriteLoader.getCacheSprite2(33).drawAdvancedSprite(422 + 22, 373 + 5);
 		smallText.drawCenteredText(0xefefef, 459, saved_characters_usernames[2], 442, true);
-		
+
 		titleScreenIP.drawGraphics(0, super.graphics, 0);
 
-
 	}
-	
+
 	public int getXTextOffset(int index) {
-		switch(index) {
+		switch (index) {
 		case 1:
 			return 280;
 		case 2:
@@ -7522,21 +7668,21 @@ public class Client extends GameRenderer {
 		}
 		return 206;
 	}
-	
+
 	private void handleAccountHeadRotation() {
 		for (int i = 0; i < accountManager.getAccounts().length; i++) {
 			RSInterface rsi = RSInterface.interfaceCache[31001 + i];
-			if(rsi == null)
+			if (rsi == null)
 				continue;
 			int x = RSInterface.interfaceCache[31000].childX[i];
 			int y = RSInterface.interfaceCache[31000].childY[i];
 			int diffX = mouseX - x;
 			int diffY = y - mouseY;
-			if(mouseX <= 0 && mouseY <= 0)
+			if (mouseX <= 0 && mouseY <= 0)
 				return;
-			if(diffY <= -100)
+			if (diffY <= -100)
 				diffY = -100;
-			if(diffY >= 100)
+			if (diffY >= 100)
 				diffY = 100;
 			if (diffX < 0)
 				diffX = (-diffX);
@@ -7545,16 +7691,16 @@ public class Client extends GameRenderer {
 			if (diffY < 0)
 				diffY = (-diffY);
 			else
-				diffY = 2000-diffY;
-			
+				diffY = 2000 - diffY;
+
 			if (diffX >= 2000)
 				diffX = 2000;
 			if (diffX <= 0)
 				diffX = 0;
-			
-			if(diffY >= 2000)
+
+			if (diffY >= 2000)
 				diffY = 2000;
-			if(diffY <= 0)
+			if (diffY <= 0)
 				diffY = 0;
 			rsi.modelRotation2 = diffX;
 			rsi.modelRotation1 = diffY;
@@ -7564,42 +7710,41 @@ public class Client extends GameRenderer {
 	public static String optimizeText(String s) {
 		for (int i = 0; i < s.length(); i++) {
 			if (i == 0) {
-				s = String.format("%s%s", Character.toUpperCase(s.charAt(0)),
-						s.substring(1));
+				s = String.format("%s%s", Character.toUpperCase(s.charAt(0)), s.substring(1));
 			}
 			if (!Character.isLetterOrDigit(s.charAt(i))) {
 				if (i + 1 < s.length()) {
-					s = String.format("%s%s%s", s.subSequence(0, i + 1),
-							Character.toUpperCase(s.charAt(i + 1)),
+					s = String.format("%s%s%s", s.subSequence(0, i + 1), Character.toUpperCase(s.charAt(i + 1)),
 							s.substring(i + 2));
 				}
 			}
 		}
 		return s.replace("_", " ");
 	}
-	
+
 	public static String capitalizeFirstChar(String s) {
 		try {
 			if (s != "")
-				return (s.substring(0, 1).toUpperCase() + s.substring(1)
-						.toLowerCase()).trim();
+				return (s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase()).trim();
 		} catch (Exception e) {
 		}
 		return s;
 	}
-	
+
 	public static String getStars(String s) {
 		StringBuffer stars = new StringBuffer();
-		for(int i = 0; i < s.length(); i++)
+		for (int i = 0; i < s.length(); i++)
 			stars.append("*");
 		return stars.toString();
 	}
-	
+
 	private void drawLogo() {
 		resetImageProducers();
 		System.gc();
 	}
+
 	private boolean menuToggle = true;
+
 	public void drawMenu() {
 		int i = menuOffsetX;
 		int j = menuOffsetY;
@@ -7644,16 +7789,14 @@ public class Client extends GameRenderer {
 			Canvas2D.fillRectangle(0, j + 1, k - 2, 16, 150, i + 1);
 			Canvas2D.fillPixels(i + 1, k - 2, l - 19, 0, j + 18);
 			Canvas2D.drawRectangle(j + 18, l - 19, 150, 0, k - 2, i + 1);
-			boldText.method385(0xc6b895, "Choose Option", j + 14,
-					i + 3);
-			boldText.method385(0xc6b895, "Choose Option", j + 14,
-					i + 3);
+			boldText.method385(0xc6b895, "Choose Option", j + 14, i + 3);
+			boldText.method385(0xc6b895, "Choose Option", j + 14, i + 3);
 			for (int l1 = 0; l1 < menuActionRow; l1++) {
 				int i2 = j + 31 + (menuActionRow - 1 - l1) * 15;
 				int j2 = 0xffffff;
 				if (j1 > i && j1 < i + k && k1 > i2 - 13 && k1 < i2 + 3)
 					j2 = 0xffff00;
-				//Right click options here!
+				// Right click options here!
 				boldText.drawRegularText(true, i + 3, j2, menuActionName[l1], i2);
 			}
 		} else if (menuToggle == true) {
@@ -7685,8 +7828,7 @@ public class Client extends GameRenderer {
 			Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 17);
 			Canvas2D.fillPixels(i + 2, k - 4, 1, 2763035, j + 18);
 			Canvas2D.fillPixels(i + 3, k - 6, 1, 5654851, j + 19);
-			boldText.method385(0xc6b895, "Choose Option", j + 14,
-					i + 3);
+			boldText.method385(0xc6b895, "Choose Option", j + 14, i + 3);
 			for (int l1 = 0; l1 < menuActionRow; l1++) {
 				int i2 = j + 31 + (menuActionRow - 1 - l1) * 15;
 				int j2 = 0xc6b895;
@@ -7699,115 +7841,77 @@ public class Client extends GameRenderer {
 			}
 		}
 	}
+
 	/*
-	public void drawMenu() {
-		int xPos = menuOffsetX;
-		int yPos = menuOffsetY;
-		int menuW = menuWidth;
-		int x = super.mouseX;
-		int y = super.mouseY;
-		int i = menuOffsetX;
-		int j = menuOffsetY;
-		int k = menuWidth;
-		int j1 = super.mouseX;
-		int k1 = super.mouseY;
-		int l = menuHeight + 1;
-		int i1 = 0x5d5447;
-		int menuH = menuHeight + 1;
-		if (menuScreenArea == 1 && GameFrame.getScreenMode() != ScreenMode.FIXED) {
-			xPos += 519;// +extraWidth;
-			yPos += 168;// +extraHeight;
-		}
-		if (menuScreenArea == 2 && GameFrame.getScreenMode() != ScreenMode.FIXED) {
-			yPos += 338;
-		}
-		if (menuScreenArea == 3 && GameFrame.getScreenMode() != ScreenMode.FIXED) {
-			xPos += 515;
-			yPos += 0;
-		}
-		if (menuScreenArea == 0) {
-			x -= 4;
-			y -= 4;
-		}
-		if (menuScreenArea == 1) {
-			if (!(GameFrame.getScreenMode() != ScreenMode.FIXED)) {
-				x -= 519;
-				y -= 168;
-			}
-		}
-		if (menuScreenArea == 2) {
-			if (!(GameFrame.getScreenMode() != ScreenMode.FIXED)) {
-				x -= 17;
-				y -= 338;
-			}
-		}
-		if (menuScreenArea == 3 && !(GameFrame.getScreenMode() != ScreenMode.FIXED)) {
-			x -= 515;
-			y -= 0;
-		}
-			// Canvas2D.drawPixels(height, yPos, xPos, color, width);
-			// Canvas2D.fillPixels(xPos, width, height, color, yPos);
-			Canvas2D.drawPixels(l - 4, j + 2, i, 7367262, k);
-			Canvas2D.drawPixels(l - 2, j + 1, i + 1, 7367262, k - 2);
-			Canvas2D.drawPixels(l, j, i + 2, 7367262, k - 4);
-			Canvas2D.drawPixels(l - 2, j + 1, i + 3, 2959394, k - 6);
-			Canvas2D.drawPixels(l - 4, j + 2, i + 2, 2959394, k - 4);
-			Canvas2D.drawPixels(l - 6, j + 3, i + 1, 2959394, k - 2);
-			Canvas2D.drawPixels(l - 22, j + 19, i + 2, 5392957, k - 4);
-			Canvas2D.drawPixels(l - 22, j + 20, i + 3, 5392957, k - 6);
-			Canvas2D.drawPixels(l - 23, j + 20, i + 3, 1123113, k - 6);
-			Canvas2D.fillPixels(i + 3, k - 6, 1, 2763035, j + 2);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 2762267, j + 3);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 2433302, j + 4);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 2170389, j + 5);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 1973010, j + 6);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 1709838, j + 7);
-			Canvas2D.fillPixels(i + 2, k - 4, 2, 1380875, j + 8);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 1051912, j + 10);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 11);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 526083, j + 12);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 13);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 460802, j + 14);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 15);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 460802, j + 16);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 17);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 2763035, j + 18);
-			Canvas2D.fillPixels(i + 3, k - 6, 1, 5654851, j + 19);
-			boldText.method385(0xc6b895, "Choose Option", j + 14,
-					i + 3);
-		int beforeX = xPos;
-			for (int l1 = 0; l1 < menuActionRow; l1++) {
-				int i2 = j + 31 + (menuActionRow - 1 - l1) * 15;
-				int j2 = 0xc6b895;
-				if (j1 > i && j1 < i + k && k1 > i2 - 13 && k1 < i2 + 3) {
-					Canvas2D.drawPixels(15, i2 - 11, i + 3, 2512492, menuWidth - 6);
-					j2 = 0xeee5c6;
-					currentActionMenu = l1;
-				}
-				boldText.drawRegularText(true, i + 4, j2, menuActionName[l1], i2 + 1);
-			}
-	}
-	*/
+	 * public void drawMenu() { int xPos = menuOffsetX; int yPos = menuOffsetY;
+	 * int menuW = menuWidth; int x = super.mouseX; int y = super.mouseY; int i
+	 * = menuOffsetX; int j = menuOffsetY; int k = menuWidth; int j1 =
+	 * super.mouseX; int k1 = super.mouseY; int l = menuHeight + 1; int i1 =
+	 * 0x5d5447; int menuH = menuHeight + 1; if (menuScreenArea == 1 &&
+	 * GameFrame.getScreenMode() != ScreenMode.FIXED) { xPos += 519;//
+	 * +extraWidth; yPos += 168;// +extraHeight; } if (menuScreenArea == 2 &&
+	 * GameFrame.getScreenMode() != ScreenMode.FIXED) { yPos += 338; } if
+	 * (menuScreenArea == 3 && GameFrame.getScreenMode() != ScreenMode.FIXED) {
+	 * xPos += 515; yPos += 0; } if (menuScreenArea == 0) { x -= 4; y -= 4; } if
+	 * (menuScreenArea == 1) { if (!(GameFrame.getScreenMode() !=
+	 * ScreenMode.FIXED)) { x -= 519; y -= 168; } } if (menuScreenArea == 2) {
+	 * if (!(GameFrame.getScreenMode() != ScreenMode.FIXED)) { x -= 17; y -=
+	 * 338; } } if (menuScreenArea == 3 && !(GameFrame.getScreenMode() !=
+	 * ScreenMode.FIXED)) { x -= 515; y -= 0; } // Canvas2D.drawPixels(height,
+	 * yPos, xPos, color, width); // Canvas2D.fillPixels(xPos, width, height,
+	 * color, yPos); Canvas2D.drawPixels(l - 4, j + 2, i, 7367262, k);
+	 * Canvas2D.drawPixels(l - 2, j + 1, i + 1, 7367262, k - 2);
+	 * Canvas2D.drawPixels(l, j, i + 2, 7367262, k - 4); Canvas2D.drawPixels(l -
+	 * 2, j + 1, i + 3, 2959394, k - 6); Canvas2D.drawPixels(l - 4, j + 2, i +
+	 * 2, 2959394, k - 4); Canvas2D.drawPixels(l - 6, j + 3, i + 1, 2959394, k -
+	 * 2); Canvas2D.drawPixels(l - 22, j + 19, i + 2, 5392957, k - 4);
+	 * Canvas2D.drawPixels(l - 22, j + 20, i + 3, 5392957, k - 6);
+	 * Canvas2D.drawPixels(l - 23, j + 20, i + 3, 1123113, k - 6);
+	 * Canvas2D.fillPixels(i + 3, k - 6, 1, 2763035, j + 2);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 1, 2762267, j + 3);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 1, 2433302, j + 4);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 1, 2170389, j + 5);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 1, 1973010, j + 6);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 1, 1709838, j + 7);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 2, 1380875, j + 8);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 1, 1051912, j + 10);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 11);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 1, 526083, j + 12);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 13);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 1, 460802, j + 14);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 15);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 1, 460802, j + 16);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 1, 592388, j + 17);
+	 * Canvas2D.fillPixels(i + 2, k - 4, 1, 2763035, j + 18);
+	 * Canvas2D.fillPixels(i + 3, k - 6, 1, 5654851, j + 19);
+	 * boldText.method385(0xc6b895, "Choose Option", j + 14, i + 3); int beforeX
+	 * = xPos; for (int l1 = 0; l1 < menuActionRow; l1++) { int i2 = j + 31 +
+	 * (menuActionRow - 1 - l1) * 15; int j2 = 0xc6b895; if (j1 > i && j1 < i +
+	 * k && k1 > i2 - 13 && k1 < i2 + 3) { Canvas2D.drawPixels(15, i2 - 11, i +
+	 * 3, 2512492, menuWidth - 6); j2 = 0xeee5c6; currentActionMenu = l1; }
+	 * boldText.drawRegularText(true, i + 4, j2, menuActionName[l1], i2 + 1); }
+	 * }
+	 */
 	public void detectCursor(String tooltip) {
-		if(!Configuration.NEW_CURSORS)
+		if (!Configuration.NEW_CURSORS)
 			return;
-		if(tooltip == null || tooltip.isEmpty())
+		if (tooltip == null || tooltip.isEmpty())
 			return;
 		CursorData newCursor = null;
 		tooltip = tooltip.replaceAll("@gre@", "");
 		tooltip = tooltip.replaceAll("@yel@", "");
-		for(CursorData cursorData : CursorData.values()) {
-			if(tooltip.startsWith(cursorData.tooltip)) {
+		for (CursorData cursorData : CursorData.values()) {
+			if (tooltip.startsWith(cursorData.tooltip)) {
 				newCursor = cursorData;
 				break;
 			}
 		}
-		if(newCursor == null) {
+		if (newCursor == null) {
 			newCursor = CursorData.CURSOR_0;
 		}
 		super.setCursor(newCursor);
 	}
-	
+
 	public CursorData oldCursor;
 
 	private void drawMinimap() {
@@ -7825,7 +7929,7 @@ public class Client extends GameRenderer {
 			j1 = j1 * 256 / (minimapZoom + 256);
 			k1 = k1 * 256 / (minimapZoom + 256);
 			int l1 = j * j1 + k * k1 >> 16;
-		int i2 = j * k1 - k * j1 >> 16;
+			int i2 = j * k1 - k * j1 >> 16;
 			double d = Math.atan2(l1, i2);
 			int j2 = (int) (Math.sin(d) * 63D);
 			int k2 = (int) (Math.cos(d) * 57D);
@@ -7835,7 +7939,8 @@ public class Client extends GameRenderer {
 		}
 	}
 
-	public void drawScrollbar(int barHeight, int scrollPos, int yPos, int xPos, int contentHeight, boolean newScroller, boolean isTransparent) {
+	public void drawScrollbar(int barHeight, int scrollPos, int yPos, int xPos, int contentHeight, boolean newScroller,
+			boolean isTransparent) {
 		int backingAmount = (barHeight - 32) / 5;
 		int scrollPartHeight = (barHeight - 32) * barHeight / contentHeight;
 		int scrollerID;
@@ -7863,7 +7968,8 @@ public class Client extends GameRenderer {
 			scrollPart[scrollerID + 3].drawSprite(xPos, scrollPartPos);
 			scrollPartPos += 5;
 		}
-		scrollPartPos = (barHeight - 32 - scrollPartHeight) * scrollPos / (contentHeight - barHeight) + 16 + yPos + scrollPartHeight - 5;
+		scrollPartPos = (barHeight - 32 - scrollPartHeight) * scrollPos / (contentHeight - barHeight) + 16 + yPos
+				+ scrollPartHeight - 5;
 		/* Bottom of bar */
 		scrollPart[scrollerID].drawSprite(xPos, scrollPartPos);
 		/* Arrows */
@@ -7903,7 +8009,8 @@ public class Client extends GameRenderer {
 
 				int paddingY = GameFrame.getScreenMode() == ScreenMode.FIXED ? 0 : getScreenHeight() - 500;
 
-				if ((type == 3 || type == 7) && (type == 7 || privateChatMode == 0 || privateChatMode == 1 && isFriendOrSelf(name))) {
+				if ((type == 3 || type == 7)
+						&& (type == 7 || privateChatMode == 0 || privateChatMode == 1 && isFriendOrSelf(name))) {
 					int yOffset = 329 + paddingY - messages * 13;
 					int xOffset = 4;
 					textDrawingArea.method385(0, "From", yOffset, xOffset);
@@ -7912,18 +8019,20 @@ public class Client extends GameRenderer {
 
 					if (prefixName != null && prefixName.indexOf("@") == 0) {
 						int substringLength = Client.getClient().getPrefixSubstringLength(prefixName);
-						rights = Client.getClient().getPrefixRights(prefixName.substring(0, prefixName.indexOf(name)), new Boolean(substringLength == 6));
+						rights = Client.getClient().getPrefixRights(prefixName.substring(0, prefixName.indexOf(name)),
+								new Boolean(substringLength == 6));
 					}
 
 					if (rights != 0) {
-						
+
 						modIcons[rights].drawTransparentSprite(xOffset, yOffset - 12, 255);
 						xOffset += modIcons[rights].maxWidth + 2;
-					
+
 					}
 
 					textDrawingArea.method385(0, name + ": " + chatMessages[index], yOffset, xOffset);
-					textDrawingArea.method385(ChatArea.SPLIT_CHAT_COLORS[splitChatColor], name + ": " + chatMessages[index], yOffset - 1, xOffset);
+					textDrawingArea.method385(ChatArea.SPLIT_CHAT_COLORS[splitChatColor],
+							name + ": " + chatMessages[index], yOffset - 1, xOffset);
 
 					if (++messages >= 5) {
 						return;
@@ -7933,7 +8042,8 @@ public class Client extends GameRenderer {
 				if (type == 5 && privateChatMode < 2) {
 					int yOffset = 329 + paddingY - messages * 13;
 					textDrawingArea.method385(0, chatMessages[index], yOffset, 4);
-					textDrawingArea.method385(ChatArea.SPLIT_CHAT_COLORS[splitChatColor], chatMessages[index], yOffset - 1, 4);
+					textDrawingArea.method385(ChatArea.SPLIT_CHAT_COLORS[splitChatColor], chatMessages[index],
+							yOffset - 1, 4);
 
 					if (++messages >= 5) {
 						return;
@@ -7953,7 +8063,8 @@ public class Client extends GameRenderer {
 					}
 
 					textDrawingArea.method385(0, name + ": " + chatMessages[index], yOffset, xOffset);
-					textDrawingArea.method385(ChatArea.SPLIT_CHAT_COLORS[splitChatColor], name + ": " + chatMessages[index], yOffset - 1, xOffset);
+					textDrawingArea.method385(ChatArea.SPLIT_CHAT_COLORS[splitChatColor],
+							name + ": " + chatMessages[index], yOffset - 1, xOffset);
 
 					if (++messages >= 5) {
 						return;
@@ -7990,7 +8101,7 @@ public class Client extends GameRenderer {
 	}
 
 	public void processBankInterface() {
-		if(openInterfaceID != 5292)
+		if (openInterfaceID != 5292)
 			return;
 		boolean fixed = GameFrame.getScreenMode() == ScreenMode.FIXED;
 		int offsetX = fixed ? 0 : (getScreenWidth() - 765) / 2;
@@ -8011,15 +8122,17 @@ public class Client extends GameRenderer {
 	}
 
 	private void drawTabArea() {
-		tabArea.setxPos(GameFrame.getScreenMode() == ScreenMode.FIXED ? 516 : getScreenWidth() - tabArea.getWidth() + 12);
-		tabArea.setyPos(GameFrame.getScreenMode() == ScreenMode.FIXED ? 168 : getScreenHeight() - tabArea.getHeight() + 2);
+		tabArea.setxPos(
+				GameFrame.getScreenMode() == ScreenMode.FIXED ? 516 : getScreenWidth() - tabArea.getWidth() + 12);
+		tabArea.setyPos(
+				GameFrame.getScreenMode() == ScreenMode.FIXED ? 168 : getScreenHeight() - tabArea.getHeight() + 2);
 		tabArea.render(this);
 	}
 
 	private void drawTooltip() {
 		// XXX: here tooltip
 		if (menuActionRow < 2 && itemSelected == 0 && spellSelected == 0) {
-			if(Configuration.NEW_CURSORS) {
+			if (Configuration.NEW_CURSORS) {
 				super.setCursor(CursorData.CURSOR_0);
 			}
 			return;
@@ -8038,7 +8151,7 @@ public class Client extends GameRenderer {
 		newBoldFont.drawBasicString(tooltip, 4, 15, 0xFFFFFF, 0, true);
 		// boldText.method390(4, 0xffffff, tooltip, loopCycle / 1000,
 		// 15);
-		if(Configuration.NEW_CURSORS) {
+		if (Configuration.NEW_CURSORS) {
 			detectCursor(menuActionName[menuActionRow - 1]);
 		}
 	}
@@ -8102,7 +8215,8 @@ public class Client extends GameRenderer {
 				if (j1 == 4) {
 					RSInterface class9_1 = RSInterface.interfaceCache[ai[l++]];
 					int k2 = ai[l++];
-					if (k2 >= 0 && k2 < ItemDefinition.totalItems && (!ItemDefinition.get(k2).membersObject || isMembers)) {
+					if (k2 >= 0 && k2 < ItemDefinition.totalItems
+							&& (!ItemDefinition.get(k2).membersObject || isMembers)) {
 						for (int j3 = 0; j3 < class9_1.inv.length; j3++) {
 							if (class9_1.inv[j3] == k2 + 1) {
 								k1 += class9_1.invStackSizes[j3];
@@ -8111,7 +8225,7 @@ public class Client extends GameRenderer {
 
 					}
 				}
-				
+
 				if (j1 == 5) {
 					k1 = variousSettings[ai[l++]];
 				}
@@ -8135,7 +8249,8 @@ public class Client extends GameRenderer {
 				if (j1 == 10) {
 					RSInterface class9_2 = RSInterface.interfaceCache[ai[l++]];
 					int l2 = ai[l++] + 1;
-					if (l2 >= 0 && l2 < ItemDefinition.totalItems && (!ItemDefinition.get(l2).membersObject || isMembers)) {
+					if (l2 >= 0 && l2 < ItemDefinition.totalItems
+							&& (!ItemDefinition.get(l2).membersObject || isMembers)) {
 						for (int element : class9_2.inv) {
 							if (element != l2) {
 								continue;
@@ -8157,23 +8272,24 @@ public class Client extends GameRenderer {
 					int i3 = ai[l++];
 					k1 = (i2 & 1 << i3) == 0 ? 0 : 1;
 				}
-				if (j1 == 14) { //j1 = type
+				if (j1 == 14) { // j1 = type
 					int j2 = ai[l++];
 					VarBit varBit = VarBit.cache[j2];
 					int l3 = varBit.configId;
 					int i4 = varBit.configValue;
 					int j4 = varBit.anInt650;
-					int k4 = anIntArray1232[j4 - i4]; 
+					int k4 = anIntArray1232[j4 - i4];
 					k1 = variousSettings[l3] >> i4 & k4;
-					//System.out.println("valueIndexArray: " + Arrays.toString(class9.valueIndexArray[0]));
-					
+					// System.out.println("valueIndexArray: " +
+					// Arrays.toString(class9.valueIndexArray[0]));
+
 					if (ai[1] >= 643 && ai[1] <= 656) {
 						if (variousSettings[ai[1]] == 1) {
 							k1 = 1;
 						} else {
 							k1 = 0;
 						}
-					}					
+					}
 				}
 				if (j1 == 15) {
 					byte0 = 1;
@@ -8321,10 +8437,12 @@ public class Client extends GameRenderer {
 				}
 			}
 		}
-		for (Class30_Sub1 class30_sub1_1 = (Class30_Sub1) getaClass19_1179().getTail(); class30_sub1_1 != null; class30_sub1_1 = (Class30_Sub1) getaClass19_1179().next()) {
+		for (Class30_Sub1 class30_sub1_1 = (Class30_Sub1) getaClass19_1179()
+				.getTail(); class30_sub1_1 != null; class30_sub1_1 = (Class30_Sub1) getaClass19_1179().next()) {
 			class30_sub1_1.anInt1297 -= i17;
 			class30_sub1_1.anInt1298 -= j21;
-			if (class30_sub1_1.anInt1297 < 0 || class30_sub1_1.anInt1298 < 0 || class30_sub1_1.anInt1297 >= 104 || class30_sub1_1.anInt1298 >= 104) {
+			if (class30_sub1_1.anInt1297 < 0 || class30_sub1_1.anInt1298 < 0 || class30_sub1_1.anInt1297 >= 104
+					|| class30_sub1_1.anInt1298 >= 104) {
 				class30_sub1_1.unlink();
 			}
 		}
@@ -8377,7 +8495,7 @@ public class Client extends GameRenderer {
 		while (buffer == null) {
 			String error = "Unknown error";
 			setLoadingText(loadingBarValue, "Requesting " + fileName);
-			//drawSmoothLoading(loadingBarValue, "Requesting " + fileName);
+			// drawSmoothLoading(loadingBarValue, "Requesting " + fileName);
 
 			try {
 				int lastPercentage = 0;
@@ -8410,7 +8528,8 @@ public class Client extends GameRenderer {
 
 					if (percentage != lastPercentage) {
 						setLoadingText(loadingBarValue, "Loading " + fileName + " - " + percentage + "%");
-						//drawSmoothLoading(loadingBarValue, "Loading " + fileName + " - " + percentage + "%");
+						// drawSmoothLoading(loadingBarValue, "Loading " +
+						// fileName + " - " + percentage + "%");
 					}
 
 					lastPercentage = percentage;
@@ -8471,7 +8590,8 @@ public class Client extends GameRenderer {
 				for (int seconds = timeToWait; seconds > 0; seconds--) {
 					if (errorCount >= 3) {
 						setLoadingText(loadingBarValue, "Game updated - please reload page");
-						//drawSmoothLoading(loadingBarValue, "Game updated - please reload page");
+						// drawSmoothLoading(loadingBarValue, "Game updated -
+						// please reload page");
 						seconds = 10;
 					} else {
 						throw new RuntimeException("Unable to find archive: " + cacheArchive + ", error: " + error);
@@ -8561,9 +8681,9 @@ public class Client extends GameRenderer {
 
 		return "@" + prefix + rights + "@";
 	}
-	
+
 	public int getPrefixSubstringLength(String prefix) {
-		if(prefix == null)
+		if (prefix == null)
 			return 5;
 		return prefix.contains("cr10") || prefix.contains("cr11") ? 6 : 5;
 	}
@@ -8582,12 +8702,11 @@ public class Client extends GameRenderer {
 		}
 		return rights;
 	}
-	
-	
+
 	public void mouseWheelDragged(int i, int j) {
 		if (!mouseWheelDown)
 			return;
-		
+
 		this.cameraRotationLeft += i * 3;
 		this.cameraRotationRight += (j << 1);
 	}
@@ -8619,7 +8738,8 @@ public class Client extends GameRenderer {
 			return false;
 		}
 
-		return (Click ? saveClickX : mouseX) >= xCoord && (Click ? saveClickX : mouseX) <= xCoord + sprite.myWidth && (Click ? saveClickY : mouseY) >= yCoord && (Click ? saveClickY : mouseY) <= yCoord + sprite.myHeight;
+		return (Click ? saveClickX : mouseX) >= xCoord && (Click ? saveClickX : mouseX) <= xCoord + sprite.myWidth
+				&& (Click ? saveClickY : mouseY) >= yCoord && (Click ? saveClickY : mouseY) <= yCoord + sprite.myHeight;
 	}
 
 	private String interfaceIntToString(int j) {
@@ -8695,7 +8815,7 @@ public class Client extends GameRenderer {
 	}
 
 	private static void openUrl(String url) {
-		if(Desktop.isDesktopSupported()){
+		if (Desktop.isDesktopSupported()) {
 			Desktop desktop = Desktop.getDesktop();
 			try {
 				desktop.browse(new URI(url));
@@ -8707,17 +8827,19 @@ public class Client extends GameRenderer {
 		} else {
 			Runtime runtime = Runtime.getRuntime();
 			if (SystemInfo.isMac()) {
-				String[] args = {"osascript", "-e", "open location \"" + url + "\""};
+				String[] args = { "osascript", "-e", "open location \"" + url + "\"" };
 				try {
 					runtime.exec(args);
 				} catch (IOException e) {
-					System.err.println("Desktop not supported, IOException occurred while opening url (osascript): " + url);
+					System.err.println(
+							"Desktop not supported, IOException occurred while opening url (osascript): " + url);
 				}
 			} else {
 				try {
 					runtime.exec("xdg-open " + url);
 				} catch (IOException e) {
-					System.err.println("Desktop not supported, IOException occurred while opening url (xdg-open): " + url);
+					System.err.println(
+							"Desktop not supported, IOException occurred while opening url (xdg-open): " + url);
 				}
 			}
 		}
@@ -8726,7 +8848,7 @@ public class Client extends GameRenderer {
 	private void loadingStages() {
 		if (isLowDetail() && loadingStage == 2 && ObjectManager.anInt131 != plane) {
 			gameScreenIP.initDrawingArea();
-			//CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
+			// CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
 			drawLoadingMessages("Loading " + onDemandFetcher.getRemaining() + " files - please wait... ");
 			if (!resizing) {
 				gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
@@ -8737,7 +8859,7 @@ public class Client extends GameRenderer {
 
 		if (loadingStage == 1) {
 			gameScreenIP.initDrawingArea();
-			//CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
+			// CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
 			drawLoadingMessages("Loading " + onDemandFetcher.getRemaining() + " files - please wait... ");
 			if (!resizing) {
 				gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
@@ -8745,7 +8867,9 @@ public class Client extends GameRenderer {
 			int j = getMapLoadingState();
 
 			if (j != 0 && System.currentTimeMillis() - aLong824 > 0x57e40L) {
-				Signlink.reportError(myUsername + " glcfb " + getServerSeed() + "," + j + "," + isLowDetail() + "," + cacheIndices[0] + "," + onDemandFetcher.getRemaining() + "," + plane + "," + anInt1069 + "," + anInt1070);
+				Signlink.reportError(myUsername + " glcfb " + getServerSeed() + "," + j + "," + isLowDetail() + ","
+						+ cacheIndices[0] + "," + onDemandFetcher.getRemaining() + "," + plane + "," + anInt1069 + ","
+						+ anInt1070);
 				aLong824 = System.currentTimeMillis();
 			}
 		}
@@ -8807,7 +8931,7 @@ public class Client extends GameRenderer {
 		 * anIntArray1190 = new int[32768]; anIntArray1191 = new int[32768];
 		 */
 		// randomizeBackground(null);
-		//drawSmoothLoading(10, "Connecting to fileserver");
+		// drawSmoothLoading(10, "Connecting to fileserver");
 	}
 
 	private void loginScreenBG(boolean b) {
@@ -8842,8 +8966,7 @@ public class Client extends GameRenderer {
 
 	private void mainGameProcessor() {
 		RandomColor.process();
-		if (openInterfaceID == 24600 && !getGrandExchange().searching
-				&& interfaceButtonAction != 1558
+		if (openInterfaceID == 24600 && !getGrandExchange().searching && interfaceButtonAction != 1558
 				&& interfaceButtonAction != 1557 && inputDialogState != 1) {
 			inputDialogState = 0;
 		}
@@ -8854,7 +8977,7 @@ public class Client extends GameRenderer {
 			announcementTimer--;
 		}
 		if (systemRestartTimer > 1) {
-			systemRestartTimer --;
+			systemRestartTimer--;
 		}
 		if (anInt1011 > 0) {
 			anInt1011--;
@@ -8913,13 +9036,13 @@ public class Client extends GameRenderer {
 		updatePlayerInstances();
 		readNPCUpdateBlockForced();
 		processTextCycles();
-		
+
 		if (tabID >= 0 && tabInterfaceIDs[tabID] == 54017) {
-            if (!PetSystem.isPetAnimationRunning) {
-               // PetSystem.updateAnimations();
-            }
-        }
-		
+			if (!PetSystem.isPetAnimationRunning) {
+				// PetSystem.updateAnimations();
+			}
+		}
+
 		anInt945++;
 
 		if (crossType != 0) {
@@ -8944,7 +9067,8 @@ public class Client extends GameRenderer {
 		if (activeInterfaceType != 0) {
 			anInt989++;
 
-			if (super.mouseX > anInt1087 + 5 || super.mouseX < anInt1087 - 5 || super.mouseY > anInt1088 + 5 || super.mouseY < anInt1088 - 5) {
+			if (super.mouseX > anInt1087 + 5 || super.mouseX < anInt1087 - 5 || super.mouseY > anInt1088 + 5
+					|| super.mouseY < anInt1088 - 5) {
 				aBoolean1242 = true;
 			}
 
@@ -8959,88 +9083,110 @@ public class Client extends GameRenderer {
 					bankItemDragSprite = null;
 					lastActiveInvInterface = -1;
 					processRightClick();
-					//BANK TAB DRAG
-					//int x = clientSize > 0 ? (clientWidth / 2) - 765 : 0;
-					//int y = clientSize == 0 ? 40 : (clientHeight / 2) - 503 + 40;
-					//int x = 0; int y = clientSize == 0 ? 40 : clientHeight - (211 * 2);
+					// BANK TAB DRAG
+					// int x = clientSize > 0 ? (clientWidth / 2) - 765 : 0;
+					// int y = clientSize == 0 ? 40 : (clientHeight / 2) - 503 +
+					// 40;
+					// int x = 0; int y = clientSize == 0 ? 40 : clientHeight -
+					// (211 * 2);
 					bankItemDragSprite = null;
 					int x = GameFrame.getScreenMode().ordinal() == 0 ? 0 : (clientWidth / 2) - 256;
 					int y = GameFrame.getScreenMode().ordinal() == 0 ? 40 : 40 + (clientHeight / 2) - 167;
-					if(GameFrame.getScreenMode() == ScreenMode.FULLSCREEN) {
+					if (GameFrame.getScreenMode() == ScreenMode.FULLSCREEN) {
 						y = 232;
 						x = 254 - 28;
 					}
-					if(anInt1084 == 5382 && super.mouseY >= y && super.mouseY <= y+37){//check if bank interface
-						if (super.mouseX >= 28 + x && super.mouseX <= 74 + x){// tab 1
+					if (anInt1084 == 5382 && super.mouseY >= y && super.mouseY <= y + 37) {// check
+																							// if
+																							// bank
+																							// interface
+						if (super.mouseX >= 28 + x && super.mouseX <= 74 + x) {// tab
+																				// 1
 							getOut().createFrame(214);
-							getOut().method433(5);//5 = maintab
+							getOut().method433(5);// 5 = maintab
 							getOut().method424(0);
-							getOut().method433(anInt1085);//Selected item slot
-							getOut().method431(mouseInvInterfaceIndex);//unused
+							getOut().method433(anInt1085);// Selected item slot
+							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
-						if (super.mouseX >= 75+x && super.mouseX <= 121+x){// tab 1
+						if (super.mouseX >= 75 + x && super.mouseX <= 121 + x) {// tab
+																				// 1
 							getOut().createFrame(214);
-							getOut().method433(13);//tab # x 13 (originally movewindow)
+							getOut().method433(13);// tab # x 13 (originally
+													// movewindow)
 							getOut().method424(0);
-							getOut().method433(anInt1085);//Selected item slot
-							getOut().method431(mouseInvInterfaceIndex);//unused
+							getOut().method433(anInt1085);// Selected item slot
+							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
-						if (super.mouseX >= 122+x && super.mouseX <= 168+x){// tab 2
+						if (super.mouseX >= 122 + x && super.mouseX <= 168 + x) {// tab
+																					// 2
 							getOut().createFrame(214);
-							getOut().method433(26);//tab # x 13 (originally movewindow)
+							getOut().method433(26);// tab # x 13 (originally
+													// movewindow)
 							getOut().method424(0);
-							getOut().method433(anInt1085);//Selected item slot
-							getOut().method431(mouseInvInterfaceIndex);//unused
+							getOut().method433(anInt1085);// Selected item slot
+							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
-						if (super.mouseX >= 169+x && super.mouseX <= 215+x){// tab 3
+						if (super.mouseX >= 169 + x && super.mouseX <= 215 + x) {// tab
+																					// 3
 							getOut().createFrame(214);
-							getOut().method433(39);//tab # x 13 (originally movewindow)
+							getOut().method433(39);// tab # x 13 (originally
+													// movewindow)
 							getOut().method424(0);
-							getOut().method433(anInt1085);//Selected item slot
-							getOut().method431(mouseInvInterfaceIndex);//unused
+							getOut().method433(anInt1085);// Selected item slot
+							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
-						if (super.mouseX >= 216+x && super.mouseX <= 262+x){// tab 4
+						if (super.mouseX >= 216 + x && super.mouseX <= 262 + x) {// tab
+																					// 4
 							getOut().createFrame(214);
-							getOut().method433(52);//tab # x 13 (originally movewindow)
+							getOut().method433(52);// tab # x 13 (originally
+													// movewindow)
 							getOut().method424(0);
-							getOut().method433(anInt1085);//Selected item slot
-							getOut().method431(mouseInvInterfaceIndex);//unused
+							getOut().method433(anInt1085);// Selected item slot
+							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
-						if (super.mouseX >= 263+x && super.mouseX <= 309+x){// tab 5
+						if (super.mouseX >= 263 + x && super.mouseX <= 309 + x) {// tab
+																					// 5
 							getOut().createFrame(214);
-							getOut().method433(65);//tab # x 13 (originally movewindow)
+							getOut().method433(65);// tab # x 13 (originally
+													// movewindow)
 							getOut().method424(0);
-							getOut().method433(anInt1085);//Selected item slot
-							getOut().method431(mouseInvInterfaceIndex);//unused
+							getOut().method433(anInt1085);// Selected item slot
+							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
-						if (super.mouseX >= 310+x && super.mouseX <= 356+x){// tab 6
+						if (super.mouseX >= 310 + x && super.mouseX <= 356 + x) {// tab
+																					// 6
 							getOut().createFrame(214);
-							getOut().method433(78);//tab # x 13 (originally movewindow)
+							getOut().method433(78);// tab # x 13 (originally
+													// movewindow)
 							getOut().method424(0);
-							getOut().method433(anInt1085);//Selected item slot
-							getOut().method431(mouseInvInterfaceIndex);//unused
+							getOut().method433(anInt1085);// Selected item slot
+							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
-						if (super.mouseX >= 357+x && super.mouseX <= 403+x){// tab 7
+						if (super.mouseX >= 357 + x && super.mouseX <= 403 + x) {// tab
+																					// 7
 							getOut().createFrame(214);
-							getOut().method433(91);//tab # x 13 (originally movewindow)
+							getOut().method433(91);// tab # x 13 (originally
+													// movewindow)
 							getOut().method424(0);
-							getOut().method433(anInt1085);//Selected item slot
-							getOut().method431(mouseInvInterfaceIndex);//unused
+							getOut().method433(anInt1085);// Selected item slot
+							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
-						if (super.mouseX >= 404+x && super.mouseX <= 450+x){// tab 8
+						if (super.mouseX >= 404 + x && super.mouseX <= 450 + x) {// tab
+																					// 8
 							getOut().createFrame(214);
-							getOut().method433(104);//tab # x 13 (originally movewindow)
+							getOut().method433(104);// tab # x 13 (originally
+													// movewindow)
 							getOut().method424(0);
-							getOut().method433(anInt1085);//Selected item slot
-							getOut().method431(mouseInvInterfaceIndex);//unused
+							getOut().method433(anInt1085);// Selected item slot
+							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
 					}
@@ -9144,7 +9290,7 @@ public class Client extends GameRenderer {
 		} else if (anInt1501 > 0) {
 			anInt1501--;
 		}
-		//System.out.println(":anInt150: "+anInt1500);
+		// System.out.println(":anInt150: "+anInt1500);
 
 		if (PlayerHandler.quedBalloonX > -1 && PlayerHandler.quedBalloonY > -1) {
 			int x = (myPlayer.x >> 7) + baseX;
@@ -9352,8 +9498,11 @@ public class Client extends GameRenderer {
 				Animation animation = Animation.cache[entity.anInt1517];
 				entity.frameDelay++;
 
-				if (entity.currentForcedAnimFrame < animation.frameCount && entity.frameDelay > animation.getFrameLength(entity.currentForcedAnimFrame)) {
-					entity.frameDelay = 1; //this is the frame delay. 0 is what it's normally at. higher number = faster animations.
+				if (entity.currentForcedAnimFrame < animation.frameCount
+						&& entity.frameDelay > animation.getFrameLength(entity.currentForcedAnimFrame)) {
+					entity.frameDelay = 1; // this is the frame delay. 0 is what
+											// it's normally at. higher number =
+											// faster animations.
 					entity.currentForcedAnimFrame++;
 					entity.nextIdleAnimationFrame++;
 				}
@@ -9375,16 +9524,19 @@ public class Client extends GameRenderer {
 				}
 
 				Animation animation_1 = SpotAnimDefinition.cache[entity.gfxId].animation;
-				for (entity.animCycle++; entity.currentAnim < animation_1.frameCount && entity.animCycle > animation_1.getFrameLength(entity.currentAnim); entity.currentAnim++) {
+				for (entity.animCycle++; entity.currentAnim < animation_1.frameCount
+						&& entity.animCycle > animation_1.getFrameLength(entity.currentAnim); entity.currentAnim++) {
 					entity.animCycle -= animation_1.getFrameLength(entity.currentAnim);
 				}
 
-				if (entity.currentAnim >= animation_1.frameCount && (entity.currentAnim < 0 || entity.currentAnim >= animation_1.frameCount)) {
+				if (entity.currentAnim >= animation_1.frameCount
+						&& (entity.currentAnim < 0 || entity.currentAnim >= animation_1.frameCount)) {
 					entity.gfxId = -1;
 				}
 				entity.nextGraphicsAnimationFrame = entity.currentAnim + 1;
 				if (entity.nextGraphicsAnimationFrame >= animation_1.frameCount) {
-					if (entity.nextGraphicsAnimationFrame < 0 || entity.nextGraphicsAnimationFrame >= animation_1.frameCount) {
+					if (entity.nextGraphicsAnimationFrame < 0
+							|| entity.nextGraphicsAnimationFrame >= animation_1.frameCount) {
 						entity.gfxId = -1;
 					}
 				}
@@ -9393,7 +9545,8 @@ public class Client extends GameRenderer {
 			if (entity.anim != -1 && entity.animationDelay <= 1) {
 				Animation animation_2 = Animation.cache[entity.anim];
 
-				if (animation_2.resetWhenWalk == 1 && entity.anInt1542 > 0 && entity.anInt1547 <= loopCycle && entity.anInt1548 < loopCycle) {
+				if (animation_2.resetWhenWalk == 1 && entity.anInt1542 > 0 && entity.anInt1547 <= loopCycle
+						&& entity.anInt1548 < loopCycle) {
 					entity.animationDelay = 1;
 					return;
 				}
@@ -9402,7 +9555,9 @@ public class Client extends GameRenderer {
 			if (entity.anim != -1 && entity.animationDelay == 0) {
 				Animation animation_3 = Animation.cache[entity.anim];
 
-				for (entity.anInt1528++; entity.currentAnimFrame < animation_3.frameCount && entity.anInt1528 > animation_3.getFrameLength(entity.currentAnimFrame); entity.currentAnimFrame++) {
+				for (entity.anInt1528++; entity.currentAnimFrame < animation_3.frameCount
+						&& entity.anInt1528 > animation_3
+								.getFrameLength(entity.currentAnimFrame); entity.currentAnimFrame++) {
 					entity.anInt1528 -= animation_3.getFrameLength(entity.currentAnimFrame);
 				}
 
@@ -9433,7 +9588,7 @@ public class Client extends GameRenderer {
 			if (entity.animationDelay > 0) {
 				entity.animationDelay--;
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -9450,7 +9605,9 @@ public class Client extends GameRenderer {
 				if (class30_sub2_sub4_sub3.aBoolean1567) {
 					class30_sub2_sub4_sub3.unlink();
 				} else {
-					worldController.method285(class30_sub2_sub4_sub3.anInt1560, 0, class30_sub2_sub4_sub3.anInt1563, -1, class30_sub2_sub4_sub3.anInt1562, 60, class30_sub2_sub4_sub3.anInt1561, class30_sub2_sub4_sub3, false);
+					worldController.method285(class30_sub2_sub4_sub3.anInt1560, 0, class30_sub2_sub4_sub3.anInt1563, -1,
+							class30_sub2_sub4_sub3.anInt1562, 60, class30_sub2_sub4_sub3.anInt1561,
+							class30_sub2_sub4_sub3, false);
 				}
 			}
 		}
@@ -9483,29 +9640,24 @@ public class Client extends GameRenderer {
 			if (player.gfxId == 65535) {
 				player.gfxId = -1;
 			}
-			
+
 			try {
 				if (FrameReader.animationlist[Integer
-				                              .parseInt(
-				                            		  Integer.toHexString(
-				                            				  SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0])
-				                            				  .substring(
-				                            						  0,
-				                            						  Integer.toHexString(
-				                            								  SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0])
-				                            								  .length() - 4), 16)].length == 0)
+						.parseInt(Integer.toHexString(SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0])
+								.substring(0,
+										Integer.toHexString(
+												SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0]).length()
+												- 4),
+								16)].length == 0)
 					onDemandFetcher
-					.pushRequest(
-							1,
-							Integer.parseInt(
-									Integer.toHexString(
-											SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0])
-											.substring(
-													0,
+							.pushRequest(1,
+									Integer.parseInt(Integer
+											.toHexString(SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0])
+											.substring(0,
 													Integer.toHexString(
 															SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0])
 															.length() - 4),
-															16));
+											16));
 			} catch (Exception e) {
 			}
 		}
@@ -9532,8 +9684,7 @@ public class Client extends GameRenderer {
 				if (i3 == 2) {
 					player.anInt1530 = 0;
 				}
-			} else if (l == -1
-					|| player.anim == -1
+			} else if (l == -1 || player.anim == -1
 					|| Animation.cache[l].forcedPriority >= Animation.cache[player.anim].forcedPriority) {
 				player.anim = l;
 				player.currentAnimFrame = 0;
@@ -9544,26 +9695,15 @@ public class Client extends GameRenderer {
 
 				try {
 					if (FrameReader.animationlist[Integer
-					                              .parseInt(
-					                            		  Integer.toHexString(
-					                            				  Animation.cache[l].frameIDs[0])
-					                            				  .substring(
-					                            						  0,
-					                            						  Integer.toHexString(
-					                            								  Animation.cache[l].frameIDs[0])
-					                            								  .length() - 4), 16)].length == 0)
+							.parseInt(
+									Integer.toHexString(Animation.cache[l].frameIDs[0]).substring(0,
+											Integer.toHexString(Animation.cache[l].frameIDs[0]).length() - 4),
+									16)].length == 0)
 						onDemandFetcher
-						.pushRequest(
-								1,
-								Integer.parseInt(
-										Integer.toHexString(
-												Animation.cache[l].frameIDs[0])
-												.substring(
-														0,
-														Integer.toHexString(
-																Animation.cache[l].frameIDs[0])
-																.length() - 4),
-																16));
+								.pushRequest(1,
+										Integer.parseInt(Integer.toHexString(Animation.cache[l].frameIDs[0]).substring(
+												0, Integer.toHexString(Animation.cache[l].frameIDs[0]).length() - 4),
+												16));
 				} catch (Exception e) {
 				}
 			}
@@ -9614,13 +9754,13 @@ public class Client extends GameRenderer {
 						String s = TextInput.readChatboxText(chatTextSize, aStream_834);
 						player.textSpoken = s;
 						player.anInt1513 = effects >> 8;
-					// player.privilegeLevel = j2;
-					player.anInt1531 = effects & 0xff;
-					player.textCycle = 150;
-					if(rights == 0 && ironman > 0) {
-						rights = 11 + ironman;
-					}
-					pushMessage(s, 2, getPrefix(rights) + player.name);
+						// player.privilegeLevel = j2;
+						player.anInt1531 = effects & 0xff;
+						player.textCycle = 150;
+						if (rights == 0 && ironman > 0) {
+							rights = 11 + ironman;
+						}
+						pushMessage(s, 2, getPrefix(rights) + player.name);
 					} catch (Exception exception) {
 						Signlink.reportError("cde2");
 					}
@@ -9681,7 +9821,8 @@ public class Client extends GameRenderer {
 			int cameraDisplayX = myPlayer.x + cameraOffsetX;
 			int cameraDisplayY = myPlayer.y + cameraOffsetY;
 
-			if (currentCameraDisplayX - cameraDisplayX < -500 || currentCameraDisplayX - cameraDisplayX > 500 || currentCameraDisplayY - cameraDisplayY < -500 || currentCameraDisplayY - cameraDisplayY > 500) {
+			if (currentCameraDisplayX - cameraDisplayX < -500 || currentCameraDisplayX - cameraDisplayX > 500
+					|| currentCameraDisplayY - cameraDisplayY < -500 || currentCameraDisplayY - cameraDisplayY > 500) {
 				currentCameraDisplayX = cameraDisplayX;
 				currentCameraDisplayY = cameraDisplayY;
 			}
@@ -9784,7 +9925,8 @@ public class Client extends GameRenderer {
 				anInt984 += (j2 - anInt984) / 80;
 			}
 		} catch (Exception _ex) {
-			Signlink.reportError("glfc_ex " + myPlayer.x + "," + myPlayer.y + "," + currentCameraDisplayX + "," + currentCameraDisplayY + "," + anInt1069 + "," + anInt1070 + "," + baseX + "," + baseY);
+			Signlink.reportError("glfc_ex " + myPlayer.x + "," + myPlayer.y + "," + currentCameraDisplayX + ","
+					+ currentCameraDisplayY + "," + anInt1069 + "," + anInt1070 + "," + baseX + "," + baseY);
 			throw new RuntimeException("eek");
 		}
 	}
@@ -9809,25 +9951,36 @@ public class Client extends GameRenderer {
 
 	private void method115() {
 		if (loadingStage == 2) {
-			for (Class30_Sub1 class30_sub1 = (Class30_Sub1) getaClass19_1179().getTail(); class30_sub1 != null; class30_sub1 = (Class30_Sub1) getaClass19_1179().next()) {
+			for (Class30_Sub1 class30_sub1 = (Class30_Sub1) getaClass19_1179()
+					.getTail(); class30_sub1 != null; class30_sub1 = (Class30_Sub1) getaClass19_1179().next()) {
 				if (class30_sub1.anInt1294 > 0) {
 					class30_sub1.anInt1294--;
 				}
 				if (class30_sub1.anInt1294 == 0) {
-					if (class30_sub1.anInt1299 < 0 || ObjectManager.method178(class30_sub1.anInt1299, class30_sub1.anInt1301)) {
-						method142(class30_sub1.anInt1298, class30_sub1.anInt1295, class30_sub1.anInt1300, class30_sub1.anInt1301, class30_sub1.anInt1297, class30_sub1.anInt1296, class30_sub1.anInt1299);
+					if (class30_sub1.anInt1299 < 0
+							|| ObjectManager.method178(class30_sub1.anInt1299, class30_sub1.anInt1301)) {
+						method142(class30_sub1.anInt1298, class30_sub1.anInt1295, class30_sub1.anInt1300,
+								class30_sub1.anInt1301, class30_sub1.anInt1297, class30_sub1.anInt1296,
+								class30_sub1.anInt1299);
 						class30_sub1.unlink();
 					}
 				} else {
 					if (class30_sub1.anInt1302 > 0) {
 						class30_sub1.anInt1302--;
 					}
-					if (class30_sub1.anInt1302 == 0 && class30_sub1.anInt1297 >= 1 && class30_sub1.anInt1298 >= 1 && class30_sub1.anInt1297 <= 102 && class30_sub1.anInt1298 <= 102 && (class30_sub1.anInt1291 < 0 || ObjectManager.method178(class30_sub1.anInt1291, class30_sub1.anInt1293))) {
-						method142(class30_sub1.anInt1298, class30_sub1.anInt1295, class30_sub1.anInt1292, class30_sub1.anInt1293, class30_sub1.anInt1297, class30_sub1.anInt1296, class30_sub1.anInt1291);
+					if (class30_sub1.anInt1302 == 0 && class30_sub1.anInt1297 >= 1 && class30_sub1.anInt1298 >= 1
+							&& class30_sub1.anInt1297 <= 102 && class30_sub1.anInt1298 <= 102
+							&& (class30_sub1.anInt1291 < 0
+									|| ObjectManager.method178(class30_sub1.anInt1291, class30_sub1.anInt1293))) {
+						method142(class30_sub1.anInt1298, class30_sub1.anInt1295, class30_sub1.anInt1292,
+								class30_sub1.anInt1293, class30_sub1.anInt1297, class30_sub1.anInt1296,
+								class30_sub1.anInt1291);
 						class30_sub1.anInt1302 = -1;
 						if (class30_sub1.anInt1291 == class30_sub1.anInt1299 && class30_sub1.anInt1299 == -1) {
 							class30_sub1.unlink();
-						} else if (class30_sub1.anInt1291 == class30_sub1.anInt1299 && class30_sub1.anInt1292 == class30_sub1.anInt1300 && class30_sub1.anInt1293 == class30_sub1.anInt1301) {
+						} else if (class30_sub1.anInt1291 == class30_sub1.anInt1299
+								&& class30_sub1.anInt1292 == class30_sub1.anInt1300
+								&& class30_sub1.anInt1293 == class30_sub1.anInt1301) {
 							class30_sub1.unlink();
 						}
 					}
@@ -9870,7 +10023,7 @@ public class Client extends GameRenderer {
 		}
 		if (k == 3) {
 			plane = stream.getBits(2);
-			if(getLastKnownPlane() != plane) 
+			if (getLastKnownPlane() != plane)
 				loadingStage = 1;
 			setLastKnownPlane(plane);
 			int j1 = stream.getBits(1);
@@ -9883,12 +10036,12 @@ public class Client extends GameRenderer {
 			myPlayer.setPos(l2, k2, j1 == 1);
 		}
 	}
-	
+
 	private boolean withdrawingMoneyFromPouch;
 
 	private boolean processInterfaceAnimation(int i, int j) {
 		boolean flag1 = false;
-		if(j < 0 || j > RSInterface.interfaceCache.length) {
+		if (j < 0 || j > RSInterface.interfaceCache.length) {
 			return false;
 		}
 		RSInterface class9 = RSInterface.interfaceCache[j];
@@ -9937,10 +10090,11 @@ public class Client extends GameRenderer {
 		int j = 3;
 		if (yCameraCurve < 310) {
 			int x = xCameraPos >> 7;
-		int y = yCameraPos >> 7;
+			int y = yCameraPos >> 7;
 			int i1 = myPlayer.x >> 7;
 			int j1 = myPlayer.y >> 7;
-			//System.out.println(myPlayer.x + ", " + myPlayer.y + ", " + x + ", " + y + ", " + plane);
+			// System.out.println(myPlayer.x + ", " + myPlayer.y + ", " + x + ",
+			// " + y + ", " + plane);
 			if ((byteGroundArray[plane][x][y] & 4) != 0) {
 				j = plane;
 			}
@@ -10025,8 +10179,10 @@ public class Client extends GameRenderer {
 
 	private void method130(int j, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2) {
 		Class30_Sub1 class30_sub1 = null;
-		for (Class30_Sub1 class30_sub1_1 = (Class30_Sub1) getaClass19_1179().getTail(); class30_sub1_1 != null; class30_sub1_1 = (Class30_Sub1) getaClass19_1179().next()) {
-			if (class30_sub1_1.anInt1295 != l1 || class30_sub1_1.anInt1297 != i2 || class30_sub1_1.anInt1298 != j1 || class30_sub1_1.anInt1296 != i1) {
+		for (Class30_Sub1 class30_sub1_1 = (Class30_Sub1) getaClass19_1179()
+				.getTail(); class30_sub1_1 != null; class30_sub1_1 = (Class30_Sub1) getaClass19_1179().next()) {
+			if (class30_sub1_1.anInt1295 != l1 || class30_sub1_1.anInt1297 != i2 || class30_sub1_1.anInt1298 != j1
+					|| class30_sub1_1.anInt1296 != i1) {
 				continue;
 			}
 			class30_sub1 = class30_sub1_1;
@@ -10113,7 +10269,9 @@ public class Client extends GameRenderer {
 			if (j3 >= 0 && i6 >= 0 && j3 < 104 && i6 < 104) {
 				Deque class19_1 = groundArray[plane][j3][i6];
 				if (class19_1 != null) {
-					for (Item class30_sub2_sub4_sub2_3 = (Item) class19_1.getTail(); class30_sub2_sub4_sub2_3 != null; class30_sub2_sub4_sub2_3 = (Item) class19_1.next()) {
+					for (Item class30_sub2_sub4_sub2_3 = (Item) class19_1
+							.getTail(); class30_sub2_sub4_sub2_3 != null; class30_sub2_sub4_sub2_3 = (Item) class19_1
+									.next()) {
 						if (class30_sub2_sub4_sub2_3.id != (l8 & 0x7fff) || class30_sub2_sub4_sub2_3.amount != k11) {
 							continue;
 						}
@@ -10134,7 +10292,9 @@ public class Client extends GameRenderer {
 			int l11 = stream.getUnsignedByte();
 			int i14 = l11 >> 4 & 0xf;
 			int i16 = l11 & 7;
-			if (myPlayer.smallX[0] >= k3 - i14 && myPlayer.smallX[0] <= k3 + i14 && myPlayer.smallY[0] >= j6 - i14 && myPlayer.smallY[0] <= j6 + i14 && soundEffectVolume != 0 && aBoolean848 && !isLowDetail() && soundCount < 50) {
+			if (myPlayer.smallX[0] >= k3 - i14 && myPlayer.smallX[0] <= k3 + i14 && myPlayer.smallY[0] >= j6 - i14
+					&& myPlayer.smallY[0] <= j6 + i14 && soundEffectVolume != 0 && aBoolean848 && !isLowDetail()
+					&& soundCount < 50) {
 				sound[soundCount] = i9;
 				soundType[soundCount] = i16;
 				soundDelay[soundCount] = Sounds.anIntArray326[i9];
@@ -10204,10 +10364,13 @@ public class Client extends GameRenderer {
 					if (class10 != null) {
 						int k21 = class10.uid >> 10 & 0x7fff;
 						if (j12 == 2) {
-							class10.aClass30_Sub2_Sub4_278 = new Animable_Sub5(k21, 4 + k14, 2, i19, l19, j18, k20, j17, false);
-							class10.aClass30_Sub2_Sub4_279 = new Animable_Sub5(k21, k14 + 1 & 3, 2, i19, l19, j18, k20, j17, false);
+							class10.aClass30_Sub2_Sub4_278 = new Animable_Sub5(k21, 4 + k14, 2, i19, l19, j18, k20, j17,
+									false);
+							class10.aClass30_Sub2_Sub4_279 = new Animable_Sub5(k21, k14 + 1 & 3, 2, i19, l19, j18, k20,
+									j17, false);
 						} else {
-							class10.aClass30_Sub2_Sub4_278 = new Animable_Sub5(k21, k14, j12, i19, l19, j18, k20, j17, false);
+							class10.aClass30_Sub2_Sub4_278 = new Animable_Sub5(k21, k14, j12, i19, l19, j18, k20, j17,
+									false);
 						}
 					}
 				}
@@ -10215,7 +10378,8 @@ public class Client extends GameRenderer {
 				if (objectType == 1) {
 					Object2 class26 = worldController.method297(j4, i7, plane);
 					if (class26 != null) {
-						class26.aClass30_Sub2_Sub4_504 = new Animable_Sub5(class26.uid >> 10 & 0x7fff, 0, 4, i19, l19, j18, k20, j17, false);
+						class26.aClass30_Sub2_Sub4_504 = new Animable_Sub5(class26.uid >> 10 & 0x7fff, 0, 4, i19, l19,
+								j18, k20, j17, false);
 					}
 				}
 
@@ -10227,7 +10391,8 @@ public class Client extends GameRenderer {
 					}
 
 					if (class28 != null) {
-						class28.aClass30_Sub2_Sub4_521 = new Animable_Sub5(class28.uid >> 10 & 0x7fff, k14, j12, i19, l19, j18, k20, j17, false);
+						class28.aClass30_Sub2_Sub4_521 = new Animable_Sub5(class28.uid >> 10 & 0x7fff, k14, j12, i19,
+								l19, j18, k20, j17, false);
 					}
 				}
 
@@ -10235,7 +10400,8 @@ public class Client extends GameRenderer {
 					Object3 class49 = worldController.method299(i7, j4, plane);
 
 					if (class49 != null) {
-						class49.aClass30_Sub2_Sub4_814 = new Animable_Sub5(class49.uid >> 10 & 0x7fff, k14, 22, i19, l19, j18, k20, j17, false);
+						class49.aClass30_Sub2_Sub4_814 = new Animable_Sub5(class49.uid >> 10 & 0x7fff, k14, 22, i19,
+								l19, j18, k20, j17, false);
 					}
 				}
 			}
@@ -10314,7 +10480,7 @@ public class Client extends GameRenderer {
 
 		if (j == 151) {
 			int i2 = stream.method426();
-			if(i2 >= 4) {
+			if (i2 >= 4) {
 				i2 = plane;
 			}
 			int l4 = anInt1268 + (i2 >> 4 & 7);
@@ -10346,7 +10512,8 @@ public class Client extends GameRenderer {
 			if (i5 >= 0 && l7 >= 0 && i5 < 104 && l7 < 104) {
 				i5 = i5 * 128 + 64;
 				l7 = l7 * 128 + 64;
-				Animable_Sub3 class30_sub2_sub4_sub3 = new Animable_Sub3(plane, loopCycle, j15, k10, method42(plane, l7, i5) - l12, l7, i5);
+				Animable_Sub3 class30_sub2_sub4_sub3 = new Animable_Sub3(plane, loopCycle, j15, k10,
+						method42(plane, l7, i5) - l12, l7, i5);
 				getaClass19_1056().pushFront(class30_sub2_sub4_sub3);
 			}
 
@@ -10407,19 +10574,22 @@ public class Client extends GameRenderer {
 			int i21 = stream.getUnsignedByte();
 			int j21 = stream.getUnsignedByte();
 
-			if (l5 >= 0 && k8 >= 0 && l5 < 104 && k8 < 104 && j11 >= 0 && k13 >= 0 && j11 < 104 && k13 < 104 && i17 != 65535) {
+			if (l5 >= 0 && k8 >= 0 && l5 < 104 && k8 < 104 && j11 >= 0 && k13 >= 0 && j11 < 104 && k13 < 104
+					&& i17 != 65535) {
 				l5 = l5 * 128 + 64;
 				k8 = k8 * 128 + 64;
 				j11 = j11 * 128 + 64;
 				k13 = k13 * 128 + 64;
-				PlayerProjectile class30_sub2_sub4_sub4 = new PlayerProjectile(i21, l18, k19 + loopCycle, j20 + loopCycle, j21, plane, method42(plane, k8, l5) - i18, k8, l5, l15, i17);
+				PlayerProjectile class30_sub2_sub4_sub4 = new PlayerProjectile(i21, l18, k19 + loopCycle,
+						j20 + loopCycle, j21, plane, method42(plane, k8, l5) - i18, k8, l5, l15, i17);
 				class30_sub2_sub4_sub4.method455(k19 + loopCycle, k13, method42(plane, k13, j11) - l18, j11);
 				getaClass19_1013().pushFront(class30_sub2_sub4_sub4);
 			}
 		}
 	}
-	
-	private long lastSuccesfullLogin;	
+
+	private long lastSuccesfullLogin;
+
 	private void updateNpcAmount(ByteBuffer stream) {
 		stream.initBitAccess();
 		int k = stream.getBits(8);
@@ -10508,44 +10678,45 @@ public class Client extends GameRenderer {
 			if (i2 != 0) {
 				int i3 = worldController.fetchObjectIDTagForPosition(j, i1, i, i2);
 				int j2 = i2 >> 14 & 0x7fff;
-		int k2 = i3 & 0x1f;
-		int l2 = i3 >> 6;
+				int k2 = i3 & 0x1f;
+				int l2 = i3 >> 6;
 
-			if (j1 == 0) {
-				worldController.method291(i1, j, i, (byte) -119);
-				ObjectDefinition class46 = ObjectDefinition.forID(j2);
+				if (j1 == 0) {
+					worldController.method291(i1, j, i, (byte) -119);
+					ObjectDefinition class46 = ObjectDefinition.forID(j2);
 
-				if (class46.isUnwalkable) {
-					clippingPlanes[j].method215(l2, k2, class46.aBoolean757, i1, i);
-				}
-			}
-
-			if (j1 == 1) {
-				worldController.method292(i, j, i1);
-			}
-
-			if (j1 == 2) {
-				worldController.method293(j, i1, i);
-				ObjectDefinition class46_1 = ObjectDefinition.forID(j2);
-
-				if (i1 + class46_1.sizeX > 103 || i + class46_1.sizeX > 103 || i1 + class46_1.sizeY > 103 || i + class46_1.sizeY > 103) {
-					return;
+					if (class46.isUnwalkable) {
+						clippingPlanes[j].method215(l2, k2, class46.aBoolean757, i1, i);
+					}
 				}
 
-				if (class46_1.isUnwalkable) {
-					clippingPlanes[j].method216(l2, class46_1.sizeX, i1, i, class46_1.sizeY, class46_1.aBoolean757);
+				if (j1 == 1) {
+					worldController.method292(i, j, i1);
 				}
-			}
 
-			if (j1 == 3) {
-				worldController.method294(j, i, i1);
-				ObjectDefinition class46_2 = ObjectDefinition.forID(j2);
+				if (j1 == 2) {
+					worldController.method293(j, i1, i);
+					ObjectDefinition class46_1 = ObjectDefinition.forID(j2);
 
-				if (class46_2.isUnwalkable && class46_2.hasActions) {
-			
-					clippingPlanes[j].method218(i, i1);
+					if (i1 + class46_1.sizeX > 103 || i + class46_1.sizeX > 103 || i1 + class46_1.sizeY > 103
+							|| i + class46_1.sizeY > 103) {
+						return;
+					}
+
+					if (class46_1.isUnwalkable) {
+						clippingPlanes[j].method216(l2, class46_1.sizeX, i1, i, class46_1.sizeY, class46_1.aBoolean757);
+					}
 				}
-			}
+
+				if (j1 == 3) {
+					worldController.method294(j, i, i1);
+					ObjectDefinition class46_2 = ObjectDefinition.forID(j2);
+
+					if (class46_2.isUnwalkable && class46_2.hasActions) {
+
+						clippingPlanes[j].method218(i, i1);
+					}
+				}
 			}
 
 			if (k1 >= 0) {
@@ -10599,7 +10770,11 @@ public class Client extends GameRenderer {
 				int k = viewRotation + viewRotationOffset & 0x7ff;
 				int zoom = i + (Configuration.TOGGLE_FOV ? 1200 : 650) - getScreenHeight() / 400;
 				zoom += clientZoom;
-				setCameraPos(GameFrame.getScreenMode() == ScreenMode.FIXED ? 600 + i * 3 + clientZoom : getScreenWidth() >= 1024 ? zoom : 450 + i * 3 + clientZoom, i, currentCameraDisplayX, method42(plane, myPlayer.y, myPlayer.x) - 50, k, currentCameraDisplayY);
+				setCameraPos(
+						GameFrame.getScreenMode() == ScreenMode.FIXED ? 600 + i * 3 + clientZoom
+								: getScreenWidth() >= 1024 ? zoom : 450 + i * 3 + clientZoom,
+						i, currentCameraDisplayX, method42(plane, myPlayer.y, myPlayer.x) - 50, k,
+						currentCameraDisplayY);
 			}
 
 			if (!cameraViewChanged) {
@@ -10615,14 +10790,15 @@ public class Client extends GameRenderer {
 		Model.anInt1687 = 0;
 		Model.anInt1685 = super.mouseX - 4;
 		Model.anInt1686 = super.mouseY - 4;
-		
-		//blue fog: 0x5DA4C9, white: 0xc8c0a8
+
+		// blue fog: 0x5DA4C9, white: 0xc8c0a8
 		Canvas2D.drawPixels(getScreenHeight(), 0, 0, Configuration.FOG_ENABLED ? 0x5DA4C9 : 0, getScreenWidth());
 		// Canvas2D.drawAlphaGradient(0, 0, getScreenWidth(),
 		// getScreenHeight(), 0x5DA4C9, 0x9DA4C2, 255);
 
 		if (loggedIn) {
-			worldController.method313(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, j, yCameraCurve, Configuration.FOG_ENABLED);
+			worldController.method313(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, j, yCameraCurve,
+					Configuration.FOG_ENABLED);
 			worldController.clearObj5Cache();
 		}
 
@@ -10641,7 +10817,7 @@ public class Client extends GameRenderer {
 			drawConsoleArea();
 			drawConsole();
 		}
-		
+
 		if (loggedIn && Configuration.MONEY_POUCH_ENABLED) {
 			mapArea.displayMoneyPouch(this);
 		}
@@ -10649,12 +10825,12 @@ public class Client extends GameRenderer {
 		if (PlayerHandler.showXP && loggedIn) {
 			mapArea.displayXPCounter(this);
 		}
-		
-		if(loggedIn) {
+
+		if (loggedIn) {
 			if (this.moneyPouchEarningTimer != 0) {
 				int color = this.moneyPouchEarning >= 0L ? 65280 : 16711680;
 				String s = "+" + formatAmount(Math.abs(this.moneyPouchEarning));
-				if(earnOrLoss) {
+				if (earnOrLoss) {
 					s = "-" + formatAmount(Math.abs(this.moneyPouchEarning));
 					color = 16711680;
 				}
@@ -10676,7 +10852,7 @@ public class Client extends GameRenderer {
 				this.moneyPouchEarningTimer -= 1;
 			}
 		}
-		
+
 		if (loggedIn) {
 			if (!resizing) {
 				gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
@@ -10738,7 +10914,8 @@ public class Client extends GameRenderer {
 					int k5 = (anIntArray1234[i3] & 0xff) * 64 - baseY;
 					byte abyte0[] = localFloorMapData[i3];
 					if (abyte0 != null) {
-						objectManager.method180(abyte0, k5, i4, (anInt1069 - 6) * 8, (anInt1070 - 6) * 8, clippingPlanes);
+						objectManager.method180(abyte0, k5, i4, (anInt1069 - 6) * 8, (anInt1070 - 6) * 8,
+								clippingPlanes);
 					}
 				}
 
@@ -10775,19 +10952,20 @@ public class Client extends GameRenderer {
 
 							if (l7 != -1) {
 								int i9 = l7 >> 24 & 3;
-						int l9 = l7 >> 1 & 3;
-				int j10 = l7 >> 14 & 0x3ff;
-				int l10 = l7 >> 3 & 0x7ff;
-			int j11 = (j10 / 8 << 8) + l10 / 8;
+								int l9 = l7 >> 1 & 3;
+								int j10 = l7 >> 14 & 0x3ff;
+								int l10 = l7 >> 3 & 0x7ff;
+								int j11 = (j10 / 8 << 8) + l10 / 8;
 
-			for (int l11 = 0; l11 < anIntArray1234.length; l11++) {
-				if (anIntArray1234[l11] != j11 || localFloorMapData[l11] == null) {
-					continue;
-				}
+								for (int l11 = 0; l11 < anIntArray1234.length; l11++) {
+									if (anIntArray1234[l11] != j11 || localFloorMapData[l11] == null) {
+										continue;
+									}
 
-				objectManager.method179(i9, l9, clippingPlanes, k4 * 8, (j10 & 7) * 8, localFloorMapData[l11], (l10 & 7) * 8, j3, j6 * 8);
-				break;
-			}
+									objectManager.method179(i9, l9, clippingPlanes, k4 * 8, (j10 & 7) * 8,
+											localFloorMapData[l11], (l10 & 7) * 8, j3, j6 * 8);
+									break;
+								}
 							}
 						}
 					}
@@ -10814,18 +10992,19 @@ public class Client extends GameRenderer {
 
 							if (i10 != -1) {
 								int k10 = i10 >> 24 & 3;
-						int i11 = i10 >> 1 & 3;
-				int k11 = i10 >> 14 & 0x3ff;
-				int i12 = i10 >> 3 & 0x7ff;
-			int j12 = (k11 / 8 << 8) + i12 / 8;
+								int i11 = i10 >> 1 & 3;
+								int k11 = i10 >> 14 & 0x3ff;
+								int i12 = i10 >> 3 & 0x7ff;
+								int j12 = (k11 / 8 << 8) + i12 / 8;
 
-			for (int k12 = 0; k12 < anIntArray1234.length; k12++) {
-				if (anIntArray1234[k12] != j12 || localObjectMapData[k12] == null) {
-					continue;
-				}
-				objectManager.method183(clippingPlanes, worldController, k10, j8 * 8, (i12 & 7) * 8, l6, localObjectMapData[k12], (k11 & 7) * 8, i11, j9 * 8);
-				break;
-			}
+								for (int k12 = 0; k12 < anIntArray1234.length; k12++) {
+									if (anIntArray1234[k12] != j12 || localObjectMapData[k12] == null) {
+										continue;
+									}
+									objectManager.method183(clippingPlanes, worldController, k10, j8 * 8, (i12 & 7) * 8,
+											l6, localObjectMapData[k12], (k11 & 7) * 8, i11, j9 * 8);
+									break;
+								}
 							}
 						}
 					}
@@ -10875,7 +11054,7 @@ public class Client extends GameRenderer {
 		}
 
 		ObjectDefinition.mruNodes1.unlinkAll();
-		
+
 		if (loggedIn) {
 			getOut().putOpcode(210);
 			getOut().putInt(0x3f008edd);
@@ -10970,14 +11149,14 @@ public class Client extends GameRenderer {
 
 				if (i3 != 0) {
 					i3 = i3 >> 14 & 0x7fff;
-			int j3 = ObjectDefinition.forID(i3).mapFunctionID;
+					int j3 = ObjectDefinition.forID(i3).mapFunctionID;
 
-			if (j3 >= 0) {
-				aClass30_Sub2_Sub1_Sub1Array1140[anInt1071] = mapFunctions[j3];
-				anIntArray1072[anInt1071] = k2;
-				anIntArray1073[anInt1071] = l2;
-				anInt1071++;
-			}
+					if (j3 >= 0) {
+						aClass30_Sub2_Sub1_Sub1Array1140[anInt1071] = mapFunctions[j3];
+						anIntArray1072[anInt1071] = k2;
+						anIntArray1073[anInt1071] = l2;
+						anInt1071++;
+					}
 				}
 			}
 		}
@@ -10995,23 +11174,24 @@ public class Client extends GameRenderer {
 			int l = npc.x >> 7;
 			int i1 = npc.y >> 7;
 
-		if (l < 0 || l >= 104 || i1 < 0 || i1 >= 104) {
-			continue;
-		}
-
-		if (npc.anInt1540 == 1 && (npc.x & 0x7f) == 64 && (npc.y & 0x7f) == 64) {
-			if (anIntArrayArray929[l][i1] == anInt1265) {
+			if (l < 0 || l >= 104 || i1 < 0 || i1 >= 104) {
 				continue;
 			}
 
-			anIntArrayArray929[l][i1] = anInt1265;
-		}
+			if (npc.anInt1540 == 1 && (npc.x & 0x7f) == 64 && (npc.y & 0x7f) == 64) {
+				if (anIntArrayArray929[l][i1] == anInt1265) {
+					continue;
+				}
 
-		if (!npc.definitionOverride.disableRightClick) {
-			k += 0x80000000;
-		}
+				anIntArrayArray929[l][i1] = anInt1265;
+			}
 
-		worldController.method285(plane, npc.anInt1552, method42(plane, npc.y, npc.x), k, npc.y, (npc.anInt1540 - 1) * 64 + 60, npc.x, npc, npc.aBoolean1541);
+			if (!npc.definitionOverride.disableRightClick) {
+				k += 0x80000000;
+			}
+
+			worldController.method285(plane, npc.anInt1552, method42(plane, npc.y, npc.x), k, npc.y,
+					(npc.anInt1540 - 1) * 64 + 60, npc.x, npc, npc.aBoolean1541);
 		}
 	}
 
@@ -11153,7 +11333,7 @@ public class Client extends GameRenderer {
 
 	private int method42(int i, int j, int k) {
 		int l = k >> 7;
-			int i1 = j >> 7;
+		int i1 = j >> 7;
 		if (l < 0 || i1 < 0 || l > 103 || i1 > 103) {
 			return 0;
 		}
@@ -11173,7 +11353,8 @@ public class Client extends GameRenderer {
 		for (int j = 0; j < 7; j++) {
 			myAppearance[j] = -1;
 			for (int k = 0; k < IdentityKit.getLength(); k++) {
-				if (IdentityKit.cache[k].isaBoolean662() || IdentityKit.cache[k].getAnInt657() != j + (isMale ? 0 : 7)) {
+				if (IdentityKit.cache[k].isaBoolean662()
+						|| IdentityKit.cache[k].getAnInt657() != j + (isMale ? 0 : 7)) {
 					continue;
 				}
 				myAppearance[j] = k;
@@ -11244,24 +11425,26 @@ public class Client extends GameRenderer {
 			// here
 			player.aBoolean1699 = playerCount > 200 && !flag && player.anInt1517 == player.anInt1511;
 			int j1 = player.x >> 7;
-				int k1 = player.y >> 7;
-				if (j1 < 0 || j1 >= 104 || k1 < 0 || k1 >= 104) {
-					continue;
-				}
-				if (player.aModel_1714 != null && loopCycle >= player.anInt1707 && loopCycle < player.anInt1708) {
-					player.aBoolean1699 = false;
-					player.anInt1709 = method42(plane, player.y, player.x);
-					worldController.method286(plane, player.y, player, player.anInt1552, player.anInt1722, player.x, player.anInt1709, player.anInt1719, player.anInt1721, i1, player.anInt1720);
-					continue;
-				}
-				if ((player.x & 0x7f) == 64 && (player.y & 0x7f) == 64) {
-					if (anIntArrayArray929[j1][k1] == anInt1265) {
-						continue;
-					}
-					anIntArrayArray929[j1][k1] = anInt1265;
-				}
+			int k1 = player.y >> 7;
+			if (j1 < 0 || j1 >= 104 || k1 < 0 || k1 >= 104) {
+				continue;
+			}
+			if (player.aModel_1714 != null && loopCycle >= player.anInt1707 && loopCycle < player.anInt1708) {
+				player.aBoolean1699 = false;
 				player.anInt1709 = method42(plane, player.y, player.x);
-				worldController.method285(plane, player.anInt1552, player.anInt1709, i1, player.y, 60, player.x, player, player.aBoolean1541);
+				worldController.method286(plane, player.y, player, player.anInt1552, player.anInt1722, player.x,
+						player.anInt1709, player.anInt1719, player.anInt1721, i1, player.anInt1720);
+				continue;
+			}
+			if ((player.x & 0x7f) == 64 && (player.y & 0x7f) == 64) {
+				if (anIntArrayArray929[j1][k1] == anInt1265) {
+					continue;
+				}
+				anIntArrayArray929[j1][k1] = anInt1265;
+			}
+			player.anInt1709 = method42(plane, player.y, player.x);
+			worldController.method285(plane, player.anInt1552, player.anInt1709, i1, player.y, 60, player.x, player,
+					player.aBoolean1541);
 		}
 	}
 
@@ -11282,108 +11465,108 @@ public class Client extends GameRenderer {
 		if ((uid ^ 0xffffffffffffffffL) != -1L) {
 			int resourceTag = worldController.fetchObjectIDTagForPosition(z, x, y, uid);
 			int direction = resourceTag >> 6 & 3;// direction
-				int type = resourceTag & 0x1f;// type
-				int color = primaryColor;// color
-				if (uid > 0) {
-					color = secondaryColor;
-				}
-				int mapPixels[] = miniMapRegions.myPixels;
-				int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
-				int objectId = worldController.fetchWallDecorationNewUID(z, x, y);
-				ObjectDefinition objDef = ObjectDefinition.forID(objectId);
-				if ((objDef.mapSceneID ^ 0xffffffff) == 0) {
-					if (type == 0 || type == 2) {
-						if (direction == 0) {
-							mapPixels[pixel] = color;
-							mapPixels[pixel + 512] = color;
-							mapPixels[1024 + pixel] = color;
-							mapPixels[1536 + pixel] = color;
-						} else if ((direction ^ 0xffffffff) == -2) {
-							mapPixels[pixel] = color;
-							mapPixels[pixel + 1] = color;
-							mapPixels[pixel + 2] = color;
-							mapPixels[3 + pixel] = color;
-						} else if (direction == 2) {
-							mapPixels[pixel - -3] = color;
-							mapPixels[3 + pixel + 512] = color;
-							mapPixels[3 + pixel + 1024] = color;
-							mapPixels[1536 + pixel - -3] = color;
-						} else if (direction == 3) {
-							mapPixels[pixel + 1536] = color;
-							mapPixels[pixel + 1536 + 1] = color;
-							mapPixels[2 + pixel + 1536] = color;
-							mapPixels[pixel + 1539] = color;
-						}
-					}
-					if (type == 3) {
-						if (direction == 0) {
-							mapPixels[pixel] = color;
-						} else if (direction == 1) {
-							mapPixels[pixel + 3] = color;
-						} else if (direction == 2) {
-							mapPixels[pixel + 3 + 1536] = color;
-						} else if (direction == 3) {
-							mapPixels[pixel + 1536] = color;
-						}
-					}
-					if (type == 2) {
-						if (direction == 3) {
-							mapPixels[pixel] = color;
-							mapPixels[pixel + 512] = color;
-							mapPixels[pixel + 1024] = color;
-							mapPixels[pixel + 1536] = color;
-						} else if (direction == 0) {
-							mapPixels[pixel] = color;
-							mapPixels[pixel + 1] = color;
-							mapPixels[pixel + 2] = color;
-							mapPixels[pixel + 3] = color;
-						} else if (direction == 1) {
-							mapPixels[pixel + 3] = color;
-							mapPixels[pixel + 3 + 512] = color;
-							mapPixels[pixel + 3 + 1024] = color;
-							mapPixels[pixel + 3 + 1536] = color;
-						} else if (direction == 2) {
-							mapPixels[pixel + 1536] = color;
-							mapPixels[pixel + 1536 + 1] = color;
-							mapPixels[pixel + 1536 + 2] = color;
-							mapPixels[pixel + 1536 + 3] = color;
-						}
+			int type = resourceTag & 0x1f;// type
+			int color = primaryColor;// color
+			if (uid > 0) {
+				color = secondaryColor;
+			}
+			int mapPixels[] = miniMapRegions.myPixels;
+			int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
+			int objectId = worldController.fetchWallDecorationNewUID(z, x, y);
+			ObjectDefinition objDef = ObjectDefinition.forID(objectId);
+			if ((objDef.mapSceneID ^ 0xffffffff) == 0) {
+				if (type == 0 || type == 2) {
+					if (direction == 0) {
+						mapPixels[pixel] = color;
+						mapPixels[pixel + 512] = color;
+						mapPixels[1024 + pixel] = color;
+						mapPixels[1536 + pixel] = color;
+					} else if ((direction ^ 0xffffffff) == -2) {
+						mapPixels[pixel] = color;
+						mapPixels[pixel + 1] = color;
+						mapPixels[pixel + 2] = color;
+						mapPixels[3 + pixel] = color;
+					} else if (direction == 2) {
+						mapPixels[pixel - -3] = color;
+						mapPixels[3 + pixel + 512] = color;
+						mapPixels[3 + pixel + 1024] = color;
+						mapPixels[1536 + pixel - -3] = color;
+					} else if (direction == 3) {
+						mapPixels[pixel + 1536] = color;
+						mapPixels[pixel + 1536 + 1] = color;
+						mapPixels[2 + pixel + 1536] = color;
+						mapPixels[pixel + 1539] = color;
 					}
 				}
+				if (type == 3) {
+					if (direction == 0) {
+						mapPixels[pixel] = color;
+					} else if (direction == 1) {
+						mapPixels[pixel + 3] = color;
+					} else if (direction == 2) {
+						mapPixels[pixel + 3 + 1536] = color;
+					} else if (direction == 3) {
+						mapPixels[pixel + 1536] = color;
+					}
+				}
+				if (type == 2) {
+					if (direction == 3) {
+						mapPixels[pixel] = color;
+						mapPixels[pixel + 512] = color;
+						mapPixels[pixel + 1024] = color;
+						mapPixels[pixel + 1536] = color;
+					} else if (direction == 0) {
+						mapPixels[pixel] = color;
+						mapPixels[pixel + 1] = color;
+						mapPixels[pixel + 2] = color;
+						mapPixels[pixel + 3] = color;
+					} else if (direction == 1) {
+						mapPixels[pixel + 3] = color;
+						mapPixels[pixel + 3 + 512] = color;
+						mapPixels[pixel + 3 + 1024] = color;
+						mapPixels[pixel + 3 + 1536] = color;
+					} else if (direction == 2) {
+						mapPixels[pixel + 1536] = color;
+						mapPixels[pixel + 1536 + 1] = color;
+						mapPixels[pixel + 1536 + 2] = color;
+						mapPixels[pixel + 1536 + 3] = color;
+					}
+				}
+			}
 		}
 		uid = worldController.method302(z, x, y);
 		if (uid != 0) {
 			int resourceTag = worldController.fetchObjectIDTagForPosition(z, x, y, uid);
 			int direction = resourceTag >> 6 & 3;
-				int type = resourceTag & 0x1f;
-				int objectId = worldController.fetchObjectMeshNewUID(z, x, y);
-				ObjectDefinition objDef = ObjectDefinition.forID(objectId);
-				if (objDef.mapSceneID != -1) {
-					Background scene = mapScenes[objDef.mapSceneID];
-					if (scene != null) {
-						int sceneX = (objDef.sizeX * 4 - scene.imgWidth) / 2;
-						int sceneY = (objDef.sizeY * 4 - scene.imgHeight) / 2;
-						scene.method361(48 + x * 4 + sceneX, 48 + (104 - y - objDef.sizeY) * 4 + sceneY);
-					}
-				} else if (type == 9) {
-					int color = 0xeeeeee;
-					if (uid > 0) {
-						color = 0xee0000;
-					}
-					int mapPixels[] = miniMapRegions.myPixels;
-					int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
-					if (direction == 0 || direction == 2) {
-						mapPixels[pixel + 1536] = color;
-						mapPixels[pixel + 1024 + 1] = color;
-						mapPixels[pixel + 512 + 2] = color;
-						mapPixels[pixel + 3] = color;
-					} else {
-						mapPixels[pixel] = color;
-						mapPixels[pixel + 512 + 1] = color;
-						mapPixels[pixel + 1024 + 2] = color;
-						mapPixels[pixel + 1536 + 3] = color;
-					}
+			int type = resourceTag & 0x1f;
+			int objectId = worldController.fetchObjectMeshNewUID(z, x, y);
+			ObjectDefinition objDef = ObjectDefinition.forID(objectId);
+			if (objDef.mapSceneID != -1) {
+				Background scene = mapScenes[objDef.mapSceneID];
+				if (scene != null) {
+					int sceneX = (objDef.sizeX * 4 - scene.imgWidth) / 2;
+					int sceneY = (objDef.sizeY * 4 - scene.imgHeight) / 2;
+					scene.method361(48 + x * 4 + sceneX, 48 + (104 - y - objDef.sizeY) * 4 + sceneY);
 				}
+			} else if (type == 9) {
+				int color = 0xeeeeee;
+				if (uid > 0) {
+					color = 0xee0000;
+				}
+				int mapPixels[] = miniMapRegions.myPixels;
+				int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
+				if (direction == 0 || direction == 2) {
+					mapPixels[pixel + 1536] = color;
+					mapPixels[pixel + 1024 + 1] = color;
+					mapPixels[pixel + 512 + 2] = color;
+					mapPixels[pixel + 3] = color;
+				} else {
+					mapPixels[pixel] = color;
+					mapPixels[pixel + 512 + 1] = color;
+					mapPixels[pixel + 1024 + 2] = color;
+					mapPixels[pixel + 1536 + 3] = color;
+				}
+			}
 		}
 		uid = worldController.fetchGroundDecorationNewUID(z, x, y);
 		if (uid > 0) {
@@ -11430,10 +11613,11 @@ public class Client extends GameRenderer {
 		}
 		return 0;
 	}
-	
+
 	private int currentSpec = 0;
 	private boolean specActivated = false;
 	private double fillSpec;
+
 	private int getMapLoadingState() {
 		if (!floorMaps.equals("") || !objectMaps.equals("")) {
 			floorMaps = "";
@@ -11479,14 +11663,19 @@ public class Client extends GameRenderer {
 	}
 
 	private void method55() {
-		for (PlayerProjectile class30_sub2_sub4_sub4 = (PlayerProjectile) getaClass19_1013().getTail(); class30_sub2_sub4_sub4 != null; class30_sub2_sub4_sub4 = (PlayerProjectile) getaClass19_1013().next()) {
+		for (PlayerProjectile class30_sub2_sub4_sub4 = (PlayerProjectile) getaClass19_1013()
+				.getTail(); class30_sub2_sub4_sub4 != null; class30_sub2_sub4_sub4 = (PlayerProjectile) getaClass19_1013()
+						.next()) {
 			if (class30_sub2_sub4_sub4.anInt1597 != plane || loopCycle > class30_sub2_sub4_sub4.anInt1572) {
 				class30_sub2_sub4_sub4.unlink();
 			} else if (loopCycle >= class30_sub2_sub4_sub4.anInt1571) {
 				if (class30_sub2_sub4_sub4.anInt1590 > 0) {
 					NPC npc = npcArray[class30_sub2_sub4_sub4.anInt1590 - 1];
 					if (npc != null && npc.x >= 0 && npc.x < 13312 && npc.y >= 0 && npc.y < 13312) {
-						class30_sub2_sub4_sub4.method455(loopCycle, npc.y, method42(class30_sub2_sub4_sub4.anInt1597, npc.y, npc.x) - class30_sub2_sub4_sub4.anInt1583, npc.x);
+						class30_sub2_sub4_sub4.method455(loopCycle, npc.y,
+								method42(class30_sub2_sub4_sub4.anInt1597, npc.y, npc.x)
+										- class30_sub2_sub4_sub4.anInt1583,
+								npc.x);
 					}
 				}
 				if (class30_sub2_sub4_sub4.anInt1590 < 0) {
@@ -11498,11 +11687,16 @@ public class Client extends GameRenderer {
 						player = playerArray[j];
 					}
 					if (player != null && player.x >= 0 && player.x < 13312 && player.y >= 0 && player.y < 13312) {
-						class30_sub2_sub4_sub4.method455(loopCycle, player.y, method42(class30_sub2_sub4_sub4.anInt1597, player.y, player.x) - class30_sub2_sub4_sub4.anInt1583, player.x);
+						class30_sub2_sub4_sub4.method455(loopCycle, player.y,
+								method42(class30_sub2_sub4_sub4.anInt1597, player.y, player.x)
+										- class30_sub2_sub4_sub4.anInt1583,
+								player.x);
 					}
 				}
 				class30_sub2_sub4_sub4.method456(anInt945);
-				worldController.method285(plane, class30_sub2_sub4_sub4.rotationY, (int) class30_sub2_sub4_sub4.aDouble1587, -1, (int) class30_sub2_sub4_sub4.aDouble1586, 60, (int) class30_sub2_sub4_sub4.aDouble1585, class30_sub2_sub4_sub4, false);
+				worldController.method285(plane, class30_sub2_sub4_sub4.rotationY,
+						(int) class30_sub2_sub4_sub4.aDouble1587, -1, (int) class30_sub2_sub4_sub4.aDouble1586, 60,
+						(int) class30_sub2_sub4_sub4.aDouble1585, class30_sub2_sub4_sub4, false);
 			}
 		}
 
@@ -11532,7 +11726,7 @@ public class Client extends GameRenderer {
 
 	private void resetInterfaceAnimation(int i) {
 		RSInterface class9 = RSInterface.interfaceCache[i];
-		if(class9 == null || class9.children == null)
+		if (class9 == null || class9.children == null)
 			return;
 		for (int element : class9.children) {
 			if (element == -1) {
@@ -11598,30 +11792,30 @@ public class Client extends GameRenderer {
 		}
 		int k1 = j1 & 0x1f;
 		int l1 = j1 >> 6 & 3;
-			if (k1 == 10 || k1 == 11 || k1 == 22) {
-				ObjectDefinition class46 = ObjectDefinition.forID(id);
-				int i2;
-				int j2;
-				if (l1 == 0 || l1 == 2) {
-					i2 = class46.sizeX;
-					j2 = class46.sizeY;
-				} else {
-					i2 = class46.sizeX;
-					j2 = class46.sizeY;
-				}
-				int k2 = class46.plane;
-				if (l1 != 0) {
-					k2 = (k2 << l1 & 0xf) + (k2 >> 4 - l1);
-				}
-				doWalkTo(2, 0, j2, 0, myPlayer.smallY[0], i2, k2, j, myPlayer.smallX[0], false, k);
+		if (k1 == 10 || k1 == 11 || k1 == 22) {
+			ObjectDefinition class46 = ObjectDefinition.forID(id);
+			int i2;
+			int j2;
+			if (l1 == 0 || l1 == 2) {
+				i2 = class46.sizeX;
+				j2 = class46.sizeY;
 			} else {
-				doWalkTo(2, l1, 0, k1 + 1, myPlayer.smallY[0], 0, 0, j, myPlayer.smallX[0], false, k);
+				i2 = class46.sizeX;
+				j2 = class46.sizeY;
 			}
-			crossX = super.saveClickX;
-			crossY = super.saveClickY;
-			crossType = 2;
-			crossIndex = 0;
-			return true;
+			int k2 = class46.plane;
+			if (l1 != 0) {
+				k2 = (k2 << l1 & 0xf) + (k2 >> 4 - l1);
+			}
+			doWalkTo(2, 0, j2, 0, myPlayer.smallY[0], i2, k2, j, myPlayer.smallX[0], false, k);
+		} else {
+			doWalkTo(2, l1, 0, k1 + 1, myPlayer.smallY[0], 0, 0, j, myPlayer.smallX[0], false, k);
+		}
+		crossX = super.saveClickX;
+		crossY = super.saveClickY;
+		crossType = 2;
+		crossIndex = 0;
+		return true;
 	}
 
 	private void method70() {
@@ -11650,23 +11844,20 @@ public class Client extends GameRenderer {
 			if (key == 96) {
 				break;
 			}
-			
-			if(key == 167 || key == 96) {
-				if(myRights >= 1 && myRights <= 3) {
+
+			if (key == 167 || key == 96) {
+				if (myRights >= 1 && myRights <= 3) {
 					consoleOpen = !consoleOpen;
 				}
 				return;
 			}
 			if (consoleOpen) {
 				if (key == 8 && consoleInput.length() > 0)
-					consoleInput = consoleInput.substring(0,
-							consoleInput.length() - 1);
-				if (key >= 32 && key <= 122
-						&& consoleInput.length() < 80)
+					consoleInput = consoleInput.substring(0, consoleInput.length() - 1);
+				if (key >= 32 && key <= 122 && consoleInput.length() < 80)
 					consoleInput += (char) key;
 
-				if ((key == 13 || key == 10)
-						&& consoleInput.length() >= 1) {
+				if ((key == 13 || key == 10) && consoleInput.length() >= 1) {
 					printConsoleMessage(consoleInput, 0);
 					sendCommandPacket(consoleInput);
 					consoleInput = "";
@@ -11696,9 +11887,8 @@ public class Client extends GameRenderer {
 						long l1 = TextClass.longForName(promptInput);
 						delFriend(l1);
 					}
-					
-					if (interfaceButtonAction == 6199
-							&& promptInput.length() > 0) {
+
+					if (interfaceButtonAction == 6199 && promptInput.length() > 0) {
 						String inp = "";
 						inp = inputString;
 						inputString = "::[CN] " + promptInput;
@@ -11775,14 +11965,14 @@ public class Client extends GameRenderer {
 					if (friendsListAction == 6) {
 						long l3 = TextClass.longForName(promptInput);
 						chatJoin(l3);
-					}  else if ((this.friendsListAction == 12) && (this.promptInput.length() > 0)) {
+					} else if ((this.friendsListAction == 12) && (this.promptInput.length() > 0)) {
 						if (promptInput.toLowerCase().matches("\\d+")) {
 							int goalLevel = Integer.parseInt(this.promptInput);
 							if (goalLevel > 99) {
 								goalLevel = 99;
 							}
 							int currentMaxLevel = maxStats[Skills.selectedSkillId];
-							if(Skills.selectedSkillId == 5 || Skills.selectedSkillId == 3) {
+							if (Skills.selectedSkillId == 5 || Skills.selectedSkillId == 3) {
 								currentMaxLevel /= 100;
 							}
 							if ((goalLevel < 0) || (currentMaxLevel >= goalLevel)) {
@@ -11792,14 +11982,18 @@ public class Client extends GameRenderer {
 							Skills.goalType = "Target Level: ";
 							Skills.goalData[Skills.selectedSkillId][0] = currentExp[Skills.selectedSkillId];
 							Skills.goalData[Skills.selectedSkillId][1] = PlayerHandler.getXPForLevel(goalLevel) + 1;
-							Skills.goalData[Skills.selectedSkillId][2] = (Skills.goalData[Skills.selectedSkillId][0] / Skills.goalData[Skills.selectedSkillId][1]) * 100;
+							Skills.goalData[Skills.selectedSkillId][2] = (Skills.goalData[Skills.selectedSkillId][0]
+									/ Skills.goalData[Skills.selectedSkillId][1]) * 100;
 							saveGoals(myUsername);
 							Skills.selectedSkillId = -1;
 						}
-					} else if ((this.friendsListAction == 13) && (this.promptInput.length() > 0) && ((this.promptInput.toLowerCase().matches("\\d+[a-z&&[kmb]]")) || (this.promptInput.matches("\\d+")))) {
+					} else if ((this.friendsListAction == 13) && (this.promptInput.length() > 0)
+							&& ((this.promptInput.toLowerCase().matches("\\d+[a-z&&[kmb]]"))
+									|| (this.promptInput.matches("\\d+")))) {
 						int goalExp = 0;
 						try {
-							goalExp = Integer.parseInt(promptInput.trim().toLowerCase().replaceAll("k", "000").replaceAll("m", "000000").replaceAll("b", "000000000"));
+							goalExp = Integer.parseInt(promptInput.trim().toLowerCase().replaceAll("k", "000")
+									.replaceAll("m", "000000").replaceAll("b", "000000000"));
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -11812,7 +12006,8 @@ public class Client extends GameRenderer {
 						Skills.goalType = "Target Exp: ";
 						Skills.goalData[Skills.selectedSkillId][0] = currentExp[Skills.selectedSkillId];
 						Skills.goalData[Skills.selectedSkillId][1] = ((int) goalExp);
-						Skills.goalData[Skills.selectedSkillId][2] = (Skills.goalData[Skills.selectedSkillId][0] / Skills.goalData[Skills.selectedSkillId][1] * 100);
+						Skills.goalData[Skills.selectedSkillId][2] = (Skills.goalData[Skills.selectedSkillId][0]
+								/ Skills.goalData[Skills.selectedSkillId][1] * 100);
 						saveGoals(myUsername);
 						Skills.selectedSkillId = -1;
 					}
@@ -11823,7 +12018,8 @@ public class Client extends GameRenderer {
 					inputTaken = true;
 				}
 
-				if (!amountOrNameInput.toLowerCase().contains("k") && !amountOrNameInput.toLowerCase().contains("m") && !amountOrNameInput.toLowerCase().contains("b") && (key == 107 || key == 109) || key == 98) {
+				if (!amountOrNameInput.toLowerCase().contains("k") && !amountOrNameInput.toLowerCase().contains("m")
+						&& !amountOrNameInput.toLowerCase().contains("b") && (key == 107 || key == 109) || key == 98) {
 					amountOrNameInput += (char) key;
 					inputTaken = true;
 				}
@@ -11836,23 +12032,18 @@ public class Client extends GameRenderer {
 				if (key == 13 || key == 10) {
 					if (amountOrNameInput.length() > 0) {
 						if (amountOrNameInput.toLowerCase().contains("k")) {
-							amountOrNameInput = amountOrNameInput.replaceAll(
-									"k", "000");
-						} else if (amountOrNameInput.toLowerCase()
-								.contains("m")) {
-							amountOrNameInput = amountOrNameInput.replaceAll(
-									"m", "000000");
-						} else if (amountOrNameInput.toLowerCase()
-								.contains("b")) {
-							amountOrNameInput = amountOrNameInput.replaceAll(
-									"b", "000000000");
+							amountOrNameInput = amountOrNameInput.replaceAll("k", "000");
+						} else if (amountOrNameInput.toLowerCase().contains("m")) {
+							amountOrNameInput = amountOrNameInput.replaceAll("m", "000000");
+						} else if (amountOrNameInput.toLowerCase().contains("b")) {
+							amountOrNameInput = amountOrNameInput.replaceAll("b", "000000000");
 						}
 						long l = Long.valueOf(amountOrNameInput);
-						
+
 						long amount = 0;
 						amount = Long.parseLong(amountOrNameInput);
-						if(interfaceButtonAction == 557 && withdrawingMoneyFromPouch) {
-							if(amount > Integer.MAX_VALUE) {
+						if (interfaceButtonAction == 557 && withdrawingMoneyFromPouch) {
+							if (amount > Integer.MAX_VALUE) {
 								amount = Integer.MAX_VALUE;
 							}
 							getOut().putOpcode(7);
@@ -11890,7 +12081,7 @@ public class Client extends GameRenderer {
 					inputDialogState = 0;
 					inputTaken = true;
 				}
-			} else if(inputDialogState == 3) {
+			} else if (inputDialogState == 3) {
 				if (key == 10) {
 					getGrandExchange().totalItemResults = 0;
 					amountOrNameInput = "";
@@ -11908,8 +12099,7 @@ public class Client extends GameRenderer {
 					inputTaken = true;
 				}
 				if (key == 8 && amountOrNameInput.length() > 0) {
-					amountOrNameInput = amountOrNameInput.substring(0,
-							amountOrNameInput.length() - 1);
+					amountOrNameInput = amountOrNameInput.substring(0, amountOrNameInput.length() - 1);
 					inputTaken = true;
 				}
 			} else if (backDialogID == -1) {
@@ -11930,17 +12120,19 @@ public class Client extends GameRenderer {
 				if ((key == 13 || key == 10) && inputString.length() > 0) {
 					if (inputString.startsWith("/")) {
 						getOut().putOpcode(5);
-						getOut().putByte(inputString.substring(1).length() +1);
+						getOut().putByte(inputString.substring(1).length() + 1);
 						getOut().putString(inputString.substring(1));
 						inputString = "";
 						return;
 					}
-					if ((inputString.startsWith("::") || inputString.startsWith(";;") || inputString.startsWith(";:") || inputString.startsWith(":;")) && !inputString.startsWith("::[")) {
-						if(inputString.toLowerCase().startsWith("::vote")) {
+					if ((inputString.startsWith("::") || inputString.startsWith(";;") || inputString.startsWith(";:")
+							|| inputString.startsWith(":;")) && !inputString.startsWith("::[")) {
+						if (inputString.toLowerCase().startsWith("::vote")) {
 							launchURL("http://rune.live/vote");
-						} else if(inputString.toLowerCase().startsWith("::store") || inputString.toLowerCase().startsWith("::donate")) {
+						} else if (inputString.toLowerCase().startsWith("::store")
+								|| inputString.toLowerCase().startsWith("::donate")) {
 							launchURL("http://rune.live/store/");
-						} else if(inputString.toLowerCase().startsWith("::fps")) {
+						} else if (inputString.toLowerCase().startsWith("::fps")) {
 							fpsOn = !fpsOn;
 						} else {
 							getOut().putOpcode(103);
@@ -12021,7 +12213,7 @@ public class Client extends GameRenderer {
 						myPlayer.anInt1531 = i3;
 						myPlayer.textCycle = 150;
 						int prefixRights = myRights;
-						if(prefixRights == 0 && ironman > 0) {
+						if (prefixRights == 0 && ironman > 0) {
 							prefixRights = 11 + ironman;
 						}
 						pushMessage(myPlayer.textSpoken, 2, getPrefix(prefixRights) + myPlayer.name);
@@ -12064,8 +12256,7 @@ public class Client extends GameRenderer {
 					if (l2 == 2) {
 						npc.anInt1530 = 0;
 					}
-				} else if (i1 == -1
-						|| npc.anim == -1
+				} else if (i1 == -1 || npc.anim == -1
 						|| Animation.cache[i1].forcedPriority >= Animation.cache[npc.anim].forcedPriority) {
 					npc.anim = i1;
 					npc.currentAnimFrame = 0;
@@ -12074,28 +12265,15 @@ public class Client extends GameRenderer {
 					npc.anInt1530 = 0;
 					npc.anInt1542 = npc.smallXYIndex;
 					try {
-						if (FrameReader.animationlist[Integer
-						                              .parseInt(
-						                            		  Integer.toHexString(
-						                            				  Animation.cache[i1].frameIDs[0])
-						                            				  .substring(
-						                            						  0,
-						                            						  Integer.toHexString(
-						                            								  Animation.cache[i1].frameIDs[0])
-						                            								  .length() - 4),
-						                            								  16)].length == 0)
-							onDemandFetcher
-							.pushRequest(
-									1,
+						if (FrameReader.animationlist[Integer.parseInt(
+								Integer.toHexString(Animation.cache[i1].frameIDs[0]).substring(0,
+										Integer.toHexString(Animation.cache[i1].frameIDs[0]).length() - 4),
+								16)].length == 0)
+							onDemandFetcher.pushRequest(1,
 									Integer.parseInt(
-											Integer.toHexString(
-													Animation.cache[i1].frameIDs[0])
-													.substring(
-															0,
-															Integer.toHexString(
-																	Animation.cache[i1].frameIDs[0])
-																	.length() - 4),
-																	16));
+											Integer.toHexString(Animation.cache[i1].frameIDs[0]).substring(0,
+													Integer.toHexString(Animation.cache[i1].frameIDs[0]).length() - 4),
+											16));
 					} catch (Exception e) {
 					}
 				}
@@ -12113,39 +12291,34 @@ public class Client extends GameRenderer {
 				npc.gfxId = stream.getUnsignedShort();
 				int k1 = stream.getIntLittleEndian();
 				npc.graphicHeight = k1 >> 16;
-						npc.graphicDelay = loopCycle + (k1 & 0xffff);
-						npc.currentAnim = 0;
-						npc.animCycle = 0;
-						if (npc.graphicDelay > loopCycle) {
-							npc.currentAnim = -1;
-						}
-						if (npc.gfxId == 65535) {
-							npc.gfxId = -1;
-						}
-						try {
-							if (FrameReader.animationlist[Integer
-							                              .parseInt(
-							                            		  Integer.toHexString(
-							                            				  SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0])
-							                            				  .substring(
-							                            						  0,
-							                            						  Integer.toHexString(
-							                            								  SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0])
-							                            								  .length() - 4), 16)].length == 0)
-								onDemandFetcher
-								.pushRequest(
-										1,
-										Integer.parseInt(
-												Integer.toHexString(
-														SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0])
-														.substring(
-																0,
-																Integer.toHexString(
-																		SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0])
-																		.length() - 4),
-																		16));
-						} catch (Exception e) {
-						}
+				npc.graphicDelay = loopCycle + (k1 & 0xffff);
+				npc.currentAnim = 0;
+				npc.animCycle = 0;
+				if (npc.graphicDelay > loopCycle) {
+					npc.currentAnim = -1;
+				}
+				if (npc.gfxId == 65535) {
+					npc.gfxId = -1;
+				}
+				try {
+					if (FrameReader.animationlist[Integer
+							.parseInt(Integer.toHexString(SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0])
+									.substring(0,
+											Integer.toHexString(
+													SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0]).length()
+													- 4),
+									16)].length == 0)
+						onDemandFetcher
+								.pushRequest(1,
+										Integer.parseInt(Integer
+												.toHexString(SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0])
+												.substring(0,
+														Integer.toHexString(
+																SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0])
+																.length() - 4),
+												16));
+				} catch (Exception e) {
+				}
 			}
 			if ((l & 0x20) != 0) {
 				npc.interactingEntity = stream.getUnsignedShort();
@@ -12201,10 +12374,11 @@ public class Client extends GameRenderer {
 			i = worldController.method303(class30_sub1.anInt1295, class30_sub1.anInt1297, class30_sub1.anInt1298);
 		}
 		if (i != 0) {
-			int i1 = worldController.fetchObjectIDTagForPosition(class30_sub1.anInt1295, class30_sub1.anInt1297, class30_sub1.anInt1298, i);
+			int i1 = worldController.fetchObjectIDTagForPosition(class30_sub1.anInt1295, class30_sub1.anInt1297,
+					class30_sub1.anInt1298, i);
 			j = i >> 14 & 0x7fff;
-							k = i1 & 0x1f;
-							l = i1 >> 6;
+			k = i1 & 0x1f;
+			l = i1 >> 6;
 		}
 		class30_sub1.anInt1299 = j;
 		class30_sub1.anInt1301 = k;
@@ -12242,7 +12416,8 @@ public class Client extends GameRenderer {
 
 				if (soundDelay[index] < 0) {
 					Class3_Sub9_Sub1 class3_sub9_sub1 = class26.method651().method405(aClass25_1948);
-					Class3_Sub7_Sub2 class3_sub7_sub2 = Class3_Sub7_Sub2.method396(class3_sub9_sub1, 100, soundEffectVolume);
+					Class3_Sub7_Sub2 class3_sub7_sub2 = Class3_Sub7_Sub2.method396(class3_sub9_sub1, 100,
+							soundEffectVolume);
 					class3_sub7_sub2.method394(soundType[index] - 1);
 					aClass3_Sub7_Sub1_1493.method384(class3_sub7_sub2);
 					soundDelay[index] = -100;
@@ -12358,7 +12533,8 @@ public class Client extends GameRenderer {
 	}
 
 	private void updateEntityFace(Entity entity) {
-		if (entity.anInt1548 == loopCycle || entity.anim == -1 || entity.animationDelay != 0 || entity.anInt1528 + 1 > Animation.cache[entity.anim].getFrameLength(entity.currentAnimFrame)) {
+		if (entity.anInt1548 == loopCycle || entity.anim == -1 || entity.animationDelay != 0
+				|| entity.anInt1528 + 1 > Animation.cache[entity.anim].getFrameLength(entity.currentAnimFrame)) {
 			int i = entity.anInt1548 - entity.anInt1547;
 			int j = loopCycle - entity.anInt1547;
 			int k = entity.anInt1543 * 128 + entity.anInt1540 * 64;
@@ -12500,7 +12676,7 @@ public class Client extends GameRenderer {
 			}
 		}
 	}
-	
+
 	public void preloadModels() {
 		File file = new File(Signlink.getCacheDirectory() + "/cache_index_data/index1/");
 		File afile[] = file.listFiles();
@@ -12510,7 +12686,7 @@ public class Client extends GameRenderer {
 			Model.decodeModelHeader(fileData, Integer.parseInt(getFileNameWithoutExtension(s)));
 		}
 	}
-	
+
 	public final String methodR(int i) {
 		if (i >= 0 && i < 1000) {
 			return String.valueOf(i);
@@ -12532,7 +12708,8 @@ public class Client extends GameRenderer {
 	}
 
 	public boolean mouseInCircle(int centerX, int centerY, int radius) {
-		return (super.mouseX - centerX) * (super.mouseX - centerX) + (super.mouseY - centerY) * (super.mouseY - centerY) < radius * radius;
+		return (super.mouseX - centerX) * (super.mouseX - centerX)
+				+ (super.mouseY - centerY) * (super.mouseY - centerY) < radius * radius;
 	}
 
 	private void npcScreenPos(Entity entity, int i) {
@@ -12636,14 +12813,14 @@ public class Client extends GameRenderer {
 				aBoolean1080 = false;
 				pktType = -1;
 				return true;
-				
+
 			case 88:
 				int xface = getInputBuffer().getSignedShort();
 				int yface = getInputBuffer().getSignedShort();
 				int npcindex = getInputBuffer().getShortBigEndian();
-				if(npcindex < npcArray.length) {
+				if (npcindex < npcArray.length) {
 					NPC npc = npcArray[npcindex];
-					if(npc != null) {
+					if (npc != null) {
 						npc.anInt1538 = xface;
 						npc.anInt1539 = yface;
 					}
@@ -12674,34 +12851,39 @@ public class Client extends GameRenderer {
 					}
 				}
 
-				for (Class30_Sub1 class30_sub1 = (Class30_Sub1) getaClass19_1179().getTail(); class30_sub1 != null; class30_sub1 = (Class30_Sub1) getaClass19_1179().next()) {
-					if (class30_sub1.anInt1297 >= anInt1268 && class30_sub1.anInt1297 < anInt1268 + 8 && class30_sub1.anInt1298 >= anInt1269 && class30_sub1.anInt1298 < anInt1269 + 8 && class30_sub1.anInt1295 == plane) {
+				for (Class30_Sub1 class30_sub1 = (Class30_Sub1) getaClass19_1179()
+						.getTail(); class30_sub1 != null; class30_sub1 = (Class30_Sub1) getaClass19_1179().next()) {
+					if (class30_sub1.anInt1297 >= anInt1268 && class30_sub1.anInt1297 < anInt1268 + 8
+							&& class30_sub1.anInt1298 >= anInt1269 && class30_sub1.anInt1298 < anInt1269 + 8
+							&& class30_sub1.anInt1295 == plane) {
 						class30_sub1.anInt1294 = 0;
 					}
 				}
 				pktType = -1;
 				return true;
-				
+
 			case 9:
 				int state = getInputBuffer().getUnsignedShort();
 				int seconds = getInputBuffer().getUnsignedShort();
 				fadingScreen = new FadingScreen("Welcome to Zulrah's shrine", (byte) 1, (byte) 5);
 				pktType = -1;
 				return true;
-				
+
 			case 185:
 				int k = getInputBuffer().getShortBigEndianA();
 
 				RSInterface.interfaceCache[k].mediaType = 3;
 				if (myPlayer.desc == null) {
-					RSInterface.interfaceCache[k].mediaID = (myPlayer.anIntArray1700[0] << 25) + (myPlayer.anIntArray1700[4] << 20) + (myPlayer.equipment[0] << 15) + (myPlayer.equipment[8] << 10) + (myPlayer.equipment[11] << 5) + myPlayer.equipment[1];
+					RSInterface.interfaceCache[k].mediaID = (myPlayer.anIntArray1700[0] << 25)
+							+ (myPlayer.anIntArray1700[4] << 20) + (myPlayer.equipment[0] << 15)
+							+ (myPlayer.equipment[8] << 10) + (myPlayer.equipment[11] << 5) + myPlayer.equipment[1];
 				} else {
 					RSInterface.interfaceCache[k].mediaID = (int) (0x12345678L + myPlayer.desc.id);
 				}
 				pktType = -1;
 				return true;
 
-				/* Clan chat packet */
+			/* Clan chat packet */
 			case 217:
 				try {
 					name = getInputBuffer().getString();
@@ -12742,12 +12924,12 @@ public class Client extends GameRenderer {
 
 			case 214:
 				ignoreCount = getInputBuffer().getShort();
-				for(int i2 = 0; i2 < ignoreCount; i2++) {
+				for (int i2 = 0; i2 < ignoreCount; i2++) {
 					ignoreListAsLongs[i2] = Long.parseLong(getInputBuffer().getString());
 				}
 				pktType = -1;
 				return true;
-				
+
 			case 244:
 				String data = getInputBuffer().getString();
 				getGrandExchange().update(data);
@@ -12772,7 +12954,7 @@ public class Client extends GameRenderer {
 
 			case 134:
 				// needDrawTabArea = true;
-				
+
 				int skillId = getInputBuffer().getUnsignedByte();
 				int exp = getInputBuffer().method439();
 				int level = getInputBuffer().getUnsignedShort();
@@ -12781,13 +12963,13 @@ public class Client extends GameRenderer {
 				currentExp[skillId] = exp;
 				currentStats[skillId] = level;
 				maxStats[skillId] = maxLevel;
-				if(gainedExperience > 0)
+				if (gainedExperience > 0)
 					PlayerHandler.addXP(skillId, gainedExperience);
-				if(skillId == 23) {
-					setInterfaceText(""+maxLevel+"", 28171);
+				if (skillId == 23) {
+					setInterfaceText("" + maxLevel + "", 28171);
 				}
-				if(skillId == 5) {
-					
+				if (skillId == 5) {
+
 				}
 				pktType = -1;
 				return true;
@@ -12891,7 +13073,7 @@ public class Client extends GameRenderer {
 				loadingStage = 1;
 				aLong824 = System.currentTimeMillis();
 				gameScreenIP.initDrawingArea();
-				//CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
+				// CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
 				drawLoadingMessages("Loading " + onDemandFetcher.getRemaining() + " files - please wait... ");
 				if (!resizing) {
 					gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
@@ -12912,7 +13094,8 @@ public class Client extends GameRenderer {
 					for (int l23 = (anInt1069 - 6) / 8; l23 <= (anInt1069 + 6) / 8; l23++) {
 						for (int j26 = (anInt1070 - 6) / 8; j26 <= (anInt1070 + 6) / 8; j26++) {
 							anIntArray1234[k16] = (l23 << 8) + j26;
-							if (aBoolean1141 && (j26 == 49 || j26 == 149 || j26 == 147 || l23 == 50 || l23 == 49 && j26 == 47)) {
+							if (aBoolean1141
+									&& (j26 == 49 || j26 == 149 || j26 == 147 || l23 == 50 || l23 == 49 && j26 == 47)) {
 								floorMap[k16] = -1;
 								objectMap[k16] = -1;
 								k16++;
@@ -12939,18 +13122,18 @@ public class Client extends GameRenderer {
 								int k30 = anIntArrayArrayArray1129[i24][k26][l28];
 								if (k30 != -1) {
 									int k31 = k30 >> 14 & 0x3ff;
-							int i32 = k30 >> 3 & 0x7ff;
-					int k32 = (k31 / 8 << 8) + i32 / 8;
-					for (int j33 = 0; j33 < l16; j33++) {
-						if (ai[j33] != k32) {
-							continue;
-						}
-						k32 = -1;
+									int i32 = k30 >> 3 & 0x7ff;
+									int k32 = (k31 / 8 << 8) + i32 / 8;
+									for (int j33 = 0; j33 < l16; j33++) {
+										if (ai[j33] != k32) {
+											continue;
+										}
+										k32 = -1;
 
-					}
-					if (k32 != -1) {
-						ai[l16++] = k32;
-					}
+									}
+									if (k32 != -1) {
+										ai[l16++] = k32;
+									}
 								}
 							}
 						}
@@ -12963,15 +13146,15 @@ public class Client extends GameRenderer {
 					for (int l26 = 0; l26 < l16; l26++) {
 						int i29 = anIntArray1234[l26] = ai[l26];
 						int l30 = i29 >> 8 & 0xff;
-					int l31 = i29 & 0xff;
-					int j32 = floorMap[l26] = onDemandFetcher.getMapCount(0, l31, l30);
-					if (j32 != -1) {
-						onDemandFetcher.pushRequest(3, j32);
-					}
-					int i33 = objectMap[l26] = onDemandFetcher.getMapCount(1, l31, l30);
-					if (i33 != -1) {
-						onDemandFetcher.pushRequest(3, i33);
-					}
+						int l31 = i29 & 0xff;
+						int j32 = floorMap[l26] = onDemandFetcher.getMapCount(0, l31, l30);
+						if (j32 != -1) {
+							onDemandFetcher.pushRequest(3, j32);
+						}
+						int i33 = objectMap[l26] = onDemandFetcher.getMapCount(1, l31, l30);
+						if (i33 != -1) {
+							onDemandFetcher.pushRequest(3, i33);
+						}
 					}
 				}
 				int i17 = baseX - anInt1036;
@@ -13030,10 +13213,12 @@ public class Client extends GameRenderer {
 						}
 					}
 				}
-				for (Class30_Sub1 class30_sub1_1 = (Class30_Sub1) getaClass19_1179().getTail(); class30_sub1_1 != null; class30_sub1_1 = (Class30_Sub1) getaClass19_1179().next()) {
+				for (Class30_Sub1 class30_sub1_1 = (Class30_Sub1) getaClass19_1179()
+						.getTail(); class30_sub1_1 != null; class30_sub1_1 = (Class30_Sub1) getaClass19_1179().next()) {
 					class30_sub1_1.anInt1297 -= i17;
 					class30_sub1_1.anInt1298 -= j21;
-					if (class30_sub1_1.anInt1297 < 0 || class30_sub1_1.anInt1298 < 0 || class30_sub1_1.anInt1297 >= 104 || class30_sub1_1.anInt1298 >= 104) {
+					if (class30_sub1_1.anInt1297 < 0 || class30_sub1_1.anInt1298 < 0 || class30_sub1_1.anInt1297 >= 104
+							|| class30_sub1_1.anInt1298 >= 104) {
 						class30_sub1_1.unlink();
 					}
 				}
@@ -13045,10 +13230,10 @@ public class Client extends GameRenderer {
 				pktType = -1;
 				return true;
 
-			case 208:				
+			case 208:
 				int i3 = getInputBuffer().getUnsignedShort();
-				System.out.println(""+i3);
-				if(i3 == 65535)
+				System.out.println("" + i3);
+				if (i3 == 65535)
 					i3 = -1;
 				if (i3 >= 0)
 					resetInterfaceAnimation(i3);
@@ -13073,12 +13258,12 @@ public class Client extends GameRenderer {
 				systemUpdateTimer = getInputBuffer().getShortBigEndian() * 30;
 				pktType = -1;
 				return true;
-				
+
 			case 118:
 				systemRestartTimer = getInputBuffer().getShortBigEndian() * 30;
 				pktType = -1;
 				return true;
-				
+
 			case 116:
 				String textie = getInputBuffer().getString();
 				int time = getInputBuffer().getShort();
@@ -13086,7 +13271,7 @@ public class Client extends GameRenderer {
 				announcement = textie;
 				pktType = -1;
 				return true;
-				
+
 			case 60:
 				anInt1269 = getInputBuffer().getUnsignedByte();
 				anInt1268 = getInputBuffer().method427();
@@ -13226,11 +13411,11 @@ public class Client extends GameRenderer {
 					if (friendsNodeIDs[k24] != i18) {
 						friendsNodeIDs[k24] = i18;
 						if (i18 >= 2) {
-							if(send_message == 0)
+							if (send_message == 0)
 								pushMessage(s7 + " has logged in.", 5, "");
 						}
 						if (i18 <= 1) {
-							if(send_message == 0)
+							if (send_message == 0)
 								pushMessage(s7 + " has logged out.", 5, "");
 						}
 					}
@@ -13246,7 +13431,8 @@ public class Client extends GameRenderer {
 				for (boolean flag6 = false; !flag6;) {
 					flag6 = true;
 					for (int k29 = 0; k29 < friendCount - 1; k29++) {
-						if (friendsNodeIDs[k29] != nodeID && friendsNodeIDs[k29 + 1] == nodeID || friendsNodeIDs[k29] == 0 && friendsNodeIDs[k29 + 1] != 0) {
+						if (friendsNodeIDs[k29] != nodeID && friendsNodeIDs[k29 + 1] == nodeID
+								|| friendsNodeIDs[k29] == 0 && friendsNodeIDs[k29 + 1] != 0) {
 							int j31 = friendsNodeIDs[k29];
 							friendsNodeIDs[k29] = friendsNodeIDs[k29 + 1];
 							friendsNodeIDs[k29 + 1] = j31;
@@ -13274,7 +13460,7 @@ public class Client extends GameRenderer {
 				mapArea.run.setOrbState(running);
 				pktType = -1;
 				return true;
-				
+
 			case 254:
 				anInt855 = getInputBuffer().getUnsignedByte();
 				if (anInt855 == 1) {
@@ -13387,27 +13573,29 @@ public class Client extends GameRenderer {
 								bldr.type(AlertifyType.SUCCESS);
 							}
 
-							Alertify.show(bldr.text(name + ": " + message).autoClose(5000L).callback(new AlertifyWindowClick() {
-								@Override
-								public void alertClicked(AlertifyWindow window) {
-									// Request window focus if the client is
-									// minimized
-									requestFocusInWindow();
-									instance.requestFocus();
-									mainFrame.toFront();
-									mainFrame.setState(Frame.NORMAL);
-									instance.setVisible(true);
+							Alertify.show(bldr.text(name + ": " + message).autoClose(5000L)
+									.callback(new AlertifyWindowClick() {
+										@Override
+										public void alertClicked(AlertifyWindow window) {
+											// Request window focus if the
+											// client is
+											// minimized
+											requestFocusInWindow();
+											instance.requestFocus();
+											mainFrame.toFront();
+											mainFrame.setState(Frame.NORMAL);
+											instance.setVisible(true);
 
-									// Upon click, open the reply box
-									inputTaken = true;
-									inputDialogState = 0;
-									messagePromptRaised = true;
-									promptInput = "";
-									friendsListAction = 3;
-									aLong953 = l5;
-									promptMessage = "Enter message to send to " + name;
-								}
-							}).build());
+											// Upon click, open the reply box
+											inputTaken = true;
+											inputDialogState = 0;
+											messagePromptRaised = true;
+											promptInput = "";
+											friendsListAction = 3;
+											aLong953 = l5;
+											promptMessage = "Enter message to send to " + name;
+										}
+									}).build());
 						}
 						if (playerRights != 0) {
 							pushMessage(message, 7, getPrefix(playerRights) + name);
@@ -13428,7 +13616,7 @@ public class Client extends GameRenderer {
 				anInt1268 = getInputBuffer().method427();
 				pktType = -1;
 				return true;
-				
+
 			case 123:
 				printConsoleMessage(getInputBuffer().getString(), 1);
 				pktType = -1;
@@ -13438,27 +13626,27 @@ public class Client extends GameRenderer {
 				currentTarget = null;
 				pktType = -1;
 				return true;
-				
+
 			case 125:
 				int targetIndex = getInputBuffer().getShort();
 				int targetType = getInputBuffer().getByte();
-				if(targetType == 0) { /* DONT READ DAMAGE LIST FOR PLRS */
+				if (targetType == 0) { /* DONT READ DAMAGE LIST FOR PLRS */
 					currentTarget = targetIndex < playerArray.length ? playerArray[targetIndex] : null;
 					pktType = -1;
 					return true;
 				} else {
 					currentTarget = targetIndex < npcArray.length ? npcArray[targetIndex] : null;
 				}
-				if(currentTarget == null) {
+				if (currentTarget == null) {
 					pktType = -1;
 					return true;
 				}
-				NPC npc = (NPC)currentTarget;
+				NPC npc = (NPC) currentTarget;
 				npc.damageDealers.clear();
 				boolean readDamageList = getInputBuffer().getByte() == 1;
-				if(readDamageList) {
+				if (readDamageList) {
 					int length = getInputBuffer().getByte();
-					for(int t = 0; t < length; t++) {
+					for (int t = 0; t < length; t++) {
 						String player = getInputBuffer().getString();
 						int damage = getInputBuffer().getShort();
 						npc.damageDealers.add(new DamageDealer(player, damage));
@@ -13466,7 +13654,7 @@ public class Client extends GameRenderer {
 				}
 				pktType = -1;
 				return true;
-				
+
 			case 24:
 				anInt1054 = getInputBuffer().method428();
 
@@ -13528,7 +13716,7 @@ public class Client extends GameRenderer {
 				aBoolean1149 = false;
 				pktType = -1;
 				return true;
-				
+
 			case 45:
 				long totalxp = getInputBuffer().getLong();
 				PlayerHandler.totalXP = totalxp;
@@ -13551,24 +13739,24 @@ public class Client extends GameRenderer {
 					launchURL(text);
 					pktType = -1;
 					return true;
-				} else if(frame == 1 && text.contains("[CLEAR]")) {
-					for(int i = 0; i < clanMembers.size(); i++) {
+				} else if (frame == 1 && text.contains("[CLEAR]")) {
+					for (int i = 0; i < clanMembers.size(); i++) {
 						clanMembers.remove(clanMembers.get(i));
 					}
 					pktType = -1;
 					return true;
-				} else if(text.equals("[CLOSEMENU]") && frame == 0) {
+				} else if (text.equals("[CLOSEMENU]") && frame == 0) {
 					menuOpen = false;
 					pktType = -1;
 					return true;
-				} else if(frame == 1 && text.contains("[CLAN]")) { 
+				} else if (frame == 1 && text.contains("[CLAN]")) {
 					String[] clan_name = text.split("-");
-					if(!clanMembers.contains(clan_name[1]))
+					if (!clanMembers.contains(clan_name[1]))
 						clanMembers.add(clan_name[1]);
-					
+
 					pktType = -1;
 					return true;
-				} else if(frame == 1 && text.contains("[REMOVE]")) { 
+				} else if (frame == 1 && text.contains("[REMOVE]")) {
 					String[] clan_name = text.split("-");
 					clanMembers.remove(clan_name[1]);
 					pktType = -1;
@@ -13580,12 +13768,12 @@ public class Client extends GameRenderer {
 						this.moneyPouchEarning = l;
 						this.moneyPouchEarningTimer = 250;
 						this.earnOrLoss = false;
-						//this.coinActiveHover = this.coinActiveHoverGreen;
+						// this.coinActiveHover = this.coinActiveHoverGreen;
 					} catch (NumberFormatException ex) {
 						ex.printStackTrace();
 					}
 					this.pktType = -1;
-				return true;
+					return true;
 				}
 				if (text.contains(":moneypouchloss:")) {
 					try {
@@ -13593,13 +13781,13 @@ public class Client extends GameRenderer {
 						this.moneyPouchEarning = l;
 						this.moneyPouchEarningTimer = 250;
 						this.earnOrLoss = true;
-						//this.coinActiveHover = this.coinActiveHoverYellow;
+						// this.coinActiveHover = this.coinActiveHoverYellow;
 					} catch (NumberFormatException ex) {
 						ex.printStackTrace();
 					}
 					this.pktType = -1;
-				return true;
-				}				
+					return true;
+				}
 				updateStrings(text, frame);
 				setInterfaceText(text, frame);
 				pktType = -1;
@@ -13608,8 +13796,7 @@ public class Client extends GameRenderer {
 			case 180:
 				int rankId = getInputBuffer().getUnsignedShort();
 				int frameId = getInputBuffer().getUnsignedShort();
-				int rankSpriteIDs[] = { 93, 102, 96, 97, 98, 99, 100, 101, 94,
-						-1, -1, 95 };
+				int rankSpriteIDs[] = { 93, 102, 96, 97, 98, 99, 100, 101, 94, -1, -1, 95 };
 				/**
 				 * 94 = owner 95 = admin 96 = one arrow up 97 = 2x arrow up 98 =
 				 * 3 arrow up 99 = orange star 100 = silver star 101 = golden
@@ -13627,7 +13814,7 @@ public class Client extends GameRenderer {
 				return true;
 
 			case 181:
-				
+
 				pktType = -1;
 				return true;
 
@@ -13642,15 +13829,15 @@ public class Client extends GameRenderer {
 				inputTaken = true;
 				pktType = -1;
 				return true;
-				
+
 			case 86:
 				int l = getInputBuffer().getUnsignedByte();
-				if(plane != l && l >= 0 && l < 4) {
+				if (plane != l && l >= 0 && l < 4) {
 					plane = l;
 				}
 				pktType = -1;
 				return true;
-								
+
 			case 240:
 				weight = getInputBuffer().getSignedShort();
 				pktType = -1;
@@ -13663,17 +13850,17 @@ public class Client extends GameRenderer {
 				RSInterface.interfaceCache[k6].mediaID = l13;
 				pktType = -1;
 				return true;
-				
-            case 91:
-            	poisoned = getInputBuffer().getUnsignedShort() > 0;
-            	pktType = -1;
-            	return true;
-				
-            case 90:
-            	venom = getInputBuffer().getUnsignedShort() > 0;
-            	pktType = -1;
-            	return true;
-				
+
+			case 91:
+				poisoned = getInputBuffer().getUnsignedShort() > 0;
+				pktType = -1;
+				return true;
+
+			case 90:
+				venom = getInputBuffer().getUnsignedShort() > 0;
+				pktType = -1;
+				return true;
+
 			case 122:
 				int l6 = getInputBuffer().getShortBigEndianA();
 				int i14 = getInputBuffer().getShortBigEndianA();
@@ -13684,327 +13871,330 @@ public class Client extends GameRenderer {
 				pktType = -1;
 				return true;
 
-				case 53:
-					//needDrawTabArea = true;
-					try {
-						
-						int rsi_frame = getInputBuffer().getUnsignedShort();
-						RSInterface class9_1 = RSInterface.interfaceCache[rsi_frame];
-						int totalItems = getInputBuffer().getUnsignedShort();
-						if(class9_1 == null || class9_1.inv == null || class9_1.invStackSizes == null) {
-							pktType = -1;
-							return true;
-						}
-						int it = -1;
-						for (int idx = 0; idx < totalItems; idx++) {
-							int itemAmt = getInputBuffer().getUnsignedByte();
-							if (itemAmt == 255)
-								itemAmt = getInputBuffer().method440();
-							it = getInputBuffer().getShortBigEndianA();
-							class9_1.inv[idx] = it;
-							class9_1.invStackSizes[idx] = itemAmt;
-						}
+			case 53:
+				// needDrawTabArea = true;
+				try {
 
-						for (int idx = totalItems; idx < class9_1.inv.length && idx < class9_1.invStackSizes.length; idx++) {
-							class9_1.inv[idx] = 0;
-							class9_1.invStackSizes[idx] = 0;
-						}
-						if(rsi_frame == 24680) {
-							getGrandExchange().itemSelected = it;
-						}
-					} catch(Exception e) {
-						e.printStackTrace();
-					}
-					pktType = -1;
-					return true;
-
-				case 230:
-					int j7 = getInputBuffer().method435();
-					int j14 = getInputBuffer().getUnsignedShort();
-					int k19 = getInputBuffer().getUnsignedShort();
-					int k22 = getInputBuffer().getShortBigEndianA();
-					RSInterface.interfaceCache[j14].modelRotation1 = k19;
-					RSInterface.interfaceCache[j14].modelRotation2 = k22;
-					RSInterface.interfaceCache[j14].modelZoom = j7;
-					pktType = -1;
-					return true;
-
-				case 221:
-					setAnInt900(getInputBuffer().getUnsignedByte());
-					pktType = -1;
-					return true;
-					
-				case 112:
-					ironman = getInputBuffer().getUnsignedByte();
-					pktType = -1;
-					return true;
-
-				case 115:
-					showClanOptions = getInputBuffer().getUnsignedByte();
-					updateClanChatTab();
-					pktType = -1;
-					return true;
-
-				case 177:
-					cameraViewChanged = true;
-					moveCameraX = getInputBuffer().getUnsignedByte();
-					moveCameraY = getInputBuffer().getUnsignedByte();
-					moveCameraZ = getInputBuffer().getUnsignedShort();
-					moveCameraSpeed = getInputBuffer().getUnsignedByte();
-					moveCameraAngle = getInputBuffer().getUnsignedByte();
-
-					if (moveCameraAngle >= 100) {
-						int k7 = moveCameraX * 128 + 64;
-						int k14 = moveCameraY * 128 + 64;
-						int i20 = method42(plane, k14, k7) - moveCameraZ;
-						int l22 = k7 - xCameraPos;
-						int k25 = i20 - zCameraPos;
-						int j28 = k14 - yCameraPos;
-						int i30 = (int) Math.sqrt(l22 * l22 + j28 * j28);
-						yCameraCurve = (int) (Math.atan2(k25, i30) * 325.94900000000001D) & 0x7ff;
-						xCameraCurve = (int) (Math.atan2(l22, j28) * -325.94900000000001D) & 0x7ff;
-
-						if (yCameraCurve < 128) {
-							yCameraCurve = 128;
-						}
-
-						if (yCameraCurve > 383) {
-							yCameraCurve = 383;
-						}
-					}
-
-					pktType = -1;
-					return true;
-					
-				case 38:
-					int auto = getInputBuffer().getUnsignedShort();
-					if(auto == -1) {
-						autoCast = false;
-						autocastId = 0;
-					} else {
-						autoCast = true;
-						autocastId = auto;
-					}
-					pktType = -1;
-					return true;
-					
-				case 127:
-					myRights = getInputBuffer().getUnsignedByte();
-					pktType = -1;
-					return true;
-
-				case 249:
-					anInt1046 = getInputBuffer().method426();
-					playerId = getInputBuffer().getUnsignedShort();
-					pktType = -1;
-					return true;
-
-				case 65:
-					updateNPCs(getInputBuffer(), pktSize);
-					pktType = -1;
-					return true;
-
-				case 27:
-					inputTitle = new String(getInputBuffer().getString());
-					messagePromptRaised = false;
-					inputDialogState = 1;
-					amountOrNameInput = "";
-					inputTaken = true;
-					pktType = -1;
-					return true;
-
-				case 187:
-					inputTitle = new String(getInputBuffer().getString());
-					messagePromptRaised = false;
-					inputDialogState = 2;
-					amountOrNameInput = "";
-					inputTaken = true;
-					pktType = -1;
-					return true;
-
-				case 97:
-					int l7 = getInputBuffer().getUnsignedShort();
-					resetInterfaceAnimation(l7);
-
-					if (invOverlayInterfaceID != -1) {
-						invOverlayInterfaceID = -1;
-						tabAreaAltered = true;
-					}
-
-					if (backDialogID != -1) {
-						backDialogID = -1;
-						inputTaken = true;
-					}
-
-					if (inputDialogState != 0) {
-						inputDialogState = 0;
-						inputTaken = true;
-					}
-
-					openInterfaceID = l7;
-					aBoolean1149 = false;
-					pktType = -1;
-					return true;
-
-				case 218:
-					int i8 = getInputBuffer().method438();
-					dialogID = i8;
-					inputTaken = true;
-					pktType = -1;
-					return true;
-
-				case 87:
-					int configId = getInputBuffer().getShortBigEndian();
-					int configValue = getInputBuffer().method439();
-					settings[configId] = configValue;
-
-					switch (configId) {
-					case 2000:
-						updateBankInterface();
-						break;
-					}
-					if (configId < 2000) {
-						if (variousSettings[configId] != configValue) {
-							variousSettings[configId] = configValue;
-							updateConfig(configId);
-
-							if (dialogID != -1) {
-								inputTaken = true;
-							}
-						}
-					}
-
-					pktType = -1;
-					return true;
-					
-				case 89:
-					loadRegion();
-					pktType = -1;
-					return true;
-
-				case 36:
-					int settingId = getInputBuffer().getShortBigEndian();
-					byte settingValue = getInputBuffer().getSignedByte();
-					if (settingId == -55) {
-						for (int i : RSInterface.interfaceCache[3213].children) {
-							RSInterface.interfaceCache[i].invSpritePadY = settingValue >= 1 ? 0 : 6;
-						}
-						if (settingValue >= 1) {
-							RSInterface.interfaceCache[16546].message = settingValue == 1 ? "Add to bag" : "View bag contents";
-							lootingBag = true;
-						} else {
-							lootingBag = false;
-						}
+					int rsi_frame = getInputBuffer().getUnsignedShort();
+					RSInterface class9_1 = RSInterface.interfaceCache[rsi_frame];
+					int totalItems = getInputBuffer().getUnsignedShort();
+					if (class9_1 == null || class9_1.inv == null || class9_1.invStackSizes == null) {
 						pktType = -1;
 						return true;
 					}
-					settings[settingId] = settingValue;
-					switch (settingId) {
-					case 2000:
-						updateBankInterface();
-						break;
-					case 19:
-						LOOP_MUSIC = settingValue == 1 ? true : false;
-						break;
-					case 293:
-						int sprite = settingValue == 0 ? 607 : settingValue == 1 ? 606 : settingValue == 2 ? 608 : settingValue == 3 ? 609 : 610;
-						RSInterface.interfaceCache[12348].sprite1 = CacheSpriteLoader.getCacheSprite(sprite);
-						break;
+					int it = -1;
+					for (int idx = 0; idx < totalItems; idx++) {
+						int itemAmt = getInputBuffer().getUnsignedByte();
+						if (itemAmt == 255)
+							itemAmt = getInputBuffer().method440();
+						it = getInputBuffer().getShortBigEndianA();
+						class9_1.inv[idx] = it;
+						class9_1.invStackSizes[idx] = itemAmt;
 					}
-					if (settingId < 2000) {
-						if (variousSettings[settingId] != settingValue) {
-							variousSettings[settingId] = settingValue;
-							updateConfig(settingId);
-							if (dialogID != -1) {
-								inputTaken = true;
-							}
+
+					for (int idx = totalItems; idx < class9_1.inv.length
+							&& idx < class9_1.invStackSizes.length; idx++) {
+						class9_1.inv[idx] = 0;
+						class9_1.invStackSizes[idx] = 0;
+					}
+					if (rsi_frame == 24680) {
+						getGrandExchange().itemSelected = it;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				pktType = -1;
+				return true;
+
+			case 230:
+				int j7 = getInputBuffer().method435();
+				int j14 = getInputBuffer().getUnsignedShort();
+				int k19 = getInputBuffer().getUnsignedShort();
+				int k22 = getInputBuffer().getShortBigEndianA();
+				RSInterface.interfaceCache[j14].modelRotation1 = k19;
+				RSInterface.interfaceCache[j14].modelRotation2 = k22;
+				RSInterface.interfaceCache[j14].modelZoom = j7;
+				pktType = -1;
+				return true;
+
+			case 221:
+				setAnInt900(getInputBuffer().getUnsignedByte());
+				pktType = -1;
+				return true;
+
+			case 112:
+				ironman = getInputBuffer().getUnsignedByte();
+				pktType = -1;
+				return true;
+
+			case 115:
+				showClanOptions = getInputBuffer().getUnsignedByte();
+				updateClanChatTab();
+				pktType = -1;
+				return true;
+
+			case 177:
+				cameraViewChanged = true;
+				moveCameraX = getInputBuffer().getUnsignedByte();
+				moveCameraY = getInputBuffer().getUnsignedByte();
+				moveCameraZ = getInputBuffer().getUnsignedShort();
+				moveCameraSpeed = getInputBuffer().getUnsignedByte();
+				moveCameraAngle = getInputBuffer().getUnsignedByte();
+
+				if (moveCameraAngle >= 100) {
+					int k7 = moveCameraX * 128 + 64;
+					int k14 = moveCameraY * 128 + 64;
+					int i20 = method42(plane, k14, k7) - moveCameraZ;
+					int l22 = k7 - xCameraPos;
+					int k25 = i20 - zCameraPos;
+					int j28 = k14 - yCameraPos;
+					int i30 = (int) Math.sqrt(l22 * l22 + j28 * j28);
+					yCameraCurve = (int) (Math.atan2(k25, i30) * 325.94900000000001D) & 0x7ff;
+					xCameraCurve = (int) (Math.atan2(l22, j28) * -325.94900000000001D) & 0x7ff;
+
+					if (yCameraCurve < 128) {
+						yCameraCurve = 128;
+					}
+
+					if (yCameraCurve > 383) {
+						yCameraCurve = 383;
+					}
+				}
+
+				pktType = -1;
+				return true;
+
+			case 38:
+				int auto = getInputBuffer().getUnsignedShort();
+				if (auto == -1) {
+					autoCast = false;
+					autocastId = 0;
+				} else {
+					autoCast = true;
+					autocastId = auto;
+				}
+				pktType = -1;
+				return true;
+
+			case 127:
+				myRights = getInputBuffer().getUnsignedByte();
+				pktType = -1;
+				return true;
+
+			case 249:
+				anInt1046 = getInputBuffer().method426();
+				playerId = getInputBuffer().getUnsignedShort();
+				pktType = -1;
+				return true;
+
+			case 65:
+				updateNPCs(getInputBuffer(), pktSize);
+				pktType = -1;
+				return true;
+
+			case 27:
+				inputTitle = new String(getInputBuffer().getString());
+				messagePromptRaised = false;
+				inputDialogState = 1;
+				amountOrNameInput = "";
+				inputTaken = true;
+				pktType = -1;
+				return true;
+
+			case 187:
+				inputTitle = new String(getInputBuffer().getString());
+				messagePromptRaised = false;
+				inputDialogState = 2;
+				amountOrNameInput = "";
+				inputTaken = true;
+				pktType = -1;
+				return true;
+
+			case 97:
+				int l7 = getInputBuffer().getUnsignedShort();
+				resetInterfaceAnimation(l7);
+
+				if (invOverlayInterfaceID != -1) {
+					invOverlayInterfaceID = -1;
+					tabAreaAltered = true;
+				}
+
+				if (backDialogID != -1) {
+					backDialogID = -1;
+					inputTaken = true;
+				}
+
+				if (inputDialogState != 0) {
+					inputDialogState = 0;
+					inputTaken = true;
+				}
+
+				openInterfaceID = l7;
+				aBoolean1149 = false;
+				pktType = -1;
+				return true;
+
+			case 218:
+				int i8 = getInputBuffer().method438();
+				dialogID = i8;
+				inputTaken = true;
+				pktType = -1;
+				return true;
+
+			case 87:
+				int configId = getInputBuffer().getShortBigEndian();
+				int configValue = getInputBuffer().method439();
+				settings[configId] = configValue;
+
+				switch (configId) {
+				case 2000:
+					updateBankInterface();
+					break;
+				}
+				if (configId < 2000) {
+					if (variousSettings[configId] != configValue) {
+						variousSettings[configId] = configValue;
+						updateConfig(configId);
+
+						if (dialogID != -1) {
+							inputTaken = true;
 						}
 					}
-					pktType = -1;
-					return true;
+				}
 
-				case 61:
-					drawMultiwayIcon = getInputBuffer().getUnsignedByte();
-					pktType = -1;
-					return true;
-					
-				case 103:
-					doingDungeoneering = getInputBuffer().getUnsignedByte() == 1;
-					pktType = -1;
-					return true;
-					
-				case 200:
-					int l8 = getInputBuffer().getUnsignedShort();
-					int animId = getInputBuffer().getSignedShort();
-					RSInterface class9_4 = RSInterface.interfaceCache[l8];
-					class9_4.disabledAnimationId = animId;
-					class9_4.modelZoom = 2000;
+				pktType = -1;
+				return true;
 
-					if (animId == -1) {
-						class9_4.anInt246 = 0;
-						class9_4.anInt208 = 0;
+			case 89:
+				loadRegion();
+				pktType = -1;
+				return true;
+
+			case 36:
+				int settingId = getInputBuffer().getShortBigEndian();
+				byte settingValue = getInputBuffer().getSignedByte();
+				if (settingId == -55) {
+					for (int i : RSInterface.interfaceCache[3213].children) {
+						RSInterface.interfaceCache[i].invSpritePadY = settingValue >= 1 ? 0 : 6;
 					}
-
+					if (settingValue >= 1) {
+						RSInterface.interfaceCache[16546].message = settingValue == 1 ? "Add to bag"
+								: "View bag contents";
+						lootingBag = true;
+					} else {
+						lootingBag = false;
+					}
 					pktType = -1;
 					return true;
-
-				case 219:
-					if (invOverlayInterfaceID != -1) {
-						invOverlayInterfaceID = -1;
-						tabAreaAltered = true;
-					}
-
-					if (backDialogID != -1) {
-						backDialogID = -1;
-						inputTaken = true;
-					}
-
-					if (inputDialogState != 0) {
-						inputDialogState = 0;
-						inputTaken = true;
-					}
-
-					openInterfaceID = -1;
-					aBoolean1149 = false;
-					pktType = -1;
-					return true;
-
-				case 34:
-					int rsIntId = getInputBuffer().getUnsignedShort();
-					RSInterface rsInt = RSInterface.interfaceCache[rsIntId];
-
-					while (getInputBuffer().position < pktSize) {
-						int itemSlot = getInputBuffer().getSmart();
-						int itemInvId = getInputBuffer().getUnsignedShort();
-						int itemAmount = getInputBuffer().getUnsignedByte();
-
-						if (itemAmount == 255) {
-							itemAmount = getInputBuffer().getIntLittleEndian();
-						}
-
-						if (itemSlot >= 0 && itemSlot < rsInt.inv.length) {
-							rsInt.inv[itemSlot] = itemInvId;
-							rsInt.invStackSizes[itemSlot] = itemAmount;
+				}
+				settings[settingId] = settingValue;
+				switch (settingId) {
+				case 2000:
+					updateBankInterface();
+					break;
+				case 19:
+					LOOP_MUSIC = settingValue == 1 ? true : false;
+					break;
+				case 293:
+					int sprite = settingValue == 0 ? 607
+							: settingValue == 1 ? 606 : settingValue == 2 ? 608 : settingValue == 3 ? 609 : 610;
+					RSInterface.interfaceCache[12348].sprite1 = CacheSpriteLoader.getCacheSprite(sprite);
+					break;
+				}
+				if (settingId < 2000) {
+					if (variousSettings[settingId] != settingValue) {
+						variousSettings[settingId] = settingValue;
+						updateConfig(settingId);
+						if (dialogID != -1) {
+							inputTaken = true;
 						}
 					}
+				}
+				pktType = -1;
+				return true;
 
-					pktType = -1;
-					return true;
+			case 61:
+				drawMultiwayIcon = getInputBuffer().getUnsignedByte();
+				pktType = -1;
+				return true;
 
-				case 4:
-				case 44:
-				case 84:
-				case 101:
-				case 105:
-				case 117:
-				case 147:
-				case 151:
-				case 156:
-				case 160:
-				case 215:
-					parseEntityPacket(getInputBuffer(), pktType);
-					pktType = -1;
-					return true;
+			case 103:
+				doingDungeoneering = getInputBuffer().getUnsignedByte() == 1;
+				pktType = -1;
+				return true;
+
+			case 200:
+				int l8 = getInputBuffer().getUnsignedShort();
+				int animId = getInputBuffer().getSignedShort();
+				RSInterface class9_4 = RSInterface.interfaceCache[l8];
+				class9_4.disabledAnimationId = animId;
+				class9_4.modelZoom = 2000;
+
+				if (animId == -1) {
+					class9_4.anInt246 = 0;
+					class9_4.anInt208 = 0;
+				}
+
+				pktType = -1;
+				return true;
+
+			case 219:
+				if (invOverlayInterfaceID != -1) {
+					invOverlayInterfaceID = -1;
+					tabAreaAltered = true;
+				}
+
+				if (backDialogID != -1) {
+					backDialogID = -1;
+					inputTaken = true;
+				}
+
+				if (inputDialogState != 0) {
+					inputDialogState = 0;
+					inputTaken = true;
+				}
+
+				openInterfaceID = -1;
+				aBoolean1149 = false;
+				pktType = -1;
+				return true;
+
+			case 34:
+				int rsIntId = getInputBuffer().getUnsignedShort();
+				RSInterface rsInt = RSInterface.interfaceCache[rsIntId];
+
+				while (getInputBuffer().position < pktSize) {
+					int itemSlot = getInputBuffer().getSmart();
+					int itemInvId = getInputBuffer().getUnsignedShort();
+					int itemAmount = getInputBuffer().getUnsignedByte();
+
+					if (itemAmount == 255) {
+						itemAmount = getInputBuffer().getIntLittleEndian();
+					}
+
+					if (itemSlot >= 0 && itemSlot < rsInt.inv.length) {
+						rsInt.inv[itemSlot] = itemInvId;
+						rsInt.invStackSizes[itemSlot] = itemAmount;
+					}
+				}
+
+				pktType = -1;
+				return true;
+
+			case 4:
+			case 44:
+			case 84:
+			case 101:
+			case 105:
+			case 117:
+			case 147:
+			case 151:
+			case 156:
+			case 160:
+			case 215:
+				parseEntityPacket(getInputBuffer(), pktType);
+				pktType = -1;
+				return true;
 
 			case 108:
 				specActivated = getInputBuffer().getUnsignedByte() == 1;
@@ -14015,31 +14205,31 @@ public class Client extends GameRenderer {
 				currentSpec = getInputBuffer().getUnsignedByte();
 				pktType = -1;
 				return true;
-				
-				case 106:
-					tabID = getInputBuffer().method427();
+
+			case 106:
+				tabID = getInputBuffer().method427();
+				tabAreaAltered = true;
+				pktType = -1;
+				return true;
+
+			case 164:
+				int j9 = getInputBuffer().getShortBigEndian();
+				if (chatArea.componentHidden()) {
+					chatArea.setHideComponent(false);
+				}
+				resetInterfaceAnimation(j9);
+
+				if (invOverlayInterfaceID != -1) {
+					invOverlayInterfaceID = -1;
 					tabAreaAltered = true;
-					pktType = -1;
-					return true;
+				}
 
-				case 164:
-					int j9 = getInputBuffer().getShortBigEndian();
-					if (chatArea.componentHidden()) {
-						chatArea.setHideComponent(false);
-					}
-					resetInterfaceAnimation(j9);
-
-					if (invOverlayInterfaceID != -1) {
-						invOverlayInterfaceID = -1;
-						tabAreaAltered = true;
-					}
-
-					backDialogID = j9;
-					inputTaken = true;
-					openInterfaceID = -1;
-					aBoolean1149 = false;
-					pktType = -1;
-					return true;
+				backDialogID = j9;
+				inputTaken = true;
+				openInterfaceID = -1;
+				aBoolean1149 = false;
+				pktType = -1;
+				return true;
 
 			}
 
@@ -14048,7 +14238,8 @@ public class Client extends GameRenderer {
 		} catch (IOException _ex) {
 			dropClient();
 		} catch (Exception exception) {
-			String s2 = "T2 - " + pktType + "," + anInt842 + "," + anInt843 + " - " + pktSize + "," + (baseX + myPlayer.smallX[0]) + "," + (baseY + myPlayer.smallY[0]) + " - ";
+			String s2 = "T2 - " + pktType + "," + anInt842 + "," + anInt843 + " - " + pktSize + ","
+					+ (baseX + myPlayer.smallX[0]) + "," + (baseY + myPlayer.smallY[0]) + " - ";
 
 			for (int j15 = 0; j15 < pktSize && j15 < 50; j15++) {
 				s2 = s2 + getInputBuffer().buffer[j15] + ",";
@@ -14063,19 +14254,23 @@ public class Client extends GameRenderer {
 
 	private void drawLoadingMessages(String s) {
 		int x = 5, y = 5;
-		int width = 200;//10 + newRegularFont.getTextWidth(s);
+		int width = 200;// 10 + newRegularFont.getTextWidth(s);
 		int height = 22;
-		//Canvas2D.drawFilledPixels(0, 0, GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 512 : getScreenWidth(), GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 334 : getScreenHeight(), 0);
+		// Canvas2D.drawFilledPixels(0, 0, GameFrame.getScreenMode() ==
+		// ScreenMode.FIXED && isGameFrameVisible() ? 512 : getScreenWidth(),
+		// GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible()
+		// ? 334 : getScreenHeight(), 0);
 		Canvas2D.drawFilledPixels(x, y, width, height, 0xffffff);
 		Canvas2D.drawFilledPixels(x + 1, y + 1, width - 2, height - 2, 0);
 		newRegularFont.drawCenteredString(s, x + 5 + width / 2, y + 15, 0xffffff, 0);
 	}
 
 	private int showClanOptions;
-    public boolean poisoned;
-    public boolean venom;
+	public boolean poisoned;
+	public boolean venom;
+
 	private void updateClanChatTab() {
-		if(showClanOptions > 0) {
+		if (showClanOptions > 0) {
 			RSInterface.getCustomInterfaces().rebuildClanChatList(true, myUsername, showClanOptions == 2);
 		} else {
 			RSInterface.getCustomInterfaces().rebuildClanChatList(false, "", false);
@@ -14098,7 +14293,10 @@ public class Client extends GameRenderer {
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
-					showErrorScreen(instance, "A fatal error occured while attempting to fix the previous loading error", "Please screenshot this message and report it to the developers immediately", e.getMessage());
+					showErrorScreen(instance,
+							"A fatal error occured while attempting to fix the previous loading error",
+							"Please screenshot this message and report it to the developers immediately",
+							e.getMessage());
 				}
 			}
 		});
@@ -14117,10 +14315,12 @@ public class Client extends GameRenderer {
 	@Override
 	public void processDrawing() {
 		if (loadingError) {
-			processLoadingError("An internal error occured whilst loading the RuneLive client", "The client's common error quick fix system is attempting to repair the cause", "The client will automatically close in 10 seconds...");
+			processLoadingError("An internal error occured whilst loading the RuneLive client",
+					"The client's common error quick fix system is attempting to repair the cause",
+					"The client will automatically close in 10 seconds...");
 			return;
 		}
-		if(isLoading) {
+		if (isLoading) {
 			return;
 		}
 		if (!loggedIn) {
@@ -14158,52 +14358,52 @@ public class Client extends GameRenderer {
 	}
 
 	private void processLoginScreenInput() {
-		if(super.clickMode3 == 1) {
+		if (super.clickMode3 == 1) {
 
-			if(loginMessage1.length() > 0) {
-				if(backButtonHover) {
+			if (loginMessage1.length() > 0) {
+				if (backButtonHover) {
 					loginMessage1 = "";
 					loginMessage2 = "";
 					backButtonHover = false;
-				} else if(ahover) {
+				} else if (ahover) {
 					launchURL("http://rune.live");
-				} else if(bhover) {
+				} else if (bhover) {
 					launchURL("");
-				} else if(chover) {
+				} else if (chover) {
 					launchURL("https://www.youtube.com/channel/UCaZsgSlOltAIGJNPnAD8h1Q/videos");
-				} else if(dhover) {
+				} else if (dhover) {
 					launchURL("http://google.com");
-				} else if(profile1hover) {
-					if(profileclose1hover) {
+				} else if (profile1hover) {
+					if (profileclose1hover) {
 						saved_characters_usernames[0] = "Empty";
 						saved_characters_passwords[0] = "none";
 						Settings.save();
 					} else {
-						if(rememberMe) {
+						if (rememberMe) {
 							myUsername = saved_characters_usernames[0];
 							password = saved_characters_passwords[0];
 						}
 						login(saved_characters_passwords[0], saved_characters_usernames[0], false, this);
 					}
-				} else if(profile2hover) {
-					if(profileclose2hover) {
+				} else if (profile2hover) {
+					if (profileclose2hover) {
 						saved_characters_usernames[1] = "Empty";
 						saved_characters_passwords[1] = "none";
 						Settings.save();
 					} else {
-						if(rememberMe) {
+						if (rememberMe) {
 							myUsername = saved_characters_usernames[1];
 							password = saved_characters_passwords[1];
 						}
-						login(saved_characters_passwords[1], saved_characters_usernames[1], false, this);		
+						login(saved_characters_passwords[1], saved_characters_usernames[1], false, this);
 					}
-				} else if(profile3hover) {
-					if(profileclose3hover) {
+				} else if (profile3hover) {
+					if (profileclose3hover) {
 						saved_characters_usernames[2] = "Empty";
 						saved_characters_passwords[2] = "none";
 						Settings.save();
 					} else {
-						if(rememberMe) {
+						if (rememberMe) {
 							myUsername = saved_characters_usernames[2];
 							password = saved_characters_passwords[2];
 						}
@@ -14212,68 +14412,67 @@ public class Client extends GameRenderer {
 				}
 				return;
 			}
-			
-			if(input1Hover) {
+
+			if (input1Hover) {
 				loginScreenCursorPos = 0;
-			} else if(input2Hover) {
+			} else if (input2Hover) {
 				loginScreenCursorPos = 1;
-			} else if(loginButtonHover) {
+			} else if (loginButtonHover) {
 				login(password, myUsername, false, this);
-			} else if(worldButtonHover) {
-				//World interface display
-			} else if(ahover) {
+			} else if (worldButtonHover) {
+				// World interface display
+			} else if (ahover) {
 				launchURL("http://rune.live");
-			} else if(bhover) {
+			} else if (bhover) {
 				launchURL("");
-			} else if(chover) {
+			} else if (chover) {
 				launchURL("https://www.youtube.com/channel/UCaZsgSlOltAIGJNPnAD8h1Q/videos");
-			} else if(dhover) {
+			} else if (dhover) {
 				launchURL("http://google.com");
-			} else if(profile1hover) {
-				if(profileclose1hover) {
+			} else if (profile1hover) {
+				if (profileclose1hover) {
 					saved_characters_usernames[0] = "Empty";
 					saved_characters_passwords[0] = "none";
 					Settings.save();
 				} else {
-					if(rememberMe) {
+					if (rememberMe) {
 						myUsername = saved_characters_usernames[0];
 						password = saved_characters_passwords[0];
 					}
 					login(saved_characters_passwords[0], saved_characters_usernames[0], false, this);
 				}
-			} else if(profile2hover) {
-				if(profileclose2hover) {
+			} else if (profile2hover) {
+				if (profileclose2hover) {
 					saved_characters_usernames[1] = "Empty";
 					saved_characters_passwords[1] = "none";
 					Settings.save();
 				} else {
-					if(rememberMe) {
+					if (rememberMe) {
 						myUsername = saved_characters_usernames[1];
 						password = saved_characters_passwords[1];
 					}
-					login(saved_characters_passwords[1], saved_characters_usernames[1], false, this);		
+					login(saved_characters_passwords[1], saved_characters_usernames[1], false, this);
 				}
-			} else if(profile3hover) {
-				if(profileclose3hover) {
+			} else if (profile3hover) {
+				if (profileclose3hover) {
 					saved_characters_usernames[2] = "Empty";
 					saved_characters_passwords[2] = "none";
 					Settings.save();
 				} else {
-					if(rememberMe) {
+					if (rememberMe) {
 						myUsername = saved_characters_usernames[2];
 						password = saved_characters_passwords[2];
 					}
 					login(saved_characters_passwords[2], saved_characters_usernames[2], false, this);
 				}
-			} else if(rememberMeButtonHover) {
+			} else if (rememberMeButtonHover) {
 				rememberMe = !rememberMe;
 				Settings.save();
 			}
 		}
 
 		if (getLoginScreenState() == 0) {
-			
-			
+
 			do {
 				int keyChar = readChar(-796);
 
@@ -14284,19 +14483,19 @@ public class Client extends GameRenderer {
 				if (keyChar == 96) {
 					return;
 				}
-				
-				if(loggedIn || loggingIn) {
+
+				if (loggedIn || loggingIn) {
 					return;
 				}
-				
-				if(!loginMessage1.isEmpty() || !loginMessage2.isEmpty()) {
-					if(keyChar == 32 || keyChar == 10 || keyChar == 8) {
+
+				if (!loginMessage1.isEmpty() || !loginMessage2.isEmpty()) {
+					if (keyChar == 32 || keyChar == 10 || keyChar == 8) {
 						loginMessage1 = loginMessage2 = "";
 						loggingIn = false;
 					}
 					return;
 				}
-				
+
 				if (consoleOpen) {
 					if (keyChar == 8 && consoleInput.length() > 0) {
 						consoleInput = consoleInput.substring(0, consoleInput.length() - 1);
@@ -14352,7 +14551,7 @@ public class Client extends GameRenderer {
 
 					if (keyChar == 9 || keyChar == 10 || keyChar == 13) {
 						login(getPassword(), myUsername, false, this);
-						if(loggedIn || loggingIn)
+						if (loggedIn || loggingIn)
 							return;
 					}
 
@@ -14370,76 +14569,80 @@ public class Client extends GameRenderer {
 	}
 
 	private boolean loggingIn = false;
-	
+
 	/**
 	 * Handles the login for the player
 	 *
-	 * @param username The username of the player
-	 * @param password The password if the player
-	 * @param reconnecting The player is reconnecting
+	 * @param username
+	 *            The username of the player
+	 * @param password
+	 *            The password if the player
+	 * @param reconnecting
+	 *            The player is reconnecting
 	 */
 	private void login(String password, String username, boolean reconnecting, Client client) {
-		if(loggingIn) {
-			//System.out.println("Already logging in!");
-			//return;
+		if (loggingIn) {
+			// System.out.println("Already logging in!");
+			// return;
 		}
 		username = TextClass.fixName(username);
 		username = optimizeText(username);
-		if(username.startsWith(" ") || username.startsWith("_")) {
+		if (username.startsWith(" ") || username.startsWith("_")) {
 			loginMessage1 = "Your username can't start with a space.";
 			return;
 		}
-		if(username.endsWith(" ") || username.endsWith("_")) {
+		if (username.endsWith(" ") || username.endsWith("_")) {
 			loginMessage1 = "Your username can't end with a space.";
 			return;
 		}
-		if(username.length() < 1 && password.length() < 1) {
+		if (username.length() < 1 && password.length() < 1) {
 			loginMessage1 = "You didn't enter anything!";
 			return;
-		} else if(password.length() < 3) {
+		} else if (password.length() < 3) {
 			loginMessage1 = "Your password is too short.";
 			return;
-		} else if(username.length() < 1) {
+		} else if (username.length() < 1) {
 			loginMessage1 = "Your username is too short.";
 			return;
-		 } else if(username.length() > 12) {
+		} else if (username.length() > 12) {
 			loginMessage1 = "Your username is too long.";
 			return;
-		 } else if(password.length() > 20) {
+		} else if (password.length() > 20) {
 			loginMessage1 = "Your password is too long.";
 			return;
-		 }
+		}
 
 		if (client.getLoginState() == 0) {
 			client.setLoginFailures(0);
 		}
 
-		try {			
+		try {
 			loggingIn = true;
-			
+
 			loginMessage1 = "Attempting to login";
 			drawLoginScreen();
 
 			Thread t = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					while (loggingIn && !loggedIn && loginMessage1.contains("Attempting to login") && loginMessage1.length() <= 29) {
+					while (loggingIn && !loggedIn && loginMessage1.contains("Attempting to login")
+							&& loginMessage1.length() <= 29) {
 						try {
 							loginMessage1 += ".";
 							drawLoginScreen();
 							Thread.sleep(250);
-						} catch(Exception e) {}
+						} catch (Exception e) {
+						}
 					}
 				}
 			}, "Login");
 			t.start();
-			
-			
+
 			initiateConnection(client);
 
 			int responseCode = receiveResponse(client);
 			handleResponse(client, responseCode, username, password, reconnecting);
-			
+
 		} catch (IOException _ex) {
 			client.setLoginMessage1("Error connecting to server.");
 			client.setLoginMessage2("");
@@ -14472,7 +14675,7 @@ public class Client extends GameRenderer {
 		Client.getOut().putInt(seed[1]);
 		Client.getOut().putInt(seed[2]);
 		Client.getOut().putInt(seed[3]);
-		Client.getOut().putInt(23); //Client IDENTIFIER
+		Client.getOut().putInt(23); // Client IDENTIFIER
 		Client.getOut().putString(username);
 		Client.getOut().putString(password);
 		Client.getOut().putString(Configuration.CLIENT_VERSION);
@@ -14485,7 +14688,7 @@ public class Client extends GameRenderer {
 
 	private void writeData(boolean reconnecting, Client client) {
 		client.getLoginBuffer().position = 0;
-		client.getLoginBuffer().putByte(reconnecting ? 18 : 16); //login type
+		client.getLoginBuffer().putByte(reconnecting ? 18 : 16); // login type
 		client.getLoginBuffer().putByte(Client.getOut().position + 1 + 1 + 2);
 		client.getLoginBuffer().putByte(255);
 		client.getLoginBuffer().putShort(Configuration.USELESS_VERSION);
@@ -14496,15 +14699,20 @@ public class Client extends GameRenderer {
 	/**
 	 * Handles the response from the client
 	 *
-	 * @param response The response code from the client
-	 * @param username The username of the player
-	 * @param password The password of the player
-	 * @param reconnecting The player is reconnecting
+	 * @param response
+	 *            The response code from the client
+	 * @param username
+	 *            The username of the player
+	 * @param password
+	 *            The password of the player
+	 * @param reconnecting
+	 *            The player is reconnecting
 	 * @throws IOException
 	 */
-	public boolean handleResponse(Client client, int response, String username, String password, boolean reconnecting) throws IOException {
+	public boolean handleResponse(Client client, int response, String username, String password, boolean reconnecting)
+			throws IOException {
 		int initialResponseCode = response;
-		
+
 		if (response == 0) {
 			client.getConnection().flushInputStream(client.getInputBuffer().buffer, 8);
 			client.getInputBuffer().position = 0;
@@ -14531,30 +14739,37 @@ public class Client extends GameRenderer {
 			login(password, username, reconnecting, client);
 			return false;
 		}
-		
-		//System.out.println("Login response: "+response);
+
+		// System.out.println("Login response: "+response);
 
 		if (response == 2) {
-			if(rememberMe) {
-				if(!saved_characters_usernames[0].equals("Empty") && !saved_characters_usernames[1].equals("Empty") && !saved_characters_usernames[2].equals("Empty")) {
-					
+			if (rememberMe) {
+				if (!saved_characters_usernames[0].equals("Empty") && !saved_characters_usernames[1].equals("Empty")
+						&& !saved_characters_usernames[2].equals("Empty")) {
+
 				} else {
-					if(saved_characters_usernames[0].equals("Empty")) {
-						if(saved_characters_usernames[0].equals(username) || saved_characters_usernames[1].equals(username) || saved_characters_usernames[2].equals(username)) {
+					if (saved_characters_usernames[0].equals("Empty")) {
+						if (saved_characters_usernames[0].equals(username)
+								|| saved_characters_usernames[1].equals(username)
+								|| saved_characters_usernames[2].equals(username)) {
 						} else {
 							saved_characters_usernames[0] = username;
 							saved_characters_passwords[0] = password;
 						}
-					} else if(saved_characters_usernames[1].equals("Empty")) {
-						if(saved_characters_usernames[0].equals(username) || saved_characters_usernames[1].equals(username) || saved_characters_usernames[2].equals(username)) {
-							
+					} else if (saved_characters_usernames[1].equals("Empty")) {
+						if (saved_characters_usernames[0].equals(username)
+								|| saved_characters_usernames[1].equals(username)
+								|| saved_characters_usernames[2].equals(username)) {
+
 						} else {
 							saved_characters_usernames[1] = username;
 							saved_characters_passwords[1] = password;
 						}
-					} else if(saved_characters_usernames[2].equals("Empty")) {
-						if(saved_characters_usernames[0].equals(username) || saved_characters_usernames[1].equals(username) || saved_characters_usernames[2].equals(username)) {
-							
+					} else if (saved_characters_usernames[2].equals("Empty")) {
+						if (saved_characters_usernames[0].equals(username)
+								|| saved_characters_usernames[1].equals(username)
+								|| saved_characters_usernames[2].equals(username)) {
+
 						} else {
 							saved_characters_usernames[2] = username;
 							saved_characters_passwords[2] = password;
@@ -14573,7 +14788,7 @@ public class Client extends GameRenderer {
 			loggingIn = false;
 			return false;
 		}
-		
+
 		if (response == -1) {
 			loggingIn = false;
 			if (initialResponseCode == 0 && client.getLoginState() != 0) {
@@ -14603,7 +14818,8 @@ public class Client extends GameRenderer {
 		}
 	}
 
-	public boolean handleRejection(int loginCode, String username, boolean reconnecting, Client client, String password) throws IOException {
+	public boolean handleRejection(int loginCode, String username, boolean reconnecting, Client client, String password)
+			throws IOException {
 		if (loginCode == 3) {
 			loginMessage1 = "Invalid username or password.";
 			return false;
@@ -14683,12 +14899,12 @@ public class Client extends GameRenderer {
 			loginMessage1 = "Your username cannot start with a space.";
 			return false;
 		}
-		if(loginCode == 22) {
+		if (loginCode == 22) {
 			loginMessage1 = "This computer has been banned.";
 			loginMessage2 = "Appeal on the forum!";
 			return false;
 		}
-		if(loginCode == 30) {
+		if (loginCode == 30) {
 			loginMessage1 = "RuneLive has been updated!";
 			loginMessage2 = "Please reload this client.";
 			return false;
@@ -14711,8 +14927,7 @@ public class Client extends GameRenderer {
 		if (loginCode == 21) {
 			for (int loginCode1 = client.getConnection().read(); loginCode1 >= 0; loginCode1--) {
 				loginMessage1 = "You have only just left another world";
-				loginMessage2 =  "Your profile will be transferred in: "
-						+ loginCode1 + " seconds";
+				loginMessage2 = "Your profile will be transferred in: " + loginCode1 + " seconds";
 				drawLoginScreen();
 				try {
 					Thread.sleep(1000L);
@@ -14774,7 +14989,6 @@ public class Client extends GameRenderer {
 		for (int i = 0; i < 16384; i++) {
 			client.npcArray[i] = null;
 		}
-		
 
 		Client.myPlayer = client.playerArray[client.getMyPlayerIndex()] = new Player();
 		client.getaClass19_1013().removeAll();
@@ -14833,7 +15047,7 @@ public class Client extends GameRenderer {
 		if (GameFrame.getScreenMode() == ScreenMode.FIXED) {
 			client.updateGameArea();
 		}
-		//updateSettingsInterface();
+		// updateSettingsInterface();
 		loginMessage1 = loginMessage2 = "";
 		loggingIn = false;
 	}
@@ -14844,7 +15058,8 @@ public class Client extends GameRenderer {
 		}
 
 		if (super.clickMode3 == 1) {
-			int clickX = super.saveClickX - (GameFrame.getScreenMode() == ScreenMode.FIXED ? 553 : mapArea.getOffSetX() + 14);
+			int clickX = super.saveClickX
+					- (GameFrame.getScreenMode() == ScreenMode.FIXED ? 553 : mapArea.getOffSetX() + 14);
 			int clickY = super.saveClickY - (GameFrame.getScreenMode() == ScreenMode.FIXED ? 9 : 5);
 
 			if (inCircle(0, 0, clickX, clickY, 76)) {
@@ -14854,11 +15069,11 @@ public class Client extends GameRenderer {
 				int i1 = Canvas3D.SINE[k];
 				int j1 = Canvas3D.COSINE[k];
 				i1 = i1 * (minimapZoom + 256) >> 8;
-		j1 = j1 * (minimapZoom + 256) >> 8;
+				j1 = j1 * (minimapZoom + 256) >> 8;
 				int k1 = clickY * i1 + clickX * j1 >> 11;
-		int l1 = clickY * j1 - clickX * i1 >> 11;
-		int i2 = myPlayer.x + k1 >> 7;
-						int j2 = myPlayer.y - l1 >> 7;
+				int l1 = clickY * j1 - clickX * i1 >> 11;
+				int i2 = myPlayer.x + k1 >> 7;
+				int j2 = myPlayer.y - l1 >> 7;
 				boolean flag1 = doWalkTo(1, 0, 0, 0, myPlayer.smallY[0], 0, 0, j2, myPlayer.smallX[0], true, i2);
 
 				if (flag1) {
@@ -14917,7 +15132,8 @@ public class Client extends GameRenderer {
 
 		int clickType = super.clickMode3;
 
-		if (spellSelected == 1 && super.saveClickX >= 516 && super.saveClickY >= 160 && super.saveClickX <= 765 && super.saveClickY <= 205) {
+		if (spellSelected == 1 && super.saveClickX >= 516 && super.saveClickY >= 160 && super.saveClickX <= 765
+				&& super.saveClickY <= 205) {
 			clickType = 0;
 		}
 
@@ -14946,7 +15162,8 @@ public class Client extends GameRenderer {
 					clickY -= 0;
 				}
 
-				if (clickX < menuOffsetX - 10 || clickX > menuOffsetX + menuWidth + 10 || clickY < menuOffsetY - 10 || clickY > menuOffsetY + menuHeight + 10) {
+				if (clickX < menuOffsetX - 10 || clickX > menuOffsetX + menuWidth + 10 || clickY < menuOffsetY - 10
+						|| clickY > menuOffsetY + menuHeight + 10) {
 					menuOpen = false;
 					// if (menuScreenArea == 1)
 					// {
@@ -15011,7 +15228,9 @@ public class Client extends GameRenderer {
 			if (clickType == 1 && menuActionRow > 0) {
 				int actionId = menuActionID[menuActionRow - 1];
 
-				if (actionId == 632 || actionId == 78 || actionId == 867 || actionId == 431 || actionId == 53 || actionId == 74 || actionId == 454 || actionId == 539 || actionId == 493 || actionId == 847 || actionId == 447 || actionId == 1125) {
+				if (actionId == 632 || actionId == 78 || actionId == 867 || actionId == 431 || actionId == 53
+						|| actionId == 74 || actionId == 454 || actionId == 539 || actionId == 493 || actionId == 847
+						|| actionId == 447 || actionId == 1125) {
 					int actionOne = menuActionCmd2[menuActionRow - 1];
 					int actionTwo = menuActionCmd3[menuActionRow - 1];
 					RSInterface rsi = RSInterface.interfaceCache[actionTwo];
@@ -15071,7 +15290,7 @@ public class Client extends GameRenderer {
 						modelId += 65535;
 					}
 					Model.decodeModelHeader(onDemandData.getData(), modelId);
-					//needDrawTabArea = true;
+					// needDrawTabArea = true;
 					if (backDialogID != -1) {
 						setInputTaken(true);
 					}
@@ -15080,7 +15299,8 @@ public class Client extends GameRenderer {
 					FrameReader.load(onDemandData.getId(), onDemandData.getData());
 				}
 
-				if (onDemandData.getIndex() == 2 && onDemandData.getId() == nextSong && onDemandData.getData() != null) {
+				if (onDemandData.getIndex() == 2 && onDemandData.getId() == nextSong
+						&& onDemandData.getData() != null) {
 					musicData = new byte[onDemandData.getData().length];
 					ArrayUtils.arraycopy(onDemandData.getData(), 0, musicData, 0, musicData.length);
 					fetchMusic = true;
@@ -15112,21 +15332,22 @@ public class Client extends GameRenderer {
 					} else if (!loggedIn && onDemandFetcher.getPriorityHandler().isRunning()) {
 						boolean isObjectMap = !onDemandFetcher.isFloorMap(onDemandData.getId());
 						if (!isObjectMap) {
-							ObjectManager.requestObjects(new ByteBuffer(onDemandData.getData()), onDemandFetcher, false);
+							ObjectManager.requestObjects(new ByteBuffer(onDemandData.getData()), onDemandFetcher,
+									false);
 						}
 					}
 				}
-				//SpriteCache.spriteCache[onDemandData.id] = new Sprite(onDemandData.buffer);
+				// SpriteCache.spriteCache[onDemandData.id] = new
+				// Sprite(onDemandData.buffer);
 				if (onDemandData.getIndex() == 4) {
 					Texture.decode(onDemandData.getId(), onDemandData.getData());
 				}
 			} while (onDemandData.getIndex() != 93 || !onDemandFetcher.isFloorMap(onDemandData.getId()));
-				ObjectManager.requestObjects(new ByteBuffer(onDemandData.getData()), onDemandFetcher, true);
+			ObjectManager.requestObjects(new ByteBuffer(onDemandData.getData()), onDemandFetcher, true);
 		} while (true);
 	}
-	
+
 	int skillTabHoverChild;
-	
 
 	private void processRightClick() {
 		if (activeInterfaceType != 0) {
@@ -15144,7 +15365,13 @@ public class Client extends GameRenderer {
 			anInt886 = 0;
 			anInt1315 = 0;
 			skillTabHoverChild = 0;
-			buildInterfaceMenu(GameFrame.getScreenMode() == ScreenMode.FIXED ? 8 : getScreenWidth() / 2 - RSInterface.interfaceCache[getFullscreenInterfaceID()].width / 2, RSInterface.interfaceCache[getFullscreenInterfaceID()], super.mouseX, GameFrame.getScreenMode() == ScreenMode.FIXED ? 8 : getScreenHeight() / 2 - RSInterface.interfaceCache[getFullscreenInterfaceID()].height / 2, super.mouseY, 0);
+			buildInterfaceMenu(
+					GameFrame.getScreenMode() == ScreenMode.FIXED ? 8
+							: getScreenWidth() / 2 - RSInterface.interfaceCache[getFullscreenInterfaceID()].width / 2,
+					RSInterface.interfaceCache[getFullscreenInterfaceID()], super.mouseX,
+					GameFrame.getScreenMode() == ScreenMode.FIXED ? 8
+							: getScreenHeight() / 2 - RSInterface.interfaceCache[getFullscreenInterfaceID()].height / 2,
+					super.mouseY, 0);
 
 			if (anInt886 != anInt1026) {
 				anInt1026 = anInt886;
@@ -15161,7 +15388,8 @@ public class Client extends GameRenderer {
 			buildSplitPrivateChatMenu();
 		}
 
-		boolean inSplitChatSelectionBox = mouseX >= splitBoxX && mouseX <= splitBoxX + 15 && mouseY >= splitBoxY + chatArea.getyPos() && mouseY <= splitBoxY + chatArea.getyPos() + 13;
+		boolean inSplitChatSelectionBox = mouseX >= splitBoxX && mouseX <= splitBoxX + 15
+				&& mouseY >= splitBoxY + chatArea.getyPos() && mouseY <= splitBoxY + chatArea.getyPos() + 13;
 		if (inSplitChatSelectionBox) {
 			chatArea.channel.processChatModeActions(this, GameFrame.getScreenMode());
 			return;
@@ -15173,21 +15401,25 @@ public class Client extends GameRenderer {
 		int width = GameFrame.getScreenMode() != ScreenMode.FIXED ? getScreenWidth() : 516;
 		int height = GameFrame.getScreenMode() != ScreenMode.FIXED ? getScreenHeight() : 338;
 
-		if (super.mouseX > gameScreenDrawX && super.mouseY > gameScreenDrawY && super.mouseX < width && super.mouseY < height) {
+		if (super.mouseX > gameScreenDrawX && super.mouseY > gameScreenDrawY && super.mouseX < width
+				&& super.mouseY < height) {
 			if (openInterfaceID != -1 && isGameFrameVisible()) {
 				RSInterface rsInterface = RSInterface.interfaceCache[openInterfaceID];
 
 				if (GameFrame.getScreenMode() != ScreenMode.FIXED) {
 					int interfaceWidth = GameFrame.getScreenMode() != ScreenMode.FIXED ? getScreenWidth() : 516;
 					int interfaceHeight = GameFrame.getScreenMode() != ScreenMode.FIXED ? getScreenHeight() : 338;
-					buildInterfaceMenu(gameScreenDrawX + (interfaceWidth - 765) / 2, rsInterface, super.mouseX, gameScreenDrawY + (interfaceHeight - 503) / 2, super.mouseY, 0);
+					buildInterfaceMenu(gameScreenDrawX + (interfaceWidth - 765) / 2, rsInterface, super.mouseX,
+							gameScreenDrawY + (interfaceHeight - 503) / 2, super.mouseY, 0);
 				} else {
 					buildInterfaceMenu(4, rsInterface, super.mouseX, 4, super.mouseY, 0);
 				}
 			} else {
 				try {
 					if (GameFrame.getScreenMode() != ScreenMode.FIXED) {
-						if (!mapArea.isHovering(this, GameFrame.getScreenMode()) && !chatArea.isHovering(this, GameFrame.getScreenMode()) && !tabArea.isHovering(this, GameFrame.getScreenMode())) {
+						if (!mapArea.isHovering(this, GameFrame.getScreenMode())
+								&& !chatArea.isHovering(this, GameFrame.getScreenMode())
+								&& !tabArea.isHovering(this, GameFrame.getScreenMode())) {
 							build3dScreenMenu();
 						}
 					} else {
@@ -15214,9 +15446,17 @@ public class Client extends GameRenderer {
 		skillTabHoverChild = 0;
 		if (tabArea.isHovering(this, GameFrame.getScreenMode()) && !tabArea.componentHidden()) {
 			if (invOverlayInterfaceID != -1) {
-				buildInterfaceMenu(tabArea.getxPos() + (GameFrame.getScreenMode() == ScreenMode.FIXED ? 31 : 40), RSInterface.interfaceCache[invOverlayInterfaceID], super.mouseX, tabArea.getyPos() + (GameFrame.getScreenMode() == ScreenMode.FIXED ? 36 : getScreenWidth() <= GameFrameConstants.smallTabs ? -6 : 30), super.mouseY, 0);
+				buildInterfaceMenu(tabArea.getxPos() + (GameFrame.getScreenMode() == ScreenMode.FIXED ? 31 : 40),
+						RSInterface.interfaceCache[invOverlayInterfaceID], super.mouseX,
+						tabArea.getyPos() + (GameFrame.getScreenMode() == ScreenMode.FIXED ? 36
+								: getScreenWidth() <= GameFrameConstants.smallTabs ? -6 : 30),
+						super.mouseY, 0);
 			} else if (tabInterfaceIDs[tabID] != -1) {
-				buildInterfaceMenu(tabArea.getxPos() + (GameFrame.getScreenMode() == ScreenMode.FIXED ? 31 : 40), RSInterface.interfaceCache[tabInterfaceIDs[tabID]], super.mouseX, tabArea.getyPos() + (GameFrame.getScreenMode() == ScreenMode.FIXED ? 36 : getScreenWidth() <= GameFrameConstants.smallTabs ? -6 : 30), super.mouseY, 0);
+				buildInterfaceMenu(tabArea.getxPos() + (GameFrame.getScreenMode() == ScreenMode.FIXED ? 31 : 40),
+						RSInterface.interfaceCache[tabInterfaceIDs[tabID]], super.mouseX,
+						tabArea.getyPos() + (GameFrame.getScreenMode() == ScreenMode.FIXED ? 36
+								: getScreenWidth() <= GameFrameConstants.smallTabs ? -6 : 30),
+						super.mouseY, 0);
 			}
 		}
 
@@ -15234,9 +15474,11 @@ public class Client extends GameRenderer {
 
 		anInt886 = 0;
 		anInt1315 = 0;
-		if (super.mouseX > chatArea.getxPos() && super.mouseY > chatArea.getyPos() && super.mouseX < chatArea.getxPos() + 490 && super.mouseY < chatArea.getyPos() + 125) {
+		if (super.mouseX > chatArea.getxPos() && super.mouseY > chatArea.getyPos()
+				&& super.mouseX < chatArea.getxPos() + 490 && super.mouseY < chatArea.getyPos() + 125) {
 			if (backDialogID != -1) {
-				buildInterfaceMenu(20, RSInterface.interfaceCache[backDialogID], super.mouseX, chatArea.getyPos() + 20, super.mouseY, chatArea.getxPos());
+				buildInterfaceMenu(20, RSInterface.interfaceCache[backDialogID], super.mouseX, chatArea.getyPos() + 20,
+						super.mouseY, chatArea.getxPos());
 			} else if (super.mouseY < chatArea.getyPos() + 125 && super.mouseX < chatArea.getxPos() + 490) {
 				buildChatAreaMenu(super.mouseY - chatArea.getyPos());
 			}
@@ -15251,7 +15493,7 @@ public class Client extends GameRenderer {
 			setInputTaken(true);
 			anInt1500 = anInt1315;
 		}
-		
+
 		mapArea.processMinimapActions(this);
 		boolean flag = false;
 
@@ -15335,7 +15577,7 @@ public class Client extends GameRenderer {
 			messagePromptRaised = true;
 			promptInput = "";
 			friendsListAction = 12;
-			promptMessage = "Enter your " +Skills.SKILL_NAMES[index]+ " level goal below.";
+			promptMessage = "Enter your " + Skills.SKILL_NAMES[index] + " level goal below.";
 		}
 		if (id == 1322) {
 			inputTaken = true;
@@ -15346,7 +15588,8 @@ public class Client extends GameRenderer {
 			promptMessage = "Enter your experience goal below.";
 		}
 		if (id == 1323) {
-			if (Skills.goalData[Skills.selectedSkillId][0] == -1 && Skills.goalData[Skills.selectedSkillId][1] == -1 && Skills.goalData[Skills.selectedSkillId][2] == -1) {
+			if (Skills.goalData[Skills.selectedSkillId][0] == -1 && Skills.goalData[Skills.selectedSkillId][1] == -1
+					&& Skills.goalData[Skills.selectedSkillId][2] == -1) {
 				pushMessage("You do not have a goal to clear for that level.", 0, "");
 			}
 			if (Skills.selectedSkillId > -1) {
@@ -15355,7 +15598,7 @@ public class Client extends GameRenderer {
 				Skills.goalData[Skills.selectedSkillId][2] = -1;
 				saveGoals(myUsername);
 			}
-		} else if(id >= 5000 && id <= 5025) {
+		} else if (id >= 5000 && id <= 5025) {
 			getOut().putOpcode(223);
 			index = id - 5000;
 			getOut().putShort(index);
@@ -15410,7 +15653,8 @@ public class Client extends GameRenderer {
 					if (j1 == 1 && ++i2 >= IdentityKit.getLength()) {
 						i2 = 0;
 					}
-				} while (IdentityKit.cache[i2].isaBoolean662() || IdentityKit.cache[i2].getAnInt657() != k + (isMale ? 0 : 7));
+				} while (IdentityKit.cache[i2].isaBoolean662()
+						|| IdentityKit.cache[i2].getAnInt657() != k + (isMale ? 0 : 7));
 
 				myAppearance[k] = i2;
 				aBoolean1031 = true;
@@ -15444,14 +15688,14 @@ public class Client extends GameRenderer {
 			method45();
 		}
 
-		if (id == 326) {			
-			String s = " "+(isMale ? 0 : 1)+"";
+		if (id == 326) {
+			String s = " " + (isMale ? 0 : 1) + "";
 			for (int i1 = 0; i1 < 7; i1++)
-				s += " "+(myAppearance[i1]);
+				s += " " + (myAppearance[i1]);
 			for (int l1 = 0; l1 < 5; l1++)
-				s += " "+(anIntArray990[l1]);
+				s += " " + (anIntArray990[l1]);
 			getOut().putOpcode(11);
-			getOut().putByte(s.substring(1).length() +1);
+			getOut().putByte(s.substring(1).length() + 1);
 			getOut().putString(s.substring(1));
 			return true;
 		}
@@ -15481,10 +15725,10 @@ public class Client extends GameRenderer {
 			chatColor[j] = chatColor[j - 1];
 		}
 
-		if(chatType == 2 || chatType == 16 || chatType == 0) {
+		if (chatType == 2 || chatType == 16 || chatType == 0) {
 			chatMessage = RSFontSystem.handleOldSyntax(chatMessage);
 		}
-		
+
 		chatTypes[0] = chatType;
 		chatNames[0] = chatName;
 		chatMessages[0] = chatMessage.trim();
@@ -15584,7 +15828,10 @@ public class Client extends GameRenderer {
 			CacheSpriteLoader.getCacheSprite(14).drawSprite(0, 0);
 		}
 		tabAreaIP = new RSImageProducer(250, 335, getGameComponent());
-		gameScreenIP = new RSImageProducer(GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 512 : getScreenWidth(), GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 334 : getScreenHeight(), getGameComponent());
+		gameScreenIP = new RSImageProducer(
+				GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 512 : getScreenWidth(),
+				GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? 334 : getScreenHeight(),
+				getGameComponent());
 		Canvas2D.setAllPixelsToZero();
 		aRSImageProducer_1125 = new RSImageProducer(249, 45, getGameComponent());
 		welcomeScreenRaised = true;
@@ -15710,15 +15957,15 @@ public class Client extends GameRenderer {
 			int i3 = Model.SINE[l1];
 			int k3 = Model.COSINE[l1];
 			int i4 = k2 * k3 - l2 * i3 >> 16;
-		l2 = k2 * i3 + l2 * k3 >> 16;
+			l2 = k2 * i3 + l2 * k3 >> 16;
 			k2 = i4;
 		}
 		if (i2 != 0) {
 			int j3 = Model.SINE[i2];
 			int l3 = Model.COSINE[i2];
 			int j4 = l2 * j3 + j2 * l3 >> 16;
-		l2 = l2 * l3 - j2 * j3 >> 16;
-		j2 = j4;
+			l2 = l2 * l3 - j2 * j3 >> 16;
+			j2 = j4;
 		}
 		xCameraPos = l - j2;
 		zCameraPos = i1 - k2;
@@ -15744,17 +15991,13 @@ public class Client extends GameRenderer {
 	/**
 	 * The line ids in order
 	 */
-	private static int[] lines = { 640, 663, 7332, 7333, 7334, 7336, 7383,
-		7339, 7338, 7340, 7346, 7341, 7342, 7337, 7343, 7335, 7344, 7345,
-		7347, 7348, 682, 12772, 673, 7352, 17510, 7353, 12129, 8438, 12852,
-		15841, 7354, 7355, 7356, 8679, 7459, 16149, 6987, 7357, 12836,
-		7358, 7359, 14169, 10115, 14604, 7360, 12282, 13577, 12839, 7361,
-		16128, 11857, 7362, 7363, 7364, 10135, 4508, 18517, 11907, 7365,
-		7366, 7367, 13389, 15487, 7368, 11132, 7369, 12389, 13974, 6027,
-		7370, 8137, 7371, 12345, 7372, 8115, 18684, 15499, 18306, 668,
-		8576, 12139, 14912, 7373, 7374, 8969, 15352, 7375, 7376, 15098,
-		15592, 249, 1740, 15235, 3278, 7378, 6518, 7379, 7380, 7381, 11858,
-		191, 9927, 6024, 7349, 7350, 7351, 13356
+	private static int[] lines = { 640, 663, 7332, 7333, 7334, 7336, 7383, 7339, 7338, 7340, 7346, 7341, 7342, 7337,
+			7343, 7335, 7344, 7345, 7347, 7348, 682, 12772, 673, 7352, 17510, 7353, 12129, 8438, 12852, 15841, 7354,
+			7355, 7356, 8679, 7459, 16149, 6987, 7357, 12836, 7358, 7359, 14169, 10115, 14604, 7360, 12282, 13577,
+			12839, 7361, 16128, 11857, 7362, 7363, 7364, 10135, 4508, 18517, 11907, 7365, 7366, 7367, 13389, 15487,
+			7368, 11132, 7369, 12389, 13974, 6027, 7370, 8137, 7371, 12345, 7372, 8115, 18684, 15499, 18306, 668, 8576,
+			12139, 14912, 7373, 7374, 8969, 15352, 7375, 7376, 15098, 15592, 249, 1740, 15235, 3278, 7378, 6518, 7379,
+			7380, 7381, 11858, 191, 9927, 6024, 7349, 7350, 7351, 13356
 
 	};
 
@@ -15782,42 +16025,47 @@ public class Client extends GameRenderer {
 	}
 
 	private String setMessage(int skillLevel) {
-		if(skillLevel == 26) {
+		if (skillLevel == 26) {
 			long totalXp = 0;
-			for(int i = 0; i < currentExp.length; i++) {
+			for (int i = 0; i < currentExp.length; i++) {
 				totalXp += currentExp[i];
 			}
-			return "Total XP: "+String.format("%, d", totalXp)+"";
+			return "Total XP: " + String.format("%, d", totalXp) + "";
 		}
 		String[] getToolTipText = new String[6];
 		String toolTiptext = "";
-		int[] getSkillIds = { 0, 3, 14, 2, 16, 13, 1, 15, 10, 4, 17, 7, 5, 12, 11, 6, 9, 8, 20, 18, 19, 21, 22, 23, 24, 25 };
+		int[] getSkillIds = { 0, 3, 14, 2, 16, 13, 1, 15, 10, 4, 17, 7, 5, 12, 11, 6, 9, 8, 20, 18, 19, 21, 22, 23, 24,
+				25 };
 		int init = Skills.goalData[getSkillIds[skillLevel]][0];
 		int goal = Skills.goalData[getSkillIds[skillLevel]][1];
 		int stat = getSkillIds[skillLevel];
 		int currentLevel = currentStats[stat];
 		int maxLevel = maxStats[stat];
-		if(stat == 3 || stat == 5) {
+		if (stat == 3 || stat == 5) {
 			currentLevel /= 10;
 			maxLevel /= 10;
 		}
 		getToolTipText[0] = (Skills.SKILL_NAMES[skillLevel] + ": " + currentLevel + "/" + maxLevel + "\\n");
-		getToolTipText[1] = ("Current Exp: " + (maxLevel < 99 ? "" : "") + String.format("%, d", currentExp[getSkillIds[skillLevel]]) + "\\n");
-		getToolTipText[2] = ("Next level: " + String.format("%, d", PlayerHandler.getXPForLevel(maxLevel + 1) - currentExp[getSkillIds[skillLevel]]));
+		getToolTipText[1] = ("Current Exp: " + (maxLevel < 99 ? "" : "")
+				+ String.format("%, d", currentExp[getSkillIds[skillLevel]]) + "\\n");
+		getToolTipText[2] = ("Next level: " + String.format("%, d",
+				PlayerHandler.getXPForLevel(maxLevel + 1) - currentExp[getSkillIds[skillLevel]]));
 		toolTiptext = getToolTipText[0] + getToolTipText[1];
 		boolean onNewLine = false;
 		if (maxLevel < 99) {
-			toolTiptext += getToolTipText[2]; //+ getToolTipText[3];
+			toolTiptext += getToolTipText[2]; // + getToolTipText[3];
 			onNewLine = true;
 		}
 		if ((currentExp[getSkillIds[skillLevel]] < 1000000000) && init > -1 && goal > -1) {
-			getToolTipText[4] = ((onNewLine ? "\\n" : "") + Skills.goalType + "" + (Skills.goalType.endsWith("Level: ") ? Integer.valueOf(PlayerHandler.getLevelForXP(goal)) : String.format("%,d", goal)) + "\\n");
+			getToolTipText[4] = ((onNewLine ? "\\n" : "") + Skills.goalType + "" + (Skills.goalType.endsWith("Level: ")
+					? Integer.valueOf(PlayerHandler.getLevelForXP(goal)) : String.format("%,d", goal)) + "\\n");
 			int remainder = goal - currentExp[getSkillIds[skillLevel]] - (Skills.goalType.endsWith("Level: ") ? 1 : 0);
 			if (remainder < 0) {
 				remainder = 0;
 			}
 			getToolTipText[5] = ("Remainder: " + String.format("%,d", remainder));
-			Skills.goalData[getSkillIds[skillLevel]][2] = (int) ( ((currentExp[getSkillIds[skillLevel]] - init) / (double) (goal - init)) * 100 );
+			Skills.goalData[getSkillIds[skillLevel]][2] = (int) (((currentExp[getSkillIds[skillLevel]] - init)
+					/ (double) (goal - init)) * 100);
 			if (Skills.goalData[getSkillIds[skillLevel]][2] > 100) {
 				Skills.goalData[getSkillIds[skillLevel]][2] = 100;
 			}
@@ -15834,7 +16082,7 @@ public class Client extends GameRenderer {
 		minimapRotation = 0;
 		minimapZoom = 0;
 	}
-	
+
 	private static void showErrorScreen(Client client, String... messages) {
 		client.method4(1);
 		Graphics g = client.getGameComponent().getGraphics();
@@ -15879,17 +16127,20 @@ public class Client extends GameRenderer {
 		class19.insertTail((Node) obj);
 		Object obj1 = null;
 		Object obj2 = null;
-		for (Item class30_sub2_sub4_sub2_1 = (Item) class19.getTail(); class30_sub2_sub4_sub2_1 != null; class30_sub2_sub4_sub2_1 = (Item) class19.next()) {
+		for (Item class30_sub2_sub4_sub2_1 = (Item) class19
+				.getTail(); class30_sub2_sub4_sub2_1 != null; class30_sub2_sub4_sub2_1 = (Item) class19.next()) {
 			if (class30_sub2_sub4_sub2_1.id != ((Item) obj).id && obj1 == null) {
 				obj1 = class30_sub2_sub4_sub2_1;
 			}
-			if (class30_sub2_sub4_sub2_1.id != ((Item) obj).id && class30_sub2_sub4_sub2_1.id != ((Item) obj1).id && obj2 == null) {
+			if (class30_sub2_sub4_sub2_1.id != ((Item) obj).id && class30_sub2_sub4_sub2_1.id != ((Item) obj1).id
+					&& obj2 == null) {
 				obj2 = class30_sub2_sub4_sub2_1;
 			}
 		}
 
 		int i1 = i + (j << 7) + 0x60000000;
-		worldController.method281(i, i1, (Animable) obj1, method42(plane, j * 128 + 64, i * 128 + 64), (Animable) obj2, (Animable) obj, plane, j);
+		worldController.method281(i, i1, (Animable) obj1, method42(plane, j * 128 + 64, i * 128 + 64), (Animable) obj2,
+				(Animable) obj, plane, j);
 	}
 
 	@Override
@@ -15922,11 +16173,11 @@ public class Client extends GameRenderer {
 			return null;
 		}
 	}
-	
+
 	public void setLoadingPercentage(int loadingPercentage) {
 		this.loadingPercentage = loadingPercentage;
 	}
-	
+
 	void processLoadingScreen() {
 		Thread t = new Thread(new Runnable() {
 			@Override
@@ -15949,35 +16200,38 @@ public class Client extends GameRenderer {
 		this.loadingPercentage = percent;
 		this.loadingText = text;
 	}
-	
+
 	@Override
 	void startUp() {
 		isLoading = true;
 		super.resetGraphic();
-		System.out.println("Serial address: "+SystemProfiler.getUniqueSerial());
-		//System.out.println("Initiating loader process...");
+		System.out.println("Serial address: " + SystemProfiler.getUniqueSerial());
+		// System.out.println("Initiating loader process...");
 		processLoadingScreen();
 		new Thread(new MemoryMonitor()).start();
 		if (Signlink.sunjava) {
 			super.minDelay = 5;
 		}
 		getDocumentBaseHost();
-		
-		//.out.println("Downloading raw cache images...");
+
+		// .out.println("Downloading raw cache images...");
 		/** DOWNLOADING LOADING IMAGES **/
 		try {
-			loadingImages[2] = ImageIO.read(Client.class.getResourceAsStream("/org/runelive/client/resources/loading_bar.png"));
-			loadingImages[1] = loadingImages[0] = ImageIO.read(Client.class.getResourceAsStream("/org/runelive/client/resources/background.png"));
+			loadingImages[2] = ImageIO
+					.read(Client.class.getResourceAsStream("/org/runelive/client/resources/loading_bar.png"));
+			loadingImages[1] = loadingImages[0] = ImageIO
+					.read(Client.class.getResourceAsStream("/org/runelive/client/resources/background.png"));
 			super.graphics.drawImage(loadingImages[0], 0, 0, null);
-			//super.graphics.drawImage(loadingImages[1], 5, clientHeight - 35, null);
-		} catch(Exception e) {
+			// super.graphics.drawImage(loadingImages[1], 5, clientHeight - 35,
+			// null);
+		} catch (Exception e) {
 			e.printStackTrace();
-		}	
-		
-		//System.out.println("Downloading cache...");
+		}
+
+		// System.out.println("Downloading cache...");
 		/** DOWNLOADING CACHE **/
-		//CacheDownloader.init();
-		
+		// CacheDownloader.init();
+
 		if (Signlink.cache_dat != null) {
 			for (int i = 0; i < Configuration.CACHE_INDEX_COUNT; i++) {
 				cacheIndices[i] = new CacheIndex(Signlink.cache_dat, Signlink.cache_idx[i], i + 1);
@@ -16028,7 +16282,7 @@ public class Client extends GameRenderer {
 			onDemandFetcher = new CacheFileRequester();
 			onDemandFetcher.start(streamLoader_6, this);
 			Model.initialize(onDemandFetcher.getFileCount(0), onDemandFetcher);
-			//SpriteCache.initialise(50000, onDemandFetcher);
+			// SpriteCache.initialise(50000, onDemandFetcher);
 			setLoadingText(20, "Unpacked archives");
 			constructMusic();
 
@@ -16091,7 +16345,7 @@ public class Client extends GameRenderer {
 			mapDotNPC = new Sprite(mediaArchive, "mapdots", 1);
 			mapDotPlayer = new Sprite(mediaArchive, "mapdots", 2);
 			mapDotFriend = new Sprite(mediaArchive, "mapdots", 3);
-			//mapDotTeam = new Sprite(mediaArchive, "mapdots", 6);
+			// mapDotTeam = new Sprite(mediaArchive, "mapdots", 6);
 			mapDotTeam = CacheSpriteLoader.getCacheSprite2(88);
 
 			for (int j3 = 0; j3 < 12; j3++) {
@@ -16103,9 +16357,9 @@ public class Client extends GameRenderer {
 			}
 
 			loadModIcons();
-	
+
 			multiOverlay = CacheSpriteLoader.getCacheSprite(1025);
-			
+
 			Sprite sprite = new Sprite(mediaArchive, "screenframe", 0);
 			leftFrame = new RSImageProducer(sprite.myWidth, sprite.myHeight, getGameComponent());
 			sprite.method346(0, 0);
@@ -16139,10 +16393,10 @@ public class Client extends GameRenderer {
 			VarBit.unpackConfig(streamLoader);
 			ItemDefinition.isMembers = isMembers;
 			setLoadingText(80, "Unpacked config");
-			 //ItemDefinition.dumpItemModelsForId(13653);
+			// ItemDefinition.dumpItemModelsForId(13653);
 			// onDemandFetcher.dump();
 
-			//ItemDefinition.printModelIds();
+			// ItemDefinition.printModelIds();
 
 			if (!isLowDetail()) {
 				setLoadingText(85, "Unpacking sounds..");
@@ -16154,7 +16408,7 @@ public class Client extends GameRenderer {
 			}
 
 			setLoadingText(95, "Unpacking interfaces");
-			TextDrawingArea[] fonts = { smallText, normalText, boldText, fancyText};
+			TextDrawingArea[] fonts = { smallText, normalText, boldText, fancyText };
 
 			try {
 				RSInterface.unpack(interfaceArchive, fonts, mediaArchive);
@@ -16229,43 +16483,46 @@ public class Client extends GameRenderer {
 			ObjectDefinition.clientInstance = this;
 			MobDefinition.clientInstance = this;
 			Settings.load();
-			//preloadModels();
-			/*final BufferedReader reader = new BufferedReader(new FileReader(MapUpdate.map_repack_file));
-			if(Integer.valueOf(reader.readLine()) == 1) {
-				repackCacheIndex(4);
-				System.out.println("Maps have been updated.");
-				BufferedWriter writer2 = new BufferedWriter(new FileWriter(MapUpdate.map_repack_file));
-				writer2.write("0");
-				writer2.close();
-				MapUpdate.REPACK = 0;
-			}
-			final BufferedReader reader2 = new BufferedReader(new FileReader(AnimationsUpdate.animation_repack_file));
-			if(Integer.valueOf(reader2.readLine()) == 1) {
-				repackCacheIndex(2);
-				System.out.println("Animations have been updated.");
-				BufferedWriter writer3 = new BufferedWriter(new FileWriter(AnimationsUpdate.animation_repack_file));
-				writer3.write("0");
-				writer3.close();
-				AnimationsUpdate.REPACK = 0;
-			}*/
-			//ObjectDefinition.dumpObjectModels();
-			//onDemandFetcher.dump();
-			//repackCacheIndex(4); //Maps
-			//repackCacheIndex(2); //Animations
-			//cacheIndices[1].dump();
-			/*for (int index = 1; index < cacheIndices.length; index++) {
-				System.out.println("Dumping index " + index);
-				cacheIndices[index].dump();
-			}*/
-			/*for (int index = 1; index < cacheIndices.length; index++) {
-				System.out.println("Cache files in index " + index + ": " + cacheIndices[index].getFileCount());
-				//cacheIndices[index].dump();
-			}*/
+			// preloadModels();
+			/*
+			 * final BufferedReader reader = new BufferedReader(new
+			 * FileReader(MapUpdate.map_repack_file));
+			 * if(Integer.valueOf(reader.readLine()) == 1) {
+			 * repackCacheIndex(4); System.out.println("Maps have been updated."
+			 * ); BufferedWriter writer2 = new BufferedWriter(new
+			 * FileWriter(MapUpdate.map_repack_file)); writer2.write("0");
+			 * writer2.close(); MapUpdate.REPACK = 0; } final BufferedReader
+			 * reader2 = new BufferedReader(new
+			 * FileReader(AnimationsUpdate.animation_repack_file));
+			 * if(Integer.valueOf(reader2.readLine()) == 1) {
+			 * repackCacheIndex(2); System.out.println(
+			 * "Animations have been updated."); BufferedWriter writer3 = new
+			 * BufferedWriter(new
+			 * FileWriter(AnimationsUpdate.animation_repack_file));
+			 * writer3.write("0"); writer3.close(); AnimationsUpdate.REPACK = 0;
+			 * }
+			 */
+			// ObjectDefinition.dumpObjectModels();
+			// onDemandFetcher.dump();
+			// repackCacheIndex(4); //Maps
+			// repackCacheIndex(2); //Animations
+			// cacheIndices[1].dump();
+			/*
+			 * for (int index = 1; index < cacheIndices.length; index++) {
+			 * System.out.println("Dumping index " + index);
+			 * cacheIndices[index].dump(); }
+			 */
+			/*
+			 * for (int index = 1; index < cacheIndices.length; index++) {
+			 * System.out.println("Cache files in index " + index + ": " +
+			 * cacheIndices[index].getFileCount());
+			 * //cacheIndices[index].dump(); }
+			 */
 			System.gc();
 			onDemandFetcher.getPriorityHandler().requestFiles();
 			isLoading = false;
 			updateSettingsInterface();
-			if(Configuration.NEW_CURSORS) {
+			if (Configuration.NEW_CURSORS) {
 				super.setCursor(CursorData.CURSOR_0);
 			}
 			return;
@@ -16274,137 +16531,139 @@ public class Client extends GameRenderer {
 			exception.printStackTrace();
 			Signlink.reportError("loaderror " + anInt1079);
 		}
-		
+
 		loadingError = true;
 	}
-	
+
 	public void loadModIcons() {
-		modIcons[0] = CacheSpriteLoader.getCacheSprite(828); //Moderator
-		modIcons[1] = CacheSpriteLoader.getCacheSprite(828); //Moderator
-		modIcons[2] = CacheSpriteLoader.getCacheSprite(829); //Administrator
-		modIcons[3] = CacheSpriteLoader.getCacheSprite2(3); //Owner
-		modIcons[4] = CacheSpriteLoader.getCacheSprite(837); //Support
-		modIcons[5] = CacheSpriteLoader.getCacheSprite2(2); //YouTuber
-		modIcons[6] = CacheSpriteLoader.getCacheSprite2(54); //Global Moderator
-		modIcons[7] = CacheSpriteLoader.getCacheSprite2(16); //Regular Donator
-		modIcons[8] = CacheSpriteLoader.getCacheSprite2(15); //Super Donator
-		modIcons[9] = CacheSpriteLoader.getCacheSprite2(14); //Extreme Donator
-		modIcons[10] = CacheSpriteLoader.getCacheSprite2(37); //Legendary Donator
-		modIcons[11] = CacheSpriteLoader.getCacheSprite2(38); //Uber Donator
-		modIcons[12] = CacheSpriteLoader.getCacheSprite(840); //Regular Ironman
-		modIcons[13] = CacheSpriteLoader.getCacheSprite(839); //Hardcore Ironman
-		modIcons[14] = CacheSpriteLoader.getCacheSprite2(3); //Manager
-		modIcons[15] = CacheSpriteLoader.getCacheSprite2(66); //Wiki Editor
-		modIcons[16] = CacheSpriteLoader.getCacheSprite2(65); //Wiki Manager
-		modIcons[17] = CacheSpriteLoader.getCacheSprite2(90); //Staff Manager
+		modIcons[0] = CacheSpriteLoader.getCacheSprite(828); // Moderator
+		modIcons[1] = CacheSpriteLoader.getCacheSprite(828); // Moderator
+		modIcons[2] = CacheSpriteLoader.getCacheSprite(829); // Administrator
+		modIcons[3] = CacheSpriteLoader.getCacheSprite2(3); // Owner
+		modIcons[4] = CacheSpriteLoader.getCacheSprite(837); // Support
+		modIcons[5] = CacheSpriteLoader.getCacheSprite2(2); // YouTuber
+		modIcons[6] = CacheSpriteLoader.getCacheSprite2(54); // Global Moderator
+		modIcons[7] = CacheSpriteLoader.getCacheSprite2(16); // Regular Donator
+		modIcons[8] = CacheSpriteLoader.getCacheSprite2(15); // Super Donator
+		modIcons[9] = CacheSpriteLoader.getCacheSprite2(14); // Extreme Donator
+		modIcons[10] = CacheSpriteLoader.getCacheSprite2(37); // Legendary
+																// Donator
+		modIcons[11] = CacheSpriteLoader.getCacheSprite2(38); // Uber Donator
+		modIcons[12] = CacheSpriteLoader.getCacheSprite(840); // Regular Ironman
+		modIcons[13] = CacheSpriteLoader.getCacheSprite(839); // Hardcore
+																// Ironman
+		modIcons[14] = CacheSpriteLoader.getCacheSprite2(3); // Manager
+		modIcons[15] = CacheSpriteLoader.getCacheSprite2(66); // Wiki Editor
+		modIcons[16] = CacheSpriteLoader.getCacheSprite2(65); // Wiki Manager
+		modIcons[17] = CacheSpriteLoader.getCacheSprite2(90); // Staff Manager
 	}
-	
+
 	public final String loyaltyRank(int i) {
 		switch (i) {
-			case 1: 
-				return "The Real";
-			case 2: 
-				return "The Boss";
-			case 3: 
-				return "Maximum";
-			case 4: 
-				return "Completionist";
-			case 5: 
-				return "The Loyal";
-			case 6: 
-				return "The Devoted";
-			case 7: 
-				return "Weakling";
-			case 8: 
-				return "Cowardly";
-			case 9: 
-				return "Sir Lame";
-			case 10: 
-				return "Grumpy";
-			case 11: 
-				return "Overlord";
-			case 12: 
-				return "Pker";
-			case 13: 
-				return "Cheerful";
-			case 14: 
-				return "@blu@War-Chief";
-			case 15: 
-				return "PK Master";
-			case 16: 
-				return "The Wise";
-			case 17: 
-				return "The Explorer";
-			case 18: 
-				return "@gr3@The Wealthy";
-			case 19: 
-				return "Yt'Haar";
-			case 20: 
-				return "Champion";
-			case 21: 
-				return "The Skilful";
-			case 22: 
-				return "Master";
-			case 23: 
-				return "Oldschool";
-			case 24: 
-				return "The Mighty";
-			case 25: 
-				return "Warrior";
-			case 26: 
-				return "Magician";
-			case 27: 
-				return "Archer";
-			case 28: 
-				return "The Faithful";
-			case 29: 
-				return "The Lucky";
-			case 30: 
-				return "Rioter";
-			case 31: 
-				return "Lazy";
-			case 32: 
-				return "Void Knight";
-			case 33: 
-				return "The Avenger";
-			case 34: 
-				return "Wingman";
-			case 35: 
-				return "King";
-			case 36: 
-				return "Queen";
-			case 37: 
-				return "@or3@Donator";
-			case 38: 
-				return "@369@Super";
-			case 39: 
-				return "@gre@Extreme";
-			case 40: 
-				return "@mag@Legendary";
-			case 41: 
-				return "@mds@Moderator";
-			case 42: 
-				return "@yel@Administrator";
-			case 43: 
-				return "@red@Owner";
-			case 44: 
-				return "@spt@Support";
-			case 45: 
-				return "@dbl@Developer";
-			case 46: 
-				return "@yel@Uber";	
-			case 47: 
-				return "@glb@Global Mod";
-			case 48: 
-				return "@wke@Wiki Editor";
-			case 49: 
-				return "@325@Wiki Manager";
-			case 50: 
-				return "@red@Manager";
-			case 51: 
-				return "@hbd@Hybrid";
-			case 52: 
-				return "@smm@Staff Manager";
+		case 1:
+			return "The Real";
+		case 2:
+			return "The Boss";
+		case 3:
+			return "Maximum";
+		case 4:
+			return "Completionist";
+		case 5:
+			return "The Loyal";
+		case 6:
+			return "The Devoted";
+		case 7:
+			return "Weakling";
+		case 8:
+			return "Cowardly";
+		case 9:
+			return "Sir Lame";
+		case 10:
+			return "Grumpy";
+		case 11:
+			return "Overlord";
+		case 12:
+			return "Pker";
+		case 13:
+			return "Cheerful";
+		case 14:
+			return "@blu@War-Chief";
+		case 15:
+			return "PK Master";
+		case 16:
+			return "The Wise";
+		case 17:
+			return "The Explorer";
+		case 18:
+			return "@gr3@The Wealthy";
+		case 19:
+			return "Yt'Haar";
+		case 20:
+			return "Champion";
+		case 21:
+			return "The Skilful";
+		case 22:
+			return "Master";
+		case 23:
+			return "Oldschool";
+		case 24:
+			return "The Mighty";
+		case 25:
+			return "Warrior";
+		case 26:
+			return "Magician";
+		case 27:
+			return "Archer";
+		case 28:
+			return "The Faithful";
+		case 29:
+			return "The Lucky";
+		case 30:
+			return "Rioter";
+		case 31:
+			return "Lazy";
+		case 32:
+			return "Void Knight";
+		case 33:
+			return "The Avenger";
+		case 34:
+			return "Wingman";
+		case 35:
+			return "King";
+		case 36:
+			return "Queen";
+		case 37:
+			return "@or3@Donator";
+		case 38:
+			return "@369@Super";
+		case 39:
+			return "@gre@Extreme";
+		case 40:
+			return "@mag@Legendary";
+		case 41:
+			return "@mds@Moderator";
+		case 42:
+			return "@yel@Administrator";
+		case 43:
+			return "@red@Owner";
+		case 44:
+			return "@spt@Support";
+		case 45:
+			return "@dbl@Developer";
+		case 46:
+			return "@yel@Uber";
+		case 47:
+			return "@glb@Global Mod";
+		case 48:
+			return "@wke@Wiki Editor";
+		case 49:
+			return "@325@Wiki Manager";
+		case 50:
+			return "@red@Manager";
+		case 51:
+			return "@hbd@Hybrid";
+		case 52:
+			return "@smm@Staff Manager";
 		}
 		return "";
 	}
@@ -16414,7 +16673,8 @@ public class Client extends GameRenderer {
 		for (int i : ids) {
 			try {
 				byte abyte[] = cacheIndices[archive].get(onDemandFetcher.getModelIndex(i));
-				File map = new File(Signlink.getCacheDirectory() + "/itemdata/" + onDemandFetcher.getModelIndex(i) + ".gz");
+				File map = new File(
+						Signlink.getCacheDirectory() + "/itemdata/" + onDemandFetcher.getModelIndex(i) + ".gz");
 				FileOutputStream fos = new FileOutputStream(map);
 				fos.write(abyte);
 				fos.close();
@@ -16423,30 +16683,31 @@ public class Client extends GameRenderer {
 			}
 		}
 	}
-	
+
 	public void dumpidx(int cacheIndex) {
-		System.out.println("Unpacking idx" +cacheIndex);
+		System.out.println("Unpacking idx" + cacheIndex);
 		try {
-			for(int i = 0; ; i++) {
+			for (int i = 0;; i++) {
 				try {
 					byte[] indexByteArray = cacheIndices[cacheIndex].get(i);
-					if(indexByteArray == null) {
+					if (indexByteArray == null) {
 						System.out.println("Could not find a higher index, exiting dump operation");
 						continue;
 					}
-					BufferedOutputStream gzip = new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream("./dump" +cacheIndex+ "/" +i+ ".gz")));
-					if(indexByteArray.length == 0) 
+					BufferedOutputStream gzip = new BufferedOutputStream(
+							new GZIPOutputStream(new FileOutputStream("./dump" + cacheIndex + "/" + i + ".gz")));
+					if (indexByteArray.length == 0)
 						continue;
 					else {
 						gzip.write(indexByteArray);
 						gzip.close();
-						
+
 					}
-				} catch(IOException io) {
-					 throw new IOException("could not write to folder indicated");
+				} catch (IOException io) {
+					throw new IOException("could not write to folder indicated");
 				}
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -16500,7 +16761,8 @@ public class Client extends GameRenderer {
 	private void updateScreen() {
 		gameAreaWidth = GameFrame.isFixed() ? 512 : getScreenWidth();
 		gameAreaHeight = GameFrame.isFixed() ? 334 : getScreenHeight();
-		if (gameScreenIP == null || gameScreenIP.anInt316 != gameAreaWidth || gameScreenIP.anInt317 != gameAreaHeight && (gameAreaWidth > 0 && gameAreaHeight > 0)) {
+		if (gameScreenIP == null || gameScreenIP.anInt316 != gameAreaWidth
+				|| gameScreenIP.anInt317 != gameAreaHeight && (gameAreaWidth > 0 && gameAreaHeight > 0)) {
 			gameScreenIP = new RSImageProducer(gameAreaWidth, gameAreaHeight, getGameComponent());
 		}
 		updateGameArea();
@@ -16513,7 +16775,8 @@ public class Client extends GameRenderer {
 			(loggedIn ? gameScreenIP : titleScreenIP).initDrawingArea();
 		} else {
 			this.resizing = false;
-			(loggedIn ? gameScreenIP : titleScreenIP).drawGraphics(gameScreenDrawY, graphics, GameFrame.isFixed() ? 4 : gameScreenDrawX);
+			(loggedIn ? gameScreenIP : titleScreenIP).drawGraphics(gameScreenDrawY, graphics,
+					GameFrame.isFixed() ? 4 : gameScreenDrawX);
 		}
 	}
 
@@ -16531,7 +16794,7 @@ public class Client extends GameRenderer {
 				clientHeight = REGULAR_HEIGHT;
 				sendFrame36(652, 0);
 				GameWindow.setFixed();
-				//recreateClientFrame(false, 765, 503, false, 1, false);
+				// recreateClientFrame(false, 765, 503, false, 1, false);
 				welcomeScreenRaised = true;
 				clientZoom = 0;
 			} else if (mode == ScreenMode.RESIZABLE) {
@@ -16541,7 +16804,8 @@ public class Client extends GameRenderer {
 				forceWidth = forceHeight = -1;
 				sendFrame36(652, 2);
 				GameWindow.setResizable();
-				//recreateClientFrame(false, RESIZABLE_WIDTH, RESIZABLE_HEIGHT, true, 0, true);
+				// recreateClientFrame(false, RESIZABLE_WIDTH, RESIZABLE_HEIGHT,
+				// true, 0, true);
 				welcomeScreenRaised = true;
 				clientZoom = 480;
 			} else {
@@ -16549,14 +16813,15 @@ public class Client extends GameRenderer {
 				gameScreenDrawX = 0;
 				gameScreenDrawY = 0;
 				sendFrame36(652, 1);
-				//Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-				//clientWidth = size.width;
-				//clientHeight = size.height;
+				// Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+				// clientWidth = size.width;
+				// clientHeight = size.height;
 				forceWidth = forceHeight = -1;
-				//super.myWidth = size.width;
-				//super.myHeight = size.height;
+				// super.myWidth = size.width;
+				// super.myHeight = size.height;
 				GameWindow.setFullscreen();
-				//recreateClientFrame(true, size.width, size.height, false, 0, true);
+				// recreateClientFrame(true, size.width, size.height, false, 0,
+				// true);
 				welcomeScreenRaised = true;
 				clientZoom = 480;
 			}
@@ -16591,10 +16856,10 @@ public class Client extends GameRenderer {
 			int j = 0;
 			if (configId < Varp.getCache().length)
 				j = Varp.getCache()[configId].getAnInt709();
-			
+
 			if (j == 0)
 				return;
-			
+
 			int k = variousSettings[configId];
 
 			if (j == 1) {
@@ -16713,7 +16978,8 @@ public class Client extends GameRenderer {
 								l += 19;
 							}
 							if (player.bountyHunterIcon >= 0 && player.bountyHunterIcon <= 4) {
-								CacheSpriteLoader.getCacheSprite(1026 + player.bountyHunterIcon).drawSprite(spriteDrawX - (player.skulled ? 8 : 10), spriteDrawY - l);
+								CacheSpriteLoader.getCacheSprite(1026 + player.bountyHunterIcon)
+										.drawSprite(spriteDrawX - (player.skulled ? 8 : 10), spriteDrawY - l);
 								l += 28;
 							}
 							if (player.headIcon < 20) {
@@ -16721,7 +16987,9 @@ public class Client extends GameRenderer {
 								l += 29;
 							}
 							if (Configuration.DISPLAY_USERNAMES_ABOVE_HEAD) {
-								newSmallFont.drawCenteredString("{" + (player.name != null ? player.name : "null username") + "}", spriteDrawX, spriteDrawY - 10, 0x15FF00, 0x000000);
+								newSmallFont.drawCenteredString(
+										"{" + (player.name != null ? player.name : "null username") + "}", spriteDrawX,
+										spriteDrawY - 10, 0x15FF00, 0x000000);
 							}
 						}
 					}
@@ -16746,7 +17014,8 @@ public class Client extends GameRenderer {
 						}
 					}
 				}
-				if (((Entity) obj).textSpoken != null && (j >= playerCount || publicChatMode == 0 || publicChatMode == 3 || publicChatMode == 1 && isFriendOrSelf(((Player) obj).name))) {
+				if (((Entity) obj).textSpoken != null && (j >= playerCount || publicChatMode == 0 || publicChatMode == 3
+						|| publicChatMode == 1 && isFriendOrSelf(((Player) obj).name))) {
 					npcScreenPos((Entity) obj, ((Entity) obj).height);
 					if (spriteDrawX > -1 && anInt974 < anInt975) {
 						anIntArray979[anInt974] = boldText.method384(((Entity) obj).textSpoken) / 2;
@@ -16777,8 +17046,8 @@ public class Client extends GameRenderer {
 							if (Configuration.NEW_HEALTH_BARS) {
 								int currentHealth = ((Entity) obj).currentHealth;
 								int maxHealth = ((Entity) obj).maxHealth;
-								if(maxHealth > 0) {
-									if(((Entity) obj) instanceof Player) {
+								if (maxHealth > 0) {
+									if (((Entity) obj) instanceof Player) {
 										currentHealth = currentHealth / 10;
 										maxHealth = maxHealth / 10;
 									}
@@ -16797,11 +17066,13 @@ public class Client extends GameRenderer {
 								}
 								if (maxHealth >= 2000) {
 									CacheSpriteLoader.getCacheSprite(396).drawSprite(spriteDrawX - 44, spriteDrawY - 5);
-									Sprite HPBarFull = new Sprite(CacheSpriteLoader.getCacheSpriteData(397), hpPercent, 7, 1);
+									Sprite HPBarFull = new Sprite(CacheSpriteLoader.getCacheSpriteData(397), hpPercent,
+											7, 1);
 									HPBarFull.drawSprite(spriteDrawX - 44, spriteDrawY - 5);
 								} else {
 									CacheSpriteLoader.getCacheSprite(349).drawSprite(spriteDrawX - 28, spriteDrawY - 5);
-									Sprite HPBarFull = new Sprite(CacheSpriteLoader.getCacheSpriteData(348), HpPercent, 7, 1);
+									Sprite HPBarFull = new Sprite(CacheSpriteLoader.getCacheSpriteData(348), HpPercent,
+											7, 1);
 									HPBarFull.drawSprite(spriteDrawX - 28, spriteDrawY - 5);
 								}
 							} else {
@@ -16819,7 +17090,10 @@ public class Client extends GameRenderer {
 								double maxHitpoints = o.maxHealth;
 								double percentage = (int) (currentHitpoints / maxHitpoints * 100);
 								int color = calculateHitpointsColor((int) Math.round(percentage));
-								newRegularFont.drawCenteredString(new StringBuilder().append((int) currentHitpoints).append("/").append((int) maxHitpoints).toString(), spriteDrawX, spriteDrawY - 22, color, 0x000000);
+								newRegularFont.drawCenteredString(
+										new StringBuilder().append((int) currentHitpoints).append("/")
+												.append((int) maxHitpoints).toString(),
+										spriteDrawX, spriteDrawY - 22, color, 0x000000);
 							}
 						}
 					} catch (Exception e) {
@@ -16832,15 +17106,13 @@ public class Client extends GameRenderer {
 					if (((Entity) obj).hitsLoopCycle[j1] > loopCycle) {
 						Entity entity = (Entity) obj;
 						npcScreenPos(entity, entity.height / 2);
-						
-						if(!Configuration.NEW_HITMARKS) {
-							
+
+						if (!Configuration.NEW_HITMARKS) {
+
 							hitmarkDrawOld(spriteDrawX, spriteDrawY, j1, entity);
-							
-							
+
 						} else {
-							
-							
+
 							if (entity.moveTimer[j1] == 0) {
 								if (entity.hitmarkMove[j1] > -14)
 									entity.hitmarkMove[j1]--;
@@ -16850,13 +17122,11 @@ public class Client extends GameRenderer {
 							}
 							if (entity.hitmarkMove[j1] <= -14)
 								entity.hitmarkTrans[j1] -= 10;
-							hitmarkDrawNew(entity, String.valueOf(entity.hitArray[j1]).length(), entity.hitMarkTypes[j1],
-									entity.hitIcon[j1], entity.hitArray[j1],
-									entity.soakDamage[j1], entity.hitmarkMove[j1],
-									entity.hitmarkTrans[j1], j1);
+							hitmarkDrawNew(entity, String.valueOf(entity.hitArray[j1]).length(),
+									entity.hitMarkTypes[j1], entity.hitIcon[j1], entity.hitArray[j1],
+									entity.soakDamage[j1], entity.hitmarkMove[j1], entity.hitmarkTrans[j1], j1);
 						}
-						
-						
+
 					}
 				}
 			}
@@ -16872,7 +17142,10 @@ public class Client extends GameRenderer {
 					flag = false;
 
 					for (int l2 = 0; l2 < k; l2++) {
-						if (l1 + 2 > anIntArray977[l2] - anIntArray978[l2] && l1 - k2 < anIntArray977[l2] + 2 && k1 - j2 < anIntArray976[l2] + anIntArray979[l2] && k1 + j2 > anIntArray976[l2] - anIntArray979[l2] && anIntArray977[l2] - anIntArray978[l2] < l1) {
+						if (l1 + 2 > anIntArray977[l2] - anIntArray978[l2] && l1 - k2 < anIntArray977[l2] + 2
+								&& k1 - j2 < anIntArray976[l2] + anIntArray979[l2]
+								&& k1 + j2 > anIntArray976[l2] - anIntArray979[l2]
+								&& anIntArray977[l2] - anIntArray978[l2] < l1) {
 							l1 = anIntArray977[l2] - anIntArray978[l2];
 							flag = true;
 						}
@@ -16992,9 +17265,8 @@ public class Client extends GameRenderer {
 	}
 
 	private int calculateHitpointsColor(int percentage) {
-		int[] colorArray = new int[] { 0x01DF01, 0x3ADF00, 0x74DF00, 0xA5DF00,
-				0xD7DF01, 0xDBA901, 0xDF7401, 0xDF3A01, 0xFA5858, 0xFE2E2E,
-				0xDF0101, };
+		int[] colorArray = new int[] { 0x01DF01, 0x3ADF00, 0x74DF00, 0xA5DF00, 0xD7DF01, 0xDBA901, 0xDF7401, 0xDF3A01,
+				0xFA5858, 0xFE2E2E, 0xDF0101, };
 		int color = colorArray[0];
 		for (int i = 0; i < colorArray.length; i++) {
 			if (percentage >= 100 - i * 10) {
@@ -17009,9 +17281,17 @@ public class Client extends GameRenderer {
 		try {
 			Canvas3D.setBounds(getScreenWidth(), getScreenHeight());
 			fullScreenTextureArray = Canvas3D.lineOffsets;
-			Canvas3D.setBounds(GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? chatAreaIP != null ? chatAreaIP.anInt316 : 519 : getScreenWidth(), GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? chatAreaIP != null ? chatAreaIP.anInt317 : 165 : getScreenHeight());
+			Canvas3D.setBounds(
+					GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible()
+							? chatAreaIP != null ? chatAreaIP.anInt316 : 519 : getScreenWidth(),
+					GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible()
+							? chatAreaIP != null ? chatAreaIP.anInt317 : 165 : getScreenHeight());
 			anIntArray1180 = Canvas3D.lineOffsets;
-			Canvas3D.setBounds(GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? tabAreaIP != null ? tabAreaIP.anInt316 : 346 : getScreenWidth(), GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible() ? tabAreaIP != null ? tabAreaIP.anInt317 : 335 : getScreenHeight());
+			Canvas3D.setBounds(
+					GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible()
+							? tabAreaIP != null ? tabAreaIP.anInt316 : 346 : getScreenWidth(),
+					GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible()
+							? tabAreaIP != null ? tabAreaIP.anInt317 : 335 : getScreenHeight());
 			anIntArray1181 = Canvas3D.lineOffsets;
 			Canvas3D.setBounds(gameAreaWidth, gameAreaHeight);
 			anIntArray1182 = Canvas3D.lineOffsets;
@@ -17024,7 +17304,8 @@ public class Client extends GameRenderer {
 				ai[i8] = l8 * i9 >> 16;
 			}
 
-			WorldController.method310(500, 800, !loggedIn ? getScreenWidth() : gameAreaWidth, !loggedIn ? getScreenHeight() : gameAreaHeight, ai);
+			WorldController.method310(500, 800, !loggedIn ? getScreenWidth() : gameAreaWidth,
+					!loggedIn ? getScreenHeight() : gameAreaHeight, ai);
 
 			if (loggedIn) {
 				gameScreenIP = new RSImageProducer(gameAreaWidth, gameAreaHeight, getGameComponent());
@@ -17098,19 +17379,19 @@ public class Client extends GameRenderer {
 
 	private void handleQuickAidsActive() {
 		int toggle = -1;
-		if(prayerInterfaceType == 5608) {
-			if(getQuickPrayersSet() > 0) {
-				if(!mapArea.prayer.getOrbState()) {
-					for(int i = 0; i < quickPrayers.length; i++) {
+		if (prayerInterfaceType == 5608) {
+			if (getQuickPrayersSet() > 0) {
+				if (!mapArea.prayer.getOrbState()) {
+					for (int i = 0; i < quickPrayers.length; i++) {
 						int button = i == 26 ? 18018 : i == 27 ? 18025 : (i * 2) + 25000;
 						RSInterface rsInterface = RSInterface.interfaceCache[button];
-						if(rsInterface.valueIndexArray != null && rsInterface.valueIndexArray[0][0] == 5) {
+						if (rsInterface.valueIndexArray != null && rsInterface.valueIndexArray[0][0] == 5) {
 							toggle = rsInterface.valueIndexArray[0][1];
-							if(variousSettings[toggle] == 0 && quickPrayers[i] == 1) {
+							if (variousSettings[toggle] == 0 && quickPrayers[i] == 1) {
 								getOut().putOpcode(185);
 								getOut().putShort(button);
 								mapArea.prayer.setOrbState(true);
-							} else if(quickPrayers[i] == 1 && variousSettings[toggle] == 1) {
+							} else if (quickPrayers[i] == 1 && variousSettings[toggle] == 1) {
 								mapArea.prayer.setOrbState(true);
 							}
 						}
@@ -17120,7 +17401,7 @@ public class Client extends GameRenderer {
 					mapArea.prayer.setOrbState(false);
 				}
 			} else {
-				if(mapArea.prayer.getOrbState()) {
+				if (mapArea.prayer.getOrbState()) {
 					turnOffPrayers();
 				} else {
 					pushMessage("You don't have any quick prayers selected.", 0, "");
@@ -17128,20 +17409,20 @@ public class Client extends GameRenderer {
 				}
 				mapArea.prayer.setOrbState(false);
 			}
-		} else if(prayerInterfaceType == 32500) {
-			if(getQuickCursesSet() > 0) {
-				if(!mapArea.prayer.getOrbState()) {
-					for(int i = 0; i < quickCurses.length; i++) {
+		} else if (prayerInterfaceType == 32500) {
+			if (getQuickCursesSet() > 0) {
+				if (!mapArea.prayer.getOrbState()) {
+					for (int i = 0; i < quickCurses.length; i++) {
 						int button = (i * 2) + 32500 + 3;
 						RSInterface rsInterface = RSInterface.interfaceCache[button];
-						if(rsInterface.valueIndexArray != null && rsInterface.valueIndexArray[0][0] == 5) {
+						if (rsInterface.valueIndexArray != null && rsInterface.valueIndexArray[0][0] == 5) {
 							toggle = rsInterface.valueIndexArray[0][1];
-							if(variousSettings[toggle] == 0 && quickCurses[i] == 1) {
+							if (variousSettings[toggle] == 0 && quickCurses[i] == 1) {
 								getOut().putOpcode(185);
 								getOut().putShort(button);
 								mapArea.prayer.setOrbState(true);
 							}
-						} else if(quickCurses[i] == 1 && variousSettings[toggle] == 1) {
+						} else if (quickCurses[i] == 1 && variousSettings[toggle] == 1) {
 							mapArea.prayer.setOrbState(true);
 						}
 					}
@@ -17150,7 +17431,7 @@ public class Client extends GameRenderer {
 					mapArea.prayer.setOrbState(false);
 				}
 			} else {
-				if(mapArea.prayer.getOrbState()) {
+				if (mapArea.prayer.getOrbState()) {
 					turnOffCurses();
 					mapArea.prayer.setOrbState(false);
 				} else {
@@ -17163,8 +17444,8 @@ public class Client extends GameRenderer {
 
 	private int getQuickPrayersSet() {
 		int amount = 0;
-		for(int i = 0; i < quickPrayers.length; i++)
-			if(quickPrayers[i] == 1) {
+		for (int i = 0; i < quickPrayers.length; i++)
+			if (quickPrayers[i] == 1) {
 				amount++;
 			}
 		return amount;
@@ -17172,8 +17453,8 @@ public class Client extends GameRenderer {
 
 	private int getQuickCursesSet() {
 		int amount = 0;
-		for(int i = 0; i < quickCurses.length; i++)
-			if(quickCurses[i] == 1) {
+		for (int i = 0; i < quickCurses.length; i++)
+			if (quickCurses[i] == 1) {
 				amount++;
 			}
 		return amount;
@@ -17187,34 +17468,34 @@ public class Client extends GameRenderer {
 	public Sprite coinOrb;
 	public Sprite coinPart;
 	public Sprite coinActiveHover;
-	
+
 	int[] quickPrayers = new int[28];
 	int[] quickCurses = new int[20];
 
 	private int[] getCurseTypeForIndex(int index) {
 		int[] types = null;
-		for(int g = 0; g < leechCurse.length; g++) {
-			if(index == leechCurse[g])
+		for (int g = 0; g < leechCurse.length; g++) {
+			if (index == leechCurse[g])
 				types = sapCurse;
 		}
-		for(int g = 0; g < sapCurse.length; g++) {
-			if(index == sapCurse[g])
+		for (int g = 0; g < sapCurse.length; g++) {
+			if (index == sapCurse[g])
 				types = leechCurse;
 		}
-		for(int g = 0; g < deflectCurse.length; g++) {
-			if(index == deflectCurse[g])
+		for (int g = 0; g < deflectCurse.length; g++) {
+			if (index == deflectCurse[g])
 				types = deflectCurse;
 		}
-		if(index == 6) {
-			int[] type = {17,18};
+		if (index == 6) {
+			int[] type = { 17, 18 };
 			types = type;
 		}
-		if(index == 17 || index == 18) {
-			int[] type = {6,7,8,9,17,18};
+		if (index == 17 || index == 18) {
+			int[] type = { 6, 7, 8, 9, 17, 18 };
 			types = type;
 		}
-		if(index == 19)  {
-			int[] turmoilCurseOff = {1,2,3,4,10,11,12,13,14,15,16,19};
+		if (index == 19) {
+			int[] turmoilCurseOff = { 1, 2, 3, 4, 10, 11, 12, 13, 14, 15, 16, 19 };
 			types = turmoilCurseOff;
 		}
 		return types;
@@ -17222,30 +17503,30 @@ public class Client extends GameRenderer {
 
 	public void togglePrayerState(int button) {
 		int index = button == 17279 ? 26 : button == 17280 ? 27 : button - 17202;
-		if(prayerInterfaceType == 5608) {
-			if((maxStats[5] / 10) >= prayerLevelRequirements[index]) {
+		if (prayerInterfaceType == 5608) {
+			if ((maxStats[5] / 10) >= prayerLevelRequirements[index]) {
 				int[] types = getPrayerTypeForIndex(index);
-				if(types != null) {
-					for(int g = 0; g < rangeAndMagePray.length; g++) {
-						if(index == rangeAndMagePray[g]) {
+				if (types != null) {
+					for (int g = 0; g < rangeAndMagePray.length; g++) {
+						if (index == rangeAndMagePray[g]) {
 							types = rangeAndMagePrayOff;
 						}
 					}
-					for(int i = 0; i < types.length; i++) {
-						if(index != types[i]) {
-							if(index == 24 || index == 25) {
+					for (int i = 0; i < types.length; i++) {
+						if (index != types[i]) {
+							if (index == 24 || index == 25) {
 								types = superiorPray;
 							}
 							quickPrayers[types[i]] = 0;
 							variousSettings[quickConfigIDs[types[i]]] = 0;
 							updateConfig(quickConfigIDs[types[i]]);
-							if(dialogID != -1)
+							if (dialogID != -1)
 								inputTaken = true;
 						} else {
 							quickPrayers[index] = (quickPrayers[index] + 1) % 2;
 							variousSettings[quickConfigIDs[index]] = quickPrayers[index];
 							updateConfig(quickConfigIDs[index]);
-							if(dialogID != -1)
+							if (dialogID != -1)
 								inputTaken = true;
 						}
 					}
@@ -17253,22 +17534,23 @@ public class Client extends GameRenderer {
 					quickPrayers[index] = (quickPrayers[index] + 1) % 2;
 					variousSettings[quickConfigIDs[index]] = quickPrayers[index];
 					updateConfig(quickConfigIDs[index]);
-					if(dialogID != -1)
+					if (dialogID != -1)
 						inputTaken = true;
 				}
 			} else {
-				pushMessage("You need a Prayer level of atleast " + prayerLevelRequirements[index] + " to use " + prayerName[index] + ".", 0, "");
+				pushMessage("You need a Prayer level of atleast " + prayerLevelRequirements[index] + " to use "
+						+ prayerName[index] + ".", 0, "");
 			}
-		} else if(prayerInterfaceType == 32500) {
-			if((maxStats[5] / 10) >= curseLevelRequirements[index]) {
+		} else if (prayerInterfaceType == 32500) {
+			if ((maxStats[5] / 10) >= curseLevelRequirements[index]) {
 				int[] types = getCurseTypeForIndex(index);
-				if(types != null) {
-					for(int i = 0; i < types.length; i++) {
-						if(index != types[i]) {
+				if (types != null) {
+					for (int i = 0; i < types.length; i++) {
+						if (index != types[i]) {
 							quickCurses[types[i]] = 0;
 							variousSettings[quickConfigIDs[types[i]]] = 0;
 							updateConfig(quickConfigIDs[types[i]]);
-							if(dialogID != -1)
+							if (dialogID != -1)
 								inputTaken = true;
 						}
 					}
@@ -17276,36 +17558,38 @@ public class Client extends GameRenderer {
 				quickCurses[index] = (quickCurses[index] + 1) % 2;
 				variousSettings[quickConfigIDs[index]] = quickCurses[index];
 				updateConfig(quickConfigIDs[index]);
-				if(dialogID != -1)
+				if (dialogID != -1)
 					inputTaken = true;
 			} else {
-				pushMessage("You need a Prayer level of atleast " + curseLevelRequirements[index] + " to use " + curseName[index] + ".", 0, "");
+				pushMessage("You need a Prayer level of atleast " + curseLevelRequirements[index] + " to use "
+						+ curseName[index] + ".", 0, "");
 			}
 		}
 	}
 
 	private void turnOffPrayers() {
 		int toggle = -1;
-		for(int i = 0; i < quickPrayers.length; i++) {
-			int x = i == 26 ? 18018 : i == 27 ? 18025 : (i * 2) + 25000;;
+		for (int i = 0; i < quickPrayers.length; i++) {
+			int x = i == 26 ? 18018 : i == 27 ? 18025 : (i * 2) + 25000;
+			;
 			RSInterface rsInterface = RSInterface.interfaceCache[x];
-			if(rsInterface.valueIndexArray != null && rsInterface.valueIndexArray[0][0] == 5) {
+			if (rsInterface.valueIndexArray != null && rsInterface.valueIndexArray[0][0] == 5) {
 				toggle = rsInterface.valueIndexArray[0][1];
-				if(variousSettings[toggle] == 1 && quickPrayers[i] == 1) {
+				if (variousSettings[toggle] == 1 && quickPrayers[i] == 1) {
 					getOut().putOpcode(185);
-					getOut().putShort(x); 
-				}	
+					getOut().putShort(x);
+				}
 			}
 		}
 	}
 
 	private void turnOffCurses() {
 		int toggle = -1;
-		for(int i = 0; i < quickCurses.length; i++) {
+		for (int i = 0; i < quickCurses.length; i++) {
 			RSInterface rsInterface = RSInterface.interfaceCache[(i * 2) + 32503];
-			if(rsInterface.valueIndexArray != null && rsInterface.valueIndexArray[0][0] == 5) {
+			if (rsInterface.valueIndexArray != null && rsInterface.valueIndexArray[0][0] == 5) {
 				toggle = rsInterface.valueIndexArray[0][1];
-				if(variousSettings[toggle] == 1 && quickCurses[i] == 1) {
+				if (variousSettings[toggle] == 1 && quickCurses[i] == 1) {
 					getOut().putOpcode(185);
 					getOut().putShort((i * 2) + 32503);
 				}
@@ -17314,52 +17598,53 @@ public class Client extends GameRenderer {
 	}
 
 	public int prayerInterfaceType;
-	public final int[] curseLevelRequirements = {50,50,52,54,56,59,62,65,68,71,74,76,78,80,82,84,86,89,92,95};
-	public final String[] curseName = {
-			"Protect Item", "Sap Warrior", "Sap Ranger", "Sap Mage", "Sap Spirit",
-			"Berserker", "Deflect Summoning", "Deflect Magic","Deflect Missiles", "Deflect Melee",
-			"Leech Attack", "Leech Ranged", "Leech Magic", "Leech Defence", "Leech Strength",
-			"Leech Energy", "Leech Special Attack", "Wrath", "Soul Split", "Turmoil"
-	};
-	public int[] quickConfigIDs = {630,631,632,633,634,635,636,637,638,639,640,641,642,643,644,645,646,647,648,649,650,651,652,653,654,655,658, 659};
-	public final int[] prayerLevelRequirements = {1,4,7,8,9,10,13,16,19,22,25,26,27,28,31,34,37,40,43,44,45,46,49,52,60,70, 80, 80};
-	public final String[] prayerName = {
-			"Thick Skin", "Burst of Strength", "Clarity of Thought", "Sharp Eye", "Mystic Will", "Rock Skin", "Superhuman Strength", "Improved Reflexes","Rapid Restore", 
-			"Rapid Heal", "Protect Item", "Hawk Eye", "Mystic Lore", "Steel Skin", "Ultimate Strength", "Incredible Reflexes","Protect from Magic", "Protect from Missiles",
-			"Protect from Melee","Eagle Eye", "Mystic Might", "Retribution", "Redemption", "Smite", "Chivalry", "Piety", "Rigour", "Augury"
-	};
-	private int[] defPray = {0,5,13,24,25, 26, 27};
-	private int[] strPray = {1,3,4,6,11,12,14,19,20,24,25, 26, 27};
-	private int[] atkPray = {2,3,4,7,11,12,15,19,20,24,25, 26, 27};
-	private int[] rangeAndMagePray = {3,4,11,12,19,20,24,25, 26, 27};
-	private int[] rangeAndMagePrayOff = {1,2,3,4,6,7,11,12,14,15,19,20,24,25, 26, 27};
-	private int[] headPray = {16,17,18,21,22,23};
-	private int[] superiorPray = {0,1,2,3,4,5,6,7,11,12,13,14,15,19,20,24,25, 26, 27};
-	private int[][] prayer = {defPray,strPray,atkPray,rangeAndMagePray,headPray};	
+	public final int[] curseLevelRequirements = { 50, 50, 52, 54, 56, 59, 62, 65, 68, 71, 74, 76, 78, 80, 82, 84, 86,
+			89, 92, 95 };
+	public final String[] curseName = { "Protect Item", "Sap Warrior", "Sap Ranger", "Sap Mage", "Sap Spirit",
+			"Berserker", "Deflect Summoning", "Deflect Magic", "Deflect Missiles", "Deflect Melee", "Leech Attack",
+			"Leech Ranged", "Leech Magic", "Leech Defence", "Leech Strength", "Leech Energy", "Leech Special Attack",
+			"Wrath", "Soul Split", "Turmoil" };
+	public int[] quickConfigIDs = { 630, 631, 632, 633, 634, 635, 636, 637, 638, 639, 640, 641, 642, 643, 644, 645, 646,
+			647, 648, 649, 650, 651, 652, 653, 654, 655, 658, 659 };
+	public final int[] prayerLevelRequirements = { 1, 4, 7, 8, 9, 10, 13, 16, 19, 22, 25, 26, 27, 28, 31, 34, 37, 40,
+			43, 44, 45, 46, 49, 52, 60, 70, 80, 80 };
+	public final String[] prayerName = { "Thick Skin", "Burst of Strength", "Clarity of Thought", "Sharp Eye",
+			"Mystic Will", "Rock Skin", "Superhuman Strength", "Improved Reflexes", "Rapid Restore", "Rapid Heal",
+			"Protect Item", "Hawk Eye", "Mystic Lore", "Steel Skin", "Ultimate Strength", "Incredible Reflexes",
+			"Protect from Magic", "Protect from Missiles", "Protect from Melee", "Eagle Eye", "Mystic Might",
+			"Retribution", "Redemption", "Smite", "Chivalry", "Piety", "Rigour", "Augury" };
+	private int[] defPray = { 0, 5, 13, 24, 25, 26, 27 };
+	private int[] strPray = { 1, 3, 4, 6, 11, 12, 14, 19, 20, 24, 25, 26, 27 };
+	private int[] atkPray = { 2, 3, 4, 7, 11, 12, 15, 19, 20, 24, 25, 26, 27 };
+	private int[] rangeAndMagePray = { 3, 4, 11, 12, 19, 20, 24, 25, 26, 27 };
+	private int[] rangeAndMagePrayOff = { 1, 2, 3, 4, 6, 7, 11, 12, 14, 15, 19, 20, 24, 25, 26, 27 };
+	private int[] headPray = { 16, 17, 18, 21, 22, 23 };
+	private int[] superiorPray = { 0, 1, 2, 3, 4, 5, 6, 7, 11, 12, 13, 14, 15, 19, 20, 24, 25, 26, 27 };
+	private int[][] prayer = { defPray, strPray, atkPray, rangeAndMagePray, headPray };
 
 	private int[] getPrayerTypeForIndex(int index) {
 		int[] type = null;
-		for(int i = 0; i < prayer.length; i++) {
-			for(int il = 0; il < prayer[i].length; il++) {
-				if(index == prayer[i][il]) {
-					type =  prayer[i];
+		for (int i = 0; i < prayer.length; i++) {
+			for (int il = 0; il < prayer[i].length; il++) {
+				if (index == prayer[i][il]) {
+					type = prayer[i];
 				}
 			}
 		}
 		return type;
 	}
 
-	private int[] sapCurse = {1,2,3,4,19};
-	private int[] leechCurse = {10,11,12,13,14,15,16,19};
-	private int[] deflectCurse = {7,8,9,17,18};
-	
+	private int[] sapCurse = { 1, 2, 3, 4, 19 };
+	private int[] leechCurse = { 10, 11, 12, 13, 14, 15, 16, 19 };
+	private int[] deflectCurse = { 7, 8, 9, 17, 18 };
+
 	private void saveQuickSelection() {
 		Settings.save();
 		tabInterfaceIDs[5] = prayerInterfaceType;
 	}
 
 	public void drawSpecOrb() {
-		if(GameFrame.getScreenMode().ordinal() > 0) {
+		if (GameFrame.getScreenMode().ordinal() > 0) {
 			return;
 		}
 		int spec = (int) (((double) currentSpec / (double) 100) * 100D);
@@ -17369,38 +17654,38 @@ public class Client extends GameRenderer {
 		double f = 39 * percent;
 		int depleteFill = 39 - (int) f;
 		CacheSpriteLoader.getCacheSprite2(18).drawSprite(x, y);
-		String spec_var = ""+spec+"";
+		String spec_var = "" + spec + "";
 		int color;
-		if(specActivated)
+		if (specActivated)
 			color = 0xFFFF00;
-		else if(spec >= 50)
+		else if (spec >= 50)
 			color = 0x00ff00;
 		else
 			color = 0xff0000;
-		if(spec_var.length() == 3) {
-			normalText.drawRegularText(true, 13, color, ""+spec+"", 145);
-		} else if(spec_var.length() == 2) {
-			normalText.drawRegularText(true, 12 + 4, color, ""+spec+"", 145);
-		} else if(spec_var.length() == 1) {
-			normalText.drawRegularText(true, 12 + 8, color, ""+spec+"", 145);
+		if (spec_var.length() == 3) {
+			normalText.drawRegularText(true, 13, color, "" + spec + "", 145);
+		} else if (spec_var.length() == 2) {
+			normalText.drawRegularText(true, 12 + 4, color, "" + spec + "", 145);
+		} else if (spec_var.length() == 1) {
+			normalText.drawRegularText(true, 12 + 8, color, "" + spec + "", 145);
 		}
 	}
-	
+
 	public void toggleQuickAidsSelection() {
 		boolean inProcess = (tabInterfaceIDs[5] == 17200 || tabInterfaceIDs[5] == 17234);
-		if(inProcess)
+		if (inProcess)
 			saveQuickSelection();
 		else {
-			if(prayerInterfaceType == 5608) {
-				if(!inProcess) {
+			if (prayerInterfaceType == 5608) {
+				if (!inProcess) {
 					tabInterfaceIDs[5] = 17200;
 					tabAreaAltered = true;
 				} else {
 					tabInterfaceIDs[5] = 5608;
 					tabAreaAltered = true;
 				}
-			} else if(prayerInterfaceType == 32500) {
-				if(!inProcess) {
+			} else if (prayerInterfaceType == 32500) {
+				if (!inProcess) {
 					tabInterfaceIDs[5] = 17234;
 					tabAreaAltered = true;
 				} else {
@@ -17411,6 +17696,7 @@ public class Client extends GameRenderer {
 			tabID = 5;
 		}
 	}
+
 	private void saveGoals(String name) {
 		try {
 			File file = new File(Signlink.getCacheDirectory().toString() + "/" + name.trim().toLowerCase() + ".goals");
@@ -17450,13 +17736,13 @@ public class Client extends GameRenderer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static int getRandom(int number, boolean greaterThan0) {
 		Random random = new Random();
 		int randomNr = random.nextInt(number) + (greaterThan0 ? 1 : 0);
 		return randomNr;
 	}
-	
+
 	private void updateStrings(String str, int i) {
 		switch (i) {
 		case 1675:
@@ -17507,11 +17793,11 @@ public class Client extends GameRenderer {
 			setInterfaceText(str, 17519);
 		}
 	}
-	
+
 	private Entity currentTarget;
-	
+
 	public void showCombatBox() {
-		if(openInterfaceID > 0) {
+		if (openInterfaceID > 0) {
 			return;
 		}
 		int currentHp = currentTarget.currentHealth;
@@ -17522,65 +17808,65 @@ public class Client extends GameRenderer {
 		int xPos = 10;
 		int yPos = 30;
 		if (!Configuration.CONSTITUTION_ENABLED) {
-			currentHp = Math.round(currentHp/10);
+			currentHp = Math.round(currentHp / 10);
 			maxHp /= 10;
 			rounded = true;
 		}
 		int hpBarXPps = (xPos + 3);
-		if(currentTarget instanceof Player) {
-			Player player = (Player)currentTarget;
+		if (currentTarget instanceof Player) {
+			Player player = (Player) currentTarget;
 			drawCombatBox(xPos, yPos, width, height, currentHp, maxHp, hpBarXPps);
-			newSmallFont.drawCenteredString(player.name, xPos+(width/2), yPos + 10,16777215,0);
+			newSmallFont.drawCenteredString(player.name, xPos + (width / 2), yPos + 10, 16777215, 0);
 		} else {
-			NPC npc = (NPC)currentTarget;
+			NPC npc = (NPC) currentTarget;
 			boolean boss = maxHp > (rounded ? 250 : 2500);
-			if(boss) {
+			if (boss) {
 				hpBarXPps = (xPos + 13);
 				height = 25 + getYPosAddition(npc.damageDealers.size());
 				width = 125;
 			}
 			drawCombatBox(xPos, yPos, width, height, currentHp, maxHp, hpBarXPps);
-			if(npc.definitionOverride == null) {
+			if (npc.definitionOverride == null) {
 				currentTarget = null;
 				return;
 			}
-			newSmallFont.drawCenteredString(npc.definitionOverride.name, xPos+(width/2), yPos + 10,16777215,0);
-			if(boss) {
+			newSmallFont.drawCenteredString(npc.definitionOverride.name, xPos + (width / 2), yPos + 10, 16777215, 0);
+			if (boss) {
 				yPos += 10;
 				xPos += 5;
-				for(int i = 0; i < 5; i++) {
+				for (int i = 0; i < 5; i++) {
 					newSmallFont.drawBasicString("", xPos, yPos + getYPosAddition(i), false);
-					newSmallFont.drawBasicString("", xPos+90, yPos + getYPosAddition(i), false);
-					if(i >= npc.damageDealers.size()) {
+					newSmallFont.drawBasicString("", xPos + 90, yPos + getYPosAddition(i), false);
+					if (i >= npc.damageDealers.size()) {
 						continue;
 					}
 					String p = npc.damageDealers.get(i).getPlayer();
 					int damage = npc.damageDealers.get(i).getDamage();
 					if (!Configuration.CONSTITUTION_ENABLED && damage > 0) {
 						damage /= 10;
-					}  
+					}
 					DecimalFormat df = new DecimalFormat("#");
-		        	newSmallFont.drawBasicString(p, xPos, yPos + getYPosAddition(i), false);
-		        	newSmallFont.drawBasicString(""+df.format(damage)+"", xPos+90, yPos + getYPosAddition(i), false);
+					newSmallFont.drawBasicString(p, xPos, yPos + getYPosAddition(i), false);
+					newSmallFont.drawBasicString("" + df.format(damage) + "", xPos + 90, yPos + getYPosAddition(i),
+							false);
 				}
 			}
 		}
 	}
-	
+
 	public void drawCombatBox(int xPos, int yPos, int width, int height, int currentHp, int maxHp, int hpBarXPps) {
 		double percentOfHpLeft = (((double) currentHp / (double) maxHp) * 100);
-		double percentOfHpLost = 100-percentOfHpLeft;
+		double percentOfHpLost = 100 - percentOfHpLeft;
 		int hpBarYPos = yPos + height - 20;
 		TextDrawingArea.drawAlphaFilledPixels(xPos, yPos, width, height, 000000, 50);
-		Canvas2D.drawPixels(15, hpBarYPos, hpBarXPps + (int) percentOfHpLeft, 11740160, (int) percentOfHpLost);//red
-		Canvas2D.drawPixels(15, hpBarYPos, hpBarXPps/*-(int)percentOfHpLost*/, 31744, (int) percentOfHpLeft);//green
-		newBoldFont.drawCenteredString(currentHp + "/" + maxHp, xPos + (width/2), hpBarYPos + 13,16777215,0);
+		Canvas2D.drawPixels(15, hpBarYPos, hpBarXPps + (int) percentOfHpLeft, 11740160, (int) percentOfHpLost);// red
+		Canvas2D.drawPixels(15, hpBarYPos, hpBarXPps/*-(int)percentOfHpLost*/, 31744, (int) percentOfHpLeft);// green
+		newBoldFont.drawCenteredString(currentHp + "/" + maxHp, xPos + (width / 2), hpBarYPos + 13, 16777215, 0);
 	}
 
 	public int getYPosAddition(int index) {
 		return (index * 10) + 10;
 	}
-
 
 	public String getLoginMessage1() {
 		return loginMessage1;
@@ -17837,49 +18123,53 @@ public class Client extends GameRenderer {
 	public void setScriptManager(ScriptManager scriptManager) {
 		this.scriptManager = scriptManager;
 	}
-	
+
 	public GrandExchange getGrandExchange() {
 		return grandExchange;
 	}
-	
+
 	public AccountManager getAccountManager() {
 		return accountManager;
 	}
-	
+
 	private FadingScreen fadingScreen = new FadingScreen();
-	
+
 	private class FadingScreen {
 		/**
 		 * The state of the fade on the screen
 		 */
 		private byte state;
-		
+
 		/**
 		 * How many seconds the fade exists for
 		 */
 		private byte seconds;
-		
+
 		/**
 		 * The string of text that will be displayed on the screen
 		 */
 		private String text;
-		
+
 		/**
 		 * Controls how long it's been since the screen started its last fade
 		 */
 		private StopWatch watch;
-		
+
 		/**
 		 * Acts as a means to instance the local {@link FadingScreen} object.
 		 * Since the value of state by default is 0, nothing will be drawn on
 		 * the screen.
 		 */
-		private FadingScreen() { }
-		
+		private FadingScreen() {
+		}
+
 		/**
 		 * Creates a new fading screen
-		 * @param state		the state of the fade
-		 * @param seconds	the duration of the fade
+		 * 
+		 * @param state
+		 *            the state of the fade
+		 * @param seconds
+		 *            the duration of the fade
 		 */
 		private FadingScreen(String text, byte state, byte seconds) {
 			this.text = text;
@@ -17888,34 +18178,34 @@ public class Client extends GameRenderer {
 			this.watch = new StopWatch();
 			this.watch.start();
 		}
-		
+
 		/**
-		 * Draws the animation on the screen. If the state of the
-		 * screen is currenly 0 the animation will not be drawn.
+		 * Draws the animation on the screen. If the state of the screen is
+		 * currenly 0 the animation will not be drawn.
 		 */
 		private void draw() {
-    		if(state == 0) {
-    			return;
-    		}
-    		long end = watch.getStartTime() + (1000L * seconds);
-    		long increment = ((end - watch.getStartTime()) / 100);
-    		if (increment > 0) {
-    			long percentile = watch.getTime() / increment;
-    			int opacity = (int) ((percentile * (Byte.MAX_VALUE / 100)) * 2);
-    			if (state < 0) {
-    				opacity = 255 - opacity;
-    			}
-    			if (percentile > -1 && percentile <= 100) {
-    				Canvas2D.setDrawingArea(334, 0, 512, 0);
-    				Canvas2D.drawAlphaBox(0, 0, 512, 334, 0x000000, opacity);
-    				if (percentile > 85 && state == 1 || percentile < 50 && state == -1) {
-    					newRegularFont.drawCenteredString(text, 512 / 2, 334 / 2, 0xFFFFFF, 0);
-    				} else if (percentile == 100) {
-    					watch.stop();
-    					state = 0;
-    				}
-    			}
-    		}
+			if (state == 0) {
+				return;
+			}
+			long end = watch.getStartTime() + (1000L * seconds);
+			long increment = ((end - watch.getStartTime()) / 100);
+			if (increment > 0) {
+				long percentile = watch.getTime() / increment;
+				int opacity = (int) ((percentile * (Byte.MAX_VALUE / 100)) * 2);
+				if (state < 0) {
+					opacity = 255 - opacity;
+				}
+				if (percentile > -1 && percentile <= 100) {
+					Canvas2D.setDrawingArea(334, 0, 512, 0);
+					Canvas2D.drawAlphaBox(0, 0, 512, 334, 0x000000, opacity);
+					if (percentile > 85 && state == 1 || percentile < 50 && state == -1) {
+						newRegularFont.drawCenteredString(text, 512 / 2, 334 / 2, 0xFFFFFF, 0);
+					} else if (percentile == 100) {
+						watch.stop();
+						state = 0;
+					}
+				}
+			}
 		}
 	}
 }

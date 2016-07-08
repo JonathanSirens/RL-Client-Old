@@ -99,27 +99,27 @@ public final class Background extends Canvas2D {
 	public void method360(int i, int j, int k) {
 		for (int i1 = 0; i1 < palette.length; i1++) {
 			int j1 = palette[i1] >> 16 & 0xff;
-		j1 += i;
-		if (j1 < 0) {
-			j1 = 0;
-		} else if (j1 > 255) {
-			j1 = 255;
-		}
-		int k1 = palette[i1] >> 8 & 0xff;
-		k1 += j;
-		if (k1 < 0) {
-			k1 = 0;
-		} else if (k1 > 255) {
-			k1 = 255;
-		}
-		int l1 = palette[i1] & 0xff;
-		l1 += k;
-		if (l1 < 0) {
-			l1 = 0;
-		} else if (l1 > 255) {
-			l1 = 255;
-		}
-		palette[i1] = (j1 << 16) + (k1 << 8) + l1;
+			j1 += i;
+			if (j1 < 0) {
+				j1 = 0;
+			} else if (j1 > 255) {
+				j1 = 255;
+			}
+			int k1 = palette[i1] >> 8 & 0xff;
+			k1 += j;
+			if (k1 < 0) {
+				k1 = 0;
+			} else if (k1 > 255) {
+				k1 = 255;
+			}
+			int l1 = palette[i1] & 0xff;
+			l1 += k;
+			if (l1 < 0) {
+				l1 = 0;
+			} else if (l1 > 255) {
+				l1 = 255;
+			}
+			palette[i1] = (j1 << 16) + (k1 << 8) + l1;
 		}
 	}
 

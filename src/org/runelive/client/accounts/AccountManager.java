@@ -12,6 +12,7 @@ import org.runelive.client.Signlink;
 
 /**
  * Manages loading/saving/adding/removing of saved accounts
+ * 
  * @author Tedi / Gabbe
  */
 public class AccountManager {
@@ -21,54 +22,58 @@ public class AccountManager {
 	private int totalAccounts;
 
 	/**
-	 * Constructor for the account manager.
-	 * Loads all the saved accounts into the array list
+	 * Constructor for the account manager. Loads all the saved accounts into
+	 * the array list
 	 */
 	public AccountManager() {
-		if(saveExists()) {
+		if (saveExists()) {
 			load();
 		}
 	}
 
 	/**
 	 * Adds an account to the save list
-	 * @param account The account to add
+	 * 
+	 * @param account
+	 *            The account to add
 	 */
 	public void addAccount(Account account, boolean save) {
 		int box = getEmptyBox();
-		if(box == -1) {
+		if (box == -1) {
 			return;
 		}
 		account.setBox(box);
 		accounts[account.getBox()] = account;
 		totalAccounts++;
 		updateInterface();
-		if(save) {
+		if (save) {
 			save();
 		}
 	}
 
 	/**
 	 * Removes an account from the save list
-	 * @param account The account to remove
+	 * 
+	 * @param account
+	 *            The account to remove
 	 **/
 	public void removeAccount(Account account, boolean save) {
 		accounts[account.getBox()] = null;
 		totalAccounts--;
 		updateInterface();
-		if(save) {
+		if (save) {
 			save();
 		}
 	}
-	
+
 	public void updateInterface() {
 		ArrayList<Account> accountList = new ArrayList<Account>();
-		for(Account acc : accounts) {
-			if(acc == null)
+		for (Account acc : accounts) {
+			if (acc == null)
 				continue;
 			accountList.add(acc);
 		}
-		RSInterface.getCustomInterfaces().buildPlayerMenu(accountList);	
+		RSInterface.getCustomInterfaces().buildPlayerMenu(accountList);
 	}
 
 	private boolean saveExists() {
@@ -101,12 +106,12 @@ public class AccountManager {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public Account getAccount(String username) {
-		for(Account acc : accounts) {
-			if(acc == null)
+		for (Account acc : accounts) {
+			if (acc == null)
 				continue;
-			if(acc.getUsername().equals(username)) {
+			if (acc.getUsername().equals(username)) {
 				return acc;
 			}
 		}
@@ -115,8 +120,8 @@ public class AccountManager {
 
 	public int getEmptyBox() {
 		int index = -1;
-		for(int i = 0; i < accounts.length; i++) {
-			if(accounts[i] == null) {
+		for (int i = 0; i < accounts.length; i++) {
+			if (accounts[i] == null) {
 				index = i;
 				break;
 			}

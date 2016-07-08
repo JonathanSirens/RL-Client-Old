@@ -3,13 +3,14 @@ package org.runelive.client.accounts;
 import java.io.Serializable;
 
 /**
- * Represents an account save 
+ * Represents an account save
+ * 
  * @author Tedi
  */
 public class Account implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private String username;
 	private String password;
 	private int box;
@@ -34,7 +35,7 @@ public class Account implements Serializable {
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -42,39 +43,39 @@ public class Account implements Serializable {
 	public int getBox() {
 		return box;
 	}
-	
+
 	public int getGender() {
 		return gender;
 	}
-	
+
 	public int getHelmet() {
 		return helmet;
 	}
-	
+
 	public int getIDKHead() {
 		return IDKHead;
 	}
-	
+
 	public int getJaw() {
 		return jaw;
 	}
-	
+
 	public void setBox(int box) {
 		this.box = box;
 	}
-	
+
 	public void setHelmet(int helmet) {
 		this.helmet = helmet;
 	}
-	
+
 	public void setIDKHead(int iDKHead) {
 		IDKHead = iDKHead;
 	}
-	
+
 	public void setJaw(int jaw) {
 		this.jaw = jaw;
 	}
-	
+
 	public void setGender(int gender) {
 		this.gender = gender;
 	}

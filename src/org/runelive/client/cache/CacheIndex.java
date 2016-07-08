@@ -1,10 +1,7 @@
 package org.runelive.client.cache;
+
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.io.File;
-
-import org.runelive.client.Signlink;
-import org.runelive.client.util.FileUtilities;
 
 public final class CacheIndex {
 
@@ -55,15 +52,18 @@ public final class CacheIndex {
 				int dataFileIndex;
 				int storedIndexId;
 				if (!READ_24BIT_FILE_HEADER) {
-					storedFileId = ((buffer[0] & 0xff) << 8) + (buffer[1] & 0xff);//short
-					storedLength = ((buffer[2] & 0xff) << 8) + (buffer[3] & 0xff);//short
-					dataFileIndex = ((buffer[4] & 0xff) << 16) + ((buffer[5] & 0xff) << 8) + (buffer[6] & 0xff);//medium int
-					storedIndexId = buffer[7] & 0xff;//byte
+					storedFileId = ((buffer[0] & 0xff) << 8) + (buffer[1] & 0xff);// short
+					storedLength = ((buffer[2] & 0xff) << 8) + (buffer[3] & 0xff);// short
+					dataFileIndex = ((buffer[4] & 0xff) << 16) + ((buffer[5] & 0xff) << 8) + (buffer[6] & 0xff);// medium
+																												// int
+					storedIndexId = buffer[7] & 0xff;// byte
 				} else {
-					storedFileId = ((buffer[0] & 0xff) << 16) + ((buffer[1] & 0xff) << 8) + (buffer[2] & 0xff);//medium int
-					storedLength = ((buffer[3] & 0xff) << 8) + (buffer[4] & 0xff);//short
-					dataFileIndex = ((buffer[5] & 0xff) << 16) + ((buffer[6] & 0xff) << 8) + (buffer[7] & 0xff);//medium int
-					storedIndexId = buffer[8] & 0xff;//byte
+					storedFileId = ((buffer[0] & 0xff) << 16) + ((buffer[1] & 0xff) << 8) + (buffer[2] & 0xff);// medium
+																												// int
+					storedLength = ((buffer[3] & 0xff) << 8) + (buffer[4] & 0xff);// short
+					dataFileIndex = ((buffer[5] & 0xff) << 16) + ((buffer[6] & 0xff) << 8) + (buffer[7] & 0xff);// medium
+																												// int
+					storedIndexId = buffer[8] & 0xff;// byte
 				}
 				if (storedFileId != id || storedLength != index1 || storedIndexId != this.id) {
 					return null;
@@ -149,7 +149,8 @@ public final class CacheIndex {
 							j3 = ((buffer[3] & 0xff) << 8) + (buffer[4] & 0xff);
 							dataFileIndex = ((buffer[5] & 0xff) << 16) + ((buffer[6] & 0xff) << 8) + (buffer[7] & 0xff);
 							version = buffer[8] & 0xff;
-						};
+						}
+						;
 						if (fileId != id || j3 != index1 || version != this.id) {
 							return false;
 						}

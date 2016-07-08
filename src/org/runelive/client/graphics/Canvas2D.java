@@ -14,22 +14,19 @@ public class Canvas2D extends NodeSub {
 	public static int centerX;
 	public static int centerY;
 	public static int middleY;
-	
-	public static void fillRectangle(int color, int y, int widthz, int heightz, int opacity, int x)
-	{
-		if(x < topX)
-		{
+
+	public static void fillRectangle(int color, int y, int widthz, int heightz, int opacity, int x) {
+		if (x < topX) {
 			widthz -= topX - x;
 			x = topX;
 		}
-		if(y < topY)
-		{
+		if (y < topY) {
 			heightz -= topY - y;
 			y = topY;
 		}
-		if(x + widthz > bottomX)
+		if (x + widthz > bottomX)
 			widthz = bottomX - x;
-		if(y + heightz > bottomY)
+		if (y + heightz > bottomY)
 			heightz = bottomY - y;
 		int decodedOpacity = 256 - opacity;
 		int red = (color >> 16 & 0xff) * opacity;
@@ -37,38 +34,35 @@ public class Canvas2D extends NodeSub {
 		int blue = (color & 0xff) * opacity;
 		int pixelWidthStep = width - widthz;
 		int startPixel = x + y * width;
-		for(int h = 0; h < heightz; h++)
-		{
-			for(int w = -widthz; w < 0; w++)
-			{
+		for (int h = 0; h < heightz; h++) {
+			for (int w = -widthz; w < 0; w++) {
 				int pixelRed = (pixels[startPixel] >> 16 & 0xff) * decodedOpacity;
 				int pixelBlue = (pixels[startPixel] >> 8 & 0xff) * decodedOpacity;
 				int pixelGreen = (pixels[startPixel] & 0xff) * decodedOpacity;
-				int pixelRGB = ((red + pixelRed >> 8) << 16) + ((green + pixelBlue >> 8) << 8) + (blue + pixelGreen >> 8);
+				int pixelRGB = ((red + pixelRed >> 8) << 16) + ((green + pixelBlue >> 8) << 8)
+						+ (blue + pixelGreen >> 8);
 				pixels[startPixel++] = pixelRGB;
 			}
 
 			startPixel += pixelWidthStep;
 		}
 	}
-	protected static void drawHLine(int i, int j, int k, int l, int i1)
-	{
-		if(k < topY || k >= bottomY)
+
+	protected static void drawHLine(int i, int j, int k, int l, int i1) {
+		if (k < topY || k >= bottomY)
 			return;
-		if(i1 < topX)
-		{
+		if (i1 < topX) {
 			j -= topX - i1;
 			i1 = topX;
 		}
-		if(i1 + j > bottomX)
+		if (i1 + j > bottomX)
 			j = bottomX - i1;
 		int j1 = 256 - l;
 		int k1 = (i >> 16 & 0xff) * l;
 		int l1 = (i >> 8 & 0xff) * l;
 		int i2 = (i & 0xff) * l;
 		int i3 = i1 + k * width;
-		for(int j3 = 0; j3 < j; j3++)
-		{
+		for (int j3 = 0; j3 < j; j3++) {
 			int j2 = (pixels[i3] >> 16 & 0xff) * j1;
 			int k2 = (pixels[i3] >> 8 & 0xff) * j1;
 			int l2 = (pixels[i3] & 0xff) * j1;
@@ -77,21 +71,22 @@ public class Canvas2D extends NodeSub {
 		}
 
 	}
+
 	protected static void drawVLine(int i, int j, int k, int l, int i1) {
-		if(j < topX || j >= bottomX)
+		if (j < topX || j >= bottomX)
 			return;
-		if(l < topY) {
+		if (l < topY) {
 			i1 -= topY - l;
 			l = topY;
 		}
-		if(l + i1 > bottomY)
+		if (l + i1 > bottomY)
 			i1 = bottomY - l;
 		int j1 = 256 - k;
 		int k1 = (i >> 16 & 0xff) * k;
 		int l1 = (i >> 8 & 0xff) * k;
 		int i2 = (i & 0xff) * k;
 		int i3 = j + l * width;
-		for(int j3 = 0; j3 < i1; j3++) {
+		for (int j3 = 0; j3 < i1; j3++) {
 			int j2 = (pixels[i3] >> 16 & 0xff) * j1;
 			int k2 = (pixels[i3] >> 8 & 0xff) * j1;
 			int l2 = (pixels[i3] & 0xff) * j1;
@@ -100,16 +95,16 @@ public class Canvas2D extends NodeSub {
 			i3 += width;
 		}
 	}
-	public static void drawRectangle(int y, int height, int opacity, int color, int width, int x)
-	{
+
+	public static void drawRectangle(int y, int height, int opacity, int color, int width, int x) {
 		drawHLine(color, width, y, opacity, x);
 		drawHLine(color, width, (y + height) - 1, opacity, x);
-		if(height >= 3)
-		{
+		if (height >= 3) {
 			drawVLine(color, x, opacity, y + 1, height - 2);
 			drawVLine(color, (x + width) - 1, opacity, y + 1, height - 2);
 		}
-	}	
+	}
+
 	public static void drawAlphaBox(int x, int y, int lineWidth, int lineHeight, int color, int alpha) {// drawAlphaHorizontalLine
 		if (y < topY) {
 			if (y > (topY - lineHeight)) {
@@ -122,67 +117,64 @@ public class Canvas2D extends NodeSub {
 		if (y + lineHeight > bottomY) {
 			lineHeight -= y + lineHeight - bottomY;
 		}
-		//if (y >= bottomY - lineHeight)
-			//return;
+		// if (y >= bottomY - lineHeight)
+		// return;
 		if (x < topX) {
 			lineWidth -= topX - x;
 			x = topX;
 		}
 		if (x + lineWidth > bottomX)
 			lineWidth = bottomX - x;
-		for(int yOff = 0; yOff < lineHeight; yOff++) {
-		int i3 = x + (y + (yOff)) * width;
-        	for (int j3 = 0; j3 < lineWidth; j3++) {
-    			//int alpha2 = (lineWidth-j3) / (lineWidth/alpha);
-    			int j1 = 256 - alpha;//alpha2 is for gradient
-    			int k1 = (color >> 16 & 0xff) * alpha;
-    			int l1 = (color >> 8 & 0xff) * alpha;
-    			int i2 = (color & 0xff) * alpha;
-    			int j2 = (pixels[i3] >> 16 & 0xff) * j1;
-    			int k2 = (pixels[i3] >> 8 & 0xff) * j1;
-    			int l2 = (pixels[i3] & 0xff) * j1;
-    			int k3 = ((k1 + j2 >> 8) << 16) + ((l1 + k2 >> 8) << 8)
-    					+ (i2 + l2 >> 8);
-    			pixels[i3++] = k3;
-    		}
+		for (int yOff = 0; yOff < lineHeight; yOff++) {
+			int i3 = x + (y + (yOff)) * width;
+			for (int j3 = 0; j3 < lineWidth; j3++) {
+				// int alpha2 = (lineWidth-j3) / (lineWidth/alpha);
+				int j1 = 256 - alpha;// alpha2 is for gradient
+				int k1 = (color >> 16 & 0xff) * alpha;
+				int l1 = (color >> 8 & 0xff) * alpha;
+				int i2 = (color & 0xff) * alpha;
+				int j2 = (pixels[i3] >> 16 & 0xff) * j1;
+				int k2 = (pixels[i3] >> 8 & 0xff) * j1;
+				int l2 = (pixels[i3] & 0xff) * j1;
+				int k3 = ((k1 + j2 >> 8) << 16) + ((l1 + k2 >> 8) << 8) + (i2 + l2 >> 8);
+				pixels[i3++] = k3;
+			}
 		}
-	}	
-	public static void drawLine(int yPos, int color, int widthToDraw, int xPos)
-	{
-		if(yPos < topY || yPos >= bottomY)
+	}
+
+	public static void drawLine(int yPos, int color, int widthToDraw, int xPos) {
+		if (yPos < topY || yPos >= bottomY)
 			return;
-		if(xPos < topX)
-		{
+		if (xPos < topX) {
 			widthToDraw -= topX - xPos;
 			xPos = topX;
 		}
-		if(xPos + widthToDraw > bottomX)
+		if (xPos + widthToDraw > bottomX)
 			widthToDraw = bottomX - xPos;
 		int base = xPos + yPos * width;
-		for(int ptr = 0; ptr < widthToDraw; ptr++)
+		for (int ptr = 0; ptr < widthToDraw; ptr++)
 			pixels[base + ptr] = color;
 
 	}
-	
-	public static void setDrawingArea(int yBottom, int xTop, int xBottom, int yTop)
-	{
-		if(xTop < 0)
+
+	public static void setDrawingArea(int yBottom, int xTop, int xBottom, int yTop) {
+		if (xTop < 0)
 			xTop = 0;
-		if(yTop < 0)
+		if (yTop < 0)
 			yTop = 0;
-		if(xBottom > width)
+		if (xBottom > width)
 			xBottom = width;
-		if(yBottom > height)
+		if (yBottom > height)
 			yBottom = height;
 		topX = xTop;
 		topY = yTop;
 		bottomX = xBottom;
 		bottomY = yBottom;
-		//viewportRX = bottomX - 0;
-	//	viewport_centerX = bottomX / 2;
-		//viewport_centerY = bottomY / 2;
+		// viewportRX = bottomX - 0;
+		// viewport_centerX = bottomX / 2;
+		// viewport_centerY = bottomY / 2;
 	}
-	
+
 	public static void transparentBox(int i, int j, int k, int l, int i1, int j1, int opac) {
 		int j3 = 256 - opac;
 		if (k < topX) {
@@ -204,7 +196,8 @@ public class Canvas2D extends NodeSub {
 		for (int i2 = -i; i2 < 0; i2++) {
 			for (int j2 = -i1; j2 < 0; j2++) {
 				int i3 = pixels[l1];
-				pixels[l1++] = ((l & 0xff00ff) * opac + (i3 & 0xff00ff) * j3 & 0xff00ff00) + ((l & 0xff00) * opac + (i3 & 0xff00) * j3 & 0xff0000) >> 8;
+				pixels[l1++] = ((l & 0xff00ff) * opac + (i3 & 0xff00ff) * j3 & 0xff00ff00)
+						+ ((l & 0xff00) * opac + (i3 & 0xff00) * j3 & 0xff0000) >> 8;
 			}
 			l1 += k1;
 		}
@@ -220,7 +213,8 @@ public class Canvas2D extends NodeSub {
 		centerY = bottomX / 2;
 	}
 
-	public static void drawAlphaGradient(int x, int y, int gradientWidth, int gradientHeight, int startColor, int endColor, int alpha) {
+	public static void drawAlphaGradient(int x, int y, int gradientWidth, int gradientHeight, int startColor,
+			int endColor, int alpha) {
 		int k1 = 0;
 		int l1 = 0x10000 / gradientHeight;
 		if (x < topX) {
@@ -243,16 +237,19 @@ public class Canvas2D extends NodeSub {
 		int total_pixels = x + y * width;
 		for (int k2 = -gradientHeight; k2 < 0; k2++) {
 			int gradient1 = 0x10000 - k1 >> 8;
-		int gradient2 = k1 >> 8;
-		int gradient_color = ((startColor & 0xff00ff) * gradient1 + (endColor & 0xff00ff) * gradient2 & 0xff00ff00) + ((startColor & 0xff00) * gradient1 + (endColor & 0xff00) * gradient2 & 0xff0000) >>> 8;
-		int color = ((gradient_color & 0xff00ff) * alpha >> 8 & 0xff00ff) + ((gradient_color & 0xff00) * alpha >> 8 & 0xff00);
-		for (int k3 = -gradientWidth; k3 < 0; k3++) {
-			int pixel_pixels = pixels[total_pixels];
-			pixel_pixels = ((pixel_pixels & 0xff00ff) * result_alpha >> 8 & 0xff00ff) + ((pixel_pixels & 0xff00) * result_alpha >> 8 & 0xff00);
-			pixels[total_pixels++] = color + pixel_pixels;
-		}
-		total_pixels += i2;
-		k1 += l1;
+			int gradient2 = k1 >> 8;
+			int gradient_color = ((startColor & 0xff00ff) * gradient1 + (endColor & 0xff00ff) * gradient2 & 0xff00ff00)
+					+ ((startColor & 0xff00) * gradient1 + (endColor & 0xff00) * gradient2 & 0xff0000) >>> 8;
+			int color = ((gradient_color & 0xff00ff) * alpha >> 8 & 0xff00ff)
+					+ ((gradient_color & 0xff00) * alpha >> 8 & 0xff00);
+			for (int k3 = -gradientWidth; k3 < 0; k3++) {
+				int pixel_pixels = pixels[total_pixels];
+				pixel_pixels = ((pixel_pixels & 0xff00ff) * result_alpha >> 8 & 0xff00ff)
+						+ ((pixel_pixels & 0xff00) * result_alpha >> 8 & 0xff00);
+				pixels[total_pixels++] = color + pixel_pixels;
+			}
+			total_pixels += i2;
+			k1 += l1;
 		}
 	}
 
@@ -359,7 +356,8 @@ public class Canvas2D extends NodeSub {
 				int originRed = (pixels[pixel] >> 16 & 0xff) * opacity;
 				int originGreen = (pixels[pixel] >> 8 & 0xff) * opacity;
 				int oritinBlue = (pixels[pixel] & 0xff) * opacity;
-				int blindedColor = (red + originRed >> 8 << 16) + (green + originGreen >> 8 << 8) + (blue + oritinBlue >> 8);
+				int blindedColor = (red + originRed >> 8 << 16) + (green + originGreen >> 8 << 8)
+						+ (blue + oritinBlue >> 8);
 				pixels[pixel++] = blindedColor;
 			}
 

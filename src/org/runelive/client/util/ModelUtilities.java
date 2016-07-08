@@ -23,7 +23,8 @@ public final class ModelUtilities {
 	/**
 	 * Loads all of the models within the specified {@link #PATH}.
 	 *
-	 * @throws IOException If some I/O exception occurs.
+	 * @throws IOException
+	 *             If some I/O exception occurs.
 	 */
 	public static void loadModels() throws IOException {
 		for (File file : ROOT.listFiles()) {

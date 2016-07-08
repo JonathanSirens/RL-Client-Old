@@ -76,55 +76,54 @@ public class ScriptManager {
 
 		switch (generateLocation) {
 		case 0:// Varrock
-			cameraMapping(401, 424, 0, false, new int[] {
-					// cameraX, cameraY, cameraZ, curveX, curveY, speed
-					6711, 5920, -1901, 2032, 383, cycleSpeed, 6597, 7213, -665,
-					2034, 128, cycleSpeed, 6454, 8791, -715, 1983, 133,
-					cycleSpeed, 6452, 9108, -1017, 1951, 208, cycleSpeed, 6131,
-					10220, -1420, 1794, 288, cycleSpeed, 6135, 11541, -1420,
-					1277, 288, cycleSpeed, 7432, 11543, -1420, 772, 288,
-					cycleSpeed, 7440, 10224, -1420, 256, 288, cycleSpeed });
+			cameraMapping(401, 424, 0, false,
+					new int[] {
+							// cameraX, cameraY, cameraZ, curveX, curveY, speed
+							6711, 5920, -1901, 2032, 383, cycleSpeed, 6597, 7213, -665, 2034, 128, cycleSpeed, 6454,
+							8791, -715, 1983, 133, cycleSpeed, 6452, 9108, -1017, 1951, 208, cycleSpeed, 6131, 10220,
+							-1420, 1794, 288, cycleSpeed, 6135, 11541, -1420, 1277, 288, cycleSpeed, 7432, 11543, -1420,
+							772, 288, cycleSpeed, 7440, 10224, -1420, 256, 288, cycleSpeed });
 			break;
 		case 1:// Falador
-			cameraMapping(375, 422, 0, false, new int[] {
-					// cameraX, cameraY, cameraZ, curveX, curveY, speed
-					7963, 6612, -425, 500, 128, cycleSpeed, 6431, 6612, -1073,
-					500, 128, cycleSpeed, 5792, 6612, -1145, 500, 128,
-					cycleSpeed, 5792, 6612, -1145, 500, 128, cycleSpeed, 4500,
-					6612, -950, 500, 128, cycleSpeed, 2750, 6568, -1500, 556,
-					128, cycleSpeed, 2750, 6568, -1500, 2900, 150, warp(4) });
+			cameraMapping(375, 422, 0, false,
+					new int[] {
+							// cameraX, cameraY, cameraZ, curveX, curveY, speed
+							7963, 6612, -425, 500, 128, cycleSpeed, 6431, 6612, -1073, 500, 128, cycleSpeed, 5792, 6612,
+							-1145, 500, 128, cycleSpeed, 5792, 6612, -1145, 500, 128, cycleSpeed, 4500, 6612, -950, 500,
+							128, cycleSpeed, 2750, 6568, -1500, 556, 128, cycleSpeed, 2750, 6568, -1500, 2900, 150,
+							warp(4) });
 			break;
 
 		case 2:// Lumbridge Forrest
-			cameraMapping(3164 >> 3, 3221 >> 3, 0, false, new int[] {
-				// cameraX, cameraY, cameraZ, curveX, curveY, speed
-				10000, 2000, -900, 300, 278, cycleSpeed, 7000, 11600,
-				-1125, -300, 278, cycleSpeed, 3000, 7000, -1125, -300, 278,
-				cycleSpeed, });
+			cameraMapping(3164 >> 3, 3221 >> 3, 0, false,
+					new int[] {
+							// cameraX, cameraY, cameraZ, curveX, curveY, speed
+							10000, 2000, -900, 300, 278, cycleSpeed, 7000, 11600, -1125, -300, 278, cycleSpeed, 3000,
+							7000, -1125, -300, 278, cycleSpeed, });
 			break;
 
 		case 3:// Shillo Village
-			cameraMapping(2839 >> 3, 2967 >> 3, 0, false, new int[] {
-				// cameraX, cameraY, cameraZ, curveX, curveY, speed
-				10000, 2000, -1200, 300, 278, cycleSpeed, 7000, 11600,
-				-1305, -300, 308, cycleSpeed, 3000, 7000, -1305, -300, 308,
-				cycleSpeed, });
+			cameraMapping(2839 >> 3, 2967 >> 3, 0, false,
+					new int[] {
+							// cameraX, cameraY, cameraZ, curveX, curveY, speed
+							10000, 2000, -1200, 300, 278, cycleSpeed, 7000, 11600, -1305, -300, 308, cycleSpeed, 3000,
+							7000, -1305, -300, 308, cycleSpeed, });
 			break;
 
 		case 4: // West Ardy
-			cameraMapping(2530 >> 3, 3290 >> 3, 0, false, new int[] {
-					// cameraX, cameraY, cameraZ, curveX, curveY, speed
-					10000, 2000, -900, 300, 278, cycleSpeed, 7000, 11600,
-					-1125, -300, 278, cycleSpeed, 3000, 7000, -1125, -300, 278,
-					cycleSpeed, });
+			cameraMapping(2530 >> 3, 3290 >> 3, 0, false,
+					new int[] {
+							// cameraX, cameraY, cameraZ, curveX, curveY, speed
+							10000, 2000, -900, 300, 278, cycleSpeed, 7000, 11600, -1125, -300, 278, cycleSpeed, 3000,
+							7000, -1125, -300, 278, cycleSpeed, });
 			break;
 
 		case 5:// castle wars
-			cameraMapping(2401 >> 3, 3104 >> 3, 0, false, new int[] {
-					// cameraX, cameraY, cameraZ, curveX, curveY, speed
-					10000, 2000, -1200, 300, 278, cycleSpeed, 7000, 11600,
-					-1305, -300, 308, cycleSpeed, 3000, 7000, -1305, -300, 308,
-					cycleSpeed, });
+			cameraMapping(2401 >> 3, 3104 >> 3, 0, false,
+					new int[] {
+							// cameraX, cameraY, cameraZ, curveX, curveY, speed
+							10000, 2000, -1200, 300, 278, cycleSpeed, 7000, 11600, -1305, -300, 308, cycleSpeed, 3000,
+							7000, -1305, -300, 308, cycleSpeed, });
 			break;
 		}
 		reset();

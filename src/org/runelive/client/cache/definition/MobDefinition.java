@@ -30,9 +30,9 @@ public final class MobDefinition {
 		definition.id = id;
 		definition.readValues(buffer);
 		switch (id) {
-        case 83:
-        	System.out.println(""+definition.npcModels[1]);
-        	break;
+		case 83:
+			System.out.println("" + definition.npcModels[1]);
+			break;
 		case 5866:
 			definition.name = "Cerberus";
 			definition.npcModels = new int[] { 29270 };
@@ -44,7 +44,7 @@ public final class MobDefinition {
 			definition.combatLevel = 318;
 			definition.adjustVertextPointsXOrY = 128;
 			definition.adjustVertextPointZ = 128;
-		break;
+			break;
 		case 2722:
 			MobDefinition spot1 = get(318);
 			definition.npcSizeInSquares = spot1.npcSizeInSquares;
@@ -66,13 +66,13 @@ public final class MobDefinition {
 			definition.drawYellowDotOnMap = true;
 			definition.adjustVertextPointsXOrY = 64;
 			definition.adjustVertextPointZ = 64;
-			definition.npcModels = new int[] {31238};
+			definition.npcModels = new int[] { 31238 };
 			definition.actions = new String[] { null, "Attack", null, null, null };
 			definition.degreesToTurn = 32;
 			definition.standAnimation = 4559;
-			//definition.walkAnimation = 4555;
+			// definition.walkAnimation = 4555;
 			definition.walkAnimation = -1;
-			break;	
+			break;
 		case 130:
 			definition.name = "Ganodermic beast";
 			definition.combatLevel = 280;
@@ -80,7 +80,7 @@ public final class MobDefinition {
 			definition.drawYellowDotOnMap = true;
 			definition.adjustVertextPointsXOrY = 128;
 			definition.adjustVertextPointZ = 128;
-			definition.npcModels = new int[] {13888};
+			definition.npcModels = new int[] { 13888 };
 			definition.actions = new String[] { null, "Attack", null, null, null };
 			definition.degreesToTurn = 32;
 			definition.standAnimation = 4553;
@@ -107,7 +107,7 @@ public final class MobDefinition {
 			definition.combatLevel = 96;
 			definition.adjustVertextPointsXOrY = 140;
 			definition.adjustVertextPointZ = 140;
-		break;
+			break;
 		case 5868:
 			definition.name = "Summoned Soul";
 			definition.npcModels = new int[] { 29267 };
@@ -119,7 +119,7 @@ public final class MobDefinition {
 			definition.combatLevel = 96;
 			definition.adjustVertextPointsXOrY = 140;
 			definition.adjustVertextPointZ = 140;
-		break;
+			break;
 
 		case 5869:
 			definition.name = "Summoned Soul";
@@ -132,26 +132,26 @@ public final class MobDefinition {
 			definition.combatLevel = 79;
 			definition.adjustVertextPointsXOrY = 140;
 			definition.adjustVertextPointZ = 140;
-		break;
+			break;
 		case 5870:
-				definition.name = "Hell Puppy";
-				definition.npcModels = new int[] { 29270 };
-				definition.npcSizeInSquares = 2;
-				definition.actions = new String[5];
-				definition.actions[0] = "Pick-up";
-				definition.standAnimation = 4484;
-				definition.walkAnimation = 4488;
-				definition.drawYellowDotOnMap = true;
-				definition.combatLevel = 318;
-				definition.adjustVertextPointZ = 40;
-				definition.adjustVertextPointsXOrY = 40;
-				break;
+			definition.name = "Hell Puppy";
+			definition.npcModels = new int[] { 29270 };
+			definition.npcSizeInSquares = 2;
+			definition.actions = new String[5];
+			definition.actions[0] = "Pick-up";
+			definition.standAnimation = 4484;
+			definition.walkAnimation = 4488;
+			definition.drawYellowDotOnMap = true;
+			definition.combatLevel = 318;
+			definition.adjustVertextPointZ = 40;
+			definition.adjustVertextPointsXOrY = 40;
+			break;
 		case 2000:
 			definition.npcModels = new int[2];
 			definition.npcModels[0] = 28294;
 			definition.npcModels[1] = 28295;
 			definition.name = "Venenatis";
-			definition.actions = new String[] {null, "Attack", null, null, null};
+			definition.actions = new String[] { null, "Attack", null, null, null };
 			definition.adjustVertextPointsXOrY = 200;
 			definition.adjustVertextPointZ = 200;
 			MobDefinition ven = get(60);
@@ -162,13 +162,14 @@ public final class MobDefinition {
 			break;
 		case 2127:
 			definition.name = "Player Owned Shop Trader";
-			definition.actions = new String[] {"Talk-To", null, "Search through stores", "Open your store", "Open someone's store"};
+			definition.actions = new String[] { "Talk-To", null, "Search through stores", "Open your store",
+					"Open someone's store" };
 			break;
 		case 2001:
 			definition.npcModels = new int[1];
 			definition.npcModels[0] = 28293;
 			definition.name = "Scorpia";
-			definition.actions = new String[] {null, "Attack", null, null, null};
+			definition.actions = new String[] { null, "Attack", null, null, null };
 			MobDefinition scor = get(107);
 			definition.standAnimation = scor.standAnimation;
 			definition.walkAnimation = scor.walkAnimation;
@@ -179,29 +180,29 @@ public final class MobDefinition {
 			definition.npcModels = new int[1];
 			definition.npcModels[0] = 28299;
 			definition.name = "Vet'ion";
-			definition.actions = new String[] {null, "Attack", null, null, null};
+			definition.actions = new String[] { null, "Attack", null, null, null };
 			MobDefinition vet = get(90);
 			definition.standAnimation = vet.standAnimation;
 			definition.walkAnimation = vet.walkAnimation;
 			definition.combatLevel = 464;
 			break;
-			case 1385:
-				definition.actions = new String[] {"Talk-to", null, "Change Home", null, null};
-				break;
+		case 1385:
+			definition.actions = new String[] { "Talk-to", null, "Change Home", null, null };
+			break;
 		case 4646:
-			definition.actions = new String[] {"Talk-to", null, "Teleport", null, null};
+			definition.actions = new String[] { "Talk-to", null, "Teleport", null, null };
 			break;
 		case 4663:
-			definition.actions = new String[] {"Talk-to", null, null, null, null};
+			definition.actions = new String[] { "Talk-to", null, null, null, null };
 			break;
 		case 2947:
-			definition.actions = new String[] {"Pickpocket", null, null, null, null};
+			definition.actions = new String[] { "Pickpocket", null, null, null, null };
 			break;
 		case 4000:
 			definition.copy(get(50));
 			definition.name = "Queen White Dragon";
-			definition.originalModelColours = new int[] {10502, 43906, 11140, 10378, 0, 11138, 809, 33};
-			definition.changedModelColours = new int[] {100, 100, 226770, 100, 100, 100, 226770, 226770};
+			definition.originalModelColours = new int[] { 10502, 43906, 11140, 10378, 0, 11138, 809, 33 };
+			definition.changedModelColours = new int[] { 100, 100, 226770, 100, 100, 100, 226770, 226770 };
 			definition.combatLevel = 224;
 			break;
 		case 4001:
@@ -212,8 +213,8 @@ public final class MobDefinition {
 			definition.adjustVertextPointZ = 63;
 			definition.adjustVertextPointsXOrY = 63;
 			definition.npcSizeInSquares = 3;
-			definition.originalModelColours = new int[] {10502, 43906, 11140, 10378, 0, 11138, 809, 33};
-			definition.changedModelColours = new int[] {100, 100, 226770, 100, 100, 100, 226770, 226770};
+			definition.originalModelColours = new int[] { 10502, 43906, 11140, 10378, 0, 11138, 809, 33 };
+			definition.changedModelColours = new int[] { 100, 100, 226770, 100, 100, 100, 226770, 226770 };
 			definition.combatLevel = 224;
 			break;
 		case 4002:
@@ -223,21 +224,21 @@ public final class MobDefinition {
 			definition.npcModels = new int[1];
 			definition.npcModels[0] = 28281;
 			definition.name = "Kraken";
-            definition.actions = new String[] {null, "Attack", null, null, null};
-            MobDefinition eld = get(3847);
-            definition.npcModels = new int[1];
-            definition.npcModels[0] = 28233;
-            definition.combatLevel = 291;
-            definition.standAnimation = 3989;
-            definition.walkAnimation = eld.walkAnimation;
-            definition.adjustVertextPointsXOrY = definition.adjustVertextPointZ = 84;
-            break;
+			definition.actions = new String[] { null, "Attack", null, null, null };
+			MobDefinition eld = get(3847);
+			definition.npcModels = new int[1];
+			definition.npcModels[0] = 28233;
+			definition.combatLevel = 291;
+			definition.standAnimation = 3989;
+			definition.walkAnimation = eld.walkAnimation;
+			definition.adjustVertextPointsXOrY = definition.adjustVertextPointZ = 84;
+			break;
 		case 2005:
 			definition.npcModels = new int[2];
 			definition.npcModels[0] = 28294;
 			definition.npcModels[1] = 28295;
 			definition.name = "Venenatis";
-			definition.actions = new String[] {"Pick-up", null, null, null, null};
+			definition.actions = new String[] { "Pick-up", null, null, null, null };
 			MobDefinition ven2 = get(60);
 			definition.standAnimation = ven2.standAnimation;
 			definition.walkAnimation = ven2.walkAnimation;
@@ -246,7 +247,7 @@ public final class MobDefinition {
 			definition.adjustVertextPointZ = 63;
 			definition.adjustVertextPointsXOrY = 63;
 			definition.npcSizeInSquares = 3;
-			break;	
+			break;
 		case 1472:
 			definition.name = "Death";
 			definition.description = "A master Attacker of RuneLive.".getBytes();
@@ -254,33 +255,29 @@ public final class MobDefinition {
 			definition.actions = new String[5];
 			definition.actions[1] = "Attack";
 			definition.npcModels = new int[9];
-			definition.npcModels[0] = 55770; //Hat
-			definition.npcModels[1] = 55851; //Platebody
-			definition.npcModels[2] = 55815; //Platelegs
-			definition.npcModels[3] = 65297; //Cape
-			definition.npcModels[4] = 55728; //Gloves
-			definition.npcModels[5] = 55673; //Boots
-			definition.npcModels[6] = 9642; //Amulet
-			definition.npcModels[7] = 56046; //Weapon
-			definition.npcModels[8] = 70013; //Shield
+			definition.npcModels[0] = 55770; // Hat
+			definition.npcModels[1] = 55851; // Platebody
+			definition.npcModels[2] = 55815; // Platelegs
+			definition.npcModels[3] = 65297; // Cape
+			definition.npcModels[4] = 55728; // Gloves
+			definition.npcModels[5] = 55673; // Boots
+			definition.npcModels[6] = 9642; // Amulet
+			definition.npcModels[7] = 56046; // Weapon
+			definition.npcModels[8] = 70013; // Shield
 			definition.standAnimation = 808;
 			definition.walkAnimation = 819;
 			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
 			definition.adjustVertextPointZ = 200;
 			definition.adjustVertextPointsXOrY = 200;
 			definition.npcSizeInSquares = 2;
-			definition.changedModelColours = new int[]{
-                    127, 127, 127, 127
-            };
-			definition.originalModelColours = new int[]{
-                    65214, 65200, 65186, 62995
-            };
+			definition.changedModelColours = new int[] { 127, 127, 127, 127 };
+			definition.originalModelColours = new int[] { 65214, 65200, 65186, 62995 };
 			break;
 		case 2004:
 			definition.npcModels = new int[1];
 			definition.npcModels[0] = 28231;
 			definition.name = "Cave kraken";
-			definition.actions = new String[] {null, "Attack", null, null, null};
+			definition.actions = new String[] { null, "Attack", null, null, null };
 			MobDefinition cave = get(3847);
 			definition.npcModels = new int[1];
 			definition.npcModels[0] = 28233;
@@ -291,15 +288,15 @@ public final class MobDefinition {
 			break;
 		case 457:
 			definition.name = "Ghost Town Citizen";
-			definition.actions = new String[]{"Talk-to", null, "Teleport", null, null};
+			definition.actions = new String[] { "Talk-to", null, "Teleport", null, null };
 			break;
 		case 198:
 			definition.name = "Master Chief";
-			definition.actions = new String[]{"Talk-to", null, "Spawn Last Boss", null, null};
+			definition.actions = new String[] { "Talk-to", null, "Spawn Last Boss", null, null };
 			break;
 		case 1093:
 			definition.name = "Billy the Goat";
-			definition.actions = new String[]{"Talk-to", null, null, null, null};
+			definition.actions = new String[] { "Talk-to", null, null, null, null };
 			break;
 		case 5417:
 			definition.combatLevel = 210;
@@ -328,11 +325,11 @@ public final class MobDefinition {
 		case 8706:
 		case 8705:
 			definition.name = "Musician";
-			definition.actions = new String[]{"Listen-to", null, null, null, null};
+			definition.actions = new String[] { "Listen-to", null, null, null, null };
 			break;
 		case 947:
 			definition.name = "Grand Exchange";
-			definition.actions = new String[]{"Open", null, null, null, null};
+			definition.actions = new String[] { "Open", null, null, null, null };
 			break;
 		case 9939:
 			definition.combatLevel = 607;
@@ -346,42 +343,42 @@ public final class MobDefinition {
 		case 3101:
 			definition.adjustVertextPointZ = definition.adjustVertextPointsXOrY = 80;
 			definition.npcSizeInSquares = 1;
-			definition.actions = new String[]{"Talk-to", null, "Start", "Rewards", null};
+			definition.actions = new String[] { "Talk-to", null, "Start", "Rewards", null };
 			break;
 		case 6222:
 			definition.name = "Kree'arra";
 			definition.npcSizeInSquares = 5;
 			definition.standAnimation = 6972;
 			definition.walkAnimation = 6973;
-			definition.actions = new String[]{null, "Attack", null, null, null};
+			definition.actions = new String[] { null, "Attack", null, null, null };
 			definition.adjustVertextPointZ = definition.adjustVertextPointsXOrY = 110;
 			break;
 		case 6203:
-			definition.npcModels = new int[] {27768, 27773, 27764, 27765, 27770};
+			definition.npcModels = new int[] { 27768, 27773, 27764, 27765, 27770 };
 			definition.name = "K'ril Tsutsaroth";
 			definition.npcSizeInSquares = 5;
 			definition.standAnimation = 6943;
 			definition.walkAnimation = 6942;
-			definition.actions = new String[]{null, "Attack", null, null, null};
+			definition.actions = new String[] { null, "Attack", null, null, null };
 			definition.adjustVertextPointZ = definition.adjustVertextPointsXOrY = 110;
 			break;
 		case 1610:
 		case 491:
 		case 10216:
-			definition.actions = new String[]{null, "Attack", null, null, null};
+			definition.actions = new String[] { null, "Attack", null, null, null };
 			break;
 		case 7969:
-			definition.actions = new String[]{"Talk-to", null, "Trade", null, null};
+			definition.actions = new String[] { "Talk-to", null, "Trade", null, null };
 			break;
 		case 1382:
 			definition.name = "Glacor";
-			definition.npcModels = new int[]{58940};
+			definition.npcModels = new int[] { 58940 };
 			definition.npcSizeInSquares = 3;
-			//	definition.anInt86 = 475;
+			// definition.anInt86 = 475;
 			definition.adjustVertextPointsXOrY = definition.adjustVertextPointZ = 180;
 			definition.standAnimation = 10869;
 			definition.walkAnimation = 10867;
-			definition.actions = new String[]{null, "Attack", null, null, null};
+			definition.actions = new String[] { null, "Attack", null, null, null };
 			definition.combatLevel = 123;
 			definition.drawYellowDotOnMap = true;
 			definition.combatLevel = 188;
@@ -390,16 +387,16 @@ public final class MobDefinition {
 			definition.name = "Gambler";
 			break;
 		case 6970:
-			definition.actions = new String[] {"Trade", null, "Exchange Shards", null, null};
+			definition.actions = new String[] { "Trade", null, "Exchange Shards", null, null };
 			break;
 		case 4657:
-			definition.actions = new String[] {"Talk-to", null, "Claim Items", "Check Total", "Teleport"};
+			definition.actions = new String[] { "Talk-to", null, "Claim Items", "Check Total", "Teleport" };
 			break;
 		case 605:
-			definition.actions = new String[] {"Talk-to", null, "Vote Rewards", "Loyalty Titles", null};
+			definition.actions = new String[] { "Talk-to", null, "Vote Rewards", "Loyalty Titles", null };
 			break;
 		case 8591:
-			definition.actions = new String[] {"Talk-to", null, "Trade", null, null};
+			definition.actions = new String[] { "Talk-to", null, "Trade", null, null };
 			break;
 		case 316:
 		case 315:
@@ -409,17 +406,17 @@ public final class MobDefinition {
 		case 313:
 			definition.adjustVertextPointsXOrY = 30;
 			break;
-			case 309:
-				definition.name = "Rocky shoal";
-				definition.actions = new String[] {"Bait", null, null, null, null};
-				definition.adjustVertextPointsXOrY = 30;
-				break;
+		case 309:
+			definition.name = "Rocky shoal";
+			definition.actions = new String[] { "Bait", null, null, null, null };
+			definition.adjustVertextPointsXOrY = 30;
+			break;
 		case 318:
 			definition.adjustVertextPointsXOrY = 30;
-			definition.actions = new String[] {"Net", null, "Lure", null, null};
+			definition.actions = new String[] { "Net", null, "Lure", null, null };
 			break;
 		case 805:
-			definition.actions = new String[] {"Trade", null, "Tan hide", null, null};
+			definition.actions = new String[] { "Trade", null, "Tan hide", null, null };
 			break;
 		case 461:
 		case 844:
@@ -430,16 +427,16 @@ public final class MobDefinition {
 		case 520:
 		case 521:
 		case 11226:
-			definition.actions = new String[] {"Trade", null, null, null, null};
+			definition.actions = new String[] { "Trade", null, null, null, null };
 			break;
 		case 653:
-			definition.actions = new String[] {"Trade", null, null, null, null};
+			definition.actions = new String[] { "Trade", null, null, null, null };
 			break;
 		case 8022:
 		case 8028:
 			String color = id == 8022 ? "Yellow" : "Green";
-			definition.name = ""+color+" energy source";
-			definition.actions = new String[] {"Siphon", null, null, null, null};
+			definition.name = "" + color + " energy source";
+			definition.actions = new String[] { "Siphon", null, null, null, null };
 			break;
 		case 8444:
 			definition.actions = new String[5];
@@ -453,12 +450,12 @@ public final class MobDefinition {
 			definition.actions[0] = "Talk-to";
 			definition.actions[2] = "Trade";
 			definition.npcModels = new int[7];
-			definition.npcModels[0] = 65289; //Hat
+			definition.npcModels[0] = 65289; // Hat
 			definition.npcModels[1] = 62746;
 			definition.npcModels[2] = 62743;
-			definition.npcModels[3] = 65300; //Cape
+			definition.npcModels[3] = 65300; // Cape
 			definition.npcModels[4] = 13319;
-			definition.npcModels[5] = 27738; //Boots
+			definition.npcModels[5] = 27738; // Boots
 			definition.npcModels[6] = 20147;
 			definition.standAnimation = 808;
 			definition.walkAnimation = 819;
@@ -471,15 +468,15 @@ public final class MobDefinition {
 			definition.actions = new String[5];
 			definition.actions[1] = "Attack";
 			definition.npcModels = new int[9];
-			definition.npcModels[0] = 14395; //Hat
-			definition.npcModels[1] = 62746; //Platebody
-			definition.npcModels[2] = 62743; //Platelegs
-			definition.npcModels[3] = 62582; //Cape
-			definition.npcModels[4] = 13307; //Gloves
-			definition.npcModels[5] = 53327; //Boots
-			definition.npcModels[6] = 9642; //Amulet
-			definition.npcModels[7] = 2295; //Weapon
-			definition.npcModels[8] = 26423; //Shield
+			definition.npcModels[0] = 14395; // Hat
+			definition.npcModels[1] = 62746; // Platebody
+			definition.npcModels[2] = 62743; // Platelegs
+			definition.npcModels[3] = 62582; // Cape
+			definition.npcModels[4] = 13307; // Gloves
+			definition.npcModels[5] = 53327; // Boots
+			definition.npcModels[6] = 9642; // Amulet
+			definition.npcModels[7] = 2295; // Weapon
+			definition.npcModels[8] = 26423; // Shield
 			definition.standAnimation = 808;
 			definition.walkAnimation = 819;
 			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
@@ -494,15 +491,15 @@ public final class MobDefinition {
 			definition.actions = new String[5];
 			definition.actions[1] = "Attack";
 			definition.npcModels = new int[10];
-			definition.npcModels[0] = 3188; //Hat
-			definition.npcModels[1] = 58366; //Platebody
-			definition.npcModels[2] = 58333; //Platelegs
-			definition.npcModels[3] = 65297; //Cape
-			definition.npcModels[4] = 179; //Gloves
-			definition.npcModels[5] = 27738; //Boots
-			definition.npcModels[6] = 9642; //Amulet
-			definition.npcModels[7] = 56022; //Weapon
-			definition.npcModels[8] = 40942; //Shield
+			definition.npcModels[0] = 3188; // Hat
+			definition.npcModels[1] = 58366; // Platebody
+			definition.npcModels[2] = 58333; // Platelegs
+			definition.npcModels[3] = 65297; // Cape
+			definition.npcModels[4] = 179; // Gloves
+			definition.npcModels[5] = 27738; // Boots
+			definition.npcModels[6] = 9642; // Amulet
+			definition.npcModels[7] = 56022; // Weapon
+			definition.npcModels[8] = 40942; // Shield
 			definition.npcModels[9] = 58316;
 			definition.standAnimation = 808;
 			definition.walkAnimation = 819;
@@ -510,12 +507,8 @@ public final class MobDefinition {
 			definition.adjustVertextPointZ = 200;
 			definition.adjustVertextPointsXOrY = 200;
 			definition.npcSizeInSquares = 2;
-			definition.changedModelColours = new int[]{
-                    226770, 34503, 34503, 34503, 34503
-            };
-			definition.originalModelColours = new int[]{
-                    926, 65214, 65200, 65186, 62995
-            };
+			definition.changedModelColours = new int[] { 226770, 34503, 34503, 34503, 34503 };
+			definition.originalModelColours = new int[] { 926, 65214, 65200, 65186, 62995 };
 			break;
 		case 135:
 			definition.name = "Fear";
@@ -524,14 +517,14 @@ public final class MobDefinition {
 			definition.actions = new String[5];
 			definition.actions[1] = "Attack";
 			definition.npcModels = new int[9];
-			definition.npcModels[0] = 26632; //Hat
-			definition.npcModels[1] = 20157; //Platebody
-			definition.npcModels[2] = 20139; //Platelegs
-			definition.npcModels[3] = 65297; //Cape
-			definition.npcModels[4] = 20129; //Gloves
-			definition.npcModels[5] = 27738; //Boots
-			definition.npcModels[6] = 9642; //Amulet
-			definition.npcModels[7] = 58380; //Weapon
+			definition.npcModels[0] = 26632; // Hat
+			definition.npcModels[1] = 20157; // Platebody
+			definition.npcModels[2] = 20139; // Platelegs
+			definition.npcModels[3] = 65297; // Cape
+			definition.npcModels[4] = 20129; // Gloves
+			definition.npcModels[5] = 27738; // Boots
+			definition.npcModels[6] = 9642; // Amulet
+			definition.npcModels[7] = 58380; // Weapon
 			definition.npcModels[8] = 20121;
 			definition.standAnimation = 808;
 			definition.walkAnimation = 819;
@@ -615,7 +608,7 @@ public final class MobDefinition {
 		case 5079:
 		case 5080:
 		case 6824:
-			definition.actions = new String[] {null, null, null, null, null};
+			definition.actions = new String[] { null, null, null, null, null };
 			break;
 		case 6806: // thorny snail
 		case 6807:
@@ -627,19 +620,19 @@ public final class MobDefinition {
 		case 6795:
 		case 6815: // war tortoise
 		case 6816:
-		//case 6874:// pack yak
-		//case 6873: // pack yak
+			// case 6874:// pack yak
+			// case 6873: // pack yak
 		case 3594: // yak
 		case 3590: // war tortoise
 		case 3596: // terrorbird
-			definition.actions = new String[] {"Store", null, null, null, null};
+			definition.actions = new String[] { "Store", null, null, null, null };
 			break;
 		case 548:
-			definition.actions = new String[] {"Trade", null, null, null, null};
+			definition.actions = new String[] { "Trade", null, null, null, null };
 			break;
 		case 3299:
 		case 437:
-			definition.actions = new String[] {"Trade", null, null, null, null};
+			definition.actions = new String[] { "Trade", null, null, null, null };
 			break;
 		case 1265:
 		case 1267:
@@ -647,77 +640,78 @@ public final class MobDefinition {
 			definition.drawYellowDotOnMap = true;
 			break;
 		case 961:
-			definition.actions = new String[] {null, null, "Buy Consumables", "Restore Stats", null};
+			definition.actions = new String[] { null, null, "Buy Consumables", "Restore Stats", null };
 			definition.name = "Healer";
 			break;
 		case 705:
-			definition.actions = new String[] {null, null, "Buy Armour", "Buy Weapons", "Buy Jewelries"};
+			definition.actions = new String[] { null, null, "Buy Armour", "Buy Weapons", "Buy Jewelries" };
 			definition.name = "Warrior";
 			break;
 		case 1861:
-			definition.actions = new String[] {null, null, "Buy Equipment", "Buy Ammunition", null};
+			definition.actions = new String[] { null, null, "Buy Equipment", "Buy Ammunition", null };
 			definition.name = "Archer";
 			break;
 		case 946:
-			definition.actions = new String[] {null, null, "Buy Equipment", "Buy Runes", "Quick-buy"};
+			definition.actions = new String[] { null, null, "Buy Equipment", "Buy Runes", "Quick-buy" };
 			definition.name = "Mage";
 			break;
-			case 6537:
-				definition.actions = new String[] {null, null, "Talk-to", "Sell-Artifacts", null};
-				break;
+		case 6537:
+			definition.actions = new String[] { null, null, "Talk-to", "Sell-Artifacts", null };
+			break;
 		case 2253:
-			definition.actions = new String[] {null, "Buy Skillcapes", "Buy Skillcapes (t)", "Buy Skillcapes (m)", "Buy Hoods"};
+			definition.actions = new String[] { null, "Buy Skillcapes", "Buy Skillcapes (t)", "Buy Skillcapes (m)",
+					"Buy Hoods" };
 			break;
 		case 3147:
-			definition.actions = new String[] {"Trade", null, null, null, null};
+			definition.actions = new String[] { "Trade", null, null, null, null };
 			definition.name = "Lazim";
 			break;
 		case 5093:
-			definition.actions = new String[] {"Trade", null, null, null, null};
+			definition.actions = new String[] { "Trade", null, null, null, null };
 			definition.name = "Boss Point Store";
 			break;
 		case 291:
-			definition.actions = new String[] {"Pickpocket", null, null, null, null};
+			definition.actions = new String[] { "Pickpocket", null, null, null, null };
 			break;
 		case 2292:
-			definition.actions = new String[] {"Trade", null, null, null, null};
+			definition.actions = new String[] { "Trade", null, null, null, null };
 			definition.name = "Merchant";
 			break;
 		case 2676:
-			definition.actions = new String[] {"Makeover", null, null, null, null};
+			definition.actions = new String[] { "Makeover", null, null, null, null };
 			break;
 		case 1360:
-			definition.actions = new String[] {"Talk-to", null, null, null, null};
+			definition.actions = new String[] { "Talk-to", null, null, null, null };
 			break;
 		case 494:
 			definition.walkAnimation = 819;
-			definition.actions = new String[] {"Talk-to", null, null, null, null};
+			definition.actions = new String[] { "Talk-to", null, null, null, null };
 			break;
 		case 1685:
 			definition.name = "Pure";
-			definition.actions = new String[] {"Trade", null, null, null, null};
+			definition.actions = new String[] { "Trade", null, null, null, null };
 			break;
-			case 8648:
-				definition.name = "Pet Rock Golem";
-				definition.actions = new String[] {"Pick-up", null, null, null, null};
-				break;
-			case 5559:
-				definition.name = "Pet Raccoon";
-				definition.actions = new String[] {"Pick-up", null, null, null, null};
-				break;
-			case 9579:
-				definition.name = "Pet Chinchompa";
-				definition.actions = new String[] {"Pick-up", null, null, null, null};
-				break;
-			case 2707:
-				definition.name = "Pet Seagull";
-				definition.actions = new String[] {"Pick-up", null, null, null, null};
-				break;
+		case 8648:
+			definition.name = "Pet Rock Golem";
+			definition.actions = new String[] { "Pick-up", null, null, null, null };
+			break;
+		case 5559:
+			definition.name = "Pet Raccoon";
+			definition.actions = new String[] { "Pick-up", null, null, null, null };
+			break;
+		case 9579:
+			definition.name = "Pet Chinchompa";
+			definition.actions = new String[] { "Pick-up", null, null, null, null };
+			break;
+		case 2707:
+			definition.name = "Pet Seagull";
+			definition.actions = new String[] { "Pick-up", null, null, null, null };
+			break;
 		case 3030:
 			definition.name = "King black dragon";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
-			definition.npcModels = new int[] {17414, 17415, 17429, 17422};
+			definition.npcModels = new int[] { 17414, 17415, 17429, 17422 };
 			definition.combatLevel = 276;
 			definition.standAnimation = 90;
 			definition.walkAnimation = 4635;
@@ -727,23 +721,23 @@ public final class MobDefinition {
 			break;
 
 		case 3031:
-			
+
 			definition.name = "General graardor";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
-			definition.npcModels = new int[] {27785, 27789};
+			definition.npcModels = new int[] { 27785, 27789 };
 			definition.combatLevel = 624;
 			definition.standAnimation = 7059;
 			definition.walkAnimation = 7058;
 			definition.adjustVertextPointZ = 40;
 			definition.adjustVertextPointsXOrY = 40;
-			break;	
+			break;
 
 		case 3032:
 			definition.name = "TzTok-Jad";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
-			definition.npcModels = new int[] {34131};
+			definition.npcModels = new int[] { 34131 };
 			definition.combatLevel = 702;
 			definition.standAnimation = 9274;
 			definition.walkAnimation = 9273;
@@ -756,7 +750,7 @@ public final class MobDefinition {
 			definition.name = "Chaos elemental";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
-			definition.npcModels = new int[] {11216};
+			definition.npcModels = new int[] { 11216 };
 			definition.combatLevel = 305;
 			definition.standAnimation = 3144;
 			definition.walkAnimation = 3145;
@@ -768,7 +762,7 @@ public final class MobDefinition {
 			definition.name = "Corporeal beast";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
-			definition.npcModels = new int[] {40955};
+			definition.npcModels = new int[] { 40955 };
 			definition.combatLevel = 785;
 			definition.standAnimation = 10056;
 			definition.walkAnimation = 10055;
@@ -781,7 +775,7 @@ public final class MobDefinition {
 			definition.name = "Kree'arra";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
-			definition.npcModels = new int[] {28003, 28004};
+			definition.npcModels = new int[] { 28003, 28004 };
 			definition.combatLevel = 580;
 			definition.standAnimation = 6972;
 			definition.walkAnimation = 6973;
@@ -794,7 +788,7 @@ public final class MobDefinition {
 			definition.name = "K'ril tsutsaroth";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
-			definition.npcModels = new int[] {27768, 27773, 27764, 27765, 27770};
+			definition.npcModels = new int[] { 27768, 27773, 27764, 27765, 27770 };
 			definition.combatLevel = 650;
 			definition.standAnimation = 6943;
 			definition.walkAnimation = 6942;
@@ -806,7 +800,7 @@ public final class MobDefinition {
 			definition.name = "Commander zilyana";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
-			definition.npcModels = new int[] {28057, 28071, 28078, 28056};
+			definition.npcModels = new int[] { 28057, 28071, 28078, 28056 };
 			definition.combatLevel = 596;
 			definition.standAnimation = 6963;
 			definition.walkAnimation = 6962;
@@ -814,47 +808,47 @@ public final class MobDefinition {
 			definition.adjustVertextPointsXOrY = 103;
 			definition.npcSizeInSquares = 2;
 			break;
-			case 6914:
-				definition.name = "Pet Raccoon";
-				definition.actions = new String[5];
-				definition.actions[0] = "Pick-up";
-				break;
-			case 4906:
-				definition.name = "Wilfred";
-				definition.actions = new String[5];
-				definition.actions = new String[] {"Trade with", null, "Exchange-Kindling", null, null};
-				definition.description = "A master woodcutter.".getBytes();
-				break;
-			case 6247:
+		case 6914:
+			definition.name = "Pet Raccoon";
+			definition.actions = new String[5];
+			definition.actions[0] = "Pick-up";
+			break;
+		case 4906:
+			definition.name = "Wilfred";
+			definition.actions = new String[5];
+			definition.actions = new String[] { "Trade with", null, "Exchange-Kindling", null, null };
+			definition.description = "A master woodcutter.".getBytes();
+			break;
+		case 6247:
 			definition.name = "Commander zilyana";
-			//definition.actions = new String[5];
-			//definition.actions[0] = "Pick-up";
-			definition.npcModels = new int[] {28057, 28071, 28078, 28056};
-			//definition.combatLevel = 596;
+			// definition.actions = new String[5];
+			// definition.actions[0] = "Pick-up";
+			definition.npcModels = new int[] { 28057, 28071, 28078, 28056 };
+			// definition.combatLevel = 596;
 			definition.standAnimation = 6963;
 			definition.walkAnimation = 6962;
-			//definition.adjustVertextPointZ = 103;
-			//definition.adjustVertextPointsXOrY = 103;
-			//definition.npcSizeInSquares = 2;
+			// definition.adjustVertextPointZ = 103;
+			// definition.adjustVertextPointsXOrY = 103;
+			// definition.npcSizeInSquares = 2;
 			break;
 		case 6873:
 		case 6874:
 			definition.standAnimation = 5785;
 			definition.walkAnimation = 5781;
 			definition.npcModels[0] = 23892;
-			//23892
+			// 23892
 			break;
 		case 5529:
 			definition.standAnimation = 5785;
 			definition.walkAnimation = 5781;
-			//23892
+			// 23892
 			break;
-			
+
 		case 3038:
 			definition.name = "Dagannoth supreme";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
-			definition.npcModels = new int[] {9941, 9943};
+			definition.npcModels = new int[] { 9941, 9943 };
 			definition.combatLevel = 303;
 			definition.standAnimation = 2850;
 			definition.walkAnimation = 2849;
@@ -864,12 +858,12 @@ public final class MobDefinition {
 			break;
 
 		case 3039:
-			definition.name = "Dagannoth prime"; //9940, 9943, 9942
+			definition.name = "Dagannoth prime"; // 9940, 9943, 9942
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
-			definition.npcModels = new int[] {9940, 9943, 9942};
-			definition.originalModelColours = new int[]{11930, 27144, 16536, 16540};
-			definition.changedModelColours = new int[]{5931, 1688, 21530, 21534};
+			definition.npcModels = new int[] { 9940, 9943, 9942 };
+			definition.originalModelColours = new int[] { 11930, 27144, 16536, 16540 };
+			definition.changedModelColours = new int[] { 5931, 1688, 21530, 21534 };
 			definition.combatLevel = 303;
 			definition.standAnimation = 2850;
 			definition.walkAnimation = 2849;
@@ -882,9 +876,9 @@ public final class MobDefinition {
 			definition.name = "Dagannoth rex";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
-			definition.npcModels = new int[] {9941};
-			definition.originalModelColours = new int[]{16536, 16540, 27144, 2477};
-			definition.changedModelColours = new int[]{7322, 7326, 10403, 2595};
+			definition.npcModels = new int[] { 9941 };
+			definition.originalModelColours = new int[] { 16536, 16540, 27144, 2477 };
+			definition.changedModelColours = new int[] { 7322, 7326, 10403, 2595 };
 			definition.combatLevel = 303;
 			definition.standAnimation = 2850;
 			definition.walkAnimation = 2849;
@@ -900,9 +894,9 @@ public final class MobDefinition {
 			definition.walkingBackwardsAnimation = -1;
 			definition.walkRightAnimation = -1;
 			definition.walkLeftAnimation = -1;
-			//definition.type = 51;
-			definition.degreesToTurn = 32 ;
-			definition.npcModels = new int[] {56767, 55294};
+			// definition.type = 51;
+			definition.degreesToTurn = 32;
+			definition.npcModels = new int[] { 56767, 55294 };
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
 			definition.adjustVertextPointZ = 72;
@@ -911,7 +905,7 @@ public final class MobDefinition {
 			break;
 
 		case 3048:
-			definition.npcModels = new int[]{44733};
+			definition.npcModels = new int[] { 44733 };
 			definition.name = "Tormented demon";
 			definition.combatLevel = 450;
 			definition.standAnimation = 10921;
@@ -919,7 +913,7 @@ public final class MobDefinition {
 			definition.walkingBackwardsAnimation = -1;
 			definition.walkRightAnimation = -1;
 			definition.walkLeftAnimation = -1;
-		//	definition.type = 8349;
+			// definition.type = 8349;
 			definition.degreesToTurn = 32;
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
@@ -928,7 +922,7 @@ public final class MobDefinition {
 			definition.npcSizeInSquares = 2;
 			break;
 		case 3050:
-			definition.npcModels = new int[] {24602, 24605, 24606};
+			definition.npcModels = new int[] { 24602, 24605, 24606 };
 			definition.name = "Kalphite queen";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
@@ -940,7 +934,7 @@ public final class MobDefinition {
 			definition.npcSizeInSquares = 2;
 			break;
 		case 3051:
-			definition.npcModels = new int[] {46141};
+			definition.npcModels = new int[] { 46141 };
 			definition.name = "Slash bash";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
@@ -952,7 +946,7 @@ public final class MobDefinition {
 			definition.npcSizeInSquares = 2;
 			break;
 		case 3052:
-			definition.npcModels = new int[] {45412};
+			definition.npcModels = new int[] { 45412 };
 			definition.name = "Phoenix";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
@@ -963,9 +957,9 @@ public final class MobDefinition {
 			definition.adjustVertextPointsXOrY = 70;
 			definition.npcSizeInSquares = 2;
 			break;
-		case 2042://regular
+		case 2042:// regular
 			definition.name = "Zulrah";
-			definition.actions = new String[] {null, "Attack", null, null, null};
+			definition.actions = new String[] { null, "Attack", null, null, null };
 			definition.npcModels = new int[1];
 			definition.npcModels[0] = 14407;
 			definition.standAnimation = 5070;
@@ -974,9 +968,9 @@ public final class MobDefinition {
 			definition.adjustVertextPointsXOrY = 100;
 			definition.adjustVertextPointZ = 100;
 			break;
-		case 2043://melee
+		case 2043:// melee
 			definition.name = "Zulrah";
-			definition.actions = new String[] {null, "Attack", null, null, null};
+			definition.actions = new String[] { null, "Attack", null, null, null };
 			definition.npcModels = new int[1];
 			definition.npcModels[0] = 14408;
 			definition.standAnimation = 5070;
@@ -985,9 +979,9 @@ public final class MobDefinition {
 			definition.adjustVertextPointsXOrY = 100;
 			definition.adjustVertextPointZ = 100;
 			break;
-		case 2044://mage
+		case 2044:// mage
 			definition.name = "Zulrah";
-			definition.actions = new String[] {null, "Attack", null, null, null};
+			definition.actions = new String[] { null, "Attack", null, null, null };
 			definition.npcModels = new int[1];
 			definition.npcModels[0] = 14409;
 			definition.standAnimation = 5070;
@@ -996,9 +990,9 @@ public final class MobDefinition {
 			definition.adjustVertextPointsXOrY = 100;
 			definition.adjustVertextPointZ = 100;
 			break;
-		case 2045://jad
+		case 2045:// jad
 			definition.name = "Zulrah";
-			definition.actions = new String[] {null, "Attack", null, null, null};
+			definition.actions = new String[] { null, "Attack", null, null, null };
 			definition.npcModels = new int[1];
 			definition.npcModels[0] = 14408;
 			definition.standAnimation = 5070;
@@ -1008,7 +1002,7 @@ public final class MobDefinition {
 			definition.adjustVertextPointZ = 100;
 			break;
 		case 3053:
-			definition.npcModels = new int[] {46058, 46057};
+			definition.npcModels = new int[] { 46058, 46057 };
 			definition.name = "Bandos avatar";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
@@ -1020,7 +1014,7 @@ public final class MobDefinition {
 			definition.npcSizeInSquares = 2;
 			break;
 		case 3054:
-			definition.npcModels = new int[] {62717};
+			definition.npcModels = new int[] { 62717 };
 			definition.name = "Nex";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
@@ -1032,7 +1026,7 @@ public final class MobDefinition {
 			definition.npcSizeInSquares = 1;
 			break;
 		case 3055:
-			definition.npcModels = new int[] {51852, 51853};
+			definition.npcModels = new int[] { 51852, 51853 };
 			definition.name = "Jungle strykewyrm";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
@@ -1047,7 +1041,7 @@ public final class MobDefinition {
 			definition.name = "RuneLive Guide";
 			break;
 		case 3056:
-			definition.npcModels = new int[] {51848, 51850};
+			definition.npcModels = new int[] { 51848, 51850 };
 			definition.name = "Desert strykewyrm";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
@@ -1059,7 +1053,7 @@ public final class MobDefinition {
 			definition.npcSizeInSquares = 1;
 			break;
 		case 3057:
-			definition.npcModels = new int[] {51847, 51849};
+			definition.npcModels = new int[] { 51847, 51849 };
 			definition.name = "Ice strykewyrm";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
@@ -1071,7 +1065,7 @@ public final class MobDefinition {
 			definition.npcSizeInSquares = 1;
 			break;
 		case 3058:
-			definition.npcModels = new int[] {49142, 49144};
+			definition.npcModels = new int[] { 49142, 49144 };
 			definition.name = "Green dragon";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
@@ -1083,7 +1077,7 @@ public final class MobDefinition {
 			definition.npcSizeInSquares = 2;
 			break;
 		case 3059:
-			definition.npcModels = new int[] {57937};
+			definition.npcModels = new int[] { 57937 };
 			definition.name = "Baby blue dragon";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
@@ -1095,7 +1089,7 @@ public final class MobDefinition {
 			definition.npcSizeInSquares = 1;
 			break;
 		case 3060:
-			definition.npcModels = new int[] {49137, 49144};
+			definition.npcModels = new int[] { 49137, 49144 };
 			definition.name = "Blue dragon";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
@@ -1107,7 +1101,7 @@ public final class MobDefinition {
 			definition.npcSizeInSquares = 2;
 			break;
 		case 3061:
-			definition.npcModels = new int[] {14294, 49144};
+			definition.npcModels = new int[] { 14294, 49144 };
 			definition.name = "Black dragon";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
@@ -1120,97 +1114,97 @@ public final class MobDefinition {
 			break;
 		case 5507:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {17350};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 17350 };
 			break;
 		case 5508:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {226770};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 226770 };
 			break;
 		case 5509:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {123770};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 123770 };
 			break;
 		case 5510:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {933};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 933 };
 			break;
 		case 5511:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {100};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 100 };
 			break;
 		case 5030:
 			definition.actions[2] = "Travel";
 			break;
 		case 5512:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {76770};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 76770 };
 			break;
 		case 5513:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {461770};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 461770 };
 			break;
 		case 5514:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {49950};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 49950 };
 			break;
 		case 5523:
 			definition.copy(get(1613));
-			definition.originalModelColours = new int[] {5202, 187, 183, 192, 179};
-			definition.changedModelColours = new int[] {17350, 17350, 17350, 17350, 17350};
+			definition.originalModelColours = new int[] { 5202, 187, 183, 192, 179 };
+			definition.changedModelColours = new int[] { 17350, 17350, 17350, 17350, 17350 };
 			break;
 		case 5524:
 			definition.copy(get(1613));
-			definition.originalModelColours = new int[] {5202, 187, 183, 192, 179};
-			definition.changedModelColours = new int[] {226770, 226770, 226770, 226770, 226770};
+			definition.originalModelColours = new int[] { 5202, 187, 183, 192, 179 };
+			definition.changedModelColours = new int[] { 226770, 226770, 226770, 226770, 226770 };
 			break;
 		case 5525:
 			definition.copy(get(1613));
-			definition.originalModelColours = new int[] {5202, 187, 183, 192, 179};
-			definition.changedModelColours = new int[] {123770, 123770, 123770, 123770, 123770};
+			definition.originalModelColours = new int[] { 5202, 187, 183, 192, 179 };
+			definition.changedModelColours = new int[] { 123770, 123770, 123770, 123770, 123770 };
 			break;
 		case 5526:
 			definition.copy(get(1613));
-			definition.originalModelColours = new int[] {5202, 187, 183, 192, 179};
-			definition.changedModelColours = new int[] {933, 933, 933, 933, 933};
+			definition.originalModelColours = new int[] { 5202, 187, 183, 192, 179 };
+			definition.changedModelColours = new int[] { 933, 933, 933, 933, 933 };
 			break;
 		case 5527:
 			definition.copy(get(1613));
-			definition.originalModelColours = new int[] {5202, 187, 183, 192, 179};
-			definition.changedModelColours = new int[] {100, 100, 100, 100, 100};
-			break;	
+			definition.originalModelColours = new int[] { 5202, 187, 183, 192, 179 };
+			definition.changedModelColours = new int[] { 100, 100, 100, 100, 100 };
+			break;
 		case 5528:
 			definition.copy(get(1613));
-			definition.originalModelColours = new int[] {5202, 187, 183, 192, 179};
-			definition.changedModelColours = new int[] {76770, 76770, 76770, 76770, 76770};
+			definition.originalModelColours = new int[] { 5202, 187, 183, 192, 179 };
+			definition.changedModelColours = new int[] { 76770, 76770, 76770, 76770, 76770 };
 			break;
 		case 5531:
 			definition.copy(get(1613));
-			definition.originalModelColours = new int[] {5202, 187, 183, 192, 179};
-			definition.changedModelColours = new int[] {49950, 49950, 49950, 49950, 49950};
+			definition.originalModelColours = new int[] { 5202, 187, 183, 192, 179 };
+			definition.changedModelColours = new int[] { 49950, 49950, 49950, 49950, 49950 };
 			break;
 		case 5532:
 			definition.copy(get(1613));
-			definition.originalModelColours = new int[] {5202, 187, 183, 192, 179};
-			definition.changedModelColours = new int[] {6020, 6020, 6020, 6020, 6020};
+			definition.originalModelColours = new int[] { 5202, 187, 183, 192, 179 };
+			definition.changedModelColours = new int[] { 6020, 6020, 6020, 6020, 6020 };
 			break;
 		case 5550:
 			definition.copy(get(1613));
-			definition.originalModelColours = new int[] {5202, 187, 183, 192, 179};
-			definition.changedModelColours = new int[] {461770, 461770, 461770, 461770, 461770};
+			definition.originalModelColours = new int[] { 5202, 187, 183, 192, 179 };
+			definition.changedModelColours = new int[] { 461770, 461770, 461770, 461770, 461770 };
 			break;
-			
+
 		case 5551:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {17350};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 17350 };
 			definition.adjustVertextPointZ -= 37;
 			definition.adjustVertextPointsXOrY -= 37;
 			definition.actions = new String[5];
@@ -1218,8 +1212,8 @@ public final class MobDefinition {
 			break;
 		case 5552:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {226770};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 226770 };
 			definition.adjustVertextPointZ -= 37;
 			definition.adjustVertextPointsXOrY -= 37;
 			definition.actions = new String[5];
@@ -1227,8 +1221,8 @@ public final class MobDefinition {
 			break;
 		case 5553:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {123770};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 123770 };
 			definition.adjustVertextPointZ -= 37;
 			definition.adjustVertextPointsXOrY -= 37;
 			definition.actions = new String[5];
@@ -1236,8 +1230,8 @@ public final class MobDefinition {
 			break;
 		case 5554:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {933};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 933 };
 			definition.adjustVertextPointZ -= 37;
 			definition.adjustVertextPointsXOrY -= 37;
 			definition.actions = new String[5];
@@ -1245,8 +1239,8 @@ public final class MobDefinition {
 			break;
 		case 5555:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {100};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 100 };
 			definition.adjustVertextPointZ -= 37;
 			definition.adjustVertextPointsXOrY -= 37;
 			definition.actions = new String[5];
@@ -1254,8 +1248,8 @@ public final class MobDefinition {
 			break;
 		case 5556:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {76770};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 76770 };
 			definition.adjustVertextPointZ -= 37;
 			definition.adjustVertextPointsXOrY -= 37;
 			definition.actions = new String[5];
@@ -1263,8 +1257,8 @@ public final class MobDefinition {
 			break;
 		case 5557:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {461770};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 461770 };
 			definition.adjustVertextPointZ -= 37;
 			definition.adjustVertextPointsXOrY -= 37;
 			definition.actions = new String[5];
@@ -1272,99 +1266,99 @@ public final class MobDefinition {
 			break;
 		case 5558:
 			definition.copy(get(1265));
-			definition.originalModelColours = new int[] {10396};
-			definition.changedModelColours = new int[] {49950};
+			definition.originalModelColours = new int[] { 10396 };
+			definition.changedModelColours = new int[] { 49950 };
 			definition.adjustVertextPointZ -= 37;
 			definition.adjustVertextPointsXOrY -= 37;
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
 			break;
-			
+
 		case 5515:
 			definition.copy(get(2783));
-			definition.originalModelColours = new int[] {5640, 898, 4502, 4750, 5388, 268};
-			definition.changedModelColours = new int[] {17350, 17350, 17350, 17350, 17350, 17350};
+			definition.originalModelColours = new int[] { 5640, 898, 4502, 4750, 5388, 268 };
+			definition.changedModelColours = new int[] { 17350, 17350, 17350, 17350, 17350, 17350 };
 			break;
 		case 5516:
 			definition.copy(get(2783));
-			definition.originalModelColours = new int[] {5640, 898, 4502, 4750, 5388, 268};
-			definition.changedModelColours = new int[] {226770, 226770, 226770, 226770, 226770, 226770};
+			definition.originalModelColours = new int[] { 5640, 898, 4502, 4750, 5388, 268 };
+			definition.changedModelColours = new int[] { 226770, 226770, 226770, 226770, 226770, 226770 };
 			break;
 		case 5517:
 			definition.copy(get(2783));
-			definition.originalModelColours = new int[] {5640, 898, 4502, 4750, 5388, 268};
-			definition.changedModelColours = new int[] {123770, 123770, 123770, 123770, 123770, 123770};
+			definition.originalModelColours = new int[] { 5640, 898, 4502, 4750, 5388, 268 };
+			definition.changedModelColours = new int[] { 123770, 123770, 123770, 123770, 123770, 123770 };
 			break;
 		case 5518:
 			definition.copy(get(2783));
-			definition.originalModelColours = new int[] {5640, 898, 4502, 4750, 5388, 268};
-			definition.changedModelColours = new int[] {933, 933, 933, 933, 933, 933};
+			definition.originalModelColours = new int[] { 5640, 898, 4502, 4750, 5388, 268 };
+			definition.changedModelColours = new int[] { 933, 933, 933, 933, 933, 933 };
 			break;
 		case 5519:
 			definition.copy(get(2783));
-			definition.originalModelColours = new int[] {5640, 898, 4502, 4750, 5388, 268};
-			definition.changedModelColours = new int[] {100, 100, 100, 100, 100, 100};
+			definition.originalModelColours = new int[] { 5640, 898, 4502, 4750, 5388, 268 };
+			definition.changedModelColours = new int[] { 100, 100, 100, 100, 100, 100 };
 			break;
 		case 5520:
 			definition.copy(get(2783));
-			definition.originalModelColours = new int[] {5640, 898, 4502, 4750, 5388, 268};
-			definition.changedModelColours = new int[] {76770, 76770, 76770, 76770, 76770, 76770};
+			definition.originalModelColours = new int[] { 5640, 898, 4502, 4750, 5388, 268 };
+			definition.changedModelColours = new int[] { 76770, 76770, 76770, 76770, 76770, 76770 };
 			break;
 		case 5521:
 			definition.copy(get(2783));
-			definition.originalModelColours = new int[] {5640, 898, 4502, 4750, 5388, 268};
-			definition.changedModelColours = new int[] {49950, 49950, 49950, 49950, 49950, 49950};
+			definition.originalModelColours = new int[] { 5640, 898, 4502, 4750, 5388, 268 };
+			definition.changedModelColours = new int[] { 49950, 49950, 49950, 49950, 49950, 49950 };
 			break;
 		case 5522:
 			definition.copy(get(2783));
-			definition.originalModelColours = new int[] {5640, 898, 4502, 4750, 5388, 268};
-			definition.changedModelColours = new int[] {461770, 461770, 461770, 461770, 461770, 461770};
+			definition.originalModelColours = new int[] { 5640, 898, 4502, 4750, 5388, 268 };
+			definition.changedModelColours = new int[] { 461770, 461770, 461770, 461770, 461770, 461770 };
 			break;
 		case 5500:
 			definition.copy(get(1615));
-			definition.originalModelColours = new int[] {4015, 4025, 920, 7580};
-			definition.changedModelColours = new int[] {17350, 17350, 17350, 17350, 17350};
+			definition.originalModelColours = new int[] { 4015, 4025, 920, 7580 };
+			definition.changedModelColours = new int[] { 17350, 17350, 17350, 17350, 17350 };
 			break;
 		case 5501:
 			definition.copy(get(1615));
-			definition.originalModelColours = new int[] {4015, 4025, 920, 7580};
-			definition.changedModelColours = new int[] {226770, 226770, 226770, 226770, 226770};
+			definition.originalModelColours = new int[] { 4015, 4025, 920, 7580 };
+			definition.changedModelColours = new int[] { 226770, 226770, 226770, 226770, 226770 };
 			break;
 		case 5502:
 			definition.copy(get(1615));
-			definition.originalModelColours = new int[] {4015, 4025, 920, 7580};
-			definition.changedModelColours = new int[] {123770, 123770, 123770, 123770, 123770};
+			definition.originalModelColours = new int[] { 4015, 4025, 920, 7580 };
+			definition.changedModelColours = new int[] { 123770, 123770, 123770, 123770, 123770 };
 			break;
 		case 5503:
 			definition.copy(get(1615));
-			definition.originalModelColours = new int[] {4015, 4025, 920, 7580};
-			definition.changedModelColours = new int[] {933, 933, 933, 933, 933};
+			definition.originalModelColours = new int[] { 4015, 4025, 920, 7580 };
+			definition.changedModelColours = new int[] { 933, 933, 933, 933, 933 };
 			break;
 		case 5504:
 			definition.copy(get(1615));
-			definition.originalModelColours = new int[] {4015, 4025, 920, 7580};
-			definition.changedModelColours = new int[] {100, 100, 100, 100, 100};
+			definition.originalModelColours = new int[] { 4015, 4025, 920, 7580 };
+			definition.changedModelColours = new int[] { 100, 100, 100, 100, 100 };
 			break;
 		case 5505:
 			definition.copy(get(1615));
-			definition.originalModelColours = new int[] {4015, 4025, 920, 7580};
-			definition.changedModelColours = new int[] {76770, 76770, 76770, 76770, 76770};
+			definition.originalModelColours = new int[] { 4015, 4025, 920, 7580 };
+			definition.changedModelColours = new int[] { 76770, 76770, 76770, 76770, 76770 };
 			break;
 		case 5506:
 			definition.copy(get(1615));
-			definition.originalModelColours = new int[] {4015, 4025, 920, 7580};
-			definition.changedModelColours = new int[] {49950, 49950, 49950, 49950, 49950};
+			definition.originalModelColours = new int[] { 4015, 4025, 920, 7580 };
+			definition.changedModelColours = new int[] { 49950, 49950, 49950, 49950, 49950 };
 			break;
 		case 5533:
 			definition.copy(get(1615));
-			definition.originalModelColours = new int[] {4015, 4025, 920, 7580};
-			definition.changedModelColours = new int[] {461770, 461770, 461770, 461770, 461770};
+			definition.originalModelColours = new int[] { 4015, 4025, 920, 7580 };
+			definition.changedModelColours = new int[] { 461770, 461770, 461770, 461770, 461770 };
 			break;
 		}
 		return definition;
 	}
-	
-	public void copy(MobDefinition other) {		
+
+	public void copy(MobDefinition other) {
 		name = other.name;
 		npcModels = other.npcModels;
 		npcSizeInSquares = other.npcSizeInSquares;
@@ -1377,7 +1371,7 @@ public final class MobDefinition {
 		visibilityOrRendering = other.visibilityOrRendering;
 		dialogueModels = other.dialogueModels;
 	}
-	
+
 	public void copy(int id) {
 		MobDefinition other = get(id);
 		changedModelColours = other.changedModelColours.clone();
@@ -1604,22 +1598,21 @@ public final class MobDefinition {
 
 		Model model_1 = Model.aModel_1621;
 		model_1.method464(model, FrameReader.isNullFrame(frame) & FrameReader.isNullFrame(j));
-/*
-		if (frame != -1 && j != -1) {
-			model_1.method471(ai, j, frame);
-		} else if (frame != -1 && !Configuration.TWEENING_ENABLED) {
-			model_1.applyTransform(frame);
-		} else if (frame != -1 && nextFrame != -1 && Configuration.TWEENING_ENABLED) {
-			model_1.interpolateFrames(frame, nextFrame, cycle1, cycle2);
-		}*/
-		
+		/*
+		 * if (frame != -1 && j != -1) { model_1.method471(ai, j, frame); } else
+		 * if (frame != -1 && !Configuration.TWEENING_ENABLED) {
+		 * model_1.applyTransform(frame); } else if (frame != -1 && nextFrame !=
+		 * -1 && Configuration.TWEENING_ENABLED) {
+		 * model_1.interpolateFrames(frame, nextFrame, cycle1, cycle2); }
+		 */
+
 		if (frame != -1 && j != -1)
 			model_1.method471(ai, j, frame);
 		else if (frame != -1 && nextFrame != -1 && Configuration.TWEENING_ENABLED)
 			model_1.interpolateFrames(frame, nextFrame, cycle1, cycle2);
 		else if (frame != -1)
 			model_1.applyTransform(frame);
-		
+
 		if (adjustVertextPointsXOrY != 128 || adjustVertextPointZ != 128) {
 			model_1.scaleT(adjustVertextPointsXOrY, adjustVertextPointsXOrY, adjustVertextPointZ);
 		}

@@ -67,7 +67,8 @@ public final class Animable_Sub3 extends Animable {
 		for (duration += i; duration > spotAnim.animation.getFrameLength(animFrameId);) {
 			duration -= spotAnim.animation.getFrameLength(animFrameId) + 1;
 			animFrameId++;
-			if (animFrameId >= spotAnim.animation.frameCount && (animFrameId < 0 || animFrameId >= spotAnim.animation.frameCount)) {
+			if (animFrameId >= spotAnim.animation.frameCount
+					&& (animFrameId < 0 || animFrameId >= spotAnim.animation.frameCount)) {
 				animFrameId = 0;
 				aBoolean1567 = true;
 			}

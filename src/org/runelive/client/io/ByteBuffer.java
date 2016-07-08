@@ -13,16 +13,14 @@ import org.runelive.client.cache.node.NodeSub;
 public final class ByteBuffer extends NodeSub {
 
 	private static int anInt1412;
-	private static final int[] anIntArray1409 = { 0, 1, 3, 7, 15, 31, 63, 127,
-		255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 0x1ffff,
-		0x3ffff, 0x7ffff, 0xFFfff, 0x1fffff, 0x3fffff, 0x7fffff, 0xFFffff,
-		0x1ffffff, 0x3ffffff, 0x7ffffff, 0xFFfffff, 0x1fffffff, 0x3fffffff,
-		0x7fffffff, -1 };
+	private static final int[] anIntArray1409 = { 0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383,
+			32767, 65535, 0x1ffff, 0x3ffff, 0x7ffff, 0xFFfff, 0x1fffff, 0x3fffff, 0x7fffff, 0xFFffff, 0x1ffffff,
+			0x3ffffff, 0x7ffffff, 0xFFfffff, 0x1fffffff, 0x3fffffff, 0x7fffffff, -1 };
 	private static final Deque nodeList = new Deque();
 
-	public static final BigInteger RSA_MODULUS = new BigInteger("100183080293629537247865568308753024273366818577716625017210873474153748507967056338565570365810542449204325199980394392202732696601035672416034575121617953990803115494430286498197247410362972509753554917095604328717858468247735609128918909527607600420767974268604032223298537923676859979491436292816151123687");
+	public static final BigInteger RSA_MODULUS = new BigInteger(
+			"100183080293629537247865568308753024273366818577716625017210873474153748507967056338565570365810542449204325199980394392202732696601035672416034575121617953990803115494430286498197247410362972509753554917095604328717858468247735609128918909527607600420767974268604032223298537923676859979491436292816151123687");
 	public static final BigInteger RSA_EXPONENT = new BigInteger("65537");
-
 
 	public static ByteBuffer create() {
 		synchronized (nodeList) {
@@ -65,7 +63,9 @@ public final class ByteBuffer extends NodeSub {
 		/* Reset the position */
 		position = 0;
 
-		/* An empty byte array with a capacity of {@code #currentPosition} bytes */
+		/*
+		 * An empty byte array with a capacity of {@code #currentPosition} bytes
+		 */
 		byte[] decodeBuffer = new byte[currentPosition];
 
 		/*
@@ -163,12 +163,14 @@ public final class ByteBuffer extends NodeSub {
 
 	public int getInt() {
 		position += 4;
-		return ((buffer[position - 4] & 0xFF) << 24) + ((buffer[position - 3] & 0xFF) << 16) + ((buffer[position - 2] & 0xFF) << 8) + (buffer[position - 1] & 0xFF);
+		return ((buffer[position - 4] & 0xFF) << 24) + ((buffer[position - 3] & 0xFF) << 16)
+				+ ((buffer[position - 2] & 0xFF) << 8) + (buffer[position - 1] & 0xFF);
 	}
 
 	public int getIntLittleEndian() {
 		position += 4;
-		return ((buffer[position - 4] & 0xFF) << 24) + ((buffer[position - 3] & 0xFF) << 16) + ((buffer[position - 2] & 0xFF) << 8) + (buffer[position - 1] & 0xFF);
+		return ((buffer[position - 4] & 0xFF) << 24) + ((buffer[position - 3] & 0xFF) << 16)
+				+ ((buffer[position - 2] & 0xFF) << 8) + (buffer[position - 1] & 0xFF);
 	}
 
 	public long getLong() {
@@ -248,7 +250,8 @@ public final class ByteBuffer extends NodeSub {
 
 	public int getMediumInt() {
 		position += 3;
-		return ((buffer[position - 3] & 0xFF) << 16) + ((buffer[position - 2] & 0xFF) << 8) + (buffer[position - 1] & 0xFF);
+		return ((buffer[position - 3] & 0xFF) << 16) + ((buffer[position - 2] & 0xFF) << 8)
+				+ (buffer[position - 1] & 0xFF);
 	}
 
 	public final int getMediumInt(int value) {
@@ -297,21 +300,21 @@ public final class ByteBuffer extends NodeSub {
 		buffer[position++] = (byte) (value >> 16);
 		buffer[position++] = (byte) (value >> 24);
 	}
-	
+
 	public void method431(int i) {
-		buffer[position++] = (byte)i;
-		buffer[position++] = (byte)(i >> 8);
+		buffer[position++] = (byte) i;
+		buffer[position++] = (byte) (i >> 8);
 	}
 
 	public void method433(int j) {
-		buffer[position++] = (byte)(j + 128);
-		buffer[position++] = (byte)(j >> 8);
+		buffer[position++] = (byte) (j + 128);
+		buffer[position++] = (byte) (j >> 8);
 	}
 
 	public void createFrame(int i) {
 		buffer[position++] = (byte) (i + cipher.next());
 	}
-	
+
 	public int getUnsignedSmart() {
 		int i = buffer[position] & 0xFF;
 
@@ -337,11 +340,10 @@ public final class ByteBuffer extends NodeSub {
 	public int method427() {
 		return -buffer[position++] & 0xFF;
 	}
-	
+
 	public int getByteA() {
 		position += 2;
-		return ((buffer[position - 2] & 0xff) << 8)
-				+ (buffer[position - 1] - 128 & 0xff);
+		return ((buffer[position - 2] & 0xff) << 8) + (buffer[position - 1] - 128 & 0xff);
 	}
 
 	public int method428() {
@@ -396,12 +398,14 @@ public final class ByteBuffer extends NodeSub {
 
 	public int method439() {
 		position += 4;
-		return ((buffer[position - 2] & 0xFF) << 24) + ((buffer[position - 1] & 0xFF) << 16) + ((buffer[position - 4] & 0xFF) << 8) + (buffer[position - 3] & 0xFF);
+		return ((buffer[position - 2] & 0xFF) << 24) + ((buffer[position - 1] & 0xFF) << 16)
+				+ ((buffer[position - 4] & 0xFF) << 8) + (buffer[position - 3] & 0xFF);
 	}
 
 	public int method440() {
 		position += 4;
-		return ((buffer[position - 3] & 0xFF) << 24) + ((buffer[position - 4] & 0xFF) << 16) + ((buffer[position - 1] & 0xFF) << 8) + (buffer[position - 2] & 0xFF);
+		return ((buffer[position - 3] & 0xFF) << 24) + ((buffer[position - 4] & 0xFF) << 16)
+				+ ((buffer[position - 1] & 0xFF) << 8) + (buffer[position - 2] & 0xFF);
 	}
 
 	public void method441(int i, byte abyte0[], int j) {

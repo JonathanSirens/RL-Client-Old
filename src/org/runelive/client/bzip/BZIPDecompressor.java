@@ -300,7 +300,8 @@ public final class BZIPDecompressor {
 					}
 				}
 
-				method232(context.anIntArrayArray597[l3], context.anIntArrayArray598[l3], context.anIntArrayArray599[l3], context.aByteArrayArray596[l3], byte8, i, i4);
+				method232(context.anIntArrayArray597[l3], context.anIntArrayArray598[l3],
+						context.anIntArrayArray599[l3], context.aByteArrayArray596[l3], byte8, i, i4);
 				context.anIntArray600[l3] = byte8;
 			}
 
@@ -425,7 +426,8 @@ public final class BZIPDecompressor {
 
 						for (; l10 > 0; l10--) {
 							context.anIntArray593[l10]--;
-							context.aByteArray592[context.anIntArray593[l10]] = context.aByteArray592[context.anIntArray593[l10 - 1] + 16 - 1];
+							context.aByteArray592[context.anIntArray593[l10]] = context.aByteArray592[context.anIntArray593[l10
+									- 1] + 16 - 1];
 						}
 
 						context.anIntArray593[0]--;
@@ -492,10 +494,10 @@ public final class BZIPDecompressor {
 			}
 
 			context.anInt581 = BZIPContext.anIntArray587[context.anInt580] >> 8;
-				context.anInt584 = 0;
-				context.anInt581 = BZIPContext.anIntArray587[context.anInt581];
-				context.anInt582 = (byte) (context.anInt581 & 0xff);
-				context.anInt581 >>= 8;
+			context.anInt584 = 0;
+			context.anInt581 = BZIPContext.anIntArray587[context.anInt581];
+			context.anInt582 = (byte) (context.anInt581 & 0xff);
+			context.anInt581 >>= 8;
 			context.anInt584++;
 			context.anInt601 = i6;
 			method226(context);
@@ -517,9 +519,9 @@ public final class BZIPDecompressor {
 		do {
 			if (class32.anInt577 >= i) {
 				int k = class32.anInt576 >> class32.anInt577 - i & (1 << i) - 1;
-					class32.anInt577 -= i;
-					j = k;
-					break;
+				class32.anInt577 -= i;
+				j = k;
+				break;
 			}
 
 			class32.anInt576 = class32.anInt576 << 8 | class32.aByteArray563[class32.anInt564] & 0xff;

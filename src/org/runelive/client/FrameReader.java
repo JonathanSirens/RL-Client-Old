@@ -10,7 +10,7 @@ public final class FrameReader {
 
 	public static void load(int file, byte[] fileData) {
 		try {
-			//System.out.println("Loading file: "+file);
+			// System.out.println("Loading file: "+file);
 			ByteBuffer stream = new ByteBuffer(fileData);
 			SkinList skinList = new SkinList(stream);
 			int k1 = stream.getUnsignedShort();
@@ -22,7 +22,7 @@ public final class FrameReader {
 			for (int l1 = 0; l1 < k1; l1++) {
 				int i2 = stream.getUnsignedShort();
 				FrameReader frameReader = animationlist[file][i2] = new FrameReader();
-					
+
 				frameReader.skinList = skinList;
 				int j2 = stream.getUnsignedByte();
 				int l2 = 0;
@@ -79,7 +79,7 @@ public final class FrameReader {
 
 			}
 		} catch (Exception exception) {
-			//exception.printStackTrace();
+			// exception.printStackTrace();
 		}
 	}
 
@@ -95,7 +95,7 @@ public final class FrameReader {
 			s = Integer.toHexString(i);
 			file = Integer.parseInt(s.substring(0, s.length() - 4), 16);
 			k = Integer.parseInt(s.substring(s.length() - 4), 16);
-			//System.out.println("Animation file: "+file+".gz");
+			// System.out.println("Animation file: "+file+".gz");
 			if (animationlist[file].length == 0) {
 				Client.instance.onDemandFetcher.pushRequest(1, file);
 				return null;
@@ -107,52 +107,45 @@ public final class FrameReader {
 		}
 	}
 
-	public static FrameReader getTween(FrameReader f1, FrameReader f2)
-	{
+	public static FrameReader getTween(FrameReader f1, FrameReader f2) {
 		FrameReader newFrame = new FrameReader();
 		newFrame.displayLength = f1.displayLength;
 		newFrame.stepCount = f1.stepCount;
 		newFrame.opcodeLinkTable = f1.opcodeLinkTable;
 		newFrame.xOffset = new int[f1.xOffset.length];
 		newFrame.skinList = f1.skinList;
-		for(int i = 0; i < f1.xOffset.length; i++)
-		{
+		for (int i = 0; i < f1.xOffset.length; i++) {
 			try {
-			int middleXOffset = (f2.xOffset[i]-f1.xOffset[i])/2+ f1.xOffset[i];
-			newFrame.xOffset[i] = middleXOffset;
-			} catch(Exception e)
-			{
+				int middleXOffset = (f2.xOffset[i] - f1.xOffset[i]) / 2 + f1.xOffset[i];
+				newFrame.xOffset[i] = middleXOffset;
+			} catch (Exception e) {
 				newFrame.xOffset[i] = f1.xOffset[i];
 			}
 		}
 		newFrame.yOffset = new int[f1.yOffset.length];
-		for(int i = 0; i < f1.yOffset.length; i++)
-		{
+		for (int i = 0; i < f1.yOffset.length; i++) {
 			try {
-			int middleYOffset = (f2.yOffset[i]-f1.yOffset[i])/2+ f1.yOffset[i];
-			newFrame.yOffset[i] = middleYOffset;
-		} catch(Exception e)
-		{
-			newFrame.yOffset[i] = f1.yOffset[i];
-		}
-			
+				int middleYOffset = (f2.yOffset[i] - f1.yOffset[i]) / 2 + f1.yOffset[i];
+				newFrame.yOffset[i] = middleYOffset;
+			} catch (Exception e) {
+				newFrame.yOffset[i] = f1.yOffset[i];
+			}
+
 		}
 		newFrame.zOffset = new int[f1.zOffset.length];
-		for(int i = 0; i < f1.zOffset.length; i++)
-		{
+		for (int i = 0; i < f1.zOffset.length; i++) {
 			try {
-			int middleZOffset = (f2.zOffset[i]-f1.zOffset[i])/2 + f1.zOffset[i];
-			newFrame.zOffset[i] = middleZOffset;
+				int middleZOffset = (f2.zOffset[i] - f1.zOffset[i]) / 2 + f1.zOffset[i];
+				newFrame.zOffset[i] = middleZOffset;
 
-			} catch(Exception e)
-			{
+			} catch (Exception e) {
 				newFrame.zOffset[i] = f1.zOffset[i];
 			}
-			
+
 		}
 		return newFrame;
 	}
-	
+
 	public static boolean isNullFrame(int frame) {
 		return frame == -1;
 	}

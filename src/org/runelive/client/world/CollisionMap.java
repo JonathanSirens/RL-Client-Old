@@ -629,10 +629,13 @@ public final class CollisionMap {
 			return true;
 		}
 
-		if (k == l1 + 1 && k1 >= i && k1 <= i2 && (clipData[k - anInt290][k1 - anInt291] & 0x80) == 0 && (i1 & 2) == 0) {
+		if (k == l1 + 1 && k1 >= i && k1 <= i2 && (clipData[k - anInt290][k1 - anInt291] & 0x80) == 0
+				&& (i1 & 2) == 0) {
 			return true;
 		} else {
-			return k1 == i - 1 && k >= j && k <= l1 && (clipData[k - anInt290][k1 - anInt291] & 2) == 0 && (i1 & 4) == 0 || k1 == i2 + 1 && k >= j && k <= l1 && (clipData[k - anInt290][k1 - anInt291] & 0x20) == 0 && (i1 & 1) == 0;
+			return k1 == i - 1 && k >= j && k <= l1 && (clipData[k - anInt290][k1 - anInt291] & 2) == 0 && (i1 & 4) == 0
+					|| k1 == i2 + 1 && k >= j && k <= l1 && (clipData[k - anInt290][k1 - anInt291] & 0x20) == 0
+							&& (i1 & 1) == 0;
 		}
 	}
 

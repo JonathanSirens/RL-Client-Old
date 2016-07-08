@@ -23,7 +23,8 @@ public final class Optional<T> {
 	 * Returns an empty optional instance. No value is present for this
 	 * Optional.
 	 *
-	 * @param <T> Type of the non-existent value
+	 * @param <T>
+	 *            Type of the non-existent value
 	 * @return An empty optional.
 	 */
 	@SuppressWarnings("unchecked")
@@ -34,9 +35,11 @@ public final class Optional<T> {
 	/**
 	 * Returns an optional with the specified present non-null value.
 	 *
-	 * @param value The value to be present, which must be non-null.
+	 * @param value
+	 *            The value to be present, which must be non-null.
 	 * @return An optional with the value present.
-	 * @throws NullPointerException If value is null.
+	 * @throws NullPointerException
+	 *             If value is null.
 	 */
 	public static <T> Optional<T> of(T value) {
 		return new Optional<T>(value);
@@ -46,7 +49,8 @@ public final class Optional<T> {
 	 * Returns an optional describing the specified value, if non-null,
 	 * otherwise returns an empty optional.
 	 *
-	 * @param value The possibly-null value to describe.
+	 * @param value
+	 *            The possibly-null value to describe.
 	 * @return An optional with a present value if the specified value is
 	 *         non-null, otherwise an empty optional.
 	 */
@@ -70,8 +74,10 @@ public final class Optional<T> {
 	/**
 	 * Creates the optional with the specified non-null value.
 	 *
-	 * @param value The non-null value.
-	 * @throws NullPointerException If the value is null.
+	 * @param value
+	 *            The non-null value.
+	 * @throws NullPointerException
+	 *             If the value is null.
 	 */
 	private Optional(T value) {
 		if (value == null) {
@@ -101,7 +107,8 @@ public final class Optional<T> {
 	 * Returns the value of this optional.
 	 *
 	 * @return The non-null value held by this optional.
-	 * @throws NoSuchElementException If there is no value present.
+	 * @throws NoSuchElementException
+	 *             If there is no value present.
 	 */
 	public T get() {
 		if (value == null) {
@@ -127,8 +134,9 @@ public final class Optional<T> {
 	/**
 	 * Return the value if present, otherwise return {@code other}.
 	 *
-	 * @param other the value to be returned if there is no value present, may
-	 *            be null
+	 * @param other
+	 *            the value to be returned if there is no value present, may be
+	 *            null
 	 * @return the value, if present, otherwise {@code other}
 	 */
 	public T orElse(T other) {

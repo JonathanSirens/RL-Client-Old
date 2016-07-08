@@ -61,8 +61,7 @@ public final class Texture {
 				for (int y = 0; y < size; y++) {
 					double r = 0, g = 0, b = 0;
 					int count = 0;
-					for (int rgb : new int[] { src[x + (y * size << 1) << 1],
-							src[(x + (y * size << 1) << 1) + 1],
+					for (int rgb : new int[] { src[x + (y * size << 1) << 1], src[(x + (y * size << 1) << 1) + 1],
 							src[(x + (y * size << 1) << 1) + (size << 1)],
 							src[(x + (y * size << 1) << 1) + (size << 1) + 1] }) {
 						if (rgb != 0) {

@@ -1,8 +1,9 @@
 package org.runelive.client.graphics.rsinterface;
 
-
 /**
- * Only cause I have no fucking client knowledge whatsoever so let's have fun cheapfuckin
+ * Only cause I have no fucking client knowledge whatsoever so let's have fun
+ * cheapfuckin
+ * 
  * @author te12ga8
  *
  */
@@ -10,21 +11,21 @@ public class MagicInterfaceData {
 
 	/**
 	 * Because cache data is too mainstream
-	 * @param childId	Child id for RSInterface
-	 * @param type	The data type to fetch
-	 *  spellUsableOn = 1: Items on ground
-		spellUsableOn = 2: NPCs
-		spellUsableOn = 4: Objects
-		spellUsableOn = 8: Players
-		spellUsableOn = 16: Items, in inventory
-		1+2 = items on ground and npcs etc
+	 * 
+	 * @param childId
+	 *            Child id for RSInterface
+	 * @param type
+	 *            The data type to fetch spellUsableOn = 1: Items on ground
+	 *            spellUsableOn = 2: NPCs spellUsableOn = 4: Objects
+	 *            spellUsableOn = 8: Players spellUsableOn = 16: Items, in
+	 *            inventory 1+2 = items on ground and npcs etc
 	 * @return Spelldata
 	 */
 	public static String getSpellData(int childId, String type) {
 		String spellName = "";
 		String spellUsableOn = "10";
 		String selectedActionName = "Cast on";
-		switch(childId) {
+		switch (childId) {
 		case 1152:
 			spellName = "Wind strike";
 			break;
@@ -47,7 +48,7 @@ public class MagicInterfaceData {
 		case 1158:
 			spellName = "Fire strike";
 			break;
-			//1159 bones to peaches, clickbutton only
+		// 1159 bones to peaches, clickbutton only
 		case 1160:
 			spellName = "Wind bolt";
 			break;
@@ -82,7 +83,7 @@ public class MagicInterfaceData {
 			spellName = "Crumble undead";
 			spellUsableOn = "2";
 			break;
-			//Houseteleport
+		// Houseteleport
 		case 1172:
 			spellName = "Wind blast";
 			break;
@@ -189,9 +190,9 @@ public class MagicInterfaceData {
 		case 12455:
 			spellName = "Teleother Camelot";
 			break;
-			/**
-			 * Ancients
-			 */
+		/**
+		 * Ancients
+		 */
 		case 12939:
 			spellName = "Smoke Rush";
 			break;
@@ -252,9 +253,9 @@ public class MagicInterfaceData {
 		case 21746:
 			spellName = "Miasmic Barrage";
 			break;
-			/*
-			 * Lunar
-			 */
+		/*
+		 * Lunar
+		 */
 		case 30017:
 			spellName = "Bake Pie";
 			spellUsableOn = "16";
@@ -292,11 +293,11 @@ public class MagicInterfaceData {
 			spellName = "Vengeance Other";
 			break;
 		}
-		if(type.equalsIgnoreCase("spellname"))
+		if (type.equalsIgnoreCase("spellname"))
 			return spellName;
-		else if(type.equalsIgnoreCase("spellusableon"))
+		else if (type.equalsIgnoreCase("spellusableon"))
 			return spellUsableOn;
-		else if(type.equalsIgnoreCase("selectedactionname"))
+		else if (type.equalsIgnoreCase("selectedactionname"))
 			return selectedActionName;
 		return "";
 	}

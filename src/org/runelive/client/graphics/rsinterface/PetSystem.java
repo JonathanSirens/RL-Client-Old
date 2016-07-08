@@ -14,7 +14,6 @@ import org.runelive.client.cache.definition.MobDefinition;
  * version 1.2 created on 11/16/2015, upgraded to use the real animation delays
  */
 
-
 /**
  *
  * @author Near Reality
@@ -24,9 +23,9 @@ import org.runelive.client.cache.definition.MobDefinition;
  */
 public class PetSystem {
 
-
 	/**
-	 * @param entity Use EntityDef.forID() to insert the ID of the Pet.
+	 * @param entity
+	 *            Use EntityDef.forID() to insert the ID of the Pet.
 	 */
 	public PetSystem(MobDefinition entity) {
 		this.modelArray = entity.npcModels;
@@ -38,7 +37,7 @@ public class PetSystem {
 		animation = entity.walkAnimation;
 		animationDelay = Animation.cache[animation].delays[animationFrame];
 	}
-	
+
 	public static void petAnimationStep() {
 		if (updatePetAnimations) {
 			return;
@@ -49,7 +48,6 @@ public class PetSystem {
 		}
 	}
 
-
 	public static void updateAnimations() {
 		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 		executorService.scheduleAtFixedRate(new Runnable() {
@@ -58,41 +56,33 @@ public class PetSystem {
 				isPetAnimationRunning = true;
 				petAnimationStep();
 			}
-		}, 0, (animationDelay == 0) ? 100 : animationDelay * 100 , TimeUnit.MILLISECONDS);
-
+		}, 0, (animationDelay == 0) ? 100 : animationDelay * 100, TimeUnit.MILLISECONDS);
 
 	}
-
 
 	public int getAnimationDelay() {
 		return animationDelay;
 	}
 
-
 	public int getPrimaryModel() {
 		return primaryModel;
 	}
-
 
 	public int getAnimation() {
 		return animation;
 	}
 
-
 	public String getName() {
 		return name;
 	}
-
 
 	public int getAnimationFrame() {
 		return animationFrame;
 	}
 
-
 	public byte[] getDescription() {
 		return description;
 	}
-
 
 	public int getSecondaryModel() {
 		return secondaryModel;
@@ -101,15 +91,19 @@ public class PetSystem {
 	public int getModelArrayLength() {
 		return modelArrayLength;
 	}
+
 	public int[] getModelArray() {
 		return modelArray;
 	}
+
 	public int getPetSelected() {
 		return petSelected;
 	}
+
 	public void setPetSelected(int petID) {
 		petSelected = petID;
 	}
+
 	/**
 	 * The container where the models are loaded from.
 	 */
@@ -158,6 +152,5 @@ public class PetSystem {
 	 * The current pet your player has following you.
 	 */
 	public static int petSelected = 6260;
-
 
 }

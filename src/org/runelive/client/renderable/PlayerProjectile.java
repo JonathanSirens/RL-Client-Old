@@ -35,54 +35,41 @@ public final class PlayerProjectile extends Animable {
 
 	@Override
 	public Model getRotatedModel() {
-		
+
 		Model model = spotAnim.getModel();
-		if(model == null)
+		if (model == null)
 			return null;
 		int j = -1;
-		if(spotAnim.animation != null)
+		if (spotAnim.animation != null)
 			j = spotAnim.animation.frameIDs[animFrameId];
 		Model model_1 = new Model(true, FrameReader.isNullFrame(j), false, model);
-		if(j != -1)
-		{
+		if (j != -1) {
 			model_1.createBones();
 			model_1.applyTransform(j);
 			model_1.triangleSkin = null;
 			model_1.vertexSkin = null;
 		}
-		if(spotAnim.sizeXY != 128 || spotAnim.sizeZ != 128)
+		if (spotAnim.sizeXY != 128 || spotAnim.sizeZ != 128)
 			model_1.scaleT(spotAnim.sizeXY, spotAnim.sizeXY, spotAnim.sizeZ);
 		model_1.rotateX(rotationX);
 		model_1.light(64 + spotAnim.shadow, 5050 + spotAnim.lightness, -90, -580, -90, true);
-			return model_1;
-			/*
-		Model model = spotAnim.getModel();
-		if (model == null) {
-			System.out.println("Null model");
-			return null;
-		}
-		int frame = -1;
-		int nextFrame = -1;
-		int cycle = -1;
-		if (spotAnim.animation != null) {
-			frame = spotAnim.animation.frameIDs[animFrameId];
-			nextFrame = spotAnim.animation.frameIDs[nextFrame];
-			cycle = spotAnim.animation.frameLengths[animFrameId];
-		}
-		Model model_1 = new Model(true, FrameReader.method532(frame), false, model);
-		if (frame != -1) {
-			model_1.createBones();
-			// model_1.method470(frame);
-			model_1.interpolateFrames(frame, nextFrame, cycle, duration);
-			model_1.triangleSkin = null;
-			model_1.vertexSkin = null;
-		}
-		if (spotAnim.sizeXY != 128 || spotAnim.sizeZ != 128) {
-			model_1.scaleT(spotAnim.sizeXY, spotAnim.sizeXY, spotAnim.sizeZ);
-		}
-		model_1.method474(anInt1596);
-		model_1.light(64 + spotAnim.shadow, 850 + spotAnim.lightness, -30, -50, -30, true);
-		return model_1;*/
+		return model_1;
+		/*
+		 * Model model = spotAnim.getModel(); if (model == null) {
+		 * System.out.println("Null model"); return null; } int frame = -1; int
+		 * nextFrame = -1; int cycle = -1; if (spotAnim.animation != null) {
+		 * frame = spotAnim.animation.frameIDs[animFrameId]; nextFrame =
+		 * spotAnim.animation.frameIDs[nextFrame]; cycle =
+		 * spotAnim.animation.frameLengths[animFrameId]; } Model model_1 = new
+		 * Model(true, FrameReader.method532(frame), false, model); if (frame !=
+		 * -1) { model_1.createBones(); // model_1.method470(frame);
+		 * model_1.interpolateFrames(frame, nextFrame, cycle, duration);
+		 * model_1.triangleSkin = null; model_1.vertexSkin = null; } if
+		 * (spotAnim.sizeXY != 128 || spotAnim.sizeZ != 128) {
+		 * model_1.scaleT(spotAnim.sizeXY, spotAnim.sizeXY, spotAnim.sizeZ); }
+		 * model_1.method474(anInt1596); model_1.light(64 + spotAnim.shadow, 850
+		 * + spotAnim.lightness, -30, -50, -30, true); return model_1;
+		 */
 	}
 
 	public PlayerProjectile(int i, int j, int l, int i1, int j1, int k1, int l1, int i2, int j2, int k2, int l2) {

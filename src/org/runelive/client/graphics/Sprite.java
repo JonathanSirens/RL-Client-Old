@@ -1,6 +1,5 @@
 package org.runelive.client.graphics;
 
-
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -22,7 +21,7 @@ import org.runelive.client.io.ByteBuffer;
 public class Sprite extends Canvas2D {
 
 	public void setAlphaTransparency(int a) {
-		for (int pixel = 0; pixel < myPixels.length; pixel++){
+		for (int pixel = 0; pixel < myPixels.length; pixel++) {
 			if (((myPixels[pixel] >> 24) & 255) == a)
 				myPixels[pixel] = 0;
 		}
@@ -31,7 +30,7 @@ public class Sprite extends Canvas2D {
 	public Sprite(String img) {
 		try {
 			Image image = Client.resourceLoader.getImage(img);
-			if(image == null)
+			if (image == null)
 				return;
 			ImageIcon sprite = new ImageIcon(image);
 			myWidth = sprite.getIconWidth();
@@ -51,21 +50,21 @@ public class Sprite extends Canvas2D {
 			_ex.printStackTrace();
 		}
 	}
-	
+
 	public static Image scale(Image image, int width, int height) {
 		return image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
 	}
-	
+
 	public static BufferedImage cropImage(BufferedImage src, Rectangle rect) {
 		BufferedImage dest = src.getSubimage(0, 0, rect.width, rect.height);
-		return dest; 
+		return dest;
 	}
 
 	public static BufferedImage getScaledImage(Image loadingSprites, int w, int h, int origW, int origH) {
 		BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = resizedImage.createGraphics();
 		g.drawImage(loadingSprites, 0, 0, origW, origH, null);
-		g.dispose();		
+		g.dispose();
 		return resizedImage;
 	}
 
@@ -87,14 +86,12 @@ public class Sprite extends Canvas2D {
 		}
 	}
 
-	public Sprite(URL url)
-	{
-		try
-		{
-			if(url == null)
+	public Sprite(URL url) {
+		try {
+			if (url == null)
 				return;
-			HttpURLConnection httpcon = (HttpURLConnection) url.openConnection(); 
-			httpcon.addRequestProperty("User-Agent", "Mozilla/4.76"); 
+			HttpURLConnection httpcon = (HttpURLConnection) url.openConnection();
+			httpcon.addRequestProperty("User-Agent", "Mozilla/4.76");
 			BufferedImage image = ImageIO.read(httpcon.getInputStream());
 			myWidth = image.getWidth();
 			myHeight = image.getHeight();
@@ -106,9 +103,7 @@ public class Sprite extends Canvas2D {
 			PixelGrabber pixelgrabber = new PixelGrabber(image, 0, 0, myWidth, myHeight, myPixels, 0, myWidth);
 			pixelgrabber.grabPixels();
 			image = null;
-		}
-		catch(Exception exception)
-		{
+		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
 	}
@@ -134,7 +129,8 @@ public class Sprite extends Canvas2D {
 			sprite.drawOffsetX = 0;
 			sprite.drawOffsetY = 0;
 			sprite.myPixels = new int[sprite.myWidth * sprite.myHeight];
-			PixelGrabber pixelgrabber = new PixelGrabber(image, 0, 0, sprite.myWidth,sprite. myHeight, sprite.myPixels, 0, sprite.myWidth);
+			PixelGrabber pixelgrabber = new PixelGrabber(image, 0, 0, sprite.myWidth, sprite.myHeight, sprite.myPixels,
+					0, sprite.myWidth);
 			pixelgrabber.grabPixels();
 			image = null;
 			return sprite;
@@ -147,7 +143,7 @@ public class Sprite extends Canvas2D {
 	public static Image getImageFromArray2(int[] pixels, int width, int height) {
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		WritableRaster raster = (WritableRaster) image.getData();
-		raster.setPixels(0,0,width,height,pixels);
+		raster.setPixels(0, 0, width, height, pixels);
 		return image;
 	}
 
@@ -155,11 +151,10 @@ public class Sprite extends Canvas2D {
 		return getImageFromArray(myPixels, myWidth, myHeight);
 	}
 
-	public static Sprite getResizedSprite(Sprite spriteParam, int width, int height)
-	{
-		if(width == 0)
+	public static Sprite getResizedSprite(Sprite spriteParam, int width, int height) {
+		if (width == 0)
 			width = 1;
-		if(height == 0)
+		if (height == 0)
 			height = 1;
 		Image img = getImageFromArray(spriteParam.myPixels, spriteParam.myWidth, spriteParam.myHeight);
 		Image img_2 = downScaleImage(img, width, height);
@@ -173,7 +168,8 @@ public class Sprite extends Canvas2D {
 		toReturn.drawOffsetX = 0;
 		toReturn.drawOffsetY = 0;
 		toReturn.myPixels = new int[toReturn.myWidth * toReturn.myHeight];
-		PixelGrabber pixelgrabber = new PixelGrabber(img_2, 0, 0, toReturn.myWidth, toReturn.myHeight, toReturn.myPixels, 0, toReturn.myWidth);
+		PixelGrabber pixelgrabber = new PixelGrabber(img_2, 0, 0, toReturn.myWidth, toReturn.myHeight,
+				toReturn.myPixels, 0, toReturn.myWidth);
 		try {
 			pixelgrabber.grabPixels();
 		} catch (InterruptedException e) {
@@ -236,7 +232,8 @@ public class Sprite extends Canvas2D {
 	 *            Which coord to move? x? y? or both?
 	 * @param advancedSprite
 	 */
-	public void drawMovingSprite(int finalCoordX, int finalCoordY, int startingX, int startingY, int speed, char coordToMove, boolean advancedSprite) {
+	public void drawMovingSprite(int finalCoordX, int finalCoordY, int startingX, int startingY, int speed,
+			char coordToMove, boolean advancedSprite) {
 		if (!startedMoving) {
 			movingX = startingX;
 			movingY = startingY;
@@ -251,17 +248,21 @@ public class Sprite extends Canvas2D {
 				movingX += speed;
 				movingY += speed;
 			}
-			if ((speed < 0 ? movingX <= finalCoordX : movingX >= finalCoordX) && (coordToMove == 'x' || coordToMove == 'b')) {
+			if ((speed < 0 ? movingX <= finalCoordX : movingX >= finalCoordX)
+					&& (coordToMove == 'x' || coordToMove == 'b')) {
 				movingX = finalCoordX;
 				movedEnough = true;
 			}
-			if ((speed < 0 ? movingY <= finalCoordY : movingY >= finalCoordY) && (coordToMove == 'y' || coordToMove == 'b')) {
+			if ((speed < 0 ? movingY <= finalCoordY : movingY >= finalCoordY)
+					&& (coordToMove == 'y' || coordToMove == 'b')) {
 				movingY = finalCoordY;
 				movedEnough = true;
 			}
-			setSprite(coordToMove == 'y' ? startingX : movingX, coordToMove == 'x' ? startingY : movingY, advancedSprite);
+			setSprite(coordToMove == 'y' ? startingX : movingX, coordToMove == 'x' ? startingY : movingY,
+					advancedSprite);
 		} else
-			setSprite(coordToMove == 'y' ? startingX : movingX, coordToMove == 'x' ? startingY : movingY, advancedSprite);
+			setSprite(coordToMove == 'y' ? startingX : movingX, coordToMove == 'x' ? startingY : movingY,
+					advancedSprite);
 	}
 
 	public void setSprite(int spriteX, int spriteY, boolean advancedSprite) {
@@ -347,41 +348,19 @@ public class Sprite extends Canvas2D {
 		}
 	}
 
-	/*public void drawAdvancedSprite(int i, int j, int k) {
-		int i1 = i + j * Canvas2D.width;
-		int j1 = 0;
-		int k1 = myHeight;
-		int l1 = myWidth;
-		int i2 = Canvas2D.width - l1;
-		int j2 = 0;
-		if (j < Canvas2D.topY) {
-			int k2 = Canvas2D.topY - j;
-			k1 -= k2;
-			j = Canvas2D.topY;
-			j1 += k2 * l1;
-			i1 += k2 * Canvas2D.width;
-		}
-		if (j + k1 > Canvas2D.bottomY)
-			k1 -= (j + k1) - Canvas2D.bottomY;
-		if (i < Canvas2D.topX) {
-			int l2 = Canvas2D.topX - i;
-			l1 -= l2;
-			i = Canvas2D.topX;
-			j1 += l2;
-			i1 += l2;
-			j2 += l2;
-			i2 += l2;
-		}
-		if (i + l1 > Canvas2D.bottomX) {
-			int i3 = (i + l1) - Canvas2D.bottomX;
-			l1 -= i3;
-			j2 += i3;
-			i2 += i3;
-		}
-		if (!(l1 <= 0 || k1 <= 0)) {
-			drawAlphaSprite(j1, l1, Canvas2D.pixels, myPixels, j2, k1, i2, k, i1);
-		}
-	}*/
+	/*
+	 * public void drawAdvancedSprite(int i, int j, int k) { int i1 = i + j *
+	 * Canvas2D.width; int j1 = 0; int k1 = myHeight; int l1 = myWidth; int i2 =
+	 * Canvas2D.width - l1; int j2 = 0; if (j < Canvas2D.topY) { int k2 =
+	 * Canvas2D.topY - j; k1 -= k2; j = Canvas2D.topY; j1 += k2 * l1; i1 += k2 *
+	 * Canvas2D.width; } if (j + k1 > Canvas2D.bottomY) k1 -= (j + k1) -
+	 * Canvas2D.bottomY; if (i < Canvas2D.topX) { int l2 = Canvas2D.topX - i; l1
+	 * -= l2; i = Canvas2D.topX; j1 += l2; i1 += l2; j2 += l2; i2 += l2; } if (i
+	 * + l1 > Canvas2D.bottomX) { int i3 = (i + l1) - Canvas2D.bottomX; l1 -=
+	 * i3; j2 += i3; i2 += i3; } if (!(l1 <= 0 || k1 <= 0)) {
+	 * drawAlphaSprite(j1, l1, Canvas2D.pixels, myPixels, j2, k1, i2, k, i1); }
+	 * }
+	 */
 
 	public void drawAdvancedSprite2(int i, int j, int alpha) {
 		int k = alpha;
@@ -422,7 +401,6 @@ public class Sprite extends Canvas2D {
 		}
 	}
 
-
 	private void drawAlphaGlow(int i, int j, int ai[], int ai1[], int l, int i1, int j1, int k1, int l1) {
 		int k;// was parameter
 		int j2;
@@ -430,12 +408,13 @@ public class Sprite extends Canvas2D {
 		for (int k2 = -i1; k2 < 0; k2++) {
 			for (int l2 = -j; l2 < 0; l2++) {
 				k1 = ((myPixels[i] >> 26) & op);
-				//k1 = k1;
+				// k1 = k1;
 				j2 = 256 - k1;
 				k = ai1[i++];
 				if (k != 0) {
 					int i3 = ai[l1];
-					ai[l1++] = ((k & 0xff00ff) * k1 + (i3 & 0xff00ff) * j2 & 0xff00ff00) + ((k & 0xff00) * k1 + (i3 & 0xff00) * j2 & 0xff0000) >> 8;
+					ai[l1++] = ((k & 0xff00ff) * k1 + (i3 & 0xff00ff) * j2 & 0xff00ff00)
+							+ ((k & 0xff00) * k1 + (i3 & 0xff00) * j2 & 0xff0000) >> 8;
 				} else {
 					l1++;
 				}
@@ -445,7 +424,6 @@ public class Sprite extends Canvas2D {
 			i += l;
 		}
 	}
-
 
 	public void drawAdvancedSprite(int i, int j) {
 		int k = 256;
@@ -492,7 +470,6 @@ public class Sprite extends Canvas2D {
 		drawARGBSprite(xPos, yPos, 256);
 	}
 
-
 	public void drawARGBSprite(int xPos, int yPos, int alpha) {
 		int alphaValue = alpha;
 		xPos += drawOffsetX;
@@ -532,7 +509,8 @@ public class Sprite extends Canvas2D {
 		}
 	}
 
-	private void renderARGBPixels(int spriteWidth, int spriteHeight, int spritePixels[], int renderAreaPixels[], int pixel, int alphaValue, int i, int l, int j1) {
+	private void renderARGBPixels(int spriteWidth, int spriteHeight, int spritePixels[], int renderAreaPixels[],
+			int pixel, int alphaValue, int i, int l, int j1) {
 		int pixelLevel;
 		int alphaLevel;
 		for (int height = -spriteHeight; height < 0; height++) {
@@ -542,7 +520,9 @@ public class Sprite extends Canvas2D {
 				pixelLevel = spritePixels[i++];
 				if (pixelLevel != 0) {
 					int pixelValue = renderAreaPixels[pixel];
-					renderAreaPixels[pixel++] = ((pixelLevel & 0xff00ff) * alphaValue + (pixelValue & 0xff00ff) * alphaLevel & 0xff00ff00) + ((pixelLevel & 0xff00) * alphaValue + (pixelValue & 0xff00) * alphaLevel & 0xff0000) >> 8;
+					renderAreaPixels[pixel++] = ((pixelLevel & 0xff00ff) * alphaValue
+							+ (pixelValue & 0xff00ff) * alphaLevel & 0xff00ff00)
+							+ ((pixelLevel & 0xff00) * alphaValue + (pixelValue & 0xff00) * alphaLevel & 0xff0000) >> 8;
 				} else {
 					pixel++;
 				}
@@ -562,7 +542,8 @@ public class Sprite extends Canvas2D {
 				k = ai1[i++];
 				if (k != 0) {
 					int i3 = ai[l1];
-					ai[l1++] = ((k & 0xff00ff) * k1 + (i3 & 0xff00ff) * j2 & 0xff00ff00) + ((k & 0xff00) * k1 + (i3 & 0xff00) * j2 & 0xff0000) >> 8;
+					ai[l1++] = ((k & 0xff00ff) * k1 + (i3 & 0xff00ff) * j2 & 0xff00ff00)
+							+ ((k & 0xff00) * k1 + (i3 & 0xff00) * j2 & 0xff0000) >> 8;
 				} else {
 					l1++;
 				}
@@ -572,7 +553,6 @@ public class Sprite extends Canvas2D {
 			i += l;
 		}
 	}
-
 
 	public Sprite(Image image) {
 		try {
@@ -593,7 +573,7 @@ public class Sprite extends Canvas2D {
 
 	public Sprite(Image image, int width, int height) {
 		try {
-			if(image == null) {
+			if (image == null) {
 				return;
 			}
 			myWidth = width;
@@ -613,7 +593,8 @@ public class Sprite extends Canvas2D {
 
 	public void setTransparency(int transRed, int transGreen, int transBlue) {
 		for (int index = 0; index < myPixels.length; index++)
-			if (((myPixels[index] >> 16) & 255) == transRed && ((myPixels[index] >> 8) & 255) == transGreen && (myPixels[index] & 255) == transBlue)
+			if (((myPixels[index] >> 16) & 255) == transRed && ((myPixels[index] >> 8) & 255) == transGreen
+					&& (myPixels[index] & 255) == transBlue)
 				myPixels[index] = 0;
 	}
 
@@ -660,7 +641,7 @@ public class Sprite extends Canvas2D {
 			}
 
 		}
-		//System.out.println(s);
+		// System.out.println(s);
 		if ((s.equals("mod_icons") && (i == 7 || i == 8 || i == 9)))
 			setTransparency(255, 255, 255);
 		else
@@ -677,24 +658,24 @@ public class Sprite extends Canvas2D {
 			int j1 = myPixels[i1];
 			if (j1 != 0) {
 				int k1 = j1 >> 16 & 0xff;
-		k1 += i;
-		if (k1 < 1)
-			k1 = 1;
-		else if (k1 > 255)
-			k1 = 255;
-		int l1 = j1 >> 8 & 0xff;
-			l1 += j;
-			if (l1 < 1)
-				l1 = 1;
-			else if (l1 > 255)
-				l1 = 255;
-			int i2 = j1 & 0xff;
-			i2 += k;
-			if (i2 < 1)
-				i2 = 1;
-			else if (i2 > 255)
-				i2 = 255;
-			myPixels[i1] = (k1 << 16) + (l1 << 8) + i2;
+				k1 += i;
+				if (k1 < 1)
+					k1 = 1;
+				else if (k1 > 255)
+					k1 = 255;
+				int l1 = j1 >> 8 & 0xff;
+				l1 += j;
+				if (l1 < 1)
+					l1 = 1;
+				else if (l1 > 255)
+					l1 = 255;
+				int i2 = j1 & 0xff;
+				i2 += k;
+				if (i2 < 1)
+					i2 = 1;
+				else if (i2 > 255)
+					i2 = 255;
+				myPixels[i1] = (k1 << 16) + (l1 << 8) + i2;
 			}
 		}
 
@@ -888,7 +869,7 @@ public class Sprite extends Canvas2D {
 		if (!(k1 <= 0 || j1 <= 0)) {
 			try {
 				block_copy_trans(Canvas2D.pixels, myPixels, i1, l, k1, j1, l1, i2);
-			} catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -934,7 +915,8 @@ public class Sprite extends Canvas2D {
 		}
 	}
 
-	private void setPixels(int width, int height, int destPixels[], int srcPixels[], int srcAlpha, int destOffset, int srcOffset, int destStep, int srcStep) {
+	private void setPixels(int width, int height, int destPixels[], int srcPixels[], int srcAlpha, int destOffset,
+			int srcOffset, int destStep, int srcStep) {
 		int srcColor;
 		int destAlpha;
 		int rofl = srcAlpha;
@@ -945,7 +927,9 @@ public class Sprite extends Canvas2D {
 				srcColor = srcPixels[srcOffset++];
 				if (srcColor != 0 && srcColor != 0xffffff) {
 					int destColor = destPixels[destOffset];
-					destPixels[destOffset++] = ((srcColor & 0xff00ff) * srcAlpha + (destColor & 0xff00ff) * destAlpha & 0xff00ff00) + ((srcColor & 0xff00) * srcAlpha + (destColor & 0xff00) * destAlpha & 0xff0000) >> 8;
+					destPixels[destOffset++] = ((srcColor & 0xff00ff) * srcAlpha + (destColor & 0xff00ff) * destAlpha
+							& 0xff00ff00)
+							+ ((srcColor & 0xff00) * srcAlpha + (destColor & 0xff00) * destAlpha & 0xff0000) >> 8;
 				} else {
 					destOffset++;
 				}
@@ -969,16 +953,20 @@ public class Sprite extends Canvas2D {
 		for (int x = 0; x < tempWidth; x++) {
 			for (int y = 0; y < tempHeight; y++) {
 				if (tempArray[(x) + (y) * tempWidth] == 0) {
-					if (x < tempWidth - 1 && tempArray[(x + 1) + ((y) * tempWidth)] > 0 && tempArray[(x + 1) + ((y) * tempWidth)] != 0xffffff) {
+					if (x < tempWidth - 1 && tempArray[(x + 1) + ((y) * tempWidth)] > 0
+							&& tempArray[(x + 1) + ((y) * tempWidth)] != 0xffffff) {
 						tempArray[(x) + (y) * tempWidth] = color;
 					}
-					if (x > 0 && tempArray[(x - 1) + ((y) * tempWidth)] > 0 && tempArray[(x - 1) + ((y) * tempWidth)] != 0xffffff) {
+					if (x > 0 && tempArray[(x - 1) + ((y) * tempWidth)] > 0
+							&& tempArray[(x - 1) + ((y) * tempWidth)] != 0xffffff) {
 						tempArray[(x) + (y) * tempWidth] = color;
 					}
-					if (y < tempHeight - 1 && tempArray[(x) + ((y + 1) * tempWidth)] > 0 && tempArray[(x) + ((y + 1) * tempWidth)] != 0xffffff) {
+					if (y < tempHeight - 1 && tempArray[(x) + ((y + 1) * tempWidth)] > 0
+							&& tempArray[(x) + ((y + 1) * tempWidth)] != 0xffffff) {
 						tempArray[(x) + (y) * tempWidth] = color;
 					}
-					if (y > 0 && tempArray[(x) + ((y - 1) * tempWidth)] > 0 && tempArray[(x) + ((y - 1) * tempWidth)] != 0xffffff) {
+					if (y > 0 && tempArray[(x) + ((y - 1) * tempWidth)] > 0
+							&& tempArray[(x) + ((y - 1) * tempWidth)] != 0xffffff) {
 						tempArray[(x) + (y) * tempWidth] = color;
 					}
 				}
@@ -1116,7 +1104,8 @@ public class Sprite extends Canvas2D {
 				k = ai1[i++];
 				if (k != 0) {
 					int i3 = ai[l1];
-					ai[l1++] = ((k & 0xff00ff) * k1 + (i3 & 0xff00ff) * j2 & 0xff00ff00) + ((k & 0xff00) * k1 + (i3 & 0xff00) * j2 & 0xff0000) >> 8;
+					ai[l1++] = ((k & 0xff00ff) * k1 + (i3 & 0xff00ff) * j2 & 0xff00ff00)
+							+ ((k & 0xff00) * k1 + (i3 & 0xff00) * j2 & 0xff0000) >> 8;
 				} else {
 					l1++;
 				}
@@ -1127,7 +1116,8 @@ public class Sprite extends Canvas2D {
 		}
 	}
 
-	public void rotate(int dimension, int rotation, int yPosArray[], int zoom, int xPosArray[], int basePosition, int yPosition, int xPosition, int dimension_1, int middle) {
+	public void rotate(int dimension, int rotation, int yPosArray[], int zoom, int xPosArray[], int basePosition,
+			int yPosition, int xPosition, int dimension_1, int middle) {
 		autoUpdate();
 		try {
 			int j2 = -dimension_1 / 2;
@@ -1136,46 +1126,45 @@ public class Sprite extends Canvas2D {
 			int i3 = (int) (Math.cos((double) rotation / 326.11000000000001D) * 65536D);
 			l2 = l2 * zoom >> 8;
 			i3 = i3 * zoom >> 8;
-		int j3 = (middle << 16) + (k2 * l2 + j2 * i3);
-		int k3 = (basePosition << 16) + (k2 * i3 - j2 * l2);
-		int l3 = xPosition + yPosition * Canvas2D.width;
-		for (yPosition = 0; yPosition < dimension; yPosition++) {
-			int i4 = xPosArray[yPosition];
-			int j4 = l3 + i4;
-			int k4 = j3 + i3 * i4;
-			int l4 = k3 - l2 * i4;
-			for (xPosition = -yPosArray[yPosition]; xPosition < 0; xPosition++) {
-				int x1 = k4 >> 16;
-			int y1 = l4 >> 16;
-		int x2 = x1 + 1;
-		int y2 = y1 + 1;
-		int c1 = myPixels[x1 + y1 * myWidth];
-		int c2 = myPixels[x2 + y1 * myWidth];
-		int c3 = myPixels[x1 + y2 * myWidth];
-		int c4 = myPixels[x2 + y2 * myWidth];
-		int u1 = (k4 >> 8) - (x1 << 8);
-		int v1 = (l4 >> 8) - (y1 << 8);
-		int u2 = (x2 << 8) - (k4 >> 8);
-		int v2 = (y2 << 8) - (l4 >> 8);
-		int a1 = u2 * v2;
-		int a2 = u1 * v2;
-		int a3 = u2 * v1;
-		int a4 = u1 * v1;
-		int r = (c1 >> 16 & 0xff) * a1 + (c2 >> 16 & 0xff) * a2 +
-				(c3 >> 16 & 0xff) * a3 + (c4 >> 16 & 0xff) * a4 & 0xff0000;
-		int g = (c1 >> 8 & 0xff) * a1 + (c2 >> 8 & 0xff) * a2 +
-				(c3 >> 8 & 0xff) * a3 + (c4 >> 8 & 0xff) * a4 >> 8 & 0xff00;
-			int b = (c1 & 0xff) * a1 + (c2 & 0xff) * a2 +
-					(c3 & 0xff) * a3 + (c4 & 0xff) * a4 >> 16;
-		Canvas2D.pixels[j4++] = r | g | b;
-		k4 += i3;
-		l4 -= l2;
-			}
+			int j3 = (middle << 16) + (k2 * l2 + j2 * i3);
+			int k3 = (basePosition << 16) + (k2 * i3 - j2 * l2);
+			int l3 = xPosition + yPosition * Canvas2D.width;
+			for (yPosition = 0; yPosition < dimension; yPosition++) {
+				int i4 = xPosArray[yPosition];
+				int j4 = l3 + i4;
+				int k4 = j3 + i3 * i4;
+				int l4 = k3 - l2 * i4;
+				for (xPosition = -yPosArray[yPosition]; xPosition < 0; xPosition++) {
+					int x1 = k4 >> 16;
+					int y1 = l4 >> 16;
+					int x2 = x1 + 1;
+					int y2 = y1 + 1;
+					int c1 = myPixels[x1 + y1 * myWidth];
+					int c2 = myPixels[x2 + y1 * myWidth];
+					int c3 = myPixels[x1 + y2 * myWidth];
+					int c4 = myPixels[x2 + y2 * myWidth];
+					int u1 = (k4 >> 8) - (x1 << 8);
+					int v1 = (l4 >> 8) - (y1 << 8);
+					int u2 = (x2 << 8) - (k4 >> 8);
+					int v2 = (y2 << 8) - (l4 >> 8);
+					int a1 = u2 * v2;
+					int a2 = u1 * v2;
+					int a3 = u2 * v1;
+					int a4 = u1 * v1;
+					int r = (c1 >> 16 & 0xff) * a1 + (c2 >> 16 & 0xff) * a2 + (c3 >> 16 & 0xff) * a3
+							+ (c4 >> 16 & 0xff) * a4 & 0xff0000;
+					int g = (c1 >> 8 & 0xff) * a1 + (c2 >> 8 & 0xff) * a2 + (c3 >> 8 & 0xff) * a3
+							+ (c4 >> 8 & 0xff) * a4 >> 8 & 0xff00;
+					int b = (c1 & 0xff) * a1 + (c2 & 0xff) * a2 + (c3 & 0xff) * a3 + (c4 & 0xff) * a4 >> 16;
+					Canvas2D.pixels[j4++] = r | g | b;
+					k4 += i3;
+					l4 -= l2;
+				}
 
-			j3 += l2;
-			k3 += i3;
-			l3 += Canvas2D.width;
-		}
+				j3 += l2;
+				k3 += i3;
+				l3 += Canvas2D.width;
+			}
 
 		} catch (Exception _ex) {
 		}
@@ -1265,7 +1254,7 @@ public class Sprite extends Canvas2D {
 	public void greyScale() {
 		for (int index = 0; index < myWidth * myHeight; index++) {
 			int alpha = myPixels[index] >>> 24;
-		int red = myPixels[index] >>> 16 & 0xff;
+			int red = myPixels[index] >>> 16 & 0xff;
 			int green = myPixels[index] >>> 8 & 0xff;
 			int blue = myPixels[index] & 0xff;
 			int delta = (red + green + blue) / 3;
@@ -1313,7 +1302,8 @@ public class Sprite extends Canvas2D {
 		}
 	}
 
-	public void block_copy_mask(int ai[], int i, byte abyte0[], int j, int ai1[], int k, int l, int i1, int j1, int k1) {
+	public void block_copy_mask(int ai[], int i, byte abyte0[], int j, int ai1[], int k, int l, int i1, int j1,
+			int k1) {
 		int l1 = -(i >> 2);
 		i = -(i & 3);
 		for (int j2 = -j; j2 < 0; j2++) {

@@ -43,7 +43,8 @@ public class AlertifyBuilder {
 	/**
 	 * Set the alert type.
 	 *
-	 * @param type The alert type.
+	 * @param type
+	 *            The alert type.
 	 * @return The builder instance, for chaining.
 	 */
 	public AlertifyBuilder type(AlertifyType type) {
@@ -54,7 +55,8 @@ public class AlertifyBuilder {
 	/**
 	 * Set the alert text.
 	 *
-	 * @param text The alert text.
+	 * @param text
+	 *            The alert text.
 	 * @return The builder instance, for chaining.
 	 */
 	public AlertifyBuilder text(String text) {
@@ -65,7 +67,8 @@ public class AlertifyBuilder {
 	/**
 	 * Set the alert icon.
 	 *
-	 * @param icon The alert icon.
+	 * @param icon
+	 *            The alert icon.
 	 * @return The builder instance, for chaining.
 	 */
 	public AlertifyBuilder icon(Icon icon) {
@@ -76,7 +79,8 @@ public class AlertifyBuilder {
 	/**
 	 * Set the alert font which will override the main themes.
 	 *
-	 * @param font The alert font.
+	 * @param font
+	 *            The alert font.
 	 * @return The builder instance, for chaining.
 	 */
 	public AlertifyBuilder font(Font font) {
@@ -87,7 +91,8 @@ public class AlertifyBuilder {
 	/**
 	 * Set the alert label. This will overwrite the text and icon already set.
 	 *
-	 * @param label The {@link JLabel}. This will still take the foreground and
+	 * @param label
+	 *            The {@link JLabel}. This will still take the foreground and
 	 *            font settings set in the theme!
 	 * @return The builder instance, for chaining.
 	 */
@@ -99,7 +104,8 @@ public class AlertifyBuilder {
 	/**
 	 * Set the auto close delay.
 	 *
-	 * @param closeDelay The auto close delay, in milliseconds.
+	 * @param closeDelay
+	 *            The auto close delay, in milliseconds.
 	 * @return The builder instance, for chaining.
 	 */
 	public AlertifyBuilder autoClose(long closeDelay) {
@@ -110,7 +116,8 @@ public class AlertifyBuilder {
 	/**
 	 * Set the callback used on click.
 	 *
-	 * @param callback The callback.
+	 * @param callback
+	 *            The callback.
 	 * @return The builder instance, for chaining.
 	 */
 	public AlertifyBuilder callback(AlertifyWindowClick callback) {

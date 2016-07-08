@@ -18,7 +18,7 @@ public class PlayerHandler {
 	public static boolean showXP, showBonus, canGainXP;
 	public static int quedBalloonX, quedBalloonY;
 	public static long totalXP = 0;
-	
+
 	public static void addXP(int id, int exp) {
 		if (exp > 0 && canGainXP) {
 			totalXP += exp;
@@ -45,7 +45,7 @@ public class PlayerHandler {
 
 		return 0;
 	}
-	
+
 	public static int getXPForLevel(int level) {
 		int points = 0;
 		int output = 0;
@@ -54,7 +54,7 @@ public class PlayerHandler {
 			if (lvl >= level) {
 				return output;
 			}
-			output = (int)Math.floor(points / 4);
+			output = (int) Math.floor(points / 4);
 		}
 		return 0;
 	}

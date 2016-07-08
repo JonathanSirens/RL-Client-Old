@@ -54,8 +54,10 @@ public class AlertifyWindow extends JWindow {
 	/**
 	 * Construct a new window.
 	 *
-	 * @param theme The theme to construct from.
-	 * @param config The alert config.
+	 * @param theme
+	 *            The theme to construct from.
+	 * @param config
+	 *            The alert config.
 	 */
 	public AlertifyWindow(AlertifyTheme theme, AlertifyConfig config) {
 		AlertifyColorPair colors = theme.getColors(config.getType());
@@ -129,7 +131,8 @@ public class AlertifyWindow extends JWindow {
 	/**
 	 * Sets the {@link ScheduledFuture} for the close task.
 	 *
-	 * @param closeFuture The close future.
+	 * @param closeFuture
+	 *            The close future.
 	 */
 	public void setCloseFuture(ScheduledFuture<?> closeFuture) {
 		this.closeFuture = closeFuture;

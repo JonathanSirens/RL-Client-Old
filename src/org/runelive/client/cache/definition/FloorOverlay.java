@@ -71,7 +71,8 @@ public class FloorOverlay {
 			} else if (attributeId == 6) {
 
 			} else if (attributeId == 7) {
-				int_7 = ((byteBuffer.get() & 0xff) << 16) + ((byteBuffer.get() & 0xff) << 8) + (byteBuffer.get() & 0xff);
+				int_7 = ((byteBuffer.get() & 0xff) << 16) + ((byteBuffer.get() & 0xff) << 8)
+						+ (byteBuffer.get() & 0xff);
 			} else if (attributeId == 8) {
 
 			} else if (attributeId == 9) {
@@ -83,7 +84,8 @@ public class FloorOverlay {
 			} else if (attributeId == 12) {
 				boolean_12 = true;
 			} else if (attributeId == 13) {
-				int_13 = ((byteBuffer.get() & 0xff) << 16) + ((byteBuffer.get() & 0xff) << 8) + (byteBuffer.get() & 0xff);
+				int_13 = ((byteBuffer.get() & 0xff) << 16) + ((byteBuffer.get() & 0xff) << 8)
+						+ (byteBuffer.get() & 0xff);
 			} else if (attributeId == 14) {
 				int_14 = byteBuffer.get() & 0xff;
 			} else if (attributeId == 15) {

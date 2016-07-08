@@ -21,8 +21,10 @@ public class AlertifyColorPair {
 	/**
 	 * Construct a new color pair.
 	 *
-	 * @param background The background color.
-	 * @param foreground The foreground color.
+	 * @param background
+	 *            The background color.
+	 * @param foreground
+	 *            The foreground color.
 	 */
 	public AlertifyColorPair(Color background, Color foreground) {
 		this.background = background;

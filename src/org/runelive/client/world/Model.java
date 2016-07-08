@@ -1,10 +1,10 @@
 package org.runelive.client.world;
 
 import org.runelive.Configuration;
-import org.runelive.client.ModelHeader;
 import org.runelive.client.Class33;
 import org.runelive.client.Client;
 import org.runelive.client.FrameReader;
+import org.runelive.client.ModelHeader;
 import org.runelive.client.SkinList;
 import org.runelive.client.cache.ondemand.CacheFileRequest;
 import org.runelive.client.cache.ondemand.CacheFileRequester;
@@ -158,15 +158,15 @@ public class Model extends Animable {
 		if (modelHeaderCache == null) {
 			return null;
 		}
-		if(fileId == 0) {
+		if (fileId == 0) {
 			return null;
 		}
 		ModelHeader modelHeader = modelHeaderCache[fileId];
 		if (modelHeader == null) {
-			int cacheIndex = CacheFileRequest.MODEL;//default model index
+			int cacheIndex = CacheFileRequest.MODEL;// default model index
 			if (fileId >= 65535) {
 				fileId -= 65535;
-				cacheIndex = CacheFileRequest.MODEL_EXT;//model_extended index
+				cacheIndex = CacheFileRequest.MODEL_EXT;// model_extended index
 			}
 			onDemandRequester.pushRequest(cacheIndex, fileId);
 			return null;
@@ -181,10 +181,10 @@ public class Model extends Animable {
 		}
 		ModelHeader modelHeader = modelHeaderCache[fileId];
 		if (modelHeader == null) {
-			int cacheIndex = CacheFileRequest.MODEL;//default model index
+			int cacheIndex = CacheFileRequest.MODEL;// default model index
 			if (fileId >= 65535) {
 				fileId -= 65535;
-				cacheIndex = CacheFileRequest.MODEL_EXT;//model_extended index
+				cacheIndex = CacheFileRequest.MODEL_EXT;// model_extended index
 			}
 			onDemandRequester.pushRequest(cacheIndex, fileId);
 			return false;
@@ -445,10 +445,9 @@ public class Model extends Animable {
 				e.printStackTrace();
 			}
 		}
-		if((modelId >= 53347 && modelId <= 53370) || (modelId >= 76001 && modelId <= 76047))
-		{
-			//recolour(0, 255);
-			if (priorities != null) { //rofl
+		if ((modelId >= 53347 && modelId <= 53370) || (modelId >= 76001 && modelId <= 76047)) {
+			// recolour(0, 255);
+			if (priorities != null) { // rofl
 				for (int j = 0; j < priorities.length; j++)
 					priorities[j] = 10;
 			}
@@ -810,8 +809,10 @@ public class Model extends Animable {
 			}
 		}
 		anInt1650 = (int) (Math.sqrt(anInt1650) + 0.98999999999999999D);
-		anInt1653 = (int) (Math.sqrt(anInt1650 * anInt1650 + super.modelHeight * super.modelHeight) + 0.98999999999999999D);
-		diagonal3D = anInt1653 + (int) (Math.sqrt(anInt1650 * anInt1650 + anInt1651 * anInt1651) + 0.98999999999999999D);
+		anInt1653 = (int) (Math.sqrt(anInt1650 * anInt1650 + super.modelHeight * super.modelHeight)
+				+ 0.98999999999999999D);
+		diagonal3D = anInt1653
+				+ (int) (Math.sqrt(anInt1650 * anInt1650 + anInt1651 * anInt1651) + 0.98999999999999999D);
 	}
 
 	public void method467() {
@@ -827,8 +828,10 @@ public class Model extends Animable {
 			}
 		}
 
-		anInt1653 = (int) (Math.sqrt(anInt1650 * anInt1650 + super.modelHeight * super.modelHeight) + 0.98999999999999999D);
-		diagonal3D = anInt1653 + (int) (Math.sqrt(anInt1650 * anInt1650 + anInt1651 * anInt1651) + 0.98999999999999999D);
+		anInt1653 = (int) (Math.sqrt(anInt1650 * anInt1650 + super.modelHeight * super.modelHeight)
+				+ 0.98999999999999999D);
+		diagonal3D = anInt1653
+				+ (int) (Math.sqrt(anInt1650 * anInt1650 + anInt1651 * anInt1651) + 0.98999999999999999D);
 	}
 
 	private void method468(int i) {
@@ -945,7 +948,8 @@ public class Model extends Animable {
 		anInt1683 = 0;
 		for (int k = 0; k < class36.stepCount; k++) {
 			int l = class36.opcodeLinkTable[k];
-			method472(class18.opcodes[l], class18.skinList[l], class36.xOffset[k], class36.yOffset[k], class36.zOffset[k]);
+			method472(class18.opcodes[l], class18.skinList[l], class36.xOffset[k], class36.yOffset[k],
+					class36.zOffset[k]);
 		}
 
 	}
@@ -958,7 +962,7 @@ public class Model extends Animable {
 		try {
 			if (vertexSkin != null && firstFrame != -1) {
 				FrameReader currentAnimation = FrameReader.forId(firstFrame);
-				if(currentAnimation == null) {
+				if (currentAnimation == null) {
 					applyTransform(nextFrame);
 					return;
 				}
@@ -974,10 +978,11 @@ public class Model extends Animable {
 						nextAnimation = null;
 					list2 = nextAnimation.skinList;
 				}
-				if(nextAnimation == null || list2 == null) {
+				if (nextAnimation == null || list2 == null) {
 					for (int i_263_ = 0; i_263_ < currentAnimation.stepCount; i_263_++) {
 						int i_264_ = currentAnimation.opcodeLinkTable[i_263_];
-						method472(list1.opcodes[i_264_], list1.skinList[i_264_], currentAnimation.xOffset[i_263_], currentAnimation.yOffset[i_263_], currentAnimation.zOffset[i_263_]);
+						method472(list1.opcodes[i_264_], list1.skinList[i_264_], currentAnimation.xOffset[i_263_],
+								currentAnimation.yOffset[i_263_], currentAnimation.zOffset[i_263_]);
 
 					}
 				} else {
@@ -1055,8 +1060,8 @@ public class Model extends Animable {
 				}
 			}
 
-		} catch(Exception e) {
-		//	e.printStackTrace();
+		} catch (Exception e) {
+			// e.printStackTrace();
 			applyTransform(firstFrame);
 		}
 	}
@@ -1090,7 +1095,8 @@ public class Model extends Animable {
 				;
 			}
 			if (k1 != i1 || class18.opcodes[k1] == 0) {
-				method472(class18.opcodes[k1], class18.skinList[k1], class36.xOffset[j1], class36.yOffset[j1], class36.zOffset[j1]);
+				method472(class18.opcodes[k1], class18.skinList[k1], class36.xOffset[j1], class36.yOffset[j1],
+						class36.zOffset[j1]);
 			}
 		}
 
@@ -1105,7 +1111,8 @@ public class Model extends Animable {
 				;
 			}
 			if (i2 == i1 || class18.opcodes[i2] == 0) {
-				method472(class18.opcodes[i2], class18.skinList[i2], class36_1.xOffset[l1], class36_1.yOffset[l1], class36_1.zOffset[l1]);
+				method472(class18.opcodes[i2], class18.skinList[i2], class36_1.xOffset[l1], class36_1.yOffset[l1],
+						class36_1.zOffset[l1]);
 			}
 		}
 
@@ -1179,22 +1186,22 @@ public class Model extends Animable {
 							int j7 = SINE[i7];
 							int i8 = COSINE[i7];
 							int l8 = vertexY[k5] * j7 + vertexX[k5] * i8 >> 16;
-				vertexY[k5] = vertexY[k5] * i8 - vertexX[k5] * j7 >> 16;
-				vertexX[k5] = l8;
+							vertexY[k5] = vertexY[k5] * i8 - vertexX[k5] * j7 >> 16;
+							vertexX[k5] = l8;
 						}
 						if (k6 != 0) {
 							int k7 = SINE[k6];
 							int j8 = COSINE[k6];
 							int i9 = vertexY[k5] * j8 - vertexZ[k5] * k7 >> 16;
-			vertexZ[k5] = vertexY[k5] * k7 + vertexZ[k5] * j8 >> 16;
+							vertexZ[k5] = vertexY[k5] * k7 + vertexZ[k5] * j8 >> 16;
 							vertexY[k5] = i9;
 						}
 						if (l6 != 0) {
 							int l7 = SINE[l6];
 							int k8 = COSINE[l6];
 							int j9 = vertexZ[k5] * l7 + vertexX[k5] * k8 >> 16;
-		vertexZ[k5] = vertexZ[k5] * k8 - vertexX[k5] * l7 >> 16;
-			vertexX[k5] = j9;
+							vertexZ[k5] = vertexZ[k5] * k8 - vertexX[k5] * l7 >> 16;
+							vertexX[k5] = j9;
 						}
 						vertexX[k5] += anInt1681;
 						vertexY[k5] += anInt1682;
@@ -1260,8 +1267,8 @@ public class Model extends Animable {
 
 		for (int i1 = 0; i1 < vertexCount; i1++) {
 			int j1 = vertexY[i1] * l - vertexZ[i1] * k >> 16;
-		vertexZ[i1] = vertexY[i1] * k + vertexZ[i1] * l >> 16;
-				vertexY[i1] = j1;
+			vertexZ[i1] = vertexY[i1] * k + vertexZ[i1] * l >> 16;
+			vertexY[i1] = j1;
 		}
 	}
 
@@ -1337,7 +1344,7 @@ public class Model extends Animable {
 						/*
 						 * || (colors[i2] == 0 // Black Triangles 633 // Models
 						 * - Fixes Gwd walls // & Black models )
-						 */|| colors[i2] == 16705) {
+						 */ || colors[i2] == 16705) {
 					alpha[i2] = 255;
 				}
 			}
@@ -1353,9 +1360,10 @@ public class Model extends Animable {
 			int l4 = k3 * k4 - j4 * l3;
 			int i5 = l3 * i4 - k4 * j3;
 			int j5;
-			for (j5 = j3 * j4 - i4 * k3; l4 > 8192 || i5 > 8192 || j5 > 8192 || l4 < -8192 || i5 < -8192 || j5 < -8192; j5 >>= 1) {
+			for (j5 = j3 * j4 - i4 * k3; l4 > 8192 || i5 > 8192 || j5 > 8192 || l4 < -8192 || i5 < -8192
+					|| j5 < -8192; j5 >>= 1) {
 				l4 >>= 1;
-			i5 >>= 1;
+				i5 >>= 1;
 			}
 
 			int k5 = (int) Math.sqrt(l4 * l4 + i5 * i5 + j5 * j5);
@@ -1423,7 +1431,8 @@ public class Model extends Animable {
 			if (face_fill_attributes == null) {
 				int i3 = colors[j1];
 				Class33 class33 = super.aClass33Array1425[k1];
-				int k2 = i + (k * class33.anInt602 + l * class33.anInt603 + i1 * class33.anInt604) / (j * class33.anInt605);
+				int k2 = i + (k * class33.anInt602 + l * class33.anInt603 + i1 * class33.anInt604)
+						/ (j * class33.anInt605);
 				face_shade_a[j1] = method481(i3, k2, 0);
 				class33 = super.aClass33Array1425[i2];
 				k2 = i + (k * class33.anInt602 + l * class33.anInt603 + i1 * class33.anInt604) / (j * class33.anInt605);
@@ -1435,13 +1444,16 @@ public class Model extends Animable {
 				int j3 = colors[j1];
 				int k3 = face_fill_attributes[j1];
 				Class33 class33_1 = super.aClass33Array1425[k1];
-				int l2 = i + (k * class33_1.anInt602 + l * class33_1.anInt603 + i1 * class33_1.anInt604) / (j * class33_1.anInt605);
+				int l2 = i + (k * class33_1.anInt602 + l * class33_1.anInt603 + i1 * class33_1.anInt604)
+						/ (j * class33_1.anInt605);
 				face_shade_a[j1] = method481(j3, l2, k3);
 				class33_1 = super.aClass33Array1425[i2];
-				l2 = i + (k * class33_1.anInt602 + l * class33_1.anInt603 + i1 * class33_1.anInt604) / (j * class33_1.anInt605);
+				l2 = i + (k * class33_1.anInt602 + l * class33_1.anInt603 + i1 * class33_1.anInt604)
+						/ (j * class33_1.anInt605);
 				face_shade_b[j1] = method481(j3, l2, k3);
 				class33_1 = super.aClass33Array1425[j2];
-				l2 = i + (k * class33_1.anInt602 + l * class33_1.anInt603 + i1 * class33_1.anInt604) / (j * class33_1.anInt605);
+				l2 = i + (k * class33_1.anInt602 + l * class33_1.anInt603 + i1 * class33_1.anInt604)
+						/ (j * class33_1.anInt605);
 				face_shade_c[j1] = method481(j3, l2, k3);
 			}
 		}
@@ -1474,140 +1486,140 @@ public class Model extends Animable {
 		int l3 = SINE[l];
 		int i4 = COSINE[l];
 		int j4 = j1 * l3 + k1 * i4 >> 16;
-			for (int k4 = 0; k4 < vertexCount; k4++) {
-				int l4 = vertexX[k4];
-				int i5 = vertexY[k4];
-				int j5 = vertexZ[k4];
-				if (k != 0) {
-					int k5 = i5 * j3 + l4 * k3 >> 16;
-			i5 = i5 * k3 - l4 * j3 >> 16;
-			l4 = k5;
-				}
-				if (i != 0) {
-					int l5 = i5 * k2 - j5 * j2 >> 16;
-			j5 = i5 * j2 + j5 * k2 >> 16;
+		for (int k4 = 0; k4 < vertexCount; k4++) {
+			int l4 = vertexX[k4];
+			int i5 = vertexY[k4];
+			int j5 = vertexZ[k4];
+			if (k != 0) {
+				int k5 = i5 * j3 + l4 * k3 >> 16;
+				i5 = i5 * k3 - l4 * j3 >> 16;
+				l4 = k5;
+			}
+			if (i != 0) {
+				int l5 = i5 * k2 - j5 * j2 >> 16;
+				j5 = i5 * j2 + j5 * k2 >> 16;
 				i5 = l5;
-				}
-				if (j != 0) {
-					int i6 = j5 * l2 + l4 * i3 >> 16;
-								j5 = j5 * i3 - l4 * l2 >> 16;
+			}
+			if (j != 0) {
+				int i6 = j5 * l2 + l4 * i3 >> 16;
+				j5 = j5 * i3 - l4 * l2 >> 16;
 				l4 = i6;
-				}
-				l4 += i1;
-				i5 += j1;
-				j5 += k1;
-				int j6 = i5 * i4 - j5 * l3 >> 16;
-		j5 = i5 * l3 + j5 * i4 >> 16;
-								i5 = j6;
-								anIntArray1667[k4] = j5 - j4;
-								if (j5 == 0) {
-									return;
-								}
-								projected_vertex_x[k4] = l1 + (l4 << 9) / j5;
-								projected_vertex_y[k4] = i2 + (i5 << 9) / j5;
-								if (textured_triangle_count > 0) {
-									camera_vertex_y[k4] = l4;
-									camera_vertex_x[k4] = i5;
-									camera_vertex_z[k4] = j5;
-								}
 			}
+			l4 += i1;
+			i5 += j1;
+			j5 += k1;
+			int j6 = i5 * i4 - j5 * l3 >> 16;
+			j5 = i5 * l3 + j5 * i4 >> 16;
+			i5 = j6;
+			anIntArray1667[k4] = j5 - j4;
+			if (j5 == 0) {
+				return;
+			}
+			projected_vertex_x[k4] = l1 + (l4 << 9) / j5;
+			projected_vertex_y[k4] = i2 + (i5 << 9) / j5;
+			if (textured_triangle_count > 0) {
+				camera_vertex_y[k4] = l4;
+				camera_vertex_x[k4] = i5;
+				camera_vertex_z[k4] = j5;
+			}
+		}
 
-			try {
-				translateToScreen(false, false, 0, 0);
-				return;
-			} catch (Exception _ex) {
-				_ex.printStackTrace();
-				return;
-			}
+		try {
+			translateToScreen(false, false, 0, 0);
+			return;
+		} catch (Exception _ex) {
+			_ex.printStackTrace();
+			return;
+		}
 	}
 
 	@Override
 	public void method443(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int uid, int newuid) {
 		int j2 = l1 * i1 - j1 * l >> 16;
-								int k2 = k1 * j + j2 * k >> 16;
-								int l2 = anInt1650 * k >> 16;
+		int k2 = k1 * j + j2 * k >> 16;
+		int l2 = anInt1650 * k >> 16;
 		int i3 = k2 + l2;
 		if (i3 <= 50 || k2 >= 3500) {
 			return;
 		}
 		int j3 = l1 * l + j1 * i1 >> 16;
-			int k3 = j3 - anInt1650 << Client.log_view_dist;
-			if (k3 / i3 >= Canvas2D.centerY) {
-				return;
+		int k3 = j3 - anInt1650 << Client.log_view_dist;
+		if (k3 / i3 >= Canvas2D.centerY) {
+			return;
+		}
+		int l3 = j3 + anInt1650 << Client.log_view_dist;
+		if (l3 / i3 <= -Canvas2D.centerY) {
+			return;
+		}
+		int i4 = k1 * k - j2 * j >> 16;
+		int j4 = anInt1650 * j >> 16;
+		int k4 = i4 + j4 << Client.log_view_dist;
+		if (k4 / i3 <= -Canvas2D.middleY) {
+			return;
+		}
+		int l4 = j4 + (super.modelHeight * k >> 16);
+		int i5 = i4 - l4 << Client.log_view_dist;
+		if (i5 / i3 >= Canvas2D.middleY) {
+			return;
+		}
+		int j5 = l2 + (super.modelHeight * j >> 16);
+		boolean flag = false;
+		if (k2 - j5 <= 50) {
+			flag = true;
+		}
+		boolean flag1 = false;
+		if (uid > 0 && aBoolean1684) {
+			int k5 = k2 - l2;
+			if (k5 <= 50) {
+				k5 = 50;
 			}
-			int l3 = j3 + anInt1650 << Client.log_view_dist;
-			if (l3 / i3 <= -Canvas2D.centerY) {
-				return;
+			if (j3 > 0) {
+				k3 /= i3;
+				l3 /= k5;
+			} else {
+				l3 /= i3;
+				k3 /= k5;
 			}
-			int i4 = k1 * k - j2 * j >> 16;
-			int j4 = anInt1650 * j >> 16;
-			int k4 = i4 + j4 << Client.log_view_dist;
-			if (k4 / i3 <= -Canvas2D.middleY) {
-				return;
+			if (i4 > 0) {
+				i5 /= i3;
+				k4 /= k5;
+			} else {
+				k4 /= i3;
+				i5 /= k5;
 			}
-			int l4 = j4 + (super.modelHeight * k >> 16);
-			int i5 = i4 - l4 << Client.log_view_dist;
-			if (i5 / i3 >= Canvas2D.middleY) {
-				return;
-			}
-			int j5 = l2 + (super.modelHeight * j >> 16);
-			boolean flag = false;
-			if (k2 - j5 <= 50) {
-				flag = true;
-			}
-			boolean flag1 = false;
-			if (uid > 0 && aBoolean1684) {
-				int k5 = k2 - l2;
-				if (k5 <= 50) {
-					k5 = 50;
-				}
-				if (j3 > 0) {
-					k3 /= i3;
-					l3 /= k5;
+			int i6 = anInt1685 - Canvas3D.centerX;
+			int k6 = anInt1686 - Canvas3D.centerY;
+			if (i6 > k3 && i6 < l3 && k6 > i5 && k6 < k4) {
+				if (aBoolean1659) {
+					mapObjIds[anInt1687] = newuid;
+					anIntArray1688[anInt1687++] = uid;
 				} else {
-					l3 /= i3;
-					k3 /= k5;
-				}
-				if (i4 > 0) {
-					i5 /= i3;
-					k4 /= k5;
-				} else {
-					k4 /= i3;
-					i5 /= k5;
-				}
-				int i6 = anInt1685 - Canvas3D.centerX;
-				int k6 = anInt1686 - Canvas3D.centerY;
-				if (i6 > k3 && i6 < l3 && k6 > i5 && k6 < k4) {
-					if (aBoolean1659) {
-						mapObjIds[anInt1687] = newuid;
-						anIntArray1688[anInt1687++] = uid;
-					} else {
-						flag1 = true;
-					}
+					flag1 = true;
 				}
 			}
-			int l5 = Canvas3D.centerX;
-			int j6 = Canvas3D.centerY;
-			int l6 = 0;
-			int i7 = 0;
+		}
+		int l5 = Canvas3D.centerX;
+		int j6 = Canvas3D.centerY;
+		int l6 = 0;
+		int i7 = 0;
+		if (i != 0) {
+			l6 = SINE[i];
+			i7 = COSINE[i];
+		}
+		for (int j7 = 0; j7 < vertexCount; j7++) {
+			int k7 = vertexX[j7];
+			int l7 = vertexY[j7];
+			int i8 = vertexZ[j7];
 			if (i != 0) {
-				l6 = SINE[i];
-				i7 = COSINE[i];
+				int j8 = i8 * l6 + k7 * i7 >> 16;
+				i8 = i8 * i7 - k7 * l6 >> 16;
+				k7 = j8;
 			}
-			for (int j7 = 0; j7 < vertexCount; j7++) {
-				int k7 = vertexX[j7];
-				int l7 = vertexY[j7];
-				int i8 = vertexZ[j7];
-				if (i != 0) {
-					int j8 = i8 * l6 + k7 * i7 >> 16;
-			i8 = i8 * i7 - k7 * l6 >> 16;
-			k7 = j8;
-				}
-				k7 += j1;
-				l7 += k1;
-				i8 += l1;
-				int k8 = i8 * l + k7 * i1 >> 16;
-				i8 = i8 * i1 - k7 * l >> 16;
+			k7 += j1;
+			l7 += k1;
+			i8 += l1;
+			int k8 = i8 * l + k7 * i1 >> 16;
+			i8 = i8 * i1 - k7 * l >> 16;
 			k7 = k8;
 			k8 = l7 * k - i8 * j >> 16;
 			i8 = l7 * j + i8 * k >> 16;
@@ -1627,13 +1639,13 @@ public class Model extends Animable {
 			} else if (fog) {
 				camera_vertex_z[j7] = i8;
 			}
-			}
-			try {
-				translateToScreen(flag, flag1, uid, newuid);
-				return;
-			} catch (Exception _ex) {
-				return;
-			}
+		}
+		try {
+			translateToScreen(flag, flag1, uid, newuid);
+			return;
+		} catch (Exception _ex) {
+			return;
+		}
 	}
 
 	public static boolean fog;
@@ -1656,14 +1668,17 @@ public class Model extends Animable {
 					int j5 = (anIntArray1667[l] + anIntArray1667[k1] + anIntArray1667[j2]) / 3 + anInt1653;
 					faceLists[j5][depthListIndices[j5]++] = k;
 				} else {
-					if (flag1 && method486(anInt1685, anInt1686, projected_vertex_y[l], projected_vertex_y[k1], projected_vertex_y[j2], i3, l3, k4)) {
+					if (flag1 && method486(anInt1685, anInt1686, projected_vertex_y[l], projected_vertex_y[k1],
+							projected_vertex_y[j2], i3, l3, k4)) {
 						mapObjIds[anInt1687] = id;
 						anIntArray1688[anInt1687++] = i;
 						flag1 = false;
 					}
-					if ((i3 - l3) * (projected_vertex_y[j2] - projected_vertex_y[k1]) - (projected_vertex_y[l] - projected_vertex_y[k1]) * (k4 - l3) > 0) {
+					if ((i3 - l3) * (projected_vertex_y[j2] - projected_vertex_y[k1])
+							- (projected_vertex_y[l] - projected_vertex_y[k1]) * (k4 - l3) > 0) {
 						outOfReach[k] = false;
-						if (i3 < 0 || l3 < 0 || k4 < 0 || i3 > Canvas2D.centerX || l3 > Canvas2D.centerX || k4 > Canvas2D.centerX) {
+						if (i3 < 0 || l3 < 0 || k4 < 0 || i3 > Canvas2D.centerX || l3 > Canvas2D.centerX
+								|| k4 > Canvas2D.centerX) {
 							aBooleanArray1663[k] = true;
 						} else {
 							aBooleanArray1663[k] = false;
@@ -1831,33 +1846,56 @@ public class Model extends Animable {
 			i1 = face_fill_attributes[i] & 3;
 		}
 		if (i1 == 0) {
-			Canvas3D.drawShadedTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l], projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i], face_shade_b[i], face_shade_c[i]);
-			if (fog) { 
-				Canvas3D.drawFogTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l], projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], camera_vertex_z[j], camera_vertex_z[k], camera_vertex_z[l]);
+			Canvas3D.drawShadedTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
+					projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i],
+					face_shade_b[i], face_shade_c[i]);
+			if (fog) {
+				Canvas3D.drawFogTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
+						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], camera_vertex_z[j],
+						camera_vertex_z[k], camera_vertex_z[l]);
 			}
 		} else if (i1 == 1) {
-			Canvas3D.drawFlatTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l], projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], hsl2rgb[face_shade_a[i]]);
+			Canvas3D.drawFlatTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
+					projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], hsl2rgb[face_shade_a[i]]);
 			if (fog) {
-				Canvas3D.drawFogTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l], projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], camera_vertex_z[j], camera_vertex_z[k], camera_vertex_z[l]);
+				Canvas3D.drawFogTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
+						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], camera_vertex_z[j],
+						camera_vertex_z[k], camera_vertex_z[l]);
 			}
 		} else if (i1 == 2) {
 			int j1 = face_fill_attributes[i] >> 2;
 			int l1 = texture_map_x[j1];
 			int j2 = texture_map_y[j1];
 			int l2 = texture_map_z[j1];
-			Canvas3D.drawTexturedTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l], projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i], face_shade_b[i], face_shade_c[i], camera_vertex_y[l1], camera_vertex_y[j2], camera_vertex_y[l2], camera_vertex_x[l1], camera_vertex_x[j2], camera_vertex_x[l2], camera_vertex_z[l1], camera_vertex_z[j2], camera_vertex_z[l2], colors[i]);
+			Canvas3D.drawTexturedTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
+					projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i],
+					face_shade_b[i], face_shade_c[i], camera_vertex_y[l1], camera_vertex_y[j2], camera_vertex_y[l2],
+					camera_vertex_x[l1], camera_vertex_x[j2], camera_vertex_x[l2], camera_vertex_z[l1],
+					camera_vertex_z[j2], camera_vertex_z[l2], colors[i]);
 			if (fog) {
-				Canvas3D.drawTexturedFogTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l], projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], camera_vertex_z[j], camera_vertex_z[k], camera_vertex_z[l], camera_vertex_y[l1], camera_vertex_y[j2], camera_vertex_y[l2], camera_vertex_x[l1], camera_vertex_x[j2], camera_vertex_x[l2], camera_vertex_z[l1], camera_vertex_z[j2], camera_vertex_z[l2], colors[i]);
+				Canvas3D.drawTexturedFogTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
+						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], camera_vertex_z[j],
+						camera_vertex_z[k], camera_vertex_z[l], camera_vertex_y[l1], camera_vertex_y[j2],
+						camera_vertex_y[l2], camera_vertex_x[l1], camera_vertex_x[j2], camera_vertex_x[l2],
+						camera_vertex_z[l1], camera_vertex_z[j2], camera_vertex_z[l2], colors[i]);
 			}
 		} else if (i1 == 3) {
 			int k1 = face_fill_attributes[i] >> 2;
-				int i2 = texture_map_x[k1];
-				int k2 = texture_map_y[k1];
-				int i3 = texture_map_z[k1];
-				Canvas3D.drawTexturedTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l], projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i], face_shade_a[i], face_shade_a[i], camera_vertex_y[i2], camera_vertex_y[k2], camera_vertex_y[i3], camera_vertex_x[i2], camera_vertex_x[k2], camera_vertex_x[i3], camera_vertex_z[i2], camera_vertex_z[k2], camera_vertex_z[i3], colors[i]);
-				if (fog) {
-					Canvas3D.drawTexturedFogTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l], projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], camera_vertex_z[j], camera_vertex_z[k], camera_vertex_z[l], camera_vertex_y[i2], camera_vertex_y[k2], camera_vertex_y[i3], camera_vertex_x[i2], camera_vertex_x[k2], camera_vertex_x[i3], camera_vertex_z[i2], camera_vertex_z[k2], camera_vertex_z[i3], colors[i]);
-				}
+			int i2 = texture_map_x[k1];
+			int k2 = texture_map_y[k1];
+			int i3 = texture_map_z[k1];
+			Canvas3D.drawTexturedTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
+					projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i],
+					face_shade_a[i], face_shade_a[i], camera_vertex_y[i2], camera_vertex_y[k2], camera_vertex_y[i3],
+					camera_vertex_x[i2], camera_vertex_x[k2], camera_vertex_x[i3], camera_vertex_z[i2],
+					camera_vertex_z[k2], camera_vertex_z[i3], colors[i]);
+			if (fog) {
+				Canvas3D.drawTexturedFogTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
+						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], camera_vertex_z[j],
+						camera_vertex_z[k], camera_vertex_z[l], camera_vertex_y[i2], camera_vertex_y[k2],
+						camera_vertex_y[i3], camera_vertex_x[i2], camera_vertex_x[k2], camera_vertex_x[i3],
+						camera_vertex_z[i2], camera_vertex_z[k2], camera_vertex_z[i3], colors[i]);
+			}
 		}
 	}
 
@@ -1949,7 +1987,8 @@ public class Model extends Animable {
 		if ((j3 - j4) * (k7 - j7) - (i7 - j7) * (j5 - j4) > 0) {
 			Canvas3D.restrict_edges = false;
 			if (l == 3) {
-				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Canvas2D.centerX || j4 > Canvas2D.centerX || j5 > Canvas2D.centerX) {
+				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Canvas2D.centerX || j4 > Canvas2D.centerX
+						|| j5 > Canvas2D.centerX) {
 					Canvas3D.restrict_edges = true;
 				}
 				int meshType;
@@ -1959,7 +1998,8 @@ public class Model extends Animable {
 					meshType = face_fill_attributes[i] & 3;
 				}
 				if (meshType == 0) {
-					Canvas3D.drawShadedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1], anIntArray1680[2]);
+					Canvas3D.drawShadedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
+							anIntArray1680[2]);
 				} else if (meshType == 1) {
 					Canvas3D.drawFlatTriangle(i7, j7, k7, j3, j4, j5, hsl2rgb[face_shade_a[i]]);
 				} else if (meshType == 2) {
@@ -1967,17 +2007,24 @@ public class Model extends Animable {
 					int k9 = texture_map_x[j8];
 					int k10 = texture_map_y[j8];
 					int k11 = texture_map_z[j8];
-					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1], anIntArray1680[2], camera_vertex_y[k9], camera_vertex_y[k10], camera_vertex_y[k11], camera_vertex_x[k9], camera_vertex_x[k10], camera_vertex_x[k11], camera_vertex_z[k9], camera_vertex_z[k10], camera_vertex_z[k11], colors[i]);
+					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
+							anIntArray1680[2], camera_vertex_y[k9], camera_vertex_y[k10], camera_vertex_y[k11],
+							camera_vertex_x[k9], camera_vertex_x[k10], camera_vertex_x[k11], camera_vertex_z[k9],
+							camera_vertex_z[k10], camera_vertex_z[k11], colors[i]);
 				} else if (meshType == 3) {
 					int k8 = face_fill_attributes[i] >> 2;
 					int l9 = texture_map_x[k8];
 					int l10 = texture_map_y[k8];
 					int l11 = texture_map_z[k8];
-					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, face_shade_a[i], face_shade_a[i], face_shade_a[i], camera_vertex_y[l9], camera_vertex_y[l10], camera_vertex_y[l11], camera_vertex_x[l9], camera_vertex_x[l10], camera_vertex_x[l11], camera_vertex_z[l9], camera_vertex_z[l10], camera_vertex_z[l11], colors[i]);
+					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, face_shade_a[i], face_shade_a[i],
+							face_shade_a[i], camera_vertex_y[l9], camera_vertex_y[l10], camera_vertex_y[l11],
+							camera_vertex_x[l9], camera_vertex_x[l10], camera_vertex_x[l11], camera_vertex_z[l9],
+							camera_vertex_z[l10], camera_vertex_z[l11], colors[i]);
 				}
 			}
 			if (l == 4) {
-				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Canvas2D.centerX || j4 > Canvas2D.centerX || j5 > Canvas2D.centerX || anIntArray1678[3] < 0 || anIntArray1678[3] > Canvas2D.centerX) {
+				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Canvas2D.centerX || j4 > Canvas2D.centerX
+						|| j5 > Canvas2D.centerX || anIntArray1678[3] < 0 || anIntArray1678[3] > Canvas2D.centerX) {
 					Canvas3D.restrict_edges = true;
 				}
 				int i8;
@@ -1987,8 +2034,10 @@ public class Model extends Animable {
 					i8 = face_fill_attributes[i] & 3;
 				}
 				if (i8 == 0) {
-					Canvas3D.drawShadedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1], anIntArray1680[2]);
-					Canvas3D.drawShadedTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1680[0], anIntArray1680[2], anIntArray1680[3]);
+					Canvas3D.drawShadedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
+							anIntArray1680[2]);
+					Canvas3D.drawShadedTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1680[0],
+							anIntArray1680[2], anIntArray1680[3]);
 					return;
 				}
 				if (i8 == 1) {
@@ -2002,8 +2051,15 @@ public class Model extends Animable {
 					int i10 = texture_map_x[i9];
 					int i11 = texture_map_y[i9];
 					int i12 = texture_map_z[i9];
-					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1], anIntArray1680[2], camera_vertex_y[i10], camera_vertex_y[i11], camera_vertex_y[i12], camera_vertex_x[i10], camera_vertex_x[i11], camera_vertex_x[i12], camera_vertex_z[i10], camera_vertex_z[i11], camera_vertex_z[i12], colors[i]);
-					Canvas3D.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1680[0], anIntArray1680[2], anIntArray1680[3], camera_vertex_y[i10], camera_vertex_y[i11], camera_vertex_y[i12], camera_vertex_x[i10], camera_vertex_x[i11], camera_vertex_x[i12], camera_vertex_z[i10], camera_vertex_z[i11], camera_vertex_z[i12], colors[i]);
+					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
+							anIntArray1680[2], camera_vertex_y[i10], camera_vertex_y[i11], camera_vertex_y[i12],
+							camera_vertex_x[i10], camera_vertex_x[i11], camera_vertex_x[i12], camera_vertex_z[i10],
+							camera_vertex_z[i11], camera_vertex_z[i12], colors[i]);
+					Canvas3D.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3],
+							anIntArray1680[0], anIntArray1680[2], anIntArray1680[3], camera_vertex_y[i10],
+							camera_vertex_y[i11], camera_vertex_y[i12], camera_vertex_x[i10], camera_vertex_x[i11],
+							camera_vertex_x[i12], camera_vertex_z[i10], camera_vertex_z[i11], camera_vertex_z[i12],
+							colors[i]);
 					return;
 				}
 				if (i8 == 3) {
@@ -2011,8 +2067,14 @@ public class Model extends Animable {
 					int j10 = texture_map_x[j9];
 					int j11 = texture_map_y[j9];
 					int j12 = texture_map_z[j9];
-					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, face_shade_a[i], face_shade_a[i], face_shade_a[i], camera_vertex_y[j10], camera_vertex_y[j11], camera_vertex_y[j12], camera_vertex_x[j10], camera_vertex_x[j11], camera_vertex_x[j12], camera_vertex_z[j10], camera_vertex_z[j11], camera_vertex_z[j12], colors[i]);
-					Canvas3D.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], face_shade_a[i], face_shade_a[i], face_shade_a[i], camera_vertex_y[j10], camera_vertex_y[j11], camera_vertex_y[j12], camera_vertex_x[j10], camera_vertex_x[j11], camera_vertex_x[j12], camera_vertex_z[j10], camera_vertex_z[j11], camera_vertex_z[j12], colors[i]);
+					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, face_shade_a[i], face_shade_a[i],
+							face_shade_a[i], camera_vertex_y[j10], camera_vertex_y[j11], camera_vertex_y[j12],
+							camera_vertex_x[j10], camera_vertex_x[j11], camera_vertex_x[j12], camera_vertex_z[j10],
+							camera_vertex_z[j11], camera_vertex_z[j12], colors[i]);
+					Canvas3D.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], face_shade_a[i],
+							face_shade_a[i], face_shade_a[i], camera_vertex_y[j10], camera_vertex_y[j11],
+							camera_vertex_y[j12], camera_vertex_x[j10], camera_vertex_x[j11], camera_vertex_x[j12],
+							camera_vertex_z[j10], camera_vertex_z[j11], camera_vertex_z[j12], colors[i]);
 				}
 			}
 		}
@@ -2455,10 +2517,10 @@ public class Model extends Animable {
 		 * try { for(int i12 = 0; i12 < numTriangles; i12++) {
 		 * triangleColours2[i12] = nc1.readUnsignedWord(); if(l1 == 1){
 		 * face_fill_attributes[i12] = nc2.readSignedByte(); } if(i2 == 255){
-		 * anIntArray1638[i12] = nc3.readSignedByte(); } if(j2 == 1){
-		 * alpha[i12] = nc4.readSignedByte(); if(alpha[i12] <
-		 * 0) alpha[i12] = (256+alpha[i12]); } if(k2 == 1)
-		 * triangle_skin_types[i12] = nc5.readUnsignedByte(); if(l2 == 1) D[i12] =
+		 * anIntArray1638[i12] = nc3.readSignedByte(); } if(j2 == 1){ alpha[i12]
+		 * = nc4.readSignedByte(); if(alpha[i12] < 0) alpha[i12] =
+		 * (256+alpha[i12]); } if(k2 == 1) triangle_skin_types[i12] =
+		 * nc5.readUnsignedByte(); if(l2 == 1) D[i12] =
 		 * (short)(nc6.readUnsignedWord() - 1); if(x != null) if(D[i12] != -1)
 		 * x[i12] = (byte)(nc7.readUnsignedByte() -1); else x[i12] = -1; } }
 		 * catch (Exception ex) { }
@@ -2810,9 +2872,9 @@ public class Model extends Animable {
 			if (has_fill_opcode_2 == 1) {
 				face_fill_attributes[triangle] = data_2.getSignedByte();
 				if (face_fill_attributes[triangle] == 2) {
-					//colors[triangle] = 65535;
+					// colors[triangle] = 65535;
 				}
-				//face_fill_attributes[triangle] = 0;
+				// face_fill_attributes[triangle] = 0;
 			}
 			if (priority == 255) {
 				priorities[triangle] = data_3.getSignedByte();

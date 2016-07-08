@@ -1,4 +1,5 @@
 package org.runelive.client.graphics.rsinterface;
+
 public class DamageDealer {
 
 	public DamageDealer(String p, int damage) {

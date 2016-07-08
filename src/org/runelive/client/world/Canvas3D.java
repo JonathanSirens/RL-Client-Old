@@ -148,7 +148,7 @@ public final class Canvas3D extends Canvas2D {
 
 		for (int k1 = 0; k1 < j1; k1++) {
 			k += anIntArrayArray1483[i][k1] >> 16 & 0xff;
-		l += anIntArrayArray1483[i][k1] >> 8 & 0xff;
+			l += anIntArrayArray1483[i][k1] >> 8 & 0xff;
 			i1 += anIntArrayArray1483[i][k1] & 0xff;
 		}
 
@@ -813,7 +813,8 @@ public final class Canvas3D extends Canvas2D {
 	}
 
 	private static int getColor(int a1, int rgb, int a2) {
-		return (FOG_COLOR_A * a1 + (rgb & 0xff00ff) * a2 & 0xff00ff00) + (FOG_COLOR_B * a1 + (rgb & 0xff00) * a2 & 0xff0000) >> 8;
+		return (FOG_COLOR_A * a1 + (rgb & 0xff00ff) * a2 & 0xff00ff00)
+				+ (FOG_COLOR_B * a1 + (rgb & 0xff00) * a2 & 0xff0000) >> 8;
 	}
 
 	private static void drawFogScanline(int[] dst, int off, int x1, int x2, int z1, int z2) {
@@ -840,7 +841,7 @@ public final class Canvas3D extends Canvas2D {
 				int z = z1 >> 16;
 				if (z > FOG_BEGIN) {
 					if (z >= FOG_END) {
-						dst[off] = FOREGROUND;//FOREGROUND;
+						dst[off] = FOREGROUND;// FOREGROUND;
 					} else {
 						int rgb = dst[off];
 						int a1 = (z - FOG_BEGIN << 8) / (FOG_END - FOG_BEGIN);
@@ -854,21 +855,22 @@ public final class Canvas3D extends Canvas2D {
 		} else {
 			while (--n >= 0) {
 				int z = z1 >> 16;
-						if (z >= FOG_END) {
-							dst[off] = FOREGROUND;//FOREGROUND;
-						} else {
-							int rgb = dst[off];
-							int a1 = (z - FOG_BEGIN) * (256 - alpha) / (FOG_END - FOG_BEGIN);
-							int a2 = 256 - a1;
-							dst[off] = getColor(a1, rgb, a2);
-						}
-						off++;
-						z1 += z2;
+				if (z >= FOG_END) {
+					dst[off] = FOREGROUND;// FOREGROUND;
+				} else {
+					int rgb = dst[off];
+					int a1 = (z - FOG_BEGIN) * (256 - alpha) / (FOG_END - FOG_BEGIN);
+					int a2 = 256 - a1;
+					dst[off] = getColor(a1, rgb, a2);
+				}
+				off++;
+				z1 += z2;
 			}
 		}
 	}
 
-	public static void drawTexturedFogTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int z1, int z2, int z3, int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int tex) {
+	public static void drawTexturedFogTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int z1, int z2, int z3,
+			int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int tex) {
 		if (!transparentTextures[tex]) {
 			drawFogTriangle(y1, y2, y3, x1, x2, x3, z1, z2, z3);
 			return;
@@ -943,7 +945,8 @@ public final class Canvas3D extends Canvas2D {
 					y2 -= y1;
 					y1 = lineOffsets[y1];
 					while (--y2 >= 0) {
-						drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, z3, z1, l4, k5, j6, i5, l5, k6);
+						drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, z3, z1, l4, k5, j6, i5, l5,
+								k6);
 						x3 += i8;
 						x1 += i7;
 						z3 += j8;
@@ -954,7 +957,8 @@ public final class Canvas3D extends Canvas2D {
 						j6 += l6;
 					}
 					while (--y3 >= 0) {
-						drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x2 >> 16, z3, z2, l4, k5, j6, i5, l5, k6);
+						drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x2 >> 16, z3, z2, l4, k5, j6, i5, l5,
+								k6);
 						x3 += i8;
 						x2 += k7;
 						z3 += j8;
@@ -970,7 +974,8 @@ public final class Canvas3D extends Canvas2D {
 				y2 -= y1;
 				y1 = lineOffsets[y1];
 				while (--y2 >= 0) {
-					drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x3 >> 16, z1, z3, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x3 >> 16, z1, z3, l4, k5, j6, i5, l5,
+							k6);
 					x3 += i8;
 					x1 += i7;
 					z3 += j8;
@@ -981,7 +986,8 @@ public final class Canvas3D extends Canvas2D {
 					j6 += l6;
 				}
 				while (--y3 >= 0) {
-					drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x3 >> 16, z2, z3, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x3 >> 16, z2, z3, l4, k5, j6, i5, l5,
+							k6);
 					x3 += i8;
 					x2 += k7;
 					z3 += j8;
@@ -1018,7 +1024,8 @@ public final class Canvas3D extends Canvas2D {
 				y3 -= y1;
 				y1 = lineOffsets[y1];
 				while (--y3 >= 0) {
-					drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x1 >> 16, z2, z1, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x1 >> 16, z2, z1, l4, k5, j6, i5, l5,
+							k6);
 					x2 += i8;
 					x1 += i7;
 					z2 += j8;
@@ -1029,7 +1036,8 @@ public final class Canvas3D extends Canvas2D {
 					j6 += l6;
 				}
 				while (--y2 >= 0) {
-					drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, z3, z1, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, z3, z1, l4, k5, j6, i5, l5,
+							k6);
 					x3 += k7;
 					x1 += i7;
 					z3 += l7;
@@ -1104,7 +1112,8 @@ public final class Canvas3D extends Canvas2D {
 					y3 -= y2;
 					y2 = lineOffsets[y2];
 					while (--y3 >= 0) {
-						drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, z1, z2, l4, k5, j6, i5, l5, k6);
+						drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, z1, z2, l4, k5, j6, i5, l5,
+								k6);
 						x1 += i7;
 						x2 += k7;
 						z1 += j7;
@@ -1115,7 +1124,8 @@ public final class Canvas3D extends Canvas2D {
 						j6 += l6;
 					}
 					while (--y1 >= 0) {
-						drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x3 >> 16, z1, z3, l4, k5, j6, i5, l5, k6);
+						drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x3 >> 16, z1, z3, l4, k5, j6, i5, l5,
+								k6);
 						x1 += i7;
 						x3 += i8;
 						z1 += j7;
@@ -1131,7 +1141,8 @@ public final class Canvas3D extends Canvas2D {
 				y3 -= y2;
 				y2 = lineOffsets[y2];
 				while (--y3 >= 0) {
-					drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x1 >> 16, z2, z1, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x1 >> 16, z2, z1, l4, k5, j6, i5, l5,
+							k6);
 					x1 += i7;
 					x2 += k7;
 					z1 += j7;
@@ -1142,7 +1153,8 @@ public final class Canvas3D extends Canvas2D {
 					j6 += l6;
 				}
 				while (--y1 >= 0) {
-					drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x1 >> 16, z3, z1, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x1 >> 16, z3, z1, l4, k5, j6, i5, l5,
+							k6);
 					x1 += i7;
 					x3 += i8;
 					z1 += j7;
@@ -1179,7 +1191,8 @@ public final class Canvas3D extends Canvas2D {
 				y1 -= y2;
 				y2 = lineOffsets[y2];
 				while (--y1 >= 0) {
-					drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x2 >> 16, z3, z2, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x2 >> 16, z3, z2, l4, k5, j6, i5, l5,
+							k6);
 					x3 += i7;
 					x2 += k7;
 					z3 += j7;
@@ -1190,7 +1203,8 @@ public final class Canvas3D extends Canvas2D {
 					j6 += l6;
 				}
 				while (--y3 >= 0) {
-					drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, z1, z2, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, z1, z2, l4, k5, j6, i5, l5,
+							k6);
 					x1 += i8;
 					x2 += k7;
 					z1 += j8;
@@ -1264,7 +1278,8 @@ public final class Canvas3D extends Canvas2D {
 				y1 -= y3;
 				y3 = lineOffsets[y3];
 				while (--y1 >= 0) {
-					drawTexturedFogScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x3 >> 16, z2, z3, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x3 >> 16, z2, z3, l4, k5, j6, i5, l5,
+							k6);
 					x2 += k7;
 					x3 += i8;
 					z2 += l7;
@@ -1275,7 +1290,8 @@ public final class Canvas3D extends Canvas2D {
 					j6 += l6;
 				}
 				while (--y2 >= 0) {
-					drawTexturedFogScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x1 >> 16, z2, z1, l4, k5, j6, i5, l5, k6);
+					drawTexturedFogScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x1 >> 16, z2, z1, l4, k5, j6, i5, l5,
+							k6);
 					x2 += k7;
 					x1 += i7;
 					z2 += l7;
@@ -1389,7 +1405,8 @@ public final class Canvas3D extends Canvas2D {
 		}
 	}
 
-	private static void drawTexturedFogScanline(int[] dst, int[] src, int off, int x1, int x2, int z1, int z2, int l1, int i2, int j2, int k2, int l2, int i3) {
+	private static void drawTexturedFogScanline(int[] dst, int[] src, int off, int x1, int x2, int z1, int z2, int l1,
+			int i2, int j2, int k2, int l2, int i3) {
 		int i = 0;// was parameter
 		int j = 0;// was parameter
 		if (x1 >= x2) {
@@ -1590,17 +1607,17 @@ public final class Canvas3D extends Canvas2D {
 				i2 += l2;
 				j2 += i3;
 				int k5 = j2 >> 12;
-							if (k5 != 0) {
-								i4 = l1 / k5;
-								k4 = i2 / k5;
-								if (i4 < 7) {
-									i4 = 7;
-								} else if (i4 > 4032) {
-									i4 = 4032;
-								}
-							}
-							i7 = i4 - i >> 3;
-							k7 = k4 - j >> 3;
+				if (k5 != 0) {
+					i4 = l1 / k5;
+					k4 = i2 / k5;
+					if (i4 < 7) {
+						i4 = 7;
+					} else if (i4 > 4032) {
+						i4 = 4032;
+					}
+				}
+				i7 = i4 - i >> 3;
+				k7 = k4 - j >> 3;
 			}
 			for (k3 = x2 - x1 & 7; k3-- > 0;) {
 				if (src[(j & 0xfc0) + (i >> 6)] != 0) {
@@ -1796,17 +1813,17 @@ public final class Canvas3D extends Canvas2D {
 			i2 += l2;
 			j2 += i3;
 			int j6 = j2 >> 14;
-						if (j6 != 0) {
-							j4 = l1 / j6;
-							l4 = i2 / j6;
-							if (j4 < 7) {
-								j4 = 7;
-							} else if (j4 > 16256) {
-								j4 = 16256;
-							}
-						}
-						j7 = j4 - i >> 3;
-						l7 = l4 - j >> 3;
+			if (j6 != 0) {
+				j4 = l1 / j6;
+				l4 = i2 / j6;
+				if (j4 < 7) {
+					j4 = 7;
+				} else if (j4 > 16256) {
+					j4 = 16256;
+				}
+			}
+			j7 = j4 - i >> 3;
+			l7 = l4 - j >> 3;
 		}
 		for (int l3 = x2 - x1 & 7; l3-- > 0;) {
 			if (src[(j & 0x3f80) + (i >> 7)] != 0) {
@@ -2436,7 +2453,7 @@ public final class Canvas3D extends Canvas2D {
 			if (k > Canvas2D.bottomY) {
 				k = Canvas2D.bottomY;
 			}
-			if(k > lineOffsets.length) {
+			if (k > lineOffsets.length) {
 				return;
 			}
 
@@ -2874,7 +2891,8 @@ public final class Canvas3D extends Canvas2D {
 					final int rgb2 = anIntArray1482[idx + 1];
 					final int a2 = j1 & 0xff;
 					final int a1 = 256 - a2;
-					ai[i++] = ((rgb1 & 0xff00ff) * a1 + (rgb2 & 0xff00ff) * a2 & 0xff00ff00) + ((rgb1 & 0xff00) * a1 + (rgb2 & 0xff00) * a2 & 0xff0000) >> 8;
+					ai[i++] = ((rgb1 & 0xff00ff) * a1 + (rgb2 & 0xff00ff) * a2 & 0xff00ff00)
+							+ ((rgb1 & 0xff00) * a1 + (rgb2 & 0xff00) * a2 & 0xff0000) >> 8;
 				} else {
 					ai[i++] = anIntArray1482[idx];
 				}
@@ -2891,7 +2909,8 @@ public final class Canvas3D extends Canvas2D {
 				final int rgb2 = anIntArray1482[idx + 1];
 				final int a2 = j1 & 0xff;
 				final int a1 = 256 - a2;
-				j = ((rgb1 & 0xff00ff) * a1 + (rgb2 & 0xff00ff) * a2 & 0xff00ff00) + ((rgb1 & 0xff00) * a1 + (rgb2 & 0xff00) * a2 & 0xff0000) >> 8;
+				j = ((rgb1 & 0xff00ff) * a1 + (rgb2 & 0xff00ff) * a2 & 0xff00ff00)
+						+ ((rgb1 & 0xff00) * a1 + (rgb2 & 0xff00) * a2 & 0xff0000) >> 8;
 			} else {
 				j = anIntArray1482[idx];
 			}
@@ -3264,22 +3283,21 @@ public final class Canvas3D extends Canvas2D {
 
 	}
 
-	public static void drawTexturedTriangle(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int textureId) {
+	public static void drawTexturedTriangle(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2,
+			int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int textureId) {
 		if (textureId < 0 || textureId >= 51) {
-			//drawShadedTriangle(i, j, k, l, i1, j1, k1, l1, i2);
-			//return;
+			// drawShadedTriangle(i, j, k, l, i1, j1, k1, l1, i2);
+			// return;
 		}
 		if (Configuration.hdShading) {
 			drawHDTexturedTriangle(i, j, k, l, i1, j1, k1, l1, i2, j2, k2, l2, i3, j3, k3, l3, i4, j4, textureId);
 			return;
 		}
 		int ai[] = getTexturePixels(textureId);
-		/*if (col >= 0xffff) {
-			col = -1;
-		}
-		if (col >= 0) {
-			col = Model.hsl2rgb[col];
-		}*/
+		/*
+		 * if (col >= 0xffff) { col = -1; } if (col >= 0) { col =
+		 * Model.hsl2rgb[col]; }
+		 */
 		opaque = !transparentTextures[textureId];
 		k2 = j2 - k2;
 		j3 = i3 - j3;
@@ -3796,7 +3814,8 @@ public final class Canvas3D extends Canvas2D {
 		}
 	}
 
-	private static void method379(int ai[], int ai1[], int k, int l, int i1, int j1, int k1, int l1, int i2, int j2, int k2, int l2, int i3) {
+	private static void method379(int ai[], int ai1[], int k, int l, int i1, int j1, int k1, int l1, int i2, int j2,
+			int k2, int l2, int i3) {
 		int i = 0;// was parameter
 		int j = 0;// was parameter
 		if (l >= i1) {
@@ -3822,7 +3841,7 @@ public final class Canvas3D extends Canvas2D {
 		} else {
 			if (i1 - l > 7) {
 				k3 = i1 - l >> 3;
-			j3 = (k1 - j1) * anIntArray1468[k3] >> 6;
+				j3 = (k1 - j1) * anIntArray1468[k3] >> 6;
 			} else {
 				k3 = 0;
 				j3 = 0;
@@ -4165,7 +4184,8 @@ public final class Canvas3D extends Canvas2D {
 
 	}
 
-	public static void drawHDTexturedTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int l1, int l2, int l3, int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int textureId) {
+	public static void drawHDTexturedTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int l1, int l2, int l3,
+			int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int textureId) {
 		l1 = 0x7f - l1 << 1;
 		l2 = 0x7f - l2 << 1;
 		l3 = 0x7f - l3 << 1;
@@ -4240,7 +4260,8 @@ public final class Canvas3D extends Canvas2D {
 					y2 -= y1;
 					y1 = lineOffsets[y1];
 					while (--y2 >= 0) {
-						drawHDTexturedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, l3, l1, l4, k5, j6, i5, l5, k6);
+						drawHDTexturedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, l3, l1, l4, k5, j6, i5, l5,
+								k6);
 						x3 += i8;
 						x1 += i7;
 						l3 += j8;
@@ -4251,7 +4272,8 @@ public final class Canvas3D extends Canvas2D {
 						j6 += l6;
 					}
 					while (--y3 >= 0) {
-						drawHDTexturedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x2 >> 16, l3, l2, l4, k5, j6, i5, l5, k6);
+						drawHDTexturedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x2 >> 16, l3, l2, l4, k5, j6, i5, l5,
+								k6);
 						x3 += i8;
 						x2 += k7;
 						l3 += j8;
@@ -4401,7 +4423,8 @@ public final class Canvas3D extends Canvas2D {
 					y3 -= y2;
 					y2 = lineOffsets[y2];
 					while (--y3 >= 0) {
-						drawHDTexturedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, l1, l2, l4, k5, j6, i5, l5, k6);
+						drawHDTexturedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, l1, l2, l4, k5, j6, i5, l5,
+								k6);
 						x1 += i7;
 						x2 += k7;
 						l1 += j7;
@@ -4412,7 +4435,8 @@ public final class Canvas3D extends Canvas2D {
 						j6 += l6;
 					}
 					while (--y1 >= 0) {
-						drawHDTexturedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x3 >> 16, l1, l3, l4, k5, j6, i5, l5, k6);
+						drawHDTexturedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x3 >> 16, l1, l3, l4, k5, j6, i5, l5,
+								k6);
 						x1 += i7;
 						x3 += i8;
 						l1 += j7;
@@ -4686,7 +4710,8 @@ public final class Canvas3D extends Canvas2D {
 		}
 	}
 
-	private static void drawHDTexturedScanline(int ai[], int ai1[], int k, int x1, int x2, int l1, int l2, int a1, int i2, int j2, int k2, int a2, int i3) {
+	private static void drawHDTexturedScanline(int ai[], int ai1[], int k, int x1, int x2, int l1, int l2, int a1,
+			int i2, int j2, int k2, int a2, int i3) {
 		int i = 0;// was parameter
 		int j = 0;// was parameter
 		if (x1 >= x2) {
@@ -5149,7 +5174,8 @@ public final class Canvas3D extends Canvas2D {
 		return x + (y << 7 - textureMipmap);
 	}
 
-	public static void drawMaterializedTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int hsl1, int hsl2, int hsl3, int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int tex) {
+	public static void drawMaterializedTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int hsl1, int hsl2,
+			int hsl3, int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int tex) {
 		if (!Configuration.hdTexturing || Texture.get(tex) == null) {
 			drawShadedTriangle(y1, y2, y3, x1, x2, x3, hsl1, hsl2, hsl3);
 			return;
@@ -5245,7 +5271,8 @@ public final class Canvas3D extends Canvas2D {
 					y2 -= y1;
 					y1 = lineOffsets[y1];
 					while (--y2 >= 0) {
-						drawMaterializedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+						drawMaterializedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4,
+								k5, j6, i5, l5, k6);
 						x3 += i8;
 						x1 += i7;
 						hsl3 += j8;
@@ -5256,7 +5283,8 @@ public final class Canvas3D extends Canvas2D {
 						j6 += l6;
 					}
 					while (--y3 >= 0) {
-						drawMaterializedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+						drawMaterializedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4,
+								k5, j6, i5, l5, k6);
 						x3 += i8;
 						x2 += k7;
 						hsl3 += j8;
@@ -5272,7 +5300,8 @@ public final class Canvas3D extends Canvas2D {
 				y2 -= y1;
 				y1 = lineOffsets[y1];
 				while (--y2 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5,
+							j6, i5, l5, k6);
 					x3 += i8;
 					x1 += i7;
 					hsl3 += j8;
@@ -5283,7 +5312,8 @@ public final class Canvas3D extends Canvas2D {
 					j6 += l6;
 				}
 				while (--y3 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5,
+							j6, i5, l5, k6);
 					x3 += i8;
 					x2 += k7;
 					hsl3 += j8;
@@ -5320,7 +5350,8 @@ public final class Canvas3D extends Canvas2D {
 				y3 -= y1;
 				y1 = lineOffsets[y1];
 				while (--y3 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5,
+							j6, i5, l5, k6);
 					x2 += i8;
 					x1 += i7;
 					hsl2 += j8;
@@ -5331,7 +5362,8 @@ public final class Canvas3D extends Canvas2D {
 					j6 += l6;
 				}
 				while (--y2 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5,
+							j6, i5, l5, k6);
 					x3 += k7;
 					x1 += i7;
 					hsl3 += l7;
@@ -5347,7 +5379,8 @@ public final class Canvas3D extends Canvas2D {
 			y3 -= y1;
 			y1 = lineOffsets[y1];
 			while (--y3 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6,
+						i5, l5, k6);
 				x2 += i8;
 				x1 += i7;
 				hsl2 += j8;
@@ -5358,7 +5391,8 @@ public final class Canvas3D extends Canvas2D {
 				j6 += l6;
 			}
 			while (--y2 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6,
+						i5, l5, k6);
 				x3 += k7;
 				x1 += i7;
 				hsl3 += l7;
@@ -5406,7 +5440,8 @@ public final class Canvas3D extends Canvas2D {
 					y3 -= y2;
 					y2 = lineOffsets[y2];
 					while (--y3 >= 0) {
-						drawMaterializedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+						drawMaterializedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4,
+								k5, j6, i5, l5, k6);
 						x1 += i7;
 						x2 += k7;
 						hsl1 += j7;
@@ -5417,7 +5452,8 @@ public final class Canvas3D extends Canvas2D {
 						j6 += l6;
 					}
 					while (--y1 >= 0) {
-						drawMaterializedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+						drawMaterializedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4,
+								k5, j6, i5, l5, k6);
 						x1 += i7;
 						x3 += i8;
 						hsl1 += j7;
@@ -5433,7 +5469,8 @@ public final class Canvas3D extends Canvas2D {
 				y3 -= y2;
 				y2 = lineOffsets[y2];
 				while (--y3 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5,
+							j6, i5, l5, k6);
 					x1 += i7;
 					x2 += k7;
 					hsl1 += j7;
@@ -5444,7 +5481,8 @@ public final class Canvas3D extends Canvas2D {
 					j6 += l6;
 				}
 				while (--y1 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5,
+							j6, i5, l5, k6);
 					x1 += i7;
 					x3 += i8;
 					hsl1 += j7;
@@ -5481,7 +5519,8 @@ public final class Canvas3D extends Canvas2D {
 				y1 -= y2;
 				y2 = lineOffsets[y2];
 				while (--y1 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5,
+							j6, i5, l5, k6);
 					x3 += i7;
 					x2 += k7;
 					hsl3 += j7;
@@ -5492,7 +5531,8 @@ public final class Canvas3D extends Canvas2D {
 					j6 += l6;
 				}
 				while (--y3 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5,
+							j6, i5, l5, k6);
 					x1 += i8;
 					x2 += k7;
 					hsl1 += j8;
@@ -5508,7 +5548,8 @@ public final class Canvas3D extends Canvas2D {
 			y1 -= y2;
 			y2 = lineOffsets[y2];
 			while (--y1 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6,
+						i5, l5, k6);
 				x3 += i7;
 				x2 += k7;
 				hsl3 += j7;
@@ -5519,7 +5560,8 @@ public final class Canvas3D extends Canvas2D {
 				j6 += l6;
 			}
 			while (--y3 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6,
+						i5, l5, k6);
 				x1 += i8;
 				x2 += k7;
 				hsl1 += j8;
@@ -5566,7 +5608,8 @@ public final class Canvas3D extends Canvas2D {
 				y1 -= y3;
 				y3 = lineOffsets[y3];
 				while (--y1 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5,
+							j6, i5, l5, k6);
 					x2 += k7;
 					x3 += i8;
 					hsl2 += l7;
@@ -5577,7 +5620,8 @@ public final class Canvas3D extends Canvas2D {
 					j6 += l6;
 				}
 				while (--y2 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+					drawMaterializedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5,
+							j6, i5, l5, k6);
 					x2 += k7;
 					x1 += i7;
 					hsl2 += l7;
@@ -5593,7 +5637,8 @@ public final class Canvas3D extends Canvas2D {
 			y1 -= y3;
 			y3 = lineOffsets[y3];
 			while (--y1 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6,
+						i5, l5, k6);
 				x2 += k7;
 				x3 += i8;
 				hsl2 += l7;
@@ -5604,7 +5649,8 @@ public final class Canvas3D extends Canvas2D {
 				j6 += l6;
 			}
 			while (--y2 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6,
+						i5, l5, k6);
 				x2 += k7;
 				x1 += i7;
 				hsl2 += l7;
@@ -5641,7 +5687,8 @@ public final class Canvas3D extends Canvas2D {
 			y2 -= y3;
 			y3 = lineOffsets[y3];
 			while (--y2 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6,
+						i5, l5, k6);
 				x1 += k7;
 				x3 += i8;
 				hsl1 += l7;
@@ -5652,7 +5699,8 @@ public final class Canvas3D extends Canvas2D {
 				j6 += l6;
 			}
 			while (--y1 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6);
+				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6,
+						i5, l5, k6);
 				x2 += i7;
 				x3 += i8;
 				hsl2 += j7;
@@ -5668,7 +5716,8 @@ public final class Canvas3D extends Canvas2D {
 		y2 -= y3;
 		y3 = lineOffsets[y3];
 		while (--y2 >= 0) {
-			drawMaterializedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6);
+			drawMaterializedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5,
+					l5, k6);
 			x1 += k7;
 			x3 += i8;
 			hsl1 += l7;
@@ -5679,7 +5728,8 @@ public final class Canvas3D extends Canvas2D {
 			j6 += l6;
 		}
 		while (--y1 >= 0) {
-			drawMaterializedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6);
+			drawMaterializedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5,
+					l5, k6);
 			x2 += i7;
 			x3 += i8;
 			hsl2 += j7;
@@ -5691,7 +5741,8 @@ public final class Canvas3D extends Canvas2D {
 		}
 	}
 
-	private static void drawMaterializedScanline(int dst[], int src[], int off, int x1, int x2, int hsl1, int hsl2, int l1, int i2, int j2, int k2, int l2, int i3) {
+	private static void drawMaterializedScanline(int dst[], int src[], int off, int x1, int x2, int hsl1, int hsl2,
+			int l1, int i2, int j2, int k2, int l2, int i3) {
 		int i = 0;// was parameter
 		int j = 0;// was parameter
 		if (x1 >= x2) {
@@ -5754,49 +5805,65 @@ public final class Canvas3D extends Canvas2D {
 		while (k3-- > 0) {
 			rgb1 = anIntArray1482[hsl1 >> 8];
 			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
+			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000)
+					+ (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00)
+					+ (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;
 			rgb1 = anIntArray1482[hsl1 >> 8];
 			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
+			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000)
+					+ (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00)
+					+ (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;
 			rgb1 = anIntArray1482[hsl1 >> 8];
 			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
+			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000)
+					+ (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00)
+					+ (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;
 			rgb1 = anIntArray1482[hsl1 >> 8];
 			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
+			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000)
+					+ (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00)
+					+ (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;
 			rgb1 = anIntArray1482[hsl1 >> 8];
 			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
+			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000)
+					+ (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00)
+					+ (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;
 			rgb1 = anIntArray1482[hsl1 >> 8];
 			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
+			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000)
+					+ (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00)
+					+ (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;
 			rgb1 = anIntArray1482[hsl1 >> 8];
 			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
+			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000)
+					+ (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00)
+					+ (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;
 			rgb1 = anIntArray1482[hsl1 >> 8];
 			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
+			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000)
+					+ (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00)
+					+ (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i = j4;
 			j = l4;
 			hsl1 += hsl2;
@@ -5819,7 +5886,9 @@ public final class Canvas3D extends Canvas2D {
 		for (k3 = x2 - x1 & 7; k3-- > 0;) {
 			rgb1 = anIntArray1482[hsl1 >> 8];
 			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
+			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000)
+					+ (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00)
+					+ (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;

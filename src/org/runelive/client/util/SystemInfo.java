@@ -19,7 +19,7 @@ public class SystemInfo {
 	public static int getCores() {
 		return Runtime.getRuntime().availableProcessors();
 	}
-	
+
 	/**
 	 * Gets a count of processors installed on the system.
 	 * 
@@ -29,7 +29,7 @@ public class SystemInfo {
 		String[] prefix = { "Single", "Dual", "Triple", "Quad", "Penta", "Hexa", "Hepta", "Octa", "Nona", "Deca" };
 		return prefix[SystemInfo.getCores() - 1] + "-Core";
 	}
-	
+
 	/**
 	 * Get Total Memory available to JVM.
 	 * 
@@ -56,7 +56,7 @@ public class SystemInfo {
 	public static long getFreeMem() {
 		return (Runtime.getRuntime().freeMemory());
 	}
-	
+
 	/**
 	 * Get CPU Architecture. (32 bit / 64 bit, etc...)
 	 * 
@@ -65,16 +65,16 @@ public class SystemInfo {
 	public static String getCPUArch() {
 		return System.getProperty("os.arch");
 	}
-	
+
 	/**
-     * Get OS Architecture. (32 bit / 64 bit, etc...)
-     * 
-     * @return String value of OS Architecture.
-     */
+	 * Get OS Architecture. (32 bit / 64 bit, etc...)
+	 * 
+	 * @return String value of OS Architecture.
+	 */
 	public static String getOSArch() {
-        return System.getProperty("sun.arch.data.model");
-    }
-	
+		return System.getProperty("sun.arch.data.model");
+	}
+
 	/**
 	 * Confirms whether the installed operating system is Windows.
 	 */

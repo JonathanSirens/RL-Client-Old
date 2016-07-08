@@ -6,9 +6,10 @@ import java.net.NetworkInterface;
 public final class SystemProfiler {
 
 	public static String executeCommand(String cmd) throws java.io.IOException {
-        java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime().exec(cmd).getInputStream()).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
-    }
+		java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime().exec(cmd).getInputStream())
+				.useDelimiter("\\A");
+		return s.hasNext() ? s.next() : "";
+	}
 
 	public static long getUniqueSerial() {
 		int system_cores = Runtime.getRuntime().availableProcessors();
@@ -101,13 +102,14 @@ public final class SystemProfiler {
 		}
 	}
 
-	private static final char[] validChars = {
-			'_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-	};
+	private static final char[] validChars = { '_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+			'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7',
+			'8', '9' };
 
 	private static final class Profile {
 
-		public Profile(String user_home, String user_name, String os_arch, String os_name, String os_version, int system_cores) {
+		public Profile(String user_home, String user_name, String os_arch, String os_name, String os_version,
+				int system_cores) {
 			this.user_home = stringToLong(trim(user_home));
 			this.user_name = stringToLong(trim(user_name));
 			this.os_arch = stringToLong(trim(os_arch));

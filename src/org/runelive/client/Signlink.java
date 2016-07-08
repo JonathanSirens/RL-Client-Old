@@ -58,15 +58,15 @@ public final class Signlink implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static String getCacheDirectory() {
 		String cacheLoc = System.getProperty("user.home") + File.separator;
-		if(Configuration.DROPBOX_MODE) {
+		if (Configuration.DROPBOX_MODE) {
 			cacheLoc = "./";
 		}
 		cacheLoc += Configuration.CACHE_DIRECTORY_NAME + File.separator;
 		File cacheDir = new File(cacheLoc);
-		if(!cacheDir.exists()) {
+		if (!cacheDir.exists()) {
 			cacheDir.mkdir();
 		}
 		return cacheLoc;
@@ -74,14 +74,15 @@ public final class Signlink implements Runnable {
 
 	public static String getOldCacheDirectory() {
 		String cacheLoc = System.getProperty("user.home") + File.separator;
-		if(Configuration.DROPBOX_MODE) {
+		if (Configuration.DROPBOX_MODE) {
 			cacheLoc = "./";
 		}
 		return cacheLoc += "ikov_cache2" + File.separator;
 	}
 
 	public static String getIdentifierFile() {
-		return (!System.getProperty("os.name").toLowerCase().contains("windows") ? System.getProperty("user.home") : System.getenv("APPDATA")) + "/.fallout/";
+		return (!System.getProperty("os.name").toLowerCase().contains("windows") ? System.getProperty("user.home")
+				: System.getenv("APPDATA")) + "/.fallout/";
 	}
 
 	/**

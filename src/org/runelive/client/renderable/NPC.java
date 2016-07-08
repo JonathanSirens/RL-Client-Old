@@ -82,7 +82,8 @@ public final class NPC extends Entity {
 			if (super.anInt1517 >= 0 && super.anInt1517 != super.anInt1511) {
 				i1 = Animation.cache[super.anInt1517].frameIDs[super.currentForcedAnimFrame];
 			}
-			return definitionOverride.method164(i1, currentFrame, Animation.cache[super.anim].animationFlowControl, nextFrame, cycle1, cycle2);
+			return definitionOverride.method164(i1, currentFrame, Animation.cache[super.anim].animationFlowControl,
+					nextFrame, cycle1, cycle2);
 			// return definitionOverride.method164(i1, currentFrame,
 			// Animation.cache[super.anim].animationFlowControl);
 		}
@@ -103,7 +104,7 @@ public final class NPC extends Entity {
 		// return definitionOverride.method164(-1, currentFrame, null);
 		return definitionOverride.method164(-1, currentFrame, null, nextFrame, cycle1, cycle2);
 	}
-	
+
 	public List<DamageDealer> damageDealers = new ArrayList<DamageDealer>();
 
 }

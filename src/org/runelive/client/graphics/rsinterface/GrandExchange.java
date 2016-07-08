@@ -12,14 +12,14 @@ import org.runelive.client.graphics.gameframe.GameFrame.ScreenMode;
 public class GrandExchange {
 
 	public int itemSelected;
-	
+
 	/** SEARCH **/
 	public boolean searching;
 	public int totalItemResults;
 	public String itemResultNames[] = new String[100];
 	public int itemResultIDs[] = new int[100];
 	public int itemResultScrollPos;
-	
+
 	/** MAIN INTERFACE **/
 	public int Slots[] = new int[7];
 	public String slots[] = new String[7];
@@ -27,49 +27,48 @@ public class GrandExchange {
 	public int slotItems[] = new int[7];
 	public boolean slotAborted[] = new boolean[7];
 	public int slotSelected;
-	
+
 	public void update(String data) {
 		int geSlot = Integer.parseInt(data.substring(data.indexOf("<") + 1, data.indexOf(">")));
 		int geData = -1;
-		if(data.contains("slotaborted")) {
+		if (data.contains("slotaborted")) {
 			slotAborted[geSlot] = true;
 		}
-		if(data.contains("slotselected")) {
+		if (data.contains("slotselected")) {
 			slotSelected = geSlot;
 		}
-		if(data.contains("resetslot")) {
+		if (data.contains("resetslot")) {
 			slots[geSlot] = "";
 			Slots[geSlot] = 0;
 			slotColorPercent[geSlot] = 0;
 			slotAborted[geSlot] = false;
 		}
-		if(data.contains("slotsell")) {
+		if (data.contains("slotsell")) {
 			geData = Integer.parseInt(data.substring(data.indexOf("[") + 1, data.indexOf("]")));
 			slots[geSlot] = "Sell";
 			Slots[geSlot] = geData;
 			slotAborted[geSlot] = false;
 			slotColorPercent[geSlot] = 0;
 		}
-		if(data.contains("item")) {
+		if (data.contains("item")) {
 			int itemId = Integer.parseInt(data.substring(data.indexOf("#") + 1, data.lastIndexOf("#")));
 			slotItems[geSlot] = itemId;
 		}
-		if(data.contains("slotbuy")) {
+		if (data.contains("slotbuy")) {
 			geData = Integer.parseInt(data.substring(data.indexOf("[") + 1, data.indexOf("]")));
 			slots[geSlot] = "Buy";
 			Slots[geSlot] = geData;
 			slotAborted[geSlot] = false;
 			slotColorPercent[geSlot] = 0;
 		}
-		if(data.contains("slotpercent")) {
+		if (data.contains("slotpercent")) {
 			geData = Integer.parseInt(data.substring(data.indexOf("{") + 1, data.indexOf("}")));
 			slotColorPercent[geSlot] = geData;
 		}
 	}
-	
+
 	public void drawGrandExchange() {
-		if (Client.openInterfaceID != 24500 && Client.openInterfaceID != 54700
-				&& Client.openInterfaceID != 53700) {
+		if (Client.openInterfaceID != 24500 && Client.openInterfaceID != 54700 && Client.openInterfaceID != 53700) {
 			return;
 		}
 		if (Client.openInterfaceID == 24500) {
@@ -143,8 +142,7 @@ public class GrandExchange {
 			per5 = CacheSpriteLoader.getCacheSprite(1159);
 			per6 = CacheSpriteLoader.getCacheSprite(1160);
 			abort2 = CacheSpriteLoader.getCacheSprite(1161);
-			if (slotColorPercent[slotSelected] == 100
-					|| slotAborted[slotSelected]) {
+			if (slotColorPercent[slotSelected] == 100 || slotAborted[slotSelected]) {
 				RSInterface.interfaceCache[53800].tooltip = "[GE]";
 			} else {
 				RSInterface.interfaceCache[53800].tooltip = "Abort offer";
@@ -175,7 +173,7 @@ public class GrandExchange {
 			}
 		}
 	}
-	
+
 	public void drawUpdate(int id, String type) {
 		int x = 0;
 		int y = 0;
@@ -239,7 +237,9 @@ public class GrandExchange {
 		x3 -= 2;
 		int minus = 20;
 		if (type == "Sell") {
-			if (Client.getClient().mouseX() >= x && Client.getClient().mouseX() <= x + 140 && Client.getClient().mouseY() >= y && Client.getClient().mouseY() <= y + 110 && !Client.getClient().menuOpen) {
+			if (Client.getClient().mouseX() >= x && Client.getClient().mouseX() <= x + 140
+					&& Client.getClient().mouseY() >= y && Client.getClient().mouseY() <= y + 110
+					&& !Client.getClient().menuOpen) {
 				SellHover = CacheSpriteLoader.getCacheSprite(1168);
 				if (SellHover != null)
 					SellHover.drawSprite(x, y);
@@ -247,7 +247,7 @@ public class GrandExchange {
 				CacheSpriteLoader.getCacheSprite(1169).drawSprite(x, y);
 			}
 			CacheSpriteLoader.getCacheSprite(1170).drawSprite(x + 6, y + 30);
-			if(slotItems[id] > 0 && ItemDefinition.getSprite(slotItems[id], 1, 0) != null)
+			if (slotItems[id] > 0 && ItemDefinition.getSprite(slotItems[id], 1, 0) != null)
 				ItemDefinition.getSprite(slotItems[id], 1, 0).drawSprite(x + 9, y + 32);
 			Client.getClient().drawInterface(0, x + 110, RSInterface.interfaceCache[54000], y + 38);
 			setGrandExchange(id, false);
@@ -257,26 +257,25 @@ public class GrandExchange {
 				changeSet(id, true, true);
 			}
 			drawPercentage(id);
-			Client.getClient().smallText.method592(0xCC9900, x2,
-					RSInterface.interfaceCache[32000 + id].message, y2 - minus,
+			Client.getClient().smallText.method592(0xCC9900, x2, RSInterface.interfaceCache[32000 + id].message,
+					y2 - minus, true);
+			Client.getClient().smallText.method592(0xBDBB5B, x2, RSInterface.interfaceCache[33000 + id].message, y2,
 					true);
-			Client.getClient().smallText.method592(0xBDBB5B, x2,
-					RSInterface.interfaceCache[33000 + id].message, y2, true);
-			Client.getClient().smallText.method592(0xFFFF00, x3,
-					RSInterface.interfaceCache[33100 + id].message, y3, true);
+			Client.getClient().smallText.method592(0xFFFF00, x3, RSInterface.interfaceCache[33100 + id].message, y3,
+					true);
 			setHovers(id, false);
-			if(CacheSpriteLoader.getCacheSprite(1145) != null) {
+			if (CacheSpriteLoader.getCacheSprite(1145) != null) {
 				CacheSpriteLoader.getCacheSprite(1145).drawSprite(x + 110, y + 39);
-				if(Client.getClient().mouseInRegion(x + 112, y + 38, x + 132, y + 60)) {
+				if (Client.getClient().mouseInRegion(x + 112, y + 38, x + 132, y + 60)) {
 					CacheSpriteLoader.getCacheSprite(1146).drawSprite(x + 110, y + 39);
 					changeSet(id, false, true);
 				}
 			}
 			String name[] = Client.optimizeText(ItemDefinition.get(slotItems[id]).name).split(" ");
 			int index = 0;
-			for(String n : name) {
+			for (String n : name) {
 				int xDraw = x + 77;
-				int yDraw = y + (name.length > 2 ? 41 : 48) + (index * 15); 
+				int yDraw = y + (name.length > 2 ? 41 : 48) + (index * 15);
 				Client.getClient().smallText.drawCenteredText(0xA05A00, xDraw, n, yDraw, false);
 				index++;
 			}
@@ -291,7 +290,7 @@ public class GrandExchange {
 				CacheSpriteLoader.getCacheSprite(1171).drawSprite(x, y);
 			}
 			CacheSpriteLoader.getCacheSprite(1170).drawSprite(x + 6, y + 30);
-			if(slotItems[id] > 0 && ItemDefinition.getSprite(slotItems[id], 1, 0) != null)
+			if (slotItems[id] > 0 && ItemDefinition.getSprite(slotItems[id], 1, 0) != null)
 				ItemDefinition.getSprite(slotItems[id], 1, 0).drawSprite(x + 9, y + 32);
 			setGrandExchange(id, false);
 			if (slotAborted[id] || slotColorPercent[id] == 100) {
@@ -300,26 +299,25 @@ public class GrandExchange {
 				changeSet(id, true, true);
 			}
 			drawPercentage(id);
-			Client.getClient().smallText.method592(0xCC9900, x2,
-					RSInterface.interfaceCache[32000 + id].message, y2 - minus,
+			Client.getClient().smallText.method592(0xCC9900, x2, RSInterface.interfaceCache[32000 + id].message,
+					y2 - minus, true);
+			Client.getClient().smallText.method592(0xBDBB5B, x2, RSInterface.interfaceCache[33000 + id].message, y2,
 					true);
-			Client.getClient().smallText.method592(0xBDBB5B, x2,
-					RSInterface.interfaceCache[33000 + id].message, y2, true);
-			Client.getClient().smallText.method592(0xFFFF00, x3,
-					RSInterface.interfaceCache[33100 + id].message, y3, true);
+			Client.getClient().smallText.method592(0xFFFF00, x3, RSInterface.interfaceCache[33100 + id].message, y3,
+					true);
 			setHovers(id, false);
-			if(CacheSpriteLoader.getCacheSprite(1145) != null) {
+			if (CacheSpriteLoader.getCacheSprite(1145) != null) {
 				CacheSpriteLoader.getCacheSprite(1145).drawSprite(x + 110, y + 39);
-				if(Client.getClient().mouseInRegion(x + 112, y + 38, x + 132, y + 60)) {
+				if (Client.getClient().mouseInRegion(x + 112, y + 38, x + 132, y + 60)) {
 					CacheSpriteLoader.getCacheSprite(1146).drawSprite(x + 110, y + 39);
 					changeSet(id, false, true);
 				}
 			}
 			String name[] = Client.optimizeText(ItemDefinition.get(slotItems[id]).name).split(" ");
 			int index = 0;
-			for(String n : name) {
+			for (String n : name) {
 				int xDraw = x + 77;
-				int yDraw = y + (name.length > 2 ? 41 : 48) + (index * 15); 
+				int yDraw = y + (name.length > 2 ? 41 : 48) + (index * 15);
 				Client.getClient().smallText.drawCenteredText(0xA05A00, xDraw, n, yDraw, false);
 				index++;
 			}
@@ -335,13 +333,12 @@ public class GrandExchange {
 			}
 			setGrandExchange(id, false);
 			changeSet(id, false, false);
-			Client.getClient().smallText.method592(0xCC9900, x2,
-					RSInterface.interfaceCache[32000 + id].message, y2 - minus,
+			Client.getClient().smallText.method592(0xCC9900, x2, RSInterface.interfaceCache[32000 + id].message,
+					y2 - minus, true);
+			Client.getClient().smallText.method592(0xBDBB5B, x2, RSInterface.interfaceCache[33000 + id].message, y2,
 					true);
-			Client.getClient().smallText.method592(0xBDBB5B, x2,
-					RSInterface.interfaceCache[33000 + id].message, y2, true);
-			Client.getClient().smallText.method592(0xFFFF00, x3,
-					RSInterface.interfaceCache[33100 + id].message, y3, true);
+			Client.getClient().smallText.method592(0xFFFF00, x3, RSInterface.interfaceCache[33100 + id].message, y3,
+					true);
 			setHovers(id, false);
 		} else if (type == "Submit Sell") {
 			if (Client.getClient().mouseX() >= x && Client.getClient().mouseX() <= x + 140
@@ -355,13 +352,12 @@ public class GrandExchange {
 			}
 			setGrandExchange(id, false);
 			changeSet(id, false, false);
-			Client.getClient().smallText.method592(0xCC9900, x2,
-					RSInterface.interfaceCache[32000 + id].message, y2 - minus,
+			Client.getClient().smallText.method592(0xCC9900, x2, RSInterface.interfaceCache[32000 + id].message,
+					y2 - minus, true);
+			Client.getClient().smallText.method592(0xBDBB5B, x2, RSInterface.interfaceCache[33000 + id].message, y2,
 					true);
-			Client.getClient().smallText.method592(0xBDBB5B, x2,
-					RSInterface.interfaceCache[33000 + id].message, y2, true);
-			Client.getClient().smallText.method592(0xFFFF00, x3,
-					RSInterface.interfaceCache[33100 + id].message, y3, true);
+			Client.getClient().smallText.method592(0xFFFF00, x3, RSInterface.interfaceCache[33100 + id].message, y3,
+					true);
 			setHovers(id, false);
 		} else if (type == "Regular") {
 			setGrandExchange(id, true);
@@ -378,32 +374,31 @@ public class GrandExchange {
 				CacheSpriteLoader.getCacheSprite(1169).drawSprite(x, y);
 			}
 			CacheSpriteLoader.getCacheSprite(1170).drawSprite(x + 6, y + 30);
-			if(slotItems[id] > 0 && ItemDefinition.getSprite(slotItems[id], 1, 0) != null)
+			if (slotItems[id] > 0 && ItemDefinition.getSprite(slotItems[id], 1, 0) != null)
 				ItemDefinition.getSprite(slotItems[id], 1, 0).drawSprite(x + 9, y + 32);
 			Client.getClient().drawInterface(0, x + 110, RSInterface.interfaceCache[54000], y + 38);
 			setGrandExchange(id, false);
 			changeSet(id, true, false);
 			drawPercentage(id);
-			Client.getClient().smallText.method592(0xCC9900, x2,
-					RSInterface.interfaceCache[32000 + id].message, y2 - minus,
+			Client.getClient().smallText.method592(0xCC9900, x2, RSInterface.interfaceCache[32000 + id].message,
+					y2 - minus, true);
+			Client.getClient().smallText.method592(0xBDBB5B, x2, RSInterface.interfaceCache[33000 + id].message, y2,
 					true);
-			Client.getClient().smallText.method592(0xBDBB5B, x2,
-					RSInterface.interfaceCache[33000 + id].message, y2, true);
-			Client.getClient().smallText.method592(0xFFFF00, x3,
-					RSInterface.interfaceCache[33100 + id].message, y3, true);
+			Client.getClient().smallText.method592(0xFFFF00, x3, RSInterface.interfaceCache[33100 + id].message, y3,
+					true);
 			setHovers(id, false);
-			if(CacheSpriteLoader.getCacheSprite(1145) != null) {
+			if (CacheSpriteLoader.getCacheSprite(1145) != null) {
 				CacheSpriteLoader.getCacheSprite(1145).drawSprite(x + 110, y + 39);
-				if(Client.getClient().mouseInRegion(x + 112, y + 38, x + 132, y + 60)) {
+				if (Client.getClient().mouseInRegion(x + 112, y + 38, x + 132, y + 60)) {
 					CacheSpriteLoader.getCacheSprite(1146).drawSprite(x + 110, y + 39);
 					changeSet(id, false, true);
 				}
 			}
 			String name[] = Client.optimizeText(ItemDefinition.get(slotItems[id]).name).split(" ");
 			int index = 0;
-			for(String n : name) {
+			for (String n : name) {
 				int xDraw = x + 77;
-				int yDraw = y + (name.length > 2 ? 41 : 48) + (index * 15); 
+				int yDraw = y + (name.length > 2 ? 41 : 48) + (index * 15);
 				Client.getClient().smallText.drawCenteredText(0xA05A00, xDraw, n, yDraw, false);
 				index++;
 			}
@@ -423,26 +418,25 @@ public class GrandExchange {
 			setGrandExchange(id, false);
 			changeSet(id, true, false);
 			drawPercentage(id);
-			Client.getClient().smallText.method592(0xCC9900, x2,
-					RSInterface.interfaceCache[32000 + id].message, y2 - minus,
+			Client.getClient().smallText.method592(0xCC9900, x2, RSInterface.interfaceCache[32000 + id].message,
+					y2 - minus, true);
+			Client.getClient().smallText.method592(0xBDBB5B, x2, RSInterface.interfaceCache[33000 + id].message, y2,
 					true);
-			Client.getClient().smallText.method592(0xBDBB5B, x2,
-					RSInterface.interfaceCache[33000 + id].message, y2, true);
-			Client.getClient().smallText.method592(0xFFFF00, x3,
-					RSInterface.interfaceCache[33100 + id].message, y3, true);
+			Client.getClient().smallText.method592(0xFFFF00, x3, RSInterface.interfaceCache[33100 + id].message, y3,
+					true);
 			setHovers(id, false);
-			if(CacheSpriteLoader.getCacheSprite(1145) != null) {
+			if (CacheSpriteLoader.getCacheSprite(1145) != null) {
 				CacheSpriteLoader.getCacheSprite(1145).drawSprite(x + 110, y + 39);
-				if(Client.getClient().mouseInRegion(x + 112, y + 38, x + 132, y + 60)) {
+				if (Client.getClient().mouseInRegion(x + 112, y + 38, x + 132, y + 60)) {
 					CacheSpriteLoader.getCacheSprite(1146).drawSprite(x + 110, y + 39);
 					changeSet(id, false, true);
 				}
 			}
 			String name[] = Client.optimizeText(ItemDefinition.get(slotItems[id]).name).split(" ");
 			int index = 0;
-			for(String n : name) {
+			for (String n : name) {
 				int xDraw = x + 77;
-				int yDraw = y + (name.length > 2 ? 41 : 48) + (index * 15); 
+				int yDraw = y + (name.length > 2 ? 41 : 48) + (index * 15);
 				Client.getClient().smallText.drawCenteredText(0xA05A00, xDraw, n, yDraw, false);
 				index++;
 			}
@@ -698,13 +692,13 @@ public class GrandExchange {
 			break;
 		}
 	}
-	
+
 	public void displayItemSearch() {
 		int yPosOffset = (GameFrame.getScreenMode() != ScreenMode.FIXED) ? Client.clientHeight - 165 : 0;
 		int xPosOffset = 0;
 		try {
 			if (searching && Client.getClient().inputDialogState == 3) {
-				if(Client.getClient().amountOrNameInput != "") {
+				if (Client.getClient().amountOrNameInput != "") {
 					itemSearch(Client.getClient().amountOrNameInput);
 				}
 				CacheSpriteLoader.getCacheSprite(1149).drawSprite(0 + xPosOffset, 0 + yPosOffset);
@@ -719,26 +713,16 @@ public class GrandExchange {
 						for (int i = 0; i <= 20; i++)
 							if (n.contains("<img=" + i + ">"))
 								n = n.replaceAll("<img=" + i + ">", "");
-						Client.getClient().boldText.method591(Client.capitalizeFirstChar(n), 78,
-								0xA05A00, yPos + yPosOffset
-								+ (totalItemResults < 8 ? 6 : 0));
-						if (x > 74
-								&& x < 495
+						Client.getClient().boldText.method591(Client.capitalizeFirstChar(n), 78, 0xA05A00,
+								yPos + yPosOffset + (totalItemResults < 8 ? 6 : 0));
+						if (x > 74 && x < 495
 								&& y > ((GameFrame.getScreenMode() == ScreenMode.FIXED) ? 338
-										: Client.clientHeight - 165)
-										+ yPos
-										- 13
-										+ (totalItemResults < 8 ? 6 : 0)
-										&& y < ((GameFrame.getScreenMode() == ScreenMode.FIXED) ? 338
-												: Client.clientHeight - 165)
-												+ yPos
-												+ 2
-												+ (totalItemResults < 8 ? 6 : 0)) {
-							Canvas2D.fillRect(0x807660, yPos - 12
-									+ yPosOffset + (totalItemResults < 8 ? 6 : 0),
-									424, 15, 60, 75);
-							Sprite itemImg = ItemDefinition.getSprite(itemResultIDs[j], 1,
-									0);
+										: Client.clientHeight - 165) + yPos - 13 + (totalItemResults < 8 ? 6 : 0)
+								&& y < ((GameFrame.getScreenMode() == ScreenMode.FIXED) ? 338
+										: Client.clientHeight - 165) + yPos + 2 + (totalItemResults < 8 ? 6 : 0)) {
+							Canvas2D.fillRect(0x807660, yPos - 12 + yPosOffset + (totalItemResults < 8 ? 6 : 0), 424,
+									15, 60, 75);
+							Sprite itemImg = ItemDefinition.getSprite(itemResultIDs[j], 1, 0);
 							if (itemImg != null)
 								itemImg.drawSprite(22, 20 + yPosOffset);
 							itemSelected = itemResultIDs[j];
@@ -748,21 +732,19 @@ public class GrandExchange {
 				Canvas2D.drawPixels(113, 8 + yPosOffset, 74, 0x807660, 2);
 				Canvas2D.defaultDrawingAreaSize();
 				if (totalItemResults > 8) {
-					Client.getClient().drawScrollbar(114, itemResultScrollPos, 8 + yPosOffset,
-							496 + xPosOffset, totalItemResults * 14, false, false);
+					Client.getClient().drawScrollbar(114, itemResultScrollPos, 8 + yPosOffset, 496 + xPosOffset,
+							totalItemResults * 14, false, false);
 					// drawScrollbar(112, itemResultScrollPos, 8, 496,
 					// totalItemResults * 14 + 12, 0);
 				}
 				boolean showMatches = true;
 				showMatches = true;
 				if (Client.getClient().amountOrNameInput.length() == 0) {
-					Client.getClient().boldText.drawCenteredText(0xA05A00, 259,
-							"Grand Exchange Item Search", 30 + yPosOffset, false);
-					Client.getClient().smallText.drawCenteredText(0xA05A00, 259, "To search for an item, start by typing part of it's name.", 80 + yPosOffset, false);
-					Client.getClient().smallText
-					.drawCenteredText(
-							0xA05A00,
-							259,
+					Client.getClient().boldText.drawCenteredText(0xA05A00, 259, "Grand Exchange Item Search",
+							30 + yPosOffset, false);
+					Client.getClient().smallText.drawCenteredText(0xA05A00, 259,
+							"To search for an item, start by typing part of it's name.", 80 + yPosOffset, false);
+					Client.getClient().smallText.drawCenteredText(0xA05A00, 259,
 							"Then, simply select the item you want from the results on the display.",
 							80 + 15 + yPosOffset, false);
 					// boldText.drawText(0xffffff, amountOrNameInput +
@@ -770,14 +752,13 @@ public class GrandExchange {
 					showMatches = false;
 				}
 				if (totalItemResults == 0 && showMatches) {
-					Client.getClient().smallText.drawCenteredText(0xA05A00, 259,
-							"No matching items found", 80 + yPosOffset, false);
+					Client.getClient().smallText.drawCenteredText(0xA05A00, 259, "No matching items found",
+							80 + yPosOffset, false);
 				}
-				Canvas2D.fillRect(0x807660, 121 + yPosOffset, 506, 15, 120,
-						7);// box
+				Canvas2D.fillRect(0x807660, 121 + yPosOffset, 506, 15, 120, 7);// box
 				// boldText.drawText(0, "<img=8>", 133, 12);
-				Client.getClient().boldText.method591(Client.getClient().amountOrNameInput + "*",
-						28 + xPosOffset, 0xffffff, 133 + yPosOffset);
+				Client.getClient().boldText.method591(Client.getClient().amountOrNameInput + "*", 28 + xPosOffset,
+						0xffffff, 133 + yPosOffset);
 				// boldText.drawText(0xffffff, amountOrNameInput + "*",
 				// 133, 122);
 				Canvas2D.drawLine(121 + yPosOffset, 0x807660, 506, 7);// line
@@ -790,7 +771,7 @@ public class GrandExchange {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void itemSearch(String n) {
 		if (n == null || n.length() == 0) {
 			totalItemResults = 0;
@@ -814,10 +795,12 @@ public class GrandExchange {
 		totalItemResults = 0;
 		label0: for (int id = 0; id < ItemDefinition.totalItems; id++) {
 			ItemDefinition item = ItemDefinition.get(id);
-			if(item == null)
+			if (item == null)
 				continue;
-			if (item.certTemplateID != -1 || item.name == null || item.name == "Picture"
-					|| item.certID == 18786 || item.name == "Null" || item.name.toLowerCase().contains("coins") || item.value <= 0 || item.id == 4178 || item.id == 14661/*|| item.untradeable*/)
+			if (item.certTemplateID != -1 || item.name == null || item.name == "Picture" || item.certID == 18786
+					|| item.name == "Null" || item.name.toLowerCase().contains("coins") || item.value <= 0
+					|| item.id == 4178
+					|| item.id == 14661/* || item.untradeable */)
 				continue;
 			String result = item.name.toLowerCase();
 			for (int idx = 0; idx < totalResults; idx++)
@@ -832,7 +815,7 @@ public class GrandExchange {
 				return;
 		}
 	}
-	
+
 	public void buildItemSearch(int mouseY) {
 		int y = 0;
 		for (int idx = 0; idx < 100; idx++) {

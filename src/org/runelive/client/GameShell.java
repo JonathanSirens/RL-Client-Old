@@ -3,29 +3,12 @@ package org.runelive.client;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.WindowAdapter;
-import java.net.URL;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JMenuItem;
 
 import org.runelive.Configuration;
 
@@ -39,7 +22,7 @@ final class GameShell extends JFrame {
 	@Deprecated
 	public GameShell(GameRenderer applet, int width, int height, boolean undecorative, boolean resizable) {
 		this.applet = applet;
-		setTitle(""+Configuration.CLIENT_NAME+"");
+		setTitle("" + Configuration.CLIENT_NAME + "");
 		setFocusTraversalKeysEnabled(false);
 		setUndecorated(undecorative);
 		JMenuBar bar = new JMenuBar();
@@ -57,7 +40,7 @@ final class GameShell extends JFrame {
 		requestFocus();
 		toFront();
 		setBackground(Color.BLACK);
-		//setClientIcon();
+		// setClientIcon();
 	}
 
 	@Deprecated
@@ -75,14 +58,10 @@ final class GameShell extends JFrame {
 		return g;
 	}
 
-	/*@Override
-	public void paint(Graphics g) {
-		applet.paint(g);
-	}
-
-	@Override
-	public void update(Graphics g) {
-		applet.update(g);
-	}*/
+	/*
+	 * @Override public void paint(Graphics g) { applet.paint(g); }
+	 * 
+	 * @Override public void update(Graphics g) { applet.update(g); }
+	 */
 
 }

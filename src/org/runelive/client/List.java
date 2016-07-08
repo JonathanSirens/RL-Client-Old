@@ -19,7 +19,7 @@ public final class List {
 		spaceLeft = size;
 		nodeCache = new NodeCache();
 	}
-	
+
 	public void insertIntoCache(NodeSub nodeSub, long l) {
 		try {
 			if (this.spaceLeft == 0) {
@@ -41,9 +41,9 @@ public final class List {
 			throw new RuntimeException();
 		}
 	}
-	
+
 	public NodeSub getFromCache(long l) {
-		NodeSub nodeSub = (NodeSub)this.nodeCache.findNodeByID(l);
+		NodeSub nodeSub = (NodeSub) this.nodeCache.findNodeByID(l);
 		if (nodeSub != null) {
 			this.nodeSubList.insertHead(nodeSub);
 		}

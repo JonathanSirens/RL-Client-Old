@@ -76,7 +76,8 @@ public final class Sound {
 	private final byte[] method654() {
 		int i = 0;
 		for (int i_3_ = 0; i_3_ < 10; i_3_++) {
-			if (aClass22Array484[i_3_] != null && aClass22Array484[i_3_].anInt408 + aClass22Array484[i_3_].anInt400 > i) {
+			if (aClass22Array484[i_3_] != null
+					&& aClass22Array484[i_3_].anInt408 + aClass22Array484[i_3_].anInt400 > i) {
 				i = aClass22Array484[i_3_].anInt408 + aClass22Array484[i_3_].anInt400;
 			}
 		}

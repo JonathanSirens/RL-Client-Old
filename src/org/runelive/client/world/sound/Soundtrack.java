@@ -158,7 +158,8 @@ final class Soundtrack {
 				anIntArray422[i_12_] = 0;
 				anIntArray423[i_12_] = (int) (anIntArray414[i_12_] * d);
 				anIntArray421[i_12_] = (anIntArray404[i_12_] << 14) / 100;
-				anIntArray420[i_12_] = (int) ((aClass51_415.anInt856 - aClass51_415.anInt858) * 32.768 * Math.pow(1.0057929410678534, anIntArray407[i_12_]) / d);
+				anIntArray420[i_12_] = (int) ((aClass51_415.anInt856 - aClass51_415.anInt858) * 32.768
+						* Math.pow(1.0057929410678534, anIntArray407[i_12_]) / d);
 				anIntArray424[i_12_] = (int) (aClass51_415.anInt858 * 32.768 / d);
 			}
 		}
@@ -169,7 +170,7 @@ final class Soundtrack {
 				int i_16_ = aClass51_401.method798(i);
 				int i_17_ = aClass51_402.method798(i);
 				i_14_ += method627(i_8_, i_17_, aClass51_401.anInt855) >> 1;
-		i_8_ += (i_16_ * i_6_ >> 16) + i_7_;
+				i_8_ += (i_16_ * i_6_ >> 16) + i_7_;
 			}
 			if (aClass51_411 != null) {
 				int i_18_ = aClass51_411.method798(i);
@@ -181,7 +182,8 @@ final class Soundtrack {
 				if (anIntArray404[i_20_] != 0) {
 					int i_21_ = i_13_ + anIntArray423[i_20_];
 					if (i_21_ < i) {
-						sampleBuffer[i_21_] += method627(anIntArray422[i_20_], i_15_ * anIntArray421[i_20_] >> 15, aClass51_415.anInt855);
+						sampleBuffer[i_21_] += method627(anIntArray422[i_20_], i_15_ * anIntArray421[i_20_] >> 15,
+								aClass51_415.anInt855);
 						anIntArray422[i_20_] += (i_14_ * anIntArray420[i_20_] >> 16) + anIntArray424[i_20_];
 					}
 				}
@@ -231,10 +233,12 @@ final class Soundtrack {
 				for (/**/; i_33_ < i_34_; i_33_++) {
 					int i_35_ = (int) ((long) sampleBuffer[i_33_ + i_31_] * (long) Class37.anInt650 >> 16);
 					for (int i_36_ = 0; i_36_ < i_31_; i_36_++) {
-						i_35_ += (int) ((long) sampleBuffer[i_33_ + i_31_ - 1 - i_36_] * (long) Class37.anIntArrayArray648[0][i_36_] >> 16);
+						i_35_ += (int) ((long) sampleBuffer[i_33_ + i_31_ - 1 - i_36_]
+								* (long) Class37.anIntArrayArray648[0][i_36_] >> 16);
 					}
 					for (int i_37_ = 0; i_37_ < i_33_; i_37_++) {
-						i_35_ -= (int) ((long) sampleBuffer[i_33_ - 1 - i_37_] * (long) Class37.anIntArrayArray648[1][i_37_] >> 16);
+						i_35_ -= (int) ((long) sampleBuffer[i_33_ - 1 - i_37_]
+								* (long) Class37.anIntArrayArray648[1][i_37_] >> 16);
 					}
 					sampleBuffer[i_33_] = i_35_;
 					i_30_ = aClass51_417.method798(i + 1);
@@ -247,10 +251,12 @@ final class Soundtrack {
 					for (/**/; i_33_ < i_34_; i_33_++) {
 						int i_38_ = (int) ((long) sampleBuffer[i_33_ + i_31_] * (long) Class37.anInt650 >> 16);
 						for (int i_39_ = 0; i_39_ < i_31_; i_39_++) {
-							i_38_ += (int) ((long) sampleBuffer[i_33_ + i_31_ - 1 - i_39_] * (long) Class37.anIntArrayArray648[0][i_39_] >> 16);
+							i_38_ += (int) ((long) sampleBuffer[i_33_ + i_31_ - 1 - i_39_]
+									* (long) Class37.anIntArrayArray648[0][i_39_] >> 16);
 						}
 						for (int i_40_ = 0; i_40_ < i_32_; i_40_++) {
-							i_38_ -= (int) ((long) sampleBuffer[i_33_ - 1 - i_40_] * (long) Class37.anIntArrayArray648[1][i_40_] >> 16);
+							i_38_ -= (int) ((long) sampleBuffer[i_33_ - 1 - i_40_]
+									* (long) Class37.anIntArrayArray648[1][i_40_] >> 16);
 						}
 						sampleBuffer[i_33_] = i_38_;
 						i_30_ = aClass51_417.method798(i + 1);
@@ -265,10 +271,12 @@ final class Soundtrack {
 				for (/**/; i_33_ < i; i_33_++) {
 					int i_41_ = 0;
 					for (int i_42_ = i_33_ + i_31_ - i; i_42_ < i_31_; i_42_++) {
-						i_41_ += (int) ((long) sampleBuffer[i_33_ + i_31_ - 1 - i_42_] * (long) Class37.anIntArrayArray648[0][i_42_] >> 16);
+						i_41_ += (int) ((long) sampleBuffer[i_33_ + i_31_ - 1 - i_42_]
+								* (long) Class37.anIntArrayArray648[0][i_42_] >> 16);
 					}
 					for (int i_43_ = 0; i_43_ < i_32_; i_43_++) {
-						i_41_ -= (int) ((long) sampleBuffer[i_33_ - 1 - i_43_] * (long) Class37.anIntArrayArray648[1][i_43_] >> 16);
+						i_41_ -= (int) ((long) sampleBuffer[i_33_ - 1 - i_43_]
+								* (long) Class37.anIntArrayArray648[1][i_43_] >> 16);
 					}
 					sampleBuffer[i_33_] = i_41_;
 					i_30_ = aClass51_417.method798(i + 1);

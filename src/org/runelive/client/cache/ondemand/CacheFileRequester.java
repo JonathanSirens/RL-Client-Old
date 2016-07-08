@@ -56,8 +56,10 @@ public final class CacheFileRequester implements Runnable {
 	/**
 	 * Grabs the version of a file from the cache.
 	 *
-	 * @param type The type of file (0 = model, 1 = anim, 2 = midi, 3 = map).
-	 * @param id The id of the file.
+	 * @param type
+	 *            The type of file (0 = model, 1 = anim, 2 = midi, 3 = map).
+	 * @param id
+	 *            The id of the file.
 	 * @return
 	 */
 	public int getVersion(int type, int id) {
@@ -143,9 +145,11 @@ public final class CacheFileRequester implements Runnable {
 				data = clientInstance.cacheIndices[request.getIndex() + 1].get(request.getId());
 			}
 			if (Configuration.FILE_SERVER_ENABLED) {
-				if (request.getIndex() >= 0 && request.getIndex() <= Configuration.CACHE_INDEX_COUNT && checksums[request.getIndex()] != null) {
+				if (request.getIndex() >= 0 && request.getIndex() <= Configuration.CACHE_INDEX_COUNT
+						&& checksums[request.getIndex()] != null) {
 					if (request.getId() >= checksums[request.getIndex()].length) {
-						System.err.println("Error: Requested file id " + request.getId() + " exceeds checksum capacity of " + checksums[request.getIndex()].length);
+						System.err.println("Error: Requested file id " + request.getId()
+								+ " exceeds checksum capacity of " + checksums[request.getIndex()].length);
 					}
 					if (!crcMatches(checksums[request.getIndex()][request.getId()], data)) {
 						data = null;
@@ -171,7 +175,8 @@ public final class CacheFileRequester implements Runnable {
 	/**
 	 * Request data to update server.
 	 *
-	 * @param onDemandRequest : Request to be sent to update server.
+	 * @param onDemandRequest
+	 *            : Request to be sent to update server.
 	 */
 	private void closeRequest(CacheFileRequest onDemandRequest) {
 		try {
@@ -222,7 +227,8 @@ public final class CacheFileRequester implements Runnable {
 				} else {
 					inputBuffer[3] = 0;
 				}
-				//System.out.println("Pushed request: " + onDemandRequest.getIndex() + "," + onDemandRequest.getId());
+				// System.out.println("Pushed request: " +
+				// onDemandRequest.getIndex() + "," + onDemandRequest.getId());
 				out.write(inputBuffer, 0, 4);
 			}
 			writeLoopCycle = 0;
@@ -340,42 +346,36 @@ public final class CacheFileRequester implements Runnable {
 		return checksums[index].length;
 	}
 
-	/*public int getMapCount(int arg0, int arg1, int arg2) {
-		int id = (arg2 << 8) + arg1;
+	/*
+	 * public int getMapCount(int arg0, int arg1, int arg2) { int id = (arg2 <<
+	 * 8) + arg1;
+	 * 
+	 * for (int i = 0; i < mapIndices1.length; i++) { if (mapIndices1[i] == id)
+	 * { if (arg0 == 0) { return mapIndices2[i] > 3535 ? -1 : mapIndices2[i]; }
+	 * else { return mapIndices3[i] > 3535 ? -1 : mapIndices3[i]; } } } return
+	 * -1; }
+	 */
 
-		for (int i = 0; i < mapIndices1.length; i++) {
-			if (mapIndices1[i] == id) {
-				if (arg0 == 0) {
-					return mapIndices2[i] > 3535 ? -1 : mapIndices2[i];
-				} else {
-					return mapIndices3[i] > 3535 ? -1 : mapIndices3[i];
-				}
-			}
-		}
-		return -1;
-	}*/
-
-	public final int getMapCount(int landscapeOrObject, int regionY, int regionX)
-	{
+	public final int getMapCount(int landscapeOrObject, int regionY, int regionX) {
 		int mapCount2;
 		int mapCount3;
 		int regionId = (regionX << 8) + regionY;
-		for(int j1 = 0; j1 < mapIndices1.length; j1++)
-			if(mapIndices1[j1] == regionId) {
-				if(landscapeOrObject == 0) {
-					//Soulwars
-					if(mapIndices2[j1] >= 3700 && mapIndices2[j1] <= 3840) 
+		for (int j1 = 0; j1 < mapIndices1.length; j1++)
+			if (mapIndices1[j1] == regionId) {
+				if (landscapeOrObject == 0) {
+					// Soulwars
+					if (mapIndices2[j1] >= 3700 && mapIndices2[j1] <= 3840)
 						return mapIndices2[j1];
-					for(int cheapHax : cheapHaxValues)
-						if(mapIndices2[j1] == cheapHax)
+					for (int cheapHax : cheapHaxValues)
+						if (mapIndices2[j1] == cheapHax)
 							return mapIndices2[j1];
-					mapCount2 =  mapIndices2[j1] > 3535 ? -1 : mapIndices2[j1];
+					mapCount2 = mapIndices2[j1] > 3535 ? -1 : mapIndices2[j1];
 					return mapCount2;
 				} else {
-					if(mapIndices3[j1] >= 3700 && mapIndices3[j1] <= 3840) 
+					if (mapIndices3[j1] >= 3700 && mapIndices3[j1] <= 3840)
 						return mapIndices3[j1];
-					for(int cheapHax : cheapHaxValues)
-						if(mapIndices3[j1] == cheapHax)
+					for (int cheapHax : cheapHaxValues)
+						if (mapIndices3[j1] == cheapHax)
 							return mapIndices3[j1];
 					mapCount3 = mapIndices3[j1] > 3535 ? -1 : mapIndices3[j1];
 					return mapCount3;
@@ -383,7 +383,7 @@ public final class CacheFileRequester implements Runnable {
 			}
 		return -1;
 	}
-	
+
 	public int getRegionIndex(int regionId) {
 		for (int index = 0; index < mapIndices1.length; index++) {
 			if (mapIndices1[index] == regionId) {
@@ -393,45 +393,12 @@ public final class CacheFileRequester implements Runnable {
 		return -1;
 	}
 
-	int[] cheapHaxValues = new int[]{
-			3627,    		3628,    		
-			3655,    		3656,    		
-			3625,    		3626,    		
-			3629,    		3630,
-			4071,   		4072,
-			5253,  			1816,
-			1817,    		3653,
-			3654,    		4067,    		
-			4068,    		3639,    		
-			3640,    		1976,    		
-			1977,    		3571,    		
-			3572,    		5129,    		
-			5130,			2066,   
-			2067,    		3545,  
-			3546,    		3559,
-			3560,    		3569,   
-			3570,    		3551,  
-			3552,    		3579,
-			3580,    		3575,  
-			3576,    		1766,   
-			1767,    		3547,
-			3548,    		3682,			
-			3683,    		3696,
-			3697,    		3692,
-			3693,			4013,    		
-			4079,    		4080,
-			4082,    		3996,
-			4083,    		4084,
-			4075,    		4076,
-			3664,    		3993,
-			3994,    		3995,
-			4077,    		4078,
-			4073,    		4074,    		
-			4011,    		4012,    
-			3998,    		3999,   
-			4081,
-	};
-	
+	int[] cheapHaxValues = new int[] { 3627, 3628, 3655, 3656, 3625, 3626, 3629, 3630, 4071, 4072, 5253, 1816, 1817,
+			3653, 3654, 4067, 4068, 3639, 3640, 1976, 1977, 3571, 3572, 5129, 5130, 2066, 2067, 3545, 3546, 3559, 3560,
+			3569, 3570, 3551, 3552, 3579, 3580, 3575, 3576, 1766, 1767, 3547, 3548, 3682, 3683, 3696, 3697, 3692, 3693,
+			4013, 4079, 4080, 4082, 3996, 4083, 4084, 4075, 4076, 3664, 3993, 3994, 3995, 4077, 4078, 4073, 4074, 4011,
+			4012, 3998, 3999, 4081, };
+
 	public void setExtraPriority(byte byte0, int i, int j) {
 		try {
 			if (clientInstance.cacheIndices[0] == null) {
@@ -485,7 +452,8 @@ public final class CacheFileRequester implements Runnable {
 			GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(request.getData()));
 			do {
 				if (length == inflationBuffer.length) {
-					throw new RuntimeException("Buffer overflow: [index=" + request.getIndex() + ", id=" + request.getId() + " length=" + request.getData().length + "]");
+					throw new RuntimeException("Buffer overflow: [index=" + request.getIndex() + ", id="
+							+ request.getId() + " length=" + request.getData().length + "]");
 				}
 				int numRead = in.read(inflationBuffer, length, inflationBuffer.length - length);
 				if (numRead == -1) {
@@ -531,14 +499,15 @@ public final class CacheFileRequester implements Runnable {
 	private void handleFailed() {
 		incompletedCount = 0;
 		completedCount = 0;
-		for (CacheFileRequest onDemandData = (CacheFileRequest) requested.getTail(); onDemandData != null; onDemandData = (CacheFileRequest) requested.next()) {
+		for (CacheFileRequest onDemandData = (CacheFileRequest) requested
+				.getTail(); onDemandData != null; onDemandData = (CacheFileRequest) requested.next()) {
 			if (onDemandData.incomplete) {
 				incompletedCount++;
 			} else {
 				completedCount++;
 			}
 		}
-		
+
 		while (incompletedCount < 10) {
 			CacheFileRequest request = (CacheFileRequest) toRequest.popFront();
 			if (request == null) {
@@ -591,8 +560,8 @@ public final class CacheFileRequester implements Runnable {
 
 	/**
 	 * Read received data from Update Server First read 6 bytes. Put those 6
-	 * bytes in a byte array {@code inputBuffer}; Decode array into file type, file
-	 * ID, size of the file and chunk of the file.
+	 * bytes in a byte array {@code inputBuffer}; Decode array into file type,
+	 * file ID, size of the file and chunk of the file.
 	 */
 	private void handleResponse() {
 		int offset = CacheIndex.READ_24BIT_FILE_HEADER ? 7 : 6;
@@ -607,21 +576,27 @@ public final class CacheFileRequester implements Runnable {
 					int cacheIndex;
 					int fileId;
 					int fileSize;
-					//int chunk;
+					// int chunk;
 					if (CacheIndex.READ_24BIT_FILE_HEADER) {
 						cacheIndex = inputBuffer[0] & 0xff;
-						fileId = ((inputBuffer[1] & 0xff) << 16) + ((inputBuffer[2] & 0xff) << 8) + (inputBuffer[3] & 0xff);
-						fileSize = ((inputBuffer[4] & 0xff) << 16) + ((inputBuffer[5] & 0xff) << 8) + (inputBuffer[6] & 0xff);
-						//chunk = inputBuffer[7] & 0xff;
+						fileId = ((inputBuffer[1] & 0xff) << 16) + ((inputBuffer[2] & 0xff) << 8)
+								+ (inputBuffer[3] & 0xff);
+						fileSize = ((inputBuffer[4] & 0xff) << 16) + ((inputBuffer[5] & 0xff) << 8)
+								+ (inputBuffer[6] & 0xff);
+						// chunk = inputBuffer[7] & 0xff;
 					} else {
 						cacheIndex = inputBuffer[0] & 0xff;
 						fileId = ((inputBuffer[1] & 0xff) << 8) + (inputBuffer[2] & 0xff);
-						fileSize = ((inputBuffer[3] & 0xff) << 16) + ((inputBuffer[4] & 0xff) << 8) + (inputBuffer[5] & 0xff);
-						//chunk = inputBuffer[6] & 0xff;
+						fileSize = ((inputBuffer[3] & 0xff) << 16) + ((inputBuffer[4] & 0xff) << 8)
+								+ (inputBuffer[5] & 0xff);
+						// chunk = inputBuffer[6] & 0xff;
 					}
-					//System.out.println("cacheIndex: " + cacheIndex + ", fileId: " + fileId + ", fileSize: " + fileSize);
+					// System.out.println("cacheIndex: " + cacheIndex + ",
+					// fileId: " + fileId + ", fileSize: " + fileSize);
 					current = null;
-					for (CacheFileRequest cacheFileRequest = (CacheFileRequest) requested.getTail(); cacheFileRequest != null; cacheFileRequest = (CacheFileRequest) requested.next()) {
+					for (CacheFileRequest cacheFileRequest = (CacheFileRequest) requested
+							.getTail(); cacheFileRequest != null; cacheFileRequest = (CacheFileRequest) requested
+									.next()) {
 						if (cacheFileRequest.getIndex() == cacheIndex && cacheFileRequest.getId() == fileId) {
 							current = cacheFileRequest;
 						}
@@ -644,23 +619,24 @@ public final class CacheFileRequester implements Runnable {
 							}
 							current = null;
 						} else {
-							/*if (current.getData() == null && chunk == 0) {
-								current.setData(new byte[fileSize]);
-							}
-							if (current.getData() == null && chunk != 0) {
-								throw new IOException("missing start of file");
-							}*/
+							/*
+							 * if (current.getData() == null && chunk == 0) {
+							 * current.setData(new byte[fileSize]); } if
+							 * (current.getData() == null && chunk != 0) { throw
+							 * new IOException("missing start of file"); }
+							 */
 							current.setData(new byte[fileSize]);
 						}
 					}
 					completedSize = 0;
 					currentFileSize = fileSize;
-					/*if (currentFileSize > fileSize) {
-						currentFileSize = fileSize;
-					}*/
+					/*
+					 * if (currentFileSize > fileSize) { currentFileSize =
+					 * fileSize; }
+					 */
 				}
 			} else {
-			//if (currentFileSize > 0 && available >= currentFileSize) {
+				// if (currentFileSize > 0 && available >= currentFileSize) {
 				expectingData = true;
 				byte buf[] = inputBuffer;
 				int i1 = 0;
@@ -682,7 +658,9 @@ public final class CacheFileRequester implements Runnable {
 					}
 					if (current.incomplete) {
 						synchronized (completed) {
-							//System.out.println("Pushing " + current.getIndex() + "," + current.getId() + " to front");
+							// System.out.println("Pushing " +
+							// current.getIndex() + "," + current.getId() + " to
+							// front");
 							completed.pushFront(current);
 						}
 					} else {
@@ -706,15 +684,19 @@ public final class CacheFileRequester implements Runnable {
 	/**
 	 * Start a file data request, if it wasn't requested already.
 	 *
-	 * @param cacheIndex : Data type of the file.
-	 * @param fileId : ID of the file.
+	 * @param cacheIndex
+	 *            : Data type of the file.
+	 * @param fileId
+	 *            : ID of the file.
 	 */
 	public void pushRequest(int cacheIndex, int fileId) {
 		if (cacheIndex < 0 || fileId < 0) {
 			return;
 		}
 		synchronized (remainingMandatory) {
-			for (CacheFileRequest onDemandData = (CacheFileRequest) remainingMandatory.reverseGetFirst(); onDemandData != null; onDemandData = (CacheFileRequest) remainingMandatory.reverseGetNext()) {
+			for (CacheFileRequest onDemandData = (CacheFileRequest) remainingMandatory
+					.reverseGetFirst(); onDemandData != null; onDemandData = (CacheFileRequest) remainingMandatory
+							.reverseGetNext()) {
 				if (onDemandData.getIndex() == cacheIndex && onDemandData.getId() == fileId) {
 					return;
 				}
@@ -763,7 +745,8 @@ public final class CacheFileRequester implements Runnable {
 				}
 
 				boolean flag = false;
-				for (CacheFileRequest request = (CacheFileRequest) requested.getTail(); request != null; request = (CacheFileRequest) requested.next()) {
+				for (CacheFileRequest request = (CacheFileRequest) requested
+						.getTail(); request != null; request = (CacheFileRequest) requested.next()) {
 					if (request.incomplete) {
 						flag = true;
 						request.requestAge++;
@@ -775,7 +758,8 @@ public final class CacheFileRequester implements Runnable {
 				}
 
 				if (!flag) {
-					for (CacheFileRequest request = (CacheFileRequest) requested.getTail(); request != null; request = (CacheFileRequest) requested.next()) {
+					for (CacheFileRequest request = (CacheFileRequest) requested
+							.getTail(); request != null; request = (CacheFileRequest) requested.next()) {
 						flag = true;
 						request.requestAge++;
 						if (request.requestAge > 50) {
@@ -801,7 +785,8 @@ public final class CacheFileRequester implements Runnable {
 					connectionIdleTicks = 0;
 					statusString = "";
 				}
-				if (clientInstance.loggedIn && socket != null && out != null && (maxPriority > 0 || clientInstance.cacheIndices[0] == null)) {
+				if (clientInstance.loggedIn && socket != null && out != null
+						&& (maxPriority > 0 || clientInstance.cacheIndices[0] == null)) {
 					writeLoopCycle++;
 					if (writeLoopCycle > 500) {
 						writeLoopCycle = 0;
@@ -830,8 +815,7 @@ public final class CacheFileRequester implements Runnable {
 	public void start(Archive archive, Client client1) {
 		byte[] data = null;
 		int j1 = 0;
-		String as1[] = { "model_crc", "anim_crc", "midi_crc", "map_crc",
-		"textures_crc", "model_extended_crc" };
+		String as1[] = { "model_crc", "anim_crc", "midi_crc", "map_crc", "textures_crc", "model_extended_crc" };
 		for (int index = 0; index < 6; index++) {
 			data = archive.get(as1[index]);
 			ByteBuffer buffer = new ByteBuffer(data);
@@ -861,17 +845,15 @@ public final class CacheFileRequester implements Runnable {
 		mapIndices2 = new int[mapCount];
 		mapIndices3 = new int[mapCount];
 		mapIndices4 = new int[mapCount];
-		int[] dntUse = new int[] {5181, 5182, 5183, 5184, 5180, 5179, 5175, 5176, 4014, 3997, 5314, 5315, 5172};
-		for(int i2 = 0; i2 < mapCount; i2++)
-		{
+		int[] dntUse = new int[] { 5181, 5182, 5183, 5184, 5180, 5179, 5175, 5176, 4014, 3997, 5314, 5315, 5172 };
+		for (int i2 = 0; i2 < mapCount; i2++) {
 			mapIndices1[i2] = stream2.getUnsignedShort();
 			mapIndices2[i2] = stream2.getUnsignedShort();
 			mapIndices3[i2] = stream2.getUnsignedShort();
-			for(int i : dntUse)
-			{
-				if(mapIndices2[i2] == i)
+			for (int i : dntUse) {
+				if (mapIndices2[i2] == i)
 					mapIndices2[i2] = -1;
-				if(mapIndices3[i2] == i)
+				if (mapIndices3[i2] == i)
 					mapIndices3[i2] = -1;
 			}
 		}
@@ -893,20 +875,17 @@ public final class CacheFileRequester implements Runnable {
 		mapIndices3[149] = 1211;
 		mapIndices1[150] = 9264;
 		mapIndices2[150] = 956;
-		mapIndices3[150] = 957;		
-		/*j1 = abyte2.length / 6;
-		int loopVal = j1;
-		mapIndices1 = new int[j1];
-		mapIndices2 = new int[j1];
-		mapIndices3 = new int[j1];
-		mapIndices4 = new int[j1];
-		for (int i2 = 0; i2 < loopVal; i2++) {
-			mapIndices1[i2] = stream2.getUnsignedShort();
-			mapIndices2[i2] = stream2.getUnsignedShort();
-			mapIndices3[i2] = stream2.getUnsignedShort();
-		}*/
-		
-		//Cerberus
+		mapIndices3[150] = 957;
+		/*
+		 * j1 = abyte2.length / 6; int loopVal = j1; mapIndices1 = new int[j1];
+		 * mapIndices2 = new int[j1]; mapIndices3 = new int[j1]; mapIndices4 =
+		 * new int[j1]; for (int i2 = 0; i2 < loopVal; i2++) { mapIndices1[i2] =
+		 * stream2.getUnsignedShort(); mapIndices2[i2] =
+		 * stream2.getUnsignedShort(); mapIndices3[i2] =
+		 * stream2.getUnsignedShort(); }
+		 */
+
+		// Cerberus
 		mapIndices1[151] = 4883;
 		mapIndices2[151] = 1984;
 		mapIndices3[151] = 1985;
@@ -942,8 +921,7 @@ public final class CacheFileRequester implements Runnable {
 		clientInstance.startRunnable(this, 2);
 	}
 
-	public final int getAnimCount()
-	{
+	public final int getAnimCount() {
 		return 33568;
 	}
 

@@ -74,9 +74,11 @@ final class Class37 {
 			float f_9_ = f_7_ * -2.0F * (float) Math.cos(method722(i, i_8_, f));
 			float f_10_ = f_7_ * f_7_;
 			aFloatArrayArray649[i][i_8_ * 2 + 1] = aFloatArrayArray649[i][i_8_ * 2 - 1] * f_10_;
-			aFloatArrayArray649[i][i_8_ * 2] = aFloatArrayArray649[i][i_8_ * 2 - 1] * f_9_ + aFloatArrayArray649[i][i_8_ * 2 - 2] * f_10_;
+			aFloatArrayArray649[i][i_8_ * 2] = aFloatArrayArray649[i][i_8_ * 2 - 1] * f_9_
+					+ aFloatArrayArray649[i][i_8_ * 2 - 2] * f_10_;
 			for (int i_11_ = i_8_ * 2 - 1; i_11_ >= 2; i_11_--) {
-				aFloatArrayArray649[i][i_11_] += aFloatArrayArray649[i][i_11_ - 1] * f_9_ + aFloatArrayArray649[i][i_11_ - 2] * f_10_;
+				aFloatArrayArray649[i][i_11_] += aFloatArrayArray649[i][i_11_ - 1] * f_9_
+						+ aFloatArrayArray649[i][i_11_ - 2] * f_10_;
 			}
 			aFloatArrayArray649[i][1] += aFloatArrayArray649[i][0] * f_9_ + f_10_;
 			aFloatArrayArray649[i][0] += f_9_;
@@ -93,13 +95,15 @@ final class Class37 {
 	}
 
 	private final float method721(int i, int i_14_, float f) {
-		float f_15_ = anIntArrayArrayArray647[i][0][i_14_] + f * (anIntArrayArrayArray647[i][1][i_14_] - anIntArrayArrayArray647[i][0][i_14_]);
+		float f_15_ = anIntArrayArrayArray647[i][0][i_14_]
+				+ f * (anIntArrayArrayArray647[i][1][i_14_] - anIntArrayArrayArray647[i][0][i_14_]);
 		f_15_ *= 0.0015258789F;
 		return 1.0F - (float) Math.pow(10.0, -f_15_ / 20.0F);
 	}
 
 	private final float method722(int i, int i_16_, float f) {
-		float f_17_ = anIntArrayArrayArray644[i][0][i_16_] + f * (anIntArrayArrayArray644[i][1][i_16_] - anIntArrayArrayArray644[i][0][i_16_]);
+		float f_17_ = anIntArrayArrayArray644[i][0][i_16_]
+				+ f * (anIntArrayArrayArray644[i][1][i_16_] - anIntArrayArrayArray644[i][0][i_16_]);
 		f_17_ *= 1.2207031E-4F;
 		return method718(f_17_);
 	}

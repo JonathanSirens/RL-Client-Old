@@ -52,7 +52,8 @@ public class Alertify {
 	/**
 	 * Shorthand for instance().setTheme()
 	 *
-	 * @param theme The theme class.
+	 * @param theme
+	 *            The theme class.
 	 */
 	public static void theme(AlertifyTheme theme) {
 		instance.setTheme(theme);
@@ -61,7 +62,8 @@ public class Alertify {
 	/**
 	 * Shorthand for instance().showAlert()
 	 *
-	 * @param config The alertify config.
+	 * @param config
+	 *            The alertify config.
 	 */
 	public static void show(AlertifyConfig config) {
 		instance.showAlert(config);
@@ -122,7 +124,8 @@ public class Alertify {
 	/**
 	 * Shows an alert on the screen, based on the config passed.
 	 *
-	 * @param config The alert config.
+	 * @param config
+	 *            The alert config.
 	 * @return This class instance, best used for chaining.
 	 */
 	public Alertify showAlert(final AlertifyConfig config) {
@@ -184,8 +187,10 @@ public class Alertify {
 	/**
 	 * Internal method to call the Tween animation.
 	 *
-	 * @param window The window to show.
-	 * @param callback The callback to run after the window is shown.
+	 * @param window
+	 *            The window to show.
+	 * @param callback
+	 *            The callback to run after the window is shown.
 	 */
 	private void showWindow(final AlertifyWindow window, final Runnable callback) {
 		final Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
@@ -207,14 +212,17 @@ public class Alertify {
 					callback.run();
 				}
 			}
-		}).setCallbackTriggers(TweenCallback.START | TweenCallback.STEP).ease(Back.OUT).target(screen.x + screen.width - (window.getActualWidth() + 10)).start(manager);
+		}).setCallbackTriggers(TweenCallback.START | TweenCallback.STEP).ease(Back.OUT)
+				.target(screen.x + screen.width - (window.getActualWidth() + 10)).start(manager);
 	}
 
 	/**
 	 * Moves a window to the specified Y position.
 	 *
-	 * @param window The window to move.
-	 * @param targetY The Y position on screen.
+	 * @param window
+	 *            The window to move.
+	 * @param targetY
+	 *            The Y position on screen.
 	 */
 	private void moveWindow(AlertifyWindow window, int targetY) {
 		Tween.to(window, ComponentAccessor.POSITION_Y, 0.5f).ease(Back.IN).target(targetY).start(manager);
@@ -223,7 +231,8 @@ public class Alertify {
 	/**
 	 * Hide a window.
 	 *
-	 * @param window The window to hide.
+	 * @param window
+	 *            The window to hide.
 	 */
 	private void hideWindow(final AlertifyWindow window) {
 		if (window.isHidden()) {
@@ -235,23 +244,25 @@ public class Alertify {
 		final Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 
 		remove.add(window);
-		Tween.to(window, ComponentAccessor.POSITION_X, 0.5f).ease(Back.IN).target(screen.width).setCallback(new TweenCallback() {
-			@Override
-			public void onEvent(int event, BaseTween<?> tween) {
-				if (event == TweenCallback.COMPLETE) {
-					removeWindow(window);
-				} else if (event == TweenCallback.STEP) {
-					window.setSize(screen.width - window.getX(), window.getActualHeight());
-				}
-			}
-		}).setCallbackTriggers(TweenCallback.COMPLETE | TweenCallback.STEP).start(manager);
+		Tween.to(window, ComponentAccessor.POSITION_X, 0.5f).ease(Back.IN).target(screen.width)
+				.setCallback(new TweenCallback() {
+					@Override
+					public void onEvent(int event, BaseTween<?> tween) {
+						if (event == TweenCallback.COMPLETE) {
+							removeWindow(window);
+						} else if (event == TweenCallback.STEP) {
+							window.setSize(screen.width - window.getX(), window.getActualHeight());
+						}
+					}
+				}).setCallbackTriggers(TweenCallback.COMPLETE | TweenCallback.STEP).start(manager);
 	}
 
 	/**
 	 * Remove a window. This consolidates remaining windows and shows ones which
 	 * would not have fit on screen.
 	 *
-	 * @param window The window to remove.
+	 * @param window
+	 *            The window to remove.
 	 */
 	private void removeWindow(AlertifyWindow window) {
 		window.dispose();
@@ -291,7 +302,8 @@ public class Alertify {
 	/**
 	 * Set the window theme.
 	 *
-	 * @param theme The theme.
+	 * @param theme
+	 *            The theme.
 	 */
 	public void setTheme(AlertifyTheme theme) {
 		this.theme = theme;

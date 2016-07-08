@@ -13,7 +13,8 @@ import org.runelive.client.io.ByteBuffer;
 final class Class39 {
 
 	private float method541(int i, int j, float f) {
-		float f1 = anIntArrayArrayArray667[i][0][j] + f * (anIntArrayArrayArray667[i][1][j] - anIntArrayArrayArray667[i][0][j]);
+		float f1 = anIntArrayArrayArray667[i][0][j]
+				+ f * (anIntArrayArrayArray667[i][1][j] - anIntArrayArrayArray667[i][0][j]);
 		f1 *= 0.001525879F;
 		return 1.0F - (float) Math.pow(10D, -f1 / 20F);
 	}
@@ -24,7 +25,8 @@ final class Class39 {
 	}
 
 	private float method543(float f, int i, int j) {
-		float f1 = anIntArrayArrayArray666[j][0][i] + f * (anIntArrayArrayArray666[j][1][i] - anIntArrayArrayArray666[j][0][i]);
+		float f1 = anIntArrayArrayArray666[j][0][i]
+				+ f * (anIntArrayArrayArray666[j][1][i] - anIntArrayArrayArray666[j][0][i]);
 		f1 *= 0.0001220703F;
 		return method542(f1);
 	}
@@ -47,7 +49,8 @@ final class Class39 {
 			float f4 = -2F * f3 * (float) Math.cos(method543(f, k, i));
 			float f5 = f3 * f3;
 			aFloatArrayArray669[i][k * 2 + 1] = aFloatArrayArray669[i][k * 2 - 1] * f5;
-			aFloatArrayArray669[i][k * 2] = aFloatArrayArray669[i][k * 2 - 1] * f4 + aFloatArrayArray669[i][k * 2 - 2] * f5;
+			aFloatArrayArray669[i][k * 2] = aFloatArrayArray669[i][k * 2 - 1] * f4
+					+ aFloatArrayArray669[i][k * 2 - 2] * f5;
 			for (int j1 = k * 2 - 1; j1 >= 2; j1--) {
 				aFloatArrayArray669[i][j1] += aFloatArrayArray669[i][j1 - 1] * f4 + aFloatArrayArray669[i][j1 - 2] * f5;
 			}

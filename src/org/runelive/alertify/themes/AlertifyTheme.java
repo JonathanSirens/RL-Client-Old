@@ -23,8 +23,10 @@ public abstract class AlertifyTheme {
 	/**
 	 * Put a color type into the map.
 	 *
-	 * @param type The alert type.
-	 * @param colors The color pair.
+	 * @param type
+	 *            The alert type.
+	 * @param colors
+	 *            The color pair.
 	 */
 	public void initColor(AlertifyType type, AlertifyColorPair colors) {
 		colorsMap.put(type, colors);
@@ -34,7 +36,8 @@ public abstract class AlertifyTheme {
 	 * Get the color pair for the specified type. If a color pair isn't
 	 * registered, attempt to fall back to LOG.
 	 *
-	 * @param type The alert type.
+	 * @param type
+	 *            The alert type.
 	 * @return The color pair.
 	 */
 	public AlertifyColorPair getColors(AlertifyType type) {
@@ -61,7 +64,8 @@ public abstract class AlertifyTheme {
 	 *
 	 * Note: The window itself has no style properties, only the content panel.
 	 *
-	 * @param content The content panel to configure.
+	 * @param content
+	 *            The content panel to configure.
 	 */
 	public void configure(JPanel content) {
 

@@ -11,8 +11,8 @@ public final class Censor {
 	private static char[][] aCharArrayArray623;
 	private static char[][] aCharArrayArray624;
 	private static int[] anIntArray625;
-	private static final String[] exceptions = { "cook", "cook's", "cooks",
-		"seeks", "sheet", "woop", "woops", "faq", "noob", "noobs" };
+	private static final String[] exceptions = { "cook", "cook's", "cooks", "seeks", "sheet", "woop", "woops", "faq",
+			"noob", "noobs" };
 
 	public static String doCensor(String s) {
 		char[] ac = s.toCharArray();
@@ -721,7 +721,8 @@ public final class Censor {
 			}
 
 			if (c2 == 'i') {
-				return c1 != 'y' && c1 != 'l' && c1 != 'j' && c1 != '1' && c1 != '!' && c1 != ':' && c1 != ';' && c1 != '|' ? 0 : 1;
+				return c1 != 'y' && c1 != 'l' && c1 != 'j' && c1 != '1' && c1 != '!' && c1 != ':' && c1 != ';'
+						&& c1 != '|' ? 0 : 1;
 			}
 
 			if (c2 == 'j') {
@@ -751,7 +752,8 @@ public final class Censor {
 					return 1;
 				}
 
-				return (c1 != '(' || c != ')') && (c1 != '[' || c != ']') && (c1 != '{' || c != '}') && (c1 != '<' || c != '>') ? 0 : 2;
+				return (c1 != '(' || c != ')') && (c1 != '[' || c != ']') && (c1 != '{' || c != '}')
+						&& (c1 != '<' || c != '>') ? 0 : 2;
 			}
 
 			if (c2 == 'p') {
@@ -791,7 +793,8 @@ public final class Censor {
 			}
 
 			if (c2 == 'x') {
-				return (c1 != ')' || c != '(') && (c1 != '}' || c != '{') && (c1 != ']' || c != '[') && (c1 != '>' || c != '<') ? 0 : 2;
+				return (c1 != ')' || c != '(') && (c1 != '}' || c != '{') && (c1 != ']' || c != '[')
+						&& (c1 != '>' || c != '<') ? 0 : 2;
 			}
 
 			if (c2 == 'y') {

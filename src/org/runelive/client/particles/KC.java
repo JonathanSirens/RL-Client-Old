@@ -67,16 +67,14 @@ public class KC {
 	public final int getRgb() {
 		return this.rgb;
 	}
-	
+
 	public void setRgb(int rgb) {
 		this.rgb = rgb;
 	}
-	
+
 	public void setAlpha(float alpha) {
 		this.alpha = alpha;
 	}
-
-		
 
 	public final float S() {
 		return this.B;

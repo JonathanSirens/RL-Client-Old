@@ -41,10 +41,14 @@ public class AlertifyConfig {
 	/**
 	 * Create a new Alertify config.
 	 *
-	 * @param type The alert type.
-	 * @param label The alert label.
-	 * @param closeDelay The close delay.
-	 * @param callback The callback.
+	 * @param type
+	 *            The alert type.
+	 * @param label
+	 *            The alert label.
+	 * @param closeDelay
+	 *            The close delay.
+	 * @param callback
+	 *            The callback.
 	 */
 	public AlertifyConfig(AlertifyType type, JLabel label, long closeDelay, AlertifyWindowClick callback, Font font) {
 		this.type = type;

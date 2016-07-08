@@ -31,7 +31,8 @@ import org.runelive.client.graphics.Sprite;
 import org.runelive.client.graphics.gameframe.GameFrame;
 import org.runelive.client.graphics.gameframe.GameFrame.ScreenMode;
 
-public class GameRenderer extends Applet implements Runnable, MouseListener, MouseMotionListener, KeyListener, FocusListener, WindowListener, MouseWheelListener {
+public class GameRenderer extends Applet implements Runnable, MouseListener, MouseMotionListener, KeyListener,
+		FocusListener, WindowListener, MouseWheelListener {
 
 	private static final long serialVersionUID = 1L;
 	private final long[] aLongArray7;
@@ -68,6 +69,7 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 	public int forceHeight = -1;
 	public int offsetX = 0;
 	public int offsetY = 0;
+
 	void prepareGraphics() {
 		while (graphics == null) {
 			graphics = (isApplet ? this : mainFrame).getGraphics();
@@ -85,6 +87,7 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 		graphics.setFont(font);
 		graphics.setColor(Color.white);
 	}
+
 	public int getScreenWidth() {
 		if (forceWidth >= 0) {
 			return forceWidth;
@@ -242,7 +245,8 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 		}
 
 		int src_delta = 0xff - src_alpha;
-		return ((0xff00ff00 & (0xff00ff & src) * src_alpha | 0xff0000 & (src & 0xff00) * src_alpha) >>> 8) + ((0xff0000 & src_delta * (dst & 0xff00) | src_delta * (dst & 0xff00ff) & 0xff00ff00) >>> 8);
+		return ((0xff00ff00 & (0xff00ff & src) * src_alpha | 0xff0000 & (src & 0xff00) * src_alpha) >>> 8)
+				+ ((0xff0000 & src_delta * (dst & 0xff00) | src_delta * (dst & 0xff00ff) & 0xff00ff00) >>> 8);
 	}
 
 	private static final Color BACKGROUND_COLOR = Color.black;
@@ -349,10 +353,9 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 			int TAB = 0, WINDOW = 1;
 			int POSX = 0, POSY = 1, WIDTH = 2, HEIGHT = 3, OFFX = 4, OFFY = 5, CHILD = 6, SENSITIVITY = 7;
 			int tabInterfaceID = Client.tabInterfaceIDs[Client.tabID];
-			if(tabInterfaceID == 11000)
+			if (tabInterfaceID == 11000)
 				tabInterfaceID = 1151;
-			int[] InterfaceID = { tabInterfaceID,
-					Client.openInterfaceID };
+			int[] InterfaceID = { tabInterfaceID, Client.openInterfaceID };
 			int[] InterfaceSetting = { 0, 0, /* positionX, positionY */
 					0, 0, /* Width, Height */
 					offsetX, offsetY, /* offsetX, offsetY */
@@ -378,7 +381,8 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 						break;
 					}
 				}
-				if (mouseX > IS[OFFX] + IS[POSX] && mouseY > IS[OFFY] + IS[POSY] && mouseX < IS[OFFX] + IS[POSX] + IS[WIDTH] && mouseY < IS[OFFY] + IS[POSY] + IS[HEIGHT]) {
+				if (mouseX > IS[OFFX] + IS[POSX] && mouseY > IS[OFFY] + IS[POSY]
+						&& mouseX < IS[OFFX] + IS[POSX] + IS[WIDTH] && mouseY < IS[OFFY] + IS[POSY] + IS[HEIGHT]) {
 					switch (InterfaceID[TAB]) {
 					case 962: /* Music Tab */
 						IS[SENSITIVITY] = 30;
@@ -404,15 +408,18 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 					switch (Rotation) {
 					case -1:
 						if (RSInterface.interfaceCache[Tab.children[IS[CHILD]]].scrollPosition != 0) {
-							RSInterface.interfaceCache[Tab.children[IS[CHILD]]].scrollPosition += Rotation * IS[SENSITIVITY];
+							RSInterface.interfaceCache[Tab.children[IS[CHILD]]].scrollPosition += Rotation
+									* IS[SENSITIVITY];
 							// Client.needDrawTabArea = true;
 							Client.tabAreaAltered = true;
 						}
 						break;
 
 					case 1:
-						if (RSInterface.interfaceCache[Tab.children[IS[CHILD]]].scrollPosition != RSInterface.interfaceCache[Tab.children[IS[CHILD]]].scrollMax - RSInterface.interfaceCache[Tab.children[IS[CHILD]]].height) {
-							RSInterface.interfaceCache[Tab.children[IS[CHILD]]].scrollPosition += Rotation * IS[SENSITIVITY];
+						if (RSInterface.interfaceCache[Tab.children[IS[CHILD]]].scrollPosition != RSInterface.interfaceCache[Tab.children[IS[CHILD]]].scrollMax
+								- RSInterface.interfaceCache[Tab.children[IS[CHILD]]].height) {
+							RSInterface.interfaceCache[Tab.children[IS[CHILD]]].scrollPosition += Rotation
+									* IS[SENSITIVITY];
 							// Client.needDrawTabArea = true;
 							Client.tabAreaAltered = true;
 						}
@@ -436,7 +443,8 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 					}
 				}
 
-				if (mouseX > IS[OFFX] + IS[POSX] && mouseY > IS[OFFY] + IS[POSY] && mouseX < IS[OFFX] + IS[POSX] + IS[WIDTH] && mouseY < IS[OFFY] + IS[POSY] + IS[HEIGHT]) {
+				if (mouseX > IS[OFFX] + IS[POSX] && mouseY > IS[OFFY] + IS[POSY]
+						&& mouseX < IS[OFFX] + IS[POSX] + IS[WIDTH] && mouseY < IS[OFFY] + IS[POSY] + IS[HEIGHT]) {
 
 					switch (InterfaceID[WINDOW]) {
 					default:
@@ -447,22 +455,26 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 					switch (Rotation) {
 					case -1:
 						if (RSInterface.interfaceCache[Window.children[IS[CHILD]]].scrollPosition != 0) {
-							RSInterface.interfaceCache[Window.children[IS[CHILD]]].scrollPosition += Rotation * IS[SENSITIVITY];
+							RSInterface.interfaceCache[Window.children[IS[CHILD]]].scrollPosition += Rotation
+									* IS[SENSITIVITY];
 							// Client.needDrawTabArea = true;
 							Client.tabAreaAltered = true;
 						}
 						break;
 
 					case 1:
-						if (RSInterface.interfaceCache[Window.children[IS[CHILD]]].scrollPosition != RSInterface.interfaceCache[Window.children[IS[CHILD]]].scrollMax - RSInterface.interfaceCache[Window.children[IS[CHILD]]].height) {
-							RSInterface.interfaceCache[Window.children[IS[CHILD]]].scrollPosition += Rotation * IS[SENSITIVITY];
+						if (RSInterface.interfaceCache[Window.children[IS[CHILD]]].scrollPosition != RSInterface.interfaceCache[Window.children[IS[CHILD]]].scrollMax
+								- RSInterface.interfaceCache[Window.children[IS[CHILD]]].height) {
+							RSInterface.interfaceCache[Window.children[IS[CHILD]]].scrollPosition += Rotation
+									* IS[SENSITIVITY];
 						}
 					}
 
-					RSInterface.interfaceCache[Window.children[InterfaceSetting[CHILD]]].scrollPosition += Rotation * 30;
+					RSInterface.interfaceCache[Window.children[InterfaceSetting[CHILD]]].scrollPosition += Rotation
+							* 30;
 				}
 			}
-			if(Client.getClient().inputDialogState == 3 && Client.getClient().getGrandExchange().searching) {
+			if (Client.getClient().inputDialogState == 3 && Client.getClient().getGrandExchange().searching) {
 				Client.getClient().getGrandExchange().itemResultScrollPos += Rotation * 10;
 			}
 		} catch (Exception ex) {
@@ -475,11 +487,11 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 		idleTime = 0;
 		int keyCode = keyevent.getKeyCode();
 		int keyChar = keyevent.getKeyChar();
-		
+
 		if (keyChar == 96) {
 			Client.consoleOpen = !Client.consoleOpen;
 		}
-		
+
 		// System.out.println(keyCode + " : " + keyChar);
 		if (!Configuration.NEW_FUNCTION_KEYS) {
 			if (keyCode == KeyEvent.VK_ESCAPE) {
@@ -712,7 +724,8 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 		if (x < 0 || y < 0) {
 			return;
 		}
-		if (System.currentTimeMillis() - clickTime >= 250L || Math.abs(saveClickX - x) > 5 || Math.abs(saveClickY - y) > 5) {
+		if (System.currentTimeMillis() - clickTime >= 250L || Math.abs(saveClickX - x) > 5
+				|| Math.abs(saveClickY - y) > 5) {
 			idleTime = 0;
 			mouseX = x;
 			mouseY = y;
@@ -747,7 +760,8 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 		if (x < 0 || y < 0) {
 			return;
 		}
-		if (System.currentTimeMillis() - clickTime >= 250L || Math.abs(saveClickX - x) > 5 || Math.abs(saveClickY - y) > 5) {
+		if (System.currentTimeMillis() - clickTime >= 250L || Math.abs(saveClickX - x) > 5
+				|| Math.abs(saveClickY - y) > 5) {
 			idleTime = 0;
 			mouseX = x;
 			mouseY = y;
@@ -823,16 +837,17 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 				Client.anInt1089 = ChatPosition;
 				Client.instance.setInputTaken(true);
 			}
-		} else if(Client.instance.loggedIn) {
-			boolean zoom = GameFrame.getScreenMode() == ScreenMode.FIXED ? (mouseX < 512) : (mouseX < Client.clientWidth - 200);
-			if(zoom && Client.openInterfaceID == -1) {
+		} else if (Client.instance.loggedIn) {
+			boolean zoom = GameFrame.getScreenMode() == ScreenMode.FIXED ? (mouseX < 512)
+					: (mouseX < Client.clientWidth - 200);
+			if (zoom && Client.openInterfaceID == -1) {
 				Client.clientZoom += rotation * 30;
 
-				if(Client.clientZoom < -630 && !(GameFrame.getScreenMode() == ScreenMode.FIXED))
+				if (Client.clientZoom < -630 && !(GameFrame.getScreenMode() == ScreenMode.FIXED))
 					Client.clientZoom = -630;
-				else if(Client.clientZoom < -790 && GameFrame.getScreenMode() == ScreenMode.FIXED)
+				else if (Client.clientZoom < -790 && GameFrame.getScreenMode() == ScreenMode.FIXED)
 					Client.clientZoom = -790;
-				if(Client.clientZoom > 1230)
+				if (Client.clientZoom > 1230)
 					Client.clientZoom = 1230;
 			}
 			Client.instance.setInputTaken(true);
@@ -1089,11 +1104,13 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 	}
 
 	public void setCursor(CursorData cursor) {
-		if(Client.getClient().oldCursor != null && Client.getClient().oldCursor == cursor)
+		if (Client.getClient().oldCursor != null && Client.getClient().oldCursor == cursor)
 			return;
 		Sprite sprite = CacheSpriteLoader.getCacheSprite(cursor.sprite);
 		Image image = sprite.getImage();
-		//Image image = getGameComponent().getToolkit().createImage(FileOperations.ReadFile(signlink.findcachedir() + "Sprites/Cursors/Cursor " + id + ".PNG"));
+		// Image image =
+		// getGameComponent().getToolkit().createImage(FileOperations.ReadFile(signlink.findcachedir()
+		// + "Sprites/Cursors/Cursor " + id + ".PNG"));
 		getGameComponent().setCursor(getGameComponent().getToolkit().createCustomCursor(image, new Point(0, 0), null));
 		Client.getClient().oldCursor = cursor;
 	}

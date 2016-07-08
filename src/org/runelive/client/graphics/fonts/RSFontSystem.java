@@ -91,7 +91,8 @@ public class RSFontSystem extends Canvas2D {
 		transparency = 256;
 	}
 
-	private static void createCharacterPixels(int[] is, byte[] is_24_, int i, int i_25_, int i_26_, int i_27_, int i_28_, int i_29_, int i_30_) {
+	private static void createCharacterPixels(int[] is, byte[] is_24_, int i, int i_25_, int i_26_, int i_27_,
+			int i_28_, int i_29_, int i_30_) {
 		int i_31_ = -(i_27_ >> 2);
 		i_27_ = -(i_27_ & 0x3);
 		for (int i_32_ = -i_28_; i_32_ < 0; i_32_++) {
@@ -129,21 +130,23 @@ public class RSFontSystem extends Canvas2D {
 		}
 	}
 
-	private static void createTransparentCharacterPixels(int[] is, byte[] is_0_, int i, int i_1_, int i_2_, int i_3_, int i_4_, int i_5_, int i_6_, int i_7_) {
+	private static void createTransparentCharacterPixels(int[] is, byte[] is_0_, int i, int i_1_, int i_2_, int i_3_,
+			int i_4_, int i_5_, int i_6_, int i_7_) {
 		i = ((i & 0xff00ff) * i_7_ & ~0xff00ff) + ((i & 0xff00) * i_7_ & 0xff0000) >> 8;
-			i_7_ = 256 - i_7_;
-			for (int i_8_ = -i_4_; i_8_ < 0; i_8_++) {
-				for (int i_9_ = -i_3_; i_9_ < 0; i_9_++) {
-					if (is_0_[i_1_++] != 0) {
-						int i_10_ = is[i_2_];
-						is[i_2_++] = (((i_10_ & 0xff00ff) * i_7_ & ~0xff00ff) + ((i_10_ & 0xff00) * i_7_ & 0xff0000) >> 8) + i;
-					} else {
-						i_2_++;
-					}
+		i_7_ = 256 - i_7_;
+		for (int i_8_ = -i_4_; i_8_ < 0; i_8_++) {
+			for (int i_9_ = -i_3_; i_9_ < 0; i_9_++) {
+				if (is_0_[i_1_++] != 0) {
+					int i_10_ = is[i_2_];
+					is[i_2_++] = (((i_10_ & 0xff00ff) * i_7_ & ~0xff00ff) + ((i_10_ & 0xff00) * i_7_ & 0xff0000) >> 8)
+							+ i;
+				} else {
+					i_2_++;
 				}
-				i_2_ += i_5_;
-				i_1_ += i_6_;
 			}
+			i_2_ += i_5_;
+			i_1_ += i_6_;
+		}
 	}
 
 	public static String handleOldSyntax(String text) {
@@ -196,7 +199,8 @@ public class RSFontSystem extends Canvas2D {
 		text = text.replaceAll("@des@", "<img=4>");
 		text = text.replaceAll("@vet@", "<img=5>");
 		text = text.replaceAll("@don@", "<img=6>");
-		if(Configuration.SMILIES_ENABLED && !text.contains("::") && !text.contains(";;") && !text.contains(":;") && !text.contains(";:")) {
+		if (Configuration.SMILIES_ENABLED && !text.contains("::") && !text.contains(";;") && !text.contains(":;")
+				&& !text.contains(";:")) {
 			text = text.replace(":=)", "<img=100>");
 			text = text.replace("=)", "<img=100>");
 			text = text.replace(":)", "<img=100>");
@@ -204,7 +208,7 @@ public class RSFontSystem extends Canvas2D {
 			text = text.replace(":=(", "<img=101>");
 			text = text.replace("=(", "<img=101>");
 			text = text.replace(":(", "<img=101>");
-			text = text.replace(":[", "<img=101>");			
+			text = text.replace(":[", "<img=101>");
 			text = text.replace(":|", "<img=101>");
 			text = text.replace(":S", "<img=102>");
 			text = text.replace(":s", "<img=103>");
@@ -214,16 +218,16 @@ public class RSFontSystem extends Canvas2D {
 			text = text.replace(":$", "<img=106>");
 			text = text.replace(";)", "<img=107>");
 			text = text.replace(";]", "<img=107>");
-			text = text.replace(":/", "<img=108>"); 
+			text = text.replace(":/", "<img=108>");
 			text = text.replace(":\\", "<img=108>");
 			text = text.replace("\\:", "<img=108>");
-			text = text.replace("(y)", "<img=109>"); 
+			text = text.replace("(y)", "<img=109>");
 			text = text.replace("(Y)", "<img=109>");
 			text = text.replace("(n)", "<img=110>");
 			text = text.replace("(N)", "<img=110>");
 			text = text.replace(":p", "<img=111>");
 			text = text.replace(":P", "<img=111>");
-			text = text.replace(":d", "<img=112>"); 
+			text = text.replace(":d", "<img=112>");
 			text = text.replace(":D", "<img=112>");
 			text = text.replace("=D", "<img=112>");
 			text = text.replace("=d", "<img=112>");
@@ -236,19 +240,21 @@ public class RSFontSystem extends Canvas2D {
 			text = text.replace("(a)", "<img=115>");
 			text = text.replace("(A)", "<img=115>");
 			text = text.replace("-.-", "<img=118>");
-			text = text.replace("O.o", "<img=119>"); 
+			text = text.replace("O.o", "<img=119>");
 			text = text.replace("o.O", "<img=119>");
-			text = text.replace("o.o", "<img=119>"); 
+			text = text.replace("o.o", "<img=119>");
 			text = text.replace("O.O", "<img=119>");
 		}
 		return text;
 	}
+
 	public void drawBasicString(String string, int drawX, int drawY, int color, int shadow) {
 		if (string != null) {
 			setColorAndShadow(color, shadow);
 			drawBasicString(string, drawX, drawY, false);
 		}
 	}
+
 	public RSFontSystem(boolean TypeFont, String s, Archive archive) {
 		try {
 			int length = s.equals("regularhit") || s.equals("bighit") ? 58 : 256;
@@ -328,7 +334,7 @@ public class RSFontSystem extends Canvas2D {
 	public void drawBasicString(String string, int drawX, int drawY, boolean handleOldSyntax) {
 		drawY -= baseCharacterHeight;
 		int startIndex = -1;
-		if(handleOldSyntax) {
+		if (handleOldSyntax) {
 			string = handleOldSyntax(string);
 		}
 		for (int currentCharacter = 0; currentCharacter < string.length(); currentCharacter++) {
@@ -365,31 +371,32 @@ public class RSFontSystem extends Canvas2D {
 								int imageId = Integer.valueOf(effectString.substring(4));
 								int spriteVersion = 1;
 
-								if(imageId >= 100 && imageId <= 120) { //Smilies
+								if (imageId >= 100 && imageId <= 120) { // Smilies
 									imageId = 838 + imageId - 88;
 									offsetY += 3;
 								}
-								if(imageId <= 17) {
+								if (imageId <= 17) {
 									spriteVersion = 2;
 								}
 								Sprite icon = CacheSpriteLoader.getCacheSprite(imageId);
-								if(spriteVersion == 2) {
+								if (spriteVersion == 2) {
 									icon = Client.modIcons[imageId];
 								}
 								int iconModY = icon.myHeight;
-								switch(imageId) {
-									case 7:
-									case 8:
-									case 9:
-									case 10:
-									case 11:
-										offsetY = offsetY + 2;
-										break;
+								switch (imageId) {
+								case 7:
+								case 8:
+								case 9:
+								case 10:
+								case 11:
+									offsetY = offsetY + 2;
+									break;
 								}
 								if (transparency == 256) {
 									icon.drawSprite(drawX, drawY + baseCharacterHeight + offsetY - iconModY);
 								} else {
-									icon.drawSprite(drawX, drawY + baseCharacterHeight + offsetY - iconModY, transparency);
+									icon.drawSprite(drawX, drawY + baseCharacterHeight + offsetY - iconModY,
+											transparency);
 								}
 								drawX += icon.myWidth;
 							} catch (Exception exception) {
@@ -409,7 +416,8 @@ public class RSFontSystem extends Canvas2D {
 							} catch (Exception exception) {
 								/* empty */
 							}
-						} else if (effectString.startsWith(startIcon)) {//todo icons
+						} else if (effectString.startsWith(startIcon)) {// todo
+																		// icons
 							try {
 								int imageId = Integer.valueOf(effectString.substring(5));
 								Sprite icon = CacheSpriteLoader.getCacheSprite2(103 + imageId);
@@ -435,23 +443,31 @@ public class RSFontSystem extends Canvas2D {
 					if (character != 32) {
 						if (transparency == 256) {
 							if (textShadowColor != -1) {
-								drawCharacter(character, drawX + characterDrawXOffsets[character] + 1, drawY + characterDrawYOffsets[character] + 1, width, height, textShadowColor, true);
+								drawCharacter(character, drawX + characterDrawXOffsets[character] + 1,
+										drawY + characterDrawYOffsets[character] + 1, width, height, textShadowColor,
+										true);
 							}
-							drawCharacter(character, drawX + characterDrawXOffsets[character], drawY + characterDrawYOffsets[character], width, height, textColor, false);
+							drawCharacter(character, drawX + characterDrawXOffsets[character],
+									drawY + characterDrawYOffsets[character], width, height, textColor, false);
 						} else {
 							if (textShadowColor != -1) {
-								drawTransparentCharacter(character, drawX + characterDrawXOffsets[character] + 1, drawY + characterDrawYOffsets[character] + 1, width, height, textShadowColor, transparency, true);
+								drawTransparentCharacter(character, drawX + characterDrawXOffsets[character] + 1,
+										drawY + characterDrawYOffsets[character] + 1, width, height, textShadowColor,
+										transparency, true);
 							}
-							drawTransparentCharacter(character, drawX + characterDrawXOffsets[character], drawY + characterDrawYOffsets[character], width, height, textColor, transparency, false);
+							drawTransparentCharacter(character, drawX + characterDrawXOffsets[character],
+									drawY + characterDrawYOffsets[character], width, height, textColor, transparency,
+									false);
 						}
 					} else if (anInt4178 > 0) {
 						anInt4175 += anInt4178;
 						drawX += anInt4175 >> 8;
-				anInt4175 &= 0xff;
+						anInt4175 &= 0xff;
 					}
 					int lineWidth = characterScreenWidths[character];
 					if (strikethroughColor != -1) {
-						Canvas2D.drawHorizontalLine(drawX, drawY + (int) (baseCharacterHeight * 0.69999999999999996D), lineWidth, strikethroughColor);
+						Canvas2D.drawHorizontalLine(drawX, drawY + (int) (baseCharacterHeight * 0.69999999999999996D),
+								lineWidth, strikethroughColor);
 					}
 					if (underlineColor != -1) {
 						Canvas2D.drawHorizontalLine(drawX, drawY + baseCharacterHeight, lineWidth, underlineColor);
@@ -468,7 +484,7 @@ public class RSFontSystem extends Canvas2D {
 			drawBasicString(string, drawX, drawY, handleOldSyntax);
 		}
 	}
-	
+
 	public void drawCenteredString(String string, int drawX, int drawY, int color, int shadow) {
 		if (string != null) {
 			setColorAndShadow(color, shadow);
@@ -522,13 +538,15 @@ public class RSFontSystem extends Canvas2D {
 
 		if (i_37_ > 0 && i_38_ > 0) {
 			try {
-				createCharacterPixels(Canvas2D.pixels, fontPixels[character], i_39_, i_43_, i_40_, i_37_, i_38_, i_41_, i_42_);
+				createCharacterPixels(Canvas2D.pixels, fontPixels[character], i_39_, i_43_, i_40_, i_37_, i_38_, i_41_,
+						i_42_);
 			} catch (Exception ex) {
 			}
 		}
 	}
 
-	private void drawTransparentCharacter(int i, int i_11_, int i_12_, int i_13_, int i_14_, int i_15_, int i_16_, boolean bool) {
+	private void drawTransparentCharacter(int i, int i_11_, int i_12_, int i_13_, int i_14_, int i_15_, int i_16_,
+			boolean bool) {
 		int i_17_ = i_11_ + i_12_ * Canvas2D.width;
 		int i_18_ = Canvas2D.width - i_13_;
 		int i_19_ = 0;
@@ -559,7 +577,8 @@ public class RSFontSystem extends Canvas2D {
 			i_18_ += i_23_;
 		}
 		if (i_13_ > 0 && i_14_ > 0) {
-			createTransparentCharacterPixels(Canvas2D.pixels, fontPixels[i], i_15_, i_20_, i_17_, i_13_, i_14_, i_18_, i_19_, i_16_);
+			createTransparentCharacterPixels(Canvas2D.pixels, fontPixels[i], i_15_, i_20_, i_17_, i_13_, i_14_, i_18_,
+					i_19_, i_16_);
 		}
 	}
 
@@ -570,7 +589,8 @@ public class RSFontSystem extends Canvas2D {
 		int startIndex = -1;
 		int finalWidth = 0;
 		for (int currentCharacter = 0; currentCharacter < string.length(); currentCharacter++) {
-			if (string.charAt(currentCharacter) == '@' && currentCharacter + 4 < string.length() && string.charAt(currentCharacter + 4) == '@') {
+			if (string.charAt(currentCharacter) == '@' && currentCharacter + 4 < string.length()
+					&& string.charAt(currentCharacter + 4) == '@') {
 				currentCharacter += 4;
 			} else {
 				int character = string.charAt(currentCharacter);
@@ -607,7 +627,8 @@ public class RSFontSystem extends Canvas2D {
 								} catch (Exception exception) {
 									/* empty */
 								}
-							} else if (effectString.startsWith(startIcon)) {//TODO icons
+							} else if (effectString.startsWith(startIcon)) {// TODO
+																			// icons
 								try {// <icon=
 									int iconId = Integer.valueOf(effectString.substring(5));
 									finalWidth += CacheSpriteLoader.getCacheSprite2(103 + iconId).myWidth;
@@ -661,7 +682,8 @@ public class RSFontSystem extends Canvas2D {
 					transparency = defaultTransparency;
 				} else if (string.startsWith(startStrikethrough)) {
 					String color = string.substring(4);
-					strikethroughColor = color.length() < 6 ? Color.decode(color).getRGB() : Integer.parseInt(color, 16);
+					strikethroughColor = color.length() < 6 ? Color.decode(color).getRGB()
+							: Integer.parseInt(color, 16);
 				} else if (string.equals(defaultStrikethrough)) {
 					strikethroughColor = 8388608;
 				} else if (string.equals(endStrikethrough)) {

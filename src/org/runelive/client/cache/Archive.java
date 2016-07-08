@@ -45,34 +45,31 @@ public final class Archive {
 	}
 
 	public byte[] get(String name) {
-		/*byte[] data = null;
-		int hash = getHash(name);
-		for (int i = 0; i < entryCount; i++) {
-			if (entryHashes[i] == hash) {
-				if (data == null) {
-					data = new byte[entrySizes[i]];
-				}
-
-				if (!decompressed) {
-					BZIPDecompressor.decompress(data, entrySizes[i], archiveData, entryCompressedSizes[i], entryPositions[i]);
-				} else {
-					System.arraycopy(archiveData, entryPositions[i], data, 0, entrySizes[i]);
-				}
-
-				return data;
-			}
-		}
-
-		return null;*/
+		/*
+		 * byte[] data = null; int hash = getHash(name); for (int i = 0; i <
+		 * entryCount; i++) { if (entryHashes[i] == hash) { if (data == null) {
+		 * data = new byte[entrySizes[i]]; }
+		 * 
+		 * if (!decompressed) { BZIPDecompressor.decompress(data, entrySizes[i],
+		 * archiveData, entryCompressedSizes[i], entryPositions[i]); } else {
+		 * System.arraycopy(archiveData, entryPositions[i], data, 0,
+		 * entrySizes[i]); }
+		 * 
+		 * return data; } }
+		 * 
+		 * return null;
+		 */
 		byte[] entryData = null;
 		int hash = getHash(name);
 		for (int index = 0; index < this.entryCount; index++) {
 			if (this.entryHashes[index] == hash) {
 				entryData = new byte[this.entrySizes[index]];
 				if (!this.decompressed) {
-					BZIPDecompressor.decompress(entryData, this.entrySizes[index], this.archiveData, this.entryCompressedSizes[index], this.entryPositions[index]);
+					BZIPDecompressor.decompress(entryData, this.entrySizes[index], this.archiveData,
+							this.entryCompressedSizes[index], this.entryPositions[index]);
 				} else {
-					System.arraycopy(this.archiveData, this.entryPositions[index], entryData, 0, this.entrySizes[index]);
+					System.arraycopy(this.archiveData, this.entryPositions[index], entryData, 0,
+							this.entrySizes[index]);
 				}
 			}
 		}

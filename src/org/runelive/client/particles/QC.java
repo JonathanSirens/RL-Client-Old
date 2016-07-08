@@ -1,8 +1,8 @@
 package org.runelive.client.particles;
 
-import org.runelive.client.graphics.Sprite;
-
 import java.util.Random;
+
+import org.runelive.client.graphics.Sprite;
 
 public class QC {
 

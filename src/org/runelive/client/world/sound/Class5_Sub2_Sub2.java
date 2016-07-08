@@ -53,7 +53,9 @@ public final class Class5_Sub2_Sub2 extends Class5_Sub2 {
 	@Override
 	final void method494(int i) throws LineUnavailableException {
 		try {
-			DataLine.Info info = new DataLine.Info(aClass1849 == null ? (aClass1849 = method504("javax.sound.sampled.SourceDataLine")) : aClass1849, anAudioFormat1846, i * 2);
+			DataLine.Info info = new DataLine.Info(
+					aClass1849 == null ? (aClass1849 = method504("javax.sound.sampled.SourceDataLine")) : aClass1849,
+					anAudioFormat1846, i * 2);
 			aSourceDataLine1847 = (SourceDataLine) AudioSystem.getLine(info);
 			aSourceDataLine1847.open();
 			aSourceDataLine1847.start();

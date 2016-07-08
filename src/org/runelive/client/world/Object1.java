@@ -18,7 +18,8 @@ public final class Object1 {
 	/**
 	 * Mutator method for the newuid variable
 	 *
-	 * @param newUIDReplacement the value assigned towards the newuid variable
+	 * @param newUIDReplacement
+	 *            the value assigned towards the newuid variable
 	 * @return newuid new universal identification
 	 */
 

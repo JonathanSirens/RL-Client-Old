@@ -61,45 +61,43 @@ public final class TextDrawingArea extends Canvas2D {
 					rsb[l]--;
 			}
 			if (flag) {
-				if(rsb.length > 73)
+				if (rsb.length > 73)
 					rsb[32] = rsb[73];
 			} else {
-				if(rsb.length > 105)
+				if (rsb.length > 105)
 					rsb[32] = rsb[105];
 			}
 		} catch (Exception _ex) {
 			_ex.printStackTrace();
-			System.out.println("Error loading font: "+s);
+			System.out.println("Error loading font: " + s);
 		}
 	}
 
-	public void method38(String s, int i, int j, int colour, boolean flag)
-	{
+	public void method38(String s, int i, int j, int colour, boolean flag) {
 		int l = getTextWidth(s) / 2;
 		int i1 = method44();
-		if(i - l > Canvas2D.bottomY)
+		if (i - l > Canvas2D.bottomY)
 			return;
-		if(i + l < Canvas2D.topX)
+		if (i + l < Canvas2D.topX)
 			return;
-		if(j - i1 > Canvas2D.bottomX)
+		if (j - i1 > Canvas2D.bottomX)
 			return;
-		if(j < 0)
-		{
+		if (j < 0) {
 			return;
-		} else
-		{
-			drawText(colour, s, i-l, j);
+		} else {
+			drawText(colour, s, i - l, j);
 			return;
 		}
 	}
-	public int method40()
-	{
+
+	public int method40() {
 		return rsb[8] - 1;
 	}
-	public int method44()
-	{
+
+	public int method44() {
 		return rsb[6];
 	}
+
 	public void method380(String s, int i, int j, int k) {
 		method385(j, s, k, i - method384(s));
 	}
@@ -116,14 +114,16 @@ public final class TextDrawingArea extends Canvas2D {
 		drawRegularText(flag, j, i, s, l);
 	}
 
-	public void setPixelsInfo(int width, int height, int transparancy, int newPixels[], byte oldPixels[], int newOffset, int oldOffset, int place1, int place2, int color) {
+	public void setPixelsInfo(int width, int height, int transparancy, int newPixels[], byte oldPixels[], int newOffset,
+			int oldOffset, int place1, int place2, int color) {
 		color = ((color & 0xff00ff) * transparancy & 0xff00ff00) + ((color & 0xff00) * transparancy & 0xff0000) >> 8;
 		transparancy = 256 - transparancy;
 		for (int j2 = -height; j2 < 0; j2++) {
 			for (int k2 = -width; k2 < 0; k2++) {
 				if (oldPixels[oldOffset++] != 0) {
 					int l2 = newPixels[newOffset];
-					newPixels[newOffset++] = (((l2 & 0xff00ff) * transparancy & 0xff00ff00) + ((l2 & 0xff00) * transparancy & 0xff0000) >> 8) + color;
+					newPixels[newOffset++] = (((l2 & 0xff00ff) * transparancy & 0xff00ff00)
+							+ ((l2 & 0xff00) * transparancy & 0xff0000) >> 8) + color;
 				} else {
 					newOffset++;
 				}
@@ -176,7 +176,8 @@ public final class TextDrawingArea extends Canvas2D {
 		for (int i1 = 0; i1 < s.length(); i1++) {
 			char c = s.charAt(i1);
 			if (c != ' ')
-				drawChar(aByteArrayArray1491[c], l + anIntArray1494[c], j + anIntArray1495[c], anIntArray1492[c], anIntArray1493[c], i, opacity);
+				drawChar(aByteArrayArray1491[c], l + anIntArray1494[c], j + anIntArray1495[c], anIntArray1492[c],
+						anIntArray1493[c], i, opacity);
 			l += rsb[c];
 		}
 		k = 50 / k;
@@ -236,7 +237,8 @@ public final class TextDrawingArea extends Canvas2D {
 		for (int i1 = 0; i1 < text.length(); i1++) {
 			char c = text.charAt(i1);
 			if (c != ' ')
-				method392(aByteArrayArray1491[c], l + anIntArray1494[c], j + anIntArray1495[c], anIntArray1492[c], anIntArray1493[c], i);
+				method392(aByteArrayArray1491[c], l + anIntArray1494[c], j + anIntArray1495[c], anIntArray1492[c],
+						anIntArray1493[c], i);
 			l += rsb[c];
 		}
 	}
@@ -249,7 +251,9 @@ public final class TextDrawingArea extends Canvas2D {
 		for (int i1 = 0; i1 < s.length(); i1++) {
 			char c = s.charAt(i1);
 			if (c != ' ')
-				method392(aByteArrayArray1491[c], j + anIntArray1494[c], l + anIntArray1495[c] + (int) (Math.sin((double) i1 / 2D + (double) k / 5D) * 5D), anIntArray1492[c], anIntArray1493[c], i);
+				method392(aByteArrayArray1491[c], j + anIntArray1494[c],
+						l + anIntArray1495[c] + (int) (Math.sin((double) i1 / 2D + (double) k / 5D) * 5D),
+						anIntArray1492[c], anIntArray1493[c], i);
 			j += rsb[c];
 		}
 	}
@@ -262,7 +266,10 @@ public final class TextDrawingArea extends Canvas2D {
 		for (int i1 = 0; i1 < s.length(); i1++) {
 			char c = s.charAt(i1);
 			if (c != ' ')
-				method392(aByteArrayArray1491[c], i + anIntArray1494[c] + (int) (Math.sin((double) i1 / 5D + (double) j / 5D) * 5D), k + anIntArray1495[c] + (int) (Math.sin((double) i1 / 3D + (double) j / 5D) * 5D), anIntArray1492[c], anIntArray1493[c], l);
+				method392(aByteArrayArray1491[c],
+						i + anIntArray1494[c] + (int) (Math.sin((double) i1 / 5D + (double) j / 5D) * 5D),
+						k + anIntArray1495[c] + (int) (Math.sin((double) i1 / 3D + (double) j / 5D) * 5D),
+						anIntArray1492[c], anIntArray1493[c], l);
 			i += rsb[c];
 		}
 	}
@@ -278,7 +285,9 @@ public final class TextDrawingArea extends Canvas2D {
 		for (int k1 = 0; k1 < s.length(); k1++) {
 			char c = s.charAt(k1);
 			if (c != ' ')
-				method392(aByteArrayArray1491[c], l + anIntArray1494[c], k + anIntArray1495[c] + (int) (Math.sin((double) k1 / 1.5D + (double) j) * d), anIntArray1492[c], anIntArray1493[c], i1);
+				method392(aByteArrayArray1491[c], l + anIntArray1494[c],
+						k + anIntArray1495[c] + (int) (Math.sin((double) k1 / 1.5D + (double) j) * d),
+						anIntArray1492[c], anIntArray1493[c], i1);
 			l += rsb[c];
 		}
 	}
@@ -299,8 +308,10 @@ public final class TextDrawingArea extends Canvas2D {
 				char c = s.charAt(i1);
 				if (c != ' ') {
 					if (flag1)
-						method392(aByteArrayArray1491[c], i + anIntArray1494[c] + 1, k + anIntArray1495[c] + 1, anIntArray1492[c], anIntArray1493[c], 0);
-					method392(aByteArrayArray1491[c], i + anIntArray1494[c], k + anIntArray1495[c], anIntArray1492[c], anIntArray1493[c], j);
+						method392(aByteArrayArray1491[c], i + anIntArray1494[c] + 1, k + anIntArray1495[c] + 1,
+								anIntArray1492[c], anIntArray1493[c], 0);
+					method392(aByteArrayArray1491[c], i + anIntArray1494[c], k + anIntArray1495[c], anIntArray1492[c],
+							anIntArray1493[c], j);
 				}
 				i += rsb[c];
 			}
@@ -323,8 +334,10 @@ public final class TextDrawingArea extends Canvas2D {
 			} else {
 				char c = s.charAt(k1);
 				if (c != ' ') {
-					method394(192, i + anIntArray1494[c] + 1, aByteArrayArray1491[c], anIntArray1492[c], i1 + anIntArray1495[c] + 1, anIntArray1493[c], 0);
-					method394(j1, i + anIntArray1494[c], aByteArrayArray1491[c], anIntArray1492[c], i1 + anIntArray1495[c], anIntArray1493[c], j);
+					method394(192, i + anIntArray1494[c] + 1, aByteArrayArray1491[c], anIntArray1492[c],
+							i1 + anIntArray1495[c] + 1, anIntArray1493[c], 0);
+					method394(j1, i + anIntArray1494[c], aByteArrayArray1491[c], anIntArray1492[c],
+							i1 + anIntArray1495[c], anIntArray1493[c], j);
 				}
 				i += rsb[c];
 				if ((aRandom1498.nextInt() & 3) == 0)
@@ -336,7 +349,7 @@ public final class TextDrawingArea extends Canvas2D {
 		if (s.equals("369"))// color code, use as @###@
 			return 0x336699;// hex code
 		if (s.equals("325"))// color code, use as @###@
-			return 0x31A4FF;// hex code	
+			return 0x31A4FF;// hex code
 		if (s.equals("glb"))
 			return 0x4AA02C;
 		if (s.equals("mon"))
@@ -520,8 +533,9 @@ public final class TextDrawingArea extends Canvas2D {
 	public int anInt1497;
 	public Random aRandom1498;
 	public boolean aBoolean1499;
-	public static void drawAlphaFilledPixels(int xPos, int yPos,
-			int pixelWidth, int pixelHeight, int color, int alpha) {// method586
+
+	public static void drawAlphaFilledPixels(int xPos, int yPos, int pixelWidth, int pixelHeight, int color,
+			int alpha) {// method586
 		if (xPos < topX) {
 			pixelWidth -= topX - xPos;
 			xPos = topX;
@@ -534,16 +548,14 @@ public final class TextDrawingArea extends Canvas2D {
 			pixelWidth = bottomX - xPos;
 		if (yPos + pixelHeight > bottomY)
 			pixelHeight = bottomY - yPos;
-		color = ((color & 0xff00ff) * alpha >> 8 & 0xff00ff)
-				+ ((color & 0xff00) * alpha >> 8 & 0xff00);
+		color = ((color & 0xff00ff) * alpha >> 8 & 0xff00ff) + ((color & 0xff00) * alpha >> 8 & 0xff00);
 		int k1 = 256 - alpha;
 		int l1 = width - pixelWidth;
 		int i2 = xPos + yPos * width;
 		for (int j2 = 0; j2 < pixelHeight; j2++) {
 			for (int k2 = -pixelWidth; k2 < 0; k2++) {
 				int l2 = pixels[i2];
-				l2 = ((l2 & 0xff00ff) * k1 >> 8 & 0xff00ff)
-						+ ((l2 & 0xff00) * k1 >> 8 & 0xff00);
+				l2 = ((l2 & 0xff00ff) * k1 >> 8 & 0xff00ff) + ((l2 & 0xff00) * k1 >> 8 & 0xff00);
 				pixels[i2++] = color + l2;
 			}
 			i2 += l1;

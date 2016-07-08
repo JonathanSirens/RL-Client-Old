@@ -1,6 +1,5 @@
 package org.runelive.client.renderable;
 
-import org.runelive.client.Client;
 import org.runelive.client.cache.definition.Animation;
 
 public class Entity extends Animable {
@@ -64,7 +63,7 @@ public class Entity extends Animable {
 	public int currentAnim;
 	public int nextGraphicsAnimationFrame;
 	public int nextAnimationFrame;
-	
+
 	public Entity() {
 		smallX = new int[10];
 		smallY = new int[10];
