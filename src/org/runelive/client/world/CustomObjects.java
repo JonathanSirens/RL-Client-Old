@@ -52,6 +52,8 @@ public class CustomObjects {
 		//Anvil @ Donator Zone
 		{4306, 2540, 3891, 0, 0},
 		
+		{10517, 3367, 3271, 0, 2},
+		
 		//Fishing @ Donator Zone
 		{10091, 2560, 3892, 0, 0},
 		{409, 2501, 3865, 0, 0},
