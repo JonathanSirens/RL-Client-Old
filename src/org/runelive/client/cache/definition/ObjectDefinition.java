@@ -1176,6 +1176,10 @@ public final class ObjectDefinition {
 			definition.actions = new String[] { "Investigate", "Contribute", null, null, null };
 			definition.name = "Well of Goodwill";
 		}
+		if(id == 2515) {
+			definition.actions = new String[] { "Climb-in", null, null, null, null };
+			definition.name = "Row boat";
+		}
 		if (id == 25014 || id == 25026 || id == 25020 || id == 25019 || id == 25024 || id == 25025 || id == 25016
 				|| id == 5167 || id == 5168) {
 			definition.actions = new String[5];
