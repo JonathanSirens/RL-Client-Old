@@ -519,6 +519,9 @@ public final class ItemDefinition {
                 itemDef.groundActions = new String[]{null, null, "Take", null, null};
                 itemDef.actions = new String[]{null, null, "Summon", null, "Drop"};
                 break;
+            case 3046:
+            case 3044:
+            case 3042:
             case 3040:
                 itemDef.originalModelColors = new int[]{
                         2524
@@ -4338,7 +4341,7 @@ public final class ItemDefinition {
                 itemDef.modelRotation2 = 198;
                 itemDef.modelOffset1 = 1;
                 itemDef.modelOffsetY = -1;
-                itemDef.originalModelColors = new int[]{37440};
+                itemDef.originalModelColors = new int[]{2524};
                 itemDef.modifiedModelColors = new int[]{33715};
                 itemDef.groundActions[2] = "Take";
                 itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
@@ -4368,7 +4371,7 @@ public final class ItemDefinition {
                 itemDef.modelRotation2 = 198;
                 itemDef.modelOffset1 = 1;
                 itemDef.modelOffsetY = -1;
-                itemDef.originalModelColors = new int[]{37440};
+                itemDef.originalModelColors = new int[]{2524};
                 itemDef.modifiedModelColors = new int[]{33715};
                 itemDef.groundActions[2] = "Take";
                 itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
@@ -4398,7 +4401,7 @@ public final class ItemDefinition {
                 itemDef.modelRotation2 = 198;
                 itemDef.modelOffset1 = 1;
                 itemDef.modelOffsetY = -1;
-                itemDef.originalModelColors = new int[]{37440};
+                itemDef.originalModelColors = new int[]{2524};
                 itemDef.modifiedModelColors = new int[]{33715};
                 itemDef.groundActions[2] = "Take";
                 itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
@@ -4428,7 +4431,7 @@ public final class ItemDefinition {
                 itemDef.modelRotation2 = 198;
                 itemDef.modelOffset1 = 1;
                 itemDef.modelOffsetY = -1;
-                itemDef.originalModelColors = new int[]{37440};
+                itemDef.originalModelColors = new int[]{2524};
                 itemDef.modifiedModelColors = new int[]{33715};
                 itemDef.groundActions[2] = "Take";
                 itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
@@ -4458,7 +4461,7 @@ public final class ItemDefinition {
                 itemDef.modelRotation2 = 198;
                 itemDef.modelOffset1 = 1;
                 itemDef.modelOffsetY = -1;
-                itemDef.originalModelColors = new int[]{37440};
+                itemDef.originalModelColors = new int[]{2524};
                 itemDef.modifiedModelColors = new int[]{33715};
                 itemDef.groundActions[2] = "Take";
                 itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
@@ -4488,7 +4491,7 @@ public final class ItemDefinition {
                 itemDef.modelRotation2 = 198;
                 itemDef.modelOffset1 = 1;
                 itemDef.modelOffsetY = -1;
-                itemDef.originalModelColors = new int[]{37440};
+                itemDef.originalModelColors = new int[]{2524};
                 itemDef.modifiedModelColors = new int[]{33715};
                 itemDef.groundActions[2] = "Take";
                 itemDef.actions = new String[]{"Drink", null, null, null, null, "Drop"};
