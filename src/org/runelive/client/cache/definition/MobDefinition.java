@@ -237,7 +237,7 @@ public final class MobDefinition {
 			definition.npcModels = new int[2];
 			definition.npcModels[0] = 28294;
 			definition.npcModels[1] = 28295;
-			definition.name = "Venenatis";
+			definition.name = "Venenatis spiderling";
 			definition.actions = new String[] { "Pick-up", null, null, null, null };
 			MobDefinition ven2 = get(60);
 			definition.standAnimation = ven2.standAnimation;
@@ -747,7 +747,7 @@ public final class MobDefinition {
 			break;
 
 		case 3033:
-			definition.name = "Chaos elemental";
+			definition.name = "Chaos Elemental Jr.";
 			definition.actions = new String[5];
 			definition.actions[0] = "Pick-up";
 			definition.npcModels = new int[] { 11216 };

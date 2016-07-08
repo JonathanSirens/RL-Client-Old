@@ -581,8 +581,14 @@ public final class ItemDefinition {
 			break;
 		case 11995:
 			itemDef.setDefaults();
-			itemDef.immitate(get(12458));
-			itemDef.name = "Pet Chaos elemental";
+			itemDef.modelID = 28256;
+			itemDef.modelZoom = 1284;
+			itemDef.modelRotation1 = 0;
+			itemDef.modelRotation2 = 175;
+			itemDef.modelOffset1 = -66;
+			itemDef.modelOffsetY = 75;
+			itemDef.modelOffsetX = 1939;
+			itemDef.name = "Chaos Elemental Jr.";
 			itemDef.groundActions = new String[] { null, null, "Take", null, null };
 			itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 			break;
