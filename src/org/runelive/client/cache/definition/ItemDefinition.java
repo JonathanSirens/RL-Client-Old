@@ -6047,6 +6047,19 @@ public final class ItemDefinition {
 			itemDef.maleWearId = 28622;
 			itemDef.femaleWearId = 28622;
 			break;
+		case 21137:
+			itemDef.setDefaults();
+			itemDef.modelID = 2429;
+			itemDef.name = "3rd age bow";
+			itemDef.actions = new String[] { null, null, null, null, null, null };
+			itemDef.modelZoom = 760;
+			itemDef.modelRotation2 = 28;
+			itemDef.modelRotation1 = 552;
+			itemDef.modelOffsetX = itemDef.modelOffset1 = 0;
+			itemDef.stackable = true;
+			itemDef.certID = 21136;
+			itemDef.certTemplateID = 799;
+			break;
 		case 20147:
 			itemDef.modifiedModelColors = new int[2];
 			itemDef.originalModelColors = new int[2];
