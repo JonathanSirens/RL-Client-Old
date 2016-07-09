@@ -13749,6 +13749,10 @@ public class Client extends GameRenderer {
 					}
 					pktType = -1;
 					return true;
+				} else if (frame == 1 && text.equals("ZULRAHFADE")) {
+					fadingScreen = new FadingScreen("Welcome to Zulrah's shrine", (byte) 1, (byte) 5);
+					pktType = -1;
+					return true;
 				} else if (text.equals("[CLOSEMENU]") && frame == 0) {
 					menuOpen = false;
 					pktType = -1;
