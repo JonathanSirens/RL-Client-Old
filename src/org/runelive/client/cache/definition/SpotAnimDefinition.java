@@ -53,6 +53,7 @@ public final class SpotAnimDefinition {
 		// Zulrah
 		cache[1044].modelId = 70003;
 		cache[1044].animationId = 5358;
+		cache[1044].animation = Animation.cache[5358];
 		cache[1044].shadow = 20;
 		cache[1044].originalModelColours = new int[] { 22476, 25511, 0, 0, 0, 0, };
 		cache[1044].changedModelColours = new int[] { 30608, 30236, 0, 0, 0, 0, };

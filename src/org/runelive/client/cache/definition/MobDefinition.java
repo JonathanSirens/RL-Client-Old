@@ -965,8 +965,9 @@ public final class MobDefinition {
 			definition.standAnimation = 5070;
 			definition.walkAnimation = 5070;
 			definition.combatLevel = 725;
-			definition.adjustVertextPointsXOrY = 100;
-			definition.adjustVertextPointZ = 100;
+			definition.npcSizeInSquares = 4;
+			definition.adjustVertextPointsXOrY = 128;
+			definition.adjustVertextPointZ = 128;
 			break;
 		case 2043:// melee
 			definition.name = "Zulrah";
@@ -976,8 +977,9 @@ public final class MobDefinition {
 			definition.standAnimation = 5070;
 			definition.walkAnimation = 5070;
 			definition.combatLevel = 725;
-			definition.adjustVertextPointsXOrY = 100;
-			definition.adjustVertextPointZ = 100;
+			definition.npcSizeInSquares = 4;
+			definition.adjustVertextPointsXOrY = 128;
+			definition.adjustVertextPointZ = 128;
 			break;
 		case 2044:// mage
 			definition.name = "Zulrah";
@@ -987,8 +989,9 @@ public final class MobDefinition {
 			definition.standAnimation = 5070;
 			definition.walkAnimation = 5070;
 			definition.combatLevel = 725;
-			definition.adjustVertextPointsXOrY = 100;
-			definition.adjustVertextPointZ = 100;
+			definition.npcSizeInSquares = 4;
+			definition.adjustVertextPointsXOrY = 128;
+			definition.adjustVertextPointZ = 128;
 			break;
 		case 2045:// jad
 			definition.name = "Zulrah";
@@ -998,8 +1001,21 @@ public final class MobDefinition {
 			definition.standAnimation = 5070;
 			definition.walkAnimation = 5070;
 			definition.combatLevel = 725;
-			definition.adjustVertextPointsXOrY = 100;
-			definition.adjustVertextPointZ = 100;
+			definition.npcSizeInSquares = 4;
+			definition.adjustVertextPointsXOrY = 128;
+			definition.adjustVertextPointZ = 128;
+			break;
+		case 2046:// snakeling
+			definition.name = "Snakeling";
+			definition.actions = new String[] { null, "Attack", null, null, null };
+			definition.npcModels = new int[1];
+			definition.npcModels[0] = 10415;
+			definition.standAnimation = 5070;
+			definition.walkAnimation = 5070;
+			definition.combatLevel = 90;
+			definition.npcSizeInSquares = 1;
+			definition.adjustVertextPointsXOrY = 128;
+			definition.adjustVertextPointZ = 128;
 			break;
 		case 3053:
 			definition.npcModels = new int[] { 46058, 46057 };
