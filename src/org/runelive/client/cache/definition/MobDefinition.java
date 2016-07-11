@@ -796,6 +796,12 @@ public final class MobDefinition {
 			definition.adjustVertextPointsXOrY = 43;
 			definition.npcSizeInSquares = 2;
 			break;
+
+			case 13089:
+				definition.actions = new String[5];
+				definition.actions[0] = "Pick-up";
+				break;
+
 		case 3037:
 			definition.name = "Commander zilyana";
 			definition.actions = new String[5];
