@@ -957,18 +957,21 @@ public final class MobDefinition {
 			definition.adjustVertextPointsXOrY = 70;
 			definition.npcSizeInSquares = 2;
 			break;
-		case 2042:// regular
-			definition.name = "Zulrah";
-			definition.actions = new String[] { null, "Attack", null, null, null };
-			definition.npcModels = new int[1];
-			definition.npcModels[0] = 14407;
-			definition.standAnimation = 5070;
-			definition.walkAnimation = 5070;
-			definition.combatLevel = 725;
-			definition.npcSizeInSquares = 4;
-			definition.adjustVertextPointsXOrY = 128;
-			definition.adjustVertextPointZ = 128;
-			break;
+			case 2042:// regular
+				definition.name = "Zulrah";
+				definition.actions = new String[] { null, "Attack", null, null, null };
+				definition.npcModels = new int[1];
+				definition.npcModels[0] = 14407;
+				definition.standAnimation = 5070;
+				definition.walkAnimation = 5070;
+				definition.combatLevel = 725;
+				definition.npcSizeInSquares = 4;
+				definition.adjustVertextPointsXOrY = 128;
+				definition.adjustVertextPointZ = 128;
+				break;
+			case 10775:// Wilderness frost dragons
+				definition.actions = new String[] { null, "Attack", null, null, null };
+				break;
 		case 2043:// melee
 			definition.name = "Zulrah";
 			definition.actions = new String[] { null, "Attack", null, null, null };
