@@ -5480,7 +5480,9 @@ public class Client extends GameRenderer {
 				k4 = 25;
 			}
 
-			i4--;
+			if (i4 > 0) {
+				i4--;
+			}
 			int k6 = bigX[i4];
 			int i7 = bigY[i4];
 			setAnInt1288(getAnInt1288() + k4);
@@ -5492,22 +5494,22 @@ public class Client extends GameRenderer {
 			}
 
 			if (type == 0) {
-				getOut().putOpcode(229);
-				getOut().putByte(plane);
+				//getOut().putOpcode(229);
+				//getOut().putByte(plane);
 				getOut().putOpcode(164);
 				getOut().putByte(k4 + k4 + 3);
 			}
 
 			if (type == 1) {
-				getOut().putOpcode(229);
-				getOut().putByte(plane);
+				//getOut().putOpcode(229);
+				//getOut().putByte(plane);
 				getOut().putOpcode(248);
 				getOut().putByte(k4 + k4 + 3 + 14);
 			}
 
 			if (type == 2) {
-				getOut().putOpcode(229);
-				getOut().putByte(plane);
+				//getOut().putOpcode(229);
+				//getOut().putByte(plane);
 				getOut().putOpcode(98);
 				getOut().putByte(k4 + k4 + 3);
 			}
