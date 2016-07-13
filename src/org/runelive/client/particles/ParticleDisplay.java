@@ -1,16 +1,16 @@
 package org.runelive.client.particles;
 
-public class KC {
+public class ParticleDisplay {
 
 	private int I;
 	private int Z;
 	private int rgb;
 	private float B;
-	private Vector3 D;
+	private Position D;
 	private float alpha;
 	private boolean J;
-	private QC S;
-	private Vector3 A;
+	private Particle S;
+	private Position A;
 
 	public final float getAlpha() {
 		return this.alpha;
@@ -35,20 +35,20 @@ public class KC {
 		}
 	}
 
-	public final QC B() {
+	public final Particle B() {
 		return this.S;
 	}
 
-	public final Vector3 D() {
+	public final Position D() {
 		return this.A;
 	}
 
-	public KC(QC var1, Vector3 var2, int var3) {
-		this(var1.J(), var1.F(), var1.S().B(), var1.B().I(QC.I).Z(var2), var1.I(), var3);
+	public ParticleDisplay(Particle var1, Position var2, int var3) {
+		this(var1.getRGB(), var1.F(), var1.S().B(), var1.B().I(Particle.I).Z(var2), var1.I(), var3);
 		this.S = var1;
 	}
 
-	public KC(int var1, float var2, Vector3 var3, Vector3 var4, float var5, int var6) {
+	public ParticleDisplay(int var1, float var2, Position var3, Position var4, float var5, int var6) {
 		this.Z = 0;
 		this.J = false;
 		this.S = null;
@@ -67,11 +67,11 @@ public class KC {
 	public final int getRgb() {
 		return this.rgb;
 	}
-
+	
 	public void setRgb(int rgb) {
 		this.rgb = rgb;
 	}
-
+	
 	public void setAlpha(float alpha) {
 		this.alpha = alpha;
 	}

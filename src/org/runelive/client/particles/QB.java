@@ -4,6 +4,6 @@ import java.util.Random;
 
 public interface QB {
 
-	Vector3 I(Random var1);
+	Position I(Random var1);
 
 }

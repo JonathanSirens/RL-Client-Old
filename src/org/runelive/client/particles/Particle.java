@@ -3,36 +3,44 @@ package org.runelive.client.particles;
 import java.util.Random;
 
 import org.runelive.client.graphics.Sprite;
+import org.runelive.client.particles.impl.*;
 
-public class QC {
+public class Particle {
+
+	public static final Particle[] PARTICLE_ARRAY = new Particle[] { new MaxParticle(), new TokHaarParticle(), new DungeoneeringParticle(),
+			new CompletionistParticle(), new TrimmedCompletionistParticle() };
 
 	public static final Random I = new Random(System.currentTimeMillis());
-	public static QC[] Z = new QC[] { new MC(), new NC(), new OC(), new PC() };
 	private float currentTimeMillis = 1.0F;
 	private float C = 1.0F;
-	private int B = -1;
+	
+	/**
+	 * Decimal color.
+	 */
+	private int rgbColor = -1;
+	
 	private int D = -1;
-	private Vector3 F;
-	private Vector3 J;
+	private Position F;
+	private Position J;
 	private int S;
 	private int E;
 	private Sprite particleSprite;
 	private float H;
 	private float K;
 	private QB M;
-	private Vector3 N;
+	private Position N;
 	private int O;
 	private float P;
 	private float Q;
 
-	public QC() {
-		this.F = Vector3.VECTOR_3;
-		this.J = Vector3.VECTOR_3;
+	public Particle() {
+		this.F = Position.POSITION;
+		this.J = Position.POSITION;
 		this.S = 1;
 		this.E = 1;
 		this.H = 1.0F;
 		this.K = 0.05F;
-		this.M = new UC(Vector3.VECTOR_3);
+		this.M = new UC(Position.POSITION);
 	}
 
 	public final float I() {
@@ -79,23 +87,23 @@ public class QC {
 		this.C = var1;
 	}
 
-	public final int J() {
-		return this.B;
+	public final int getRGB() {
+		return this.rgbColor;
 	}
 
-	public final void Z(int var1) {
-		this.B = var1;
+	public final void setRGB(int var1) {
+		this.rgbColor = var1;
 	}
 
-	public final Vector3 S() {
+	public final Position S() {
 		return this.F;
 	}
 
-	public final void Z(Vector3 var1) {
+	public final void Z(Position var1) {
 		this.F = var1;
 	}
 
-	public final void getImage(Vector3 var1) {
+	public final void getImage(Position var1) {
 		this.J = var1;
 	}
 
@@ -115,7 +123,7 @@ public class QC {
 		return this.P;
 	}
 
-	public final Vector3 G() {
+	public final Position G() {
 		return this.N;
 	}
 
@@ -125,9 +133,8 @@ public class QC {
 
 	public final void K() {
 		this.P = (this.C - this.currentTimeMillis) / ((float) this.S * 1.0F);
-		this.O = (this.D - this.B) / this.S;
+		this.O = (this.D - this.rgbColor) / this.S;
 		this.N = this.J.I(this.F).I((float) this.S);
 		this.Q = (this.K - this.H) / (float) this.S;
 	}
-
 }

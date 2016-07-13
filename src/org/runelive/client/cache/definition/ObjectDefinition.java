@@ -1662,14 +1662,14 @@ public final class ObjectDefinition {
 			}
 			boolean flag1 = true;
 			for (int objectModelID : objectModelIDs) {
-				flag1 &= Model.isModelLoaded(objectModelID & 0xffff);
+				flag1 &= Model.method463(objectModelID & 0xffff);
 			}
 
 			return flag1;
 		}
 		for (int j = 0; j < anIntArray776.length; j++) {
 			if (anIntArray776[j] == i) {
-				return Model.isModelLoaded(objectModelIDs[j] & 0xffff);
+				return Model.method463(objectModelIDs[j] & 0xffff);
 			}
 		}
 
@@ -1706,7 +1706,7 @@ public final class ObjectDefinition {
 		}
 		boolean flag1 = true;
 		for (int objectModelID : objectModelIDs) {
-			flag1 &= Model.isModelLoaded(objectModelID & 0xffff);
+			flag1 &= Model.method463(objectModelID & 0xffff);
 		}
 		return flag1;
 	}
@@ -1755,7 +1755,7 @@ public final class ObjectDefinition {
 				}
 				model = (Model) mruNodes1.insertFromCache(l2);
 				if (model == null) {
-					model = Model.fetchModel(l2 & 0xffff);
+					model = Model.method462(l2 & 0xffff);
 					if (model == null) {
 						return null;
 					}
@@ -1800,7 +1800,7 @@ public final class ObjectDefinition {
 			}
 			model = (Model) mruNodes1.insertFromCache(j2);
 			if (model == null) {
-				model = Model.fetchModel(j2 & 0xffff);
+				model = Model.method462(j2 & 0xffff);
 				if (model == null) {
 					return null;
 				}
