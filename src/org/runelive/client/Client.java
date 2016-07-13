@@ -38,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -98,6 +99,8 @@ import org.runelive.client.graphics.rsinterface.PetSystem;
 import org.runelive.client.io.ByteBuffer;
 import org.runelive.client.io.ISAACCipher;
 import org.runelive.client.net.Connection;
+import org.runelive.client.particles.Particle;
+import org.runelive.client.particles.ParticleDisplay;
 import org.runelive.client.renderable.Animable;
 import org.runelive.client.renderable.Animable_Sub3;
 import org.runelive.client.renderable.Animable_Sub5;
@@ -1253,8 +1256,17 @@ public class Client extends GameRenderer {
 		getOut().putOpcode(185);
 		getOut().putShort(6667);
 	}
+	
+	private ArrayList<ParticleDisplay> displayedParticles;
+	private ArrayList<ParticleDisplay> particlesToBeRemoved;
+
+	public final void I(ParticleDisplay particle) {
+		displayedParticles.add(particle);
+	}
 
 	public Client() {
+		displayedParticles = new ArrayList<ParticleDisplay>(10000);
+		particlesToBeRemoved = new ArrayList<ParticleDisplay>();
 		accountManager = new AccountManager();
 		grandExchange = new GrandExchange();
 		loadingImages = new BufferedImage[4];
@@ -3183,10 +3195,10 @@ public class Client extends GameRenderer {
 		i -= xCameraPos;
 		i1 -= zCameraPos;
 		l -= yCameraPos;
-		int j1 = Model.SINE[yCameraCurve];
-		int k1 = Model.COSINE[yCameraCurve];
-		int l1 = Model.SINE[xCameraCurve];
-		int i2 = Model.COSINE[xCameraCurve];
+		int j1 = Model.modelIntArray1[yCameraCurve];
+		int k1 = Model.modelIntArray2[yCameraCurve];
+		int l1 = Model.modelIntArray1[xCameraCurve];
+		int i2 = Model.modelIntArray2[xCameraCurve];
 		int j2 = l * l1 + i * i2 >> 16;
 		l = l * i2 - i * l1 >> 16;
 		i = j2;
@@ -6064,7 +6076,7 @@ public class Client extends GameRenderer {
 			Model model;
 			final Model[] parts = new Model[petDef.getModelArrayLength()];
 			for (int i = 0; i < petDef.getModelArrayLength(); i++) {
-				parts[i] = Model.fetchModel(petDef.getModelArray()[i]);
+				parts[i] = Model.method462(petDef.getModelArray()[i]);
 			}
 			if (parts.length == 1) {
 				model = parts[0];
@@ -7887,8 +7899,8 @@ public class Client extends GameRenderer {
 		int l = k * k + j * j;
 		if (l > 4225 && l < 0x15f90) {
 			int i1 = viewRotation + minimapRotation & 0x7ff;
-			int j1 = Model.SINE[i1];
-			int k1 = Model.COSINE[i1];
+			int j1 = Model.modelIntArray1[i1];
+			int k1 = Model.modelIntArray2[i1];
 			j1 = j1 * 256 / (minimapZoom + 256);
 			k1 = k1 * 256 / (minimapZoom + 256);
 			int l1 = j * j1 + k * k1 >> 16;
@@ -9344,8 +9356,8 @@ public class Client extends GameRenderer {
 			return;
 		}
 
-		int spriteX = Model.SINE[rotation];
-		int spriteY = Model.COSINE[rotation];
+		int spriteX = Model.modelIntArray1[rotation];
+		int spriteY = Model.modelIntArray2[rotation];
 		spriteX = spriteX * 256 / (minimapZoom + 256);
 		spriteY = spriteY * 256 / (minimapZoom + 256);
 		int drawX = y * spriteX + x * spriteY >> 16;
@@ -10690,6 +10702,8 @@ public class Client extends GameRenderer {
 			}
 		}
 	}
+	
+	public static boolean displayParticles = true;
 
 	private void method146() {
 		anInt1265++;
@@ -10738,7 +10752,7 @@ public class Client extends GameRenderer {
 		Model.anInt1686 = super.mouseY - 4;
 
 		// blue fog: 0x5DA4C9, white: 0xc8c0a8
-		Canvas2D.drawPixels(getScreenHeight(), 0, 0, Configuration.FOG_ENABLED ? 0x5DA4C9 : 0, getScreenWidth());
+		Canvas2D.drawPixels(getScreenHeight(), 0, 0, Configuration.FOG_ENABLED ? 0xC8C0A8 : 0, getScreenWidth());
 		// Canvas2D.drawAlphaGradient(0, 0, getScreenWidth(),
 		// getScreenHeight(), 0x5DA4C9, 0x9DA4C2, 255);
 
@@ -10747,6 +10761,104 @@ public class Client extends GameRenderer {
 					Configuration.FOG_ENABLED);
 			worldController.clearObj5Cache();
 		}
+		
+		Iterator<ParticleDisplay> iterator;
+		ParticleDisplay particle;
+		if (displayParticles) {
+			iterator = displayedParticles.iterator();
+			while (iterator.hasNext()) {
+				particle = iterator.next();
+				if (particle != null) {
+					particle.C();
+					if (particle.Z()) {
+						particlesToBeRemoved.add(particle);
+					} else {
+						Particle var16 = particle.B();
+						int var40 = particle.D().I();
+						int var41 = particle.D().Z();
+						int var42 = particle.D().C();
+						int var43;
+						int var44;
+						if (var16.getImage() == null) {
+							var43 = 8;
+							var44 = 8;
+						} else {
+							var43 = var16.getImage().myWidth / 4;
+							var44 = var16.getImage().myHeight / 4;
+						}
+						var43 = (int) (var43 * particle.S());
+						var44 = (int) (var44 * particle.S());
+						int[] var13 = write(var40, var41, var42, var43, var44);
+						var43 = var13[5] - var13[3];
+						var44 = var13[6] - var13[4];
+						int alpha = (int) (particle.getAlpha() * 255.0F);
+						int var21 = (int) (4.0F * particle.S());
+						int srcAlpha = 256 - alpha;
+						int srcR = (particle.getRgb() >> 16 & 255) * alpha;
+						int srcG = (particle.getRgb() >> 8 & 255) * alpha;
+						int srcB = (particle.getRgb() & 255) * alpha;
+						int var26 = var13[1] - var21;
+						if (var26 < 0) {
+							var26 = 0;
+						}
+						int var27 = var13[1] + var21;
+						if (var27 >= Canvas3D.height) {
+							var27 = Canvas3D.height - 1;
+						}
+						for (int var28 = var26; var28 <= var27; ++var28) {
+							int var29 = var28 - var13[1];
+							int var30 = (int) Math.sqrt(var21 * var21 - var29 * var29);
+							int var31 = var13[0] - var30;
+							if (var31 < 0) {
+								var31 = 0;
+							}
+							int var32 = var13[0] + var30;
+							if (var32 >= Canvas3D.width) {
+								var32 = Canvas3D.width - 1;
+							}
+							int pixel = var31 + var28 * Canvas3D.width;
+							int var34;
+							if (var16.getImage() != null) {
+								//if (Texture.depthBuffer != null) {
+									//if (Texture.depthBuffer[pixel++] >> 16 >= particle.F()) {
+										var16.getImage().drawTransparentSprite(var13[0], var13[1], alpha);
+									//}
+								//}
+							} else {
+								try {
+									//if (Texture.depthBuffer[pixel++] >> 16 >= particle.F()) {
+										for (var34 = var31; var34 <= var32; ++var34) {
+											int dstR = (gameScreenIP.anIntArray315[pixel] >> 16 & 255) * srcAlpha;
+											int dstG = (gameScreenIP.anIntArray315[pixel] >> 8 & 255) * srcAlpha;
+											int dstB = (gameScreenIP.anIntArray315[pixel] & 255) * srcAlpha;
+											int rgb = (srcR + dstR >> 8 << 16) + (srcG + dstG >> 8 << 8) + (srcB + dstB >> 8);
+											gameScreenIP.anIntArray315[pixel++] = rgb;
+										}
+									//}
+								} catch (Exception exception) {
+
+								}
+							}
+						}
+					}
+				}
+			}
+		} else {
+			iterator = displayedParticles.iterator();
+			while (iterator.hasNext()) {
+				particle = iterator.next();
+				if (particle != null) {
+					particle.C();
+					if (particle.Z()) {
+						particlesToBeRemoved.add(particle);
+					}
+				}
+			}
+			displayedParticles.removeAll(particlesToBeRemoved);
+			particlesToBeRemoved.clear();
+		}
+		displayedParticles.removeAll(particlesToBeRemoved);
+		particlesToBeRemoved.clear();
 
 		updateEntities();
 		drawHeadIcon();
@@ -10808,6 +10920,34 @@ public class Client extends GameRenderer {
 			yCameraPos = j1;
 			yCameraCurve = k1;
 			xCameraCurve = l1;
+		}
+	}
+	
+	public final int[] write(int var1, int var2, int var3, int var4, int var5) {
+		if (var1 >= 128 && var3 >= 128 && var1 <= 13056 && var3 <= 13056) {
+			int var6 = method42(plane, var3, var1) - var2;
+			var1 -= xCameraPos;
+			var6 -= zCameraPos;
+			var3 -= yCameraPos;
+			int var7 = Model.modelIntArray1[yCameraCurve];
+			int var8 = Model.modelIntArray2[yCameraCurve];
+			int var9 = Model.modelIntArray1[xCameraCurve];
+			int var10 = Model.modelIntArray2[xCameraCurve];
+			int var11 = var3 * var9 + var1 * var10 >> 16;
+			var3 = var3 * var10 - var1 * var9 >> 16;
+			var1 = var11;
+			var11 = var6 * var8 - var3 * var7 >> 16;
+			var3 = var6 * var7 + var3 * var8 >> 16;
+			return var3 >= 50 && var3 <= 3500 ? new int[] { Canvas3D.centerX + (var1 << log_view_dist) / var3,
+					Canvas3D.centerY + (var11 << log_view_dist) / var3, var3,
+					Canvas3D.centerX + (var1 - var4 / 2 << log_view_dist) / var3,
+					Canvas3D.centerY + (var11 - var5 / 2 << log_view_dist) / var3,
+					Canvas3D.centerX + (var1 + var4 / 2 << log_view_dist) / var3,
+					Canvas3D.centerY + (var11 + var5 / 2 << log_view_dist) / var3 }
+
+					: new int[] { 0, 0, 0, 0, 0, 0, 0 };
+		} else {
+			return new int[] { 0, 0, 0, 0, 0, 0, 0 };
 		}
 	}
 
@@ -12646,7 +12786,7 @@ public class Client extends GameRenderer {
 		for (int i = 0; i < afile.length; i++) {
 			String s = afile[i].getName();
 			byte fileData[] = ReadFile(Signlink.getCacheDirectory() + "/cache_index_data/index1/" + s);
-			Model.decodeModelHeader(fileData, Integer.parseInt(getFileNameWithoutExtension(s)));
+			Model.method460(fileData, Integer.parseInt(getFileNameWithoutExtension(s)));
 		}
 	}
 
@@ -15256,7 +15396,7 @@ public class Client extends GameRenderer {
 					if (onDemandData.getIndex() == 5) {
 						modelId += 65535;
 					}
-					Model.decodeModelHeader(onDemandData.getData(), modelId);
+					Model.method460(onDemandData.getData(), modelId);
 					// needDrawTabArea = true;
 					if (backDialogID != -1) {
 						setInputTaken(true);
@@ -15952,15 +16092,15 @@ public class Client extends GameRenderer {
 		int k2 = 0;
 		int l2 = j;
 		if (l1 != 0) {
-			int i3 = Model.SINE[l1];
-			int k3 = Model.COSINE[l1];
+			int i3 = Model.modelIntArray1[l1];
+			int k3 = Model.modelIntArray2[l1];
 			int i4 = k2 * k3 - l2 * i3 >> 16;
 			l2 = k2 * i3 + l2 * k3 >> 16;
 			k2 = i4;
 		}
 		if (i2 != 0) {
-			int j3 = Model.SINE[i2];
-			int l3 = Model.COSINE[i2];
+			int j3 = Model.modelIntArray1[i2];
+			int l3 = Model.modelIntArray2[i2];
 			int j4 = l2 * j3 + j2 * l3 >> 16;
 			l2 = l2 * l3 - j2 * j3 >> 16;
 			j2 = j4;

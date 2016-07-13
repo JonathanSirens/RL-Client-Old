@@ -10,14 +10,16 @@ import org.runelive.client.cache.ondemand.CacheFileRequest;
 import org.runelive.client.cache.ondemand.CacheFileRequester;
 import org.runelive.client.graphics.Canvas2D;
 import org.runelive.client.io.ByteBuffer;
+import org.runelive.client.particles.*;
 import org.runelive.client.renderable.Animable;
 
 public class Model extends Animable {
 
+	private static final int MAX_POLYGON = 15000;
 	public static boolean aBoolean1684;
 	private static boolean aBooleanArray1663[] = new boolean[8000];
-	private static boolean outOfReach[] = new boolean[8000];
-	private static ModelHeader modelHeaderCache[];
+	private static boolean aBooleanArray1664[] = new boolean[8000];
+	private static ModelHeader aClass21Array1661[];
 	public static Model aModel_1621 = new Model(true);
 	private static int anInt1681;
 	private static int anInt1682;
@@ -25,52 +27,52 @@ public class Model extends Animable {
 	public static int anInt1685;
 	public static int anInt1686;
 	public static int anInt1687;
-	private static int anIntArray1622[] = new int[2000];
-	private static int anIntArray1623[] = new int[2000];
-	private static int anIntArray1624[] = new int[2000];
-	private static int anIntArray1625[] = new int[2000];
-	private static int projected_vertex_x[] = new int[8000];
-	private static int projected_vertex_y[] = new int[8000];
-	private static int anIntArray1667[] = new int[8000];
-	private static int camera_vertex_y[] = new int[8000];
-	private static int camera_vertex_x[] = new int[8000];
-	private static int camera_vertex_z[] = new int[8000];
-	private static int depthListIndices[] = new int[1500];
+	private static int anIntArray1622[] = new int[MAX_POLYGON];
+	private static int anIntArray1623[] = new int[MAX_POLYGON];
+	private static int anIntArray1624[] = new int[MAX_POLYGON];
+	private static int anIntArray1625[] = new int[MAX_POLYGON];
+	private static int projected_vertex_x[] = new int[MAX_POLYGON];
+	private static int anIntArray1666[] = new int[MAX_POLYGON];
+	private static int anIntArray1667[] = new int[MAX_POLYGON];
+	private static int anIntArray1668[] = new int[MAX_POLYGON];
+	private static int anIntArray1669[] = new int[MAX_POLYGON];
+	private static int anIntArray1670[] = new int[MAX_POLYGON];
+	private static int anIntArray1671[] = new int[MAX_POLYGON];
 	private static int anIntArray1673[] = new int[12];
-	private static int anIntArray1675[] = new int[2000];
-	private static int anIntArray1676[] = new int[2000];
+	private static int anIntArray1675[] = new int[MAX_POLYGON];
+	private static int anIntArray1676[] = new int[MAX_POLYGON];
 	private static int anIntArray1677[] = new int[12];
 	private static int anIntArray1678[] = new int[10];
 	private static int anIntArray1679[] = new int[10];
 	private static int anIntArray1680[] = new int[10];
-	public static int mapObjIds[] = new int[1000];
-	public static int anIntArray1688[] = new int[1000];
-	private static int faceLists[][] = new int[1500][512];
-	private static int anIntArrayArray1674[][] = new int[12][2000];
+	public static int mapObjIds[] = new int[MAX_POLYGON];
+	public static int anIntArray1688[] = new int[MAX_POLYGON];
+	private static int anIntArrayArray1672[][] = new int[MAX_POLYGON][512];
+	private static int anIntArrayArray1674[][] = new int[12][MAX_POLYGON];
 	private static CacheFileRequester onDemandRequester;
-	public static int SINE[];
-	public static int COSINE[];
-	private static int[] hsl2rgb;
-	private static int[] lightDecay;
+	public static int modelIntArray1[];
+	public static int modelIntArray2[];
+	private static int[] modelIntArray3;
+	private static int[] modelIntArray4;
 	private static boolean[] isNewModel;
 
 	static {
-		SINE = Canvas3D.SINE;
-		COSINE = Canvas3D.COSINE;
-		hsl2rgb = Canvas3D.anIntArray1482;
-		lightDecay = Canvas3D.anIntArray1469;
+		modelIntArray1 = Canvas3D.SINE;
+		modelIntArray2 = Canvas3D.COSINE;
+		modelIntArray3 = Canvas3D.anIntArray1482;
+		modelIntArray4 = Canvas3D.anIntArray1469;
 	}
 
 	public static void initialize(int count, CacheFileRequester onDemandFetcherParent) {
-		modelHeaderCache = new ModelHeader[80000];
+		aClass21Array1661 = new ModelHeader[80000];
 		isNewModel = new boolean[100000];
 		onDemandRequester = onDemandFetcherParent;
 	}
 
-	public static void decodeModelHeader(byte[] tmp, int fileId) {
+	public static void method460(byte[] tmp, int fileId) {
 		try {
 			if (tmp == null) {
-				ModelHeader modelHeader = modelHeaderCache[fileId] = new ModelHeader();
+				ModelHeader modelHeader = aClass21Array1661[fileId] = new ModelHeader();
 				modelHeader.anInt369 = 0;
 				modelHeader.anInt370 = 0;
 				modelHeader.anInt371 = 0;
@@ -79,7 +81,7 @@ public class Model extends Animable {
 
 			ByteBuffer buffer = new ByteBuffer(tmp);
 			buffer.position = tmp.length - 18;
-			ModelHeader modelHeader_1 = modelHeaderCache[fileId] = new ModelHeader();
+			ModelHeader modelHeader_1 = aClass21Array1661[fileId] = new ModelHeader();
 			modelHeader_1.aByteArray368 = tmp;
 			modelHeader_1.anInt369 = buffer.getUnsignedShort();
 			modelHeader_1.anInt370 = buffer.getUnsignedShort();
@@ -154,14 +156,14 @@ public class Model extends Animable {
 		}
 	}
 
-	public static Model fetchModel(int fileId) {
-		if (modelHeaderCache == null) {
+	public static Model method462(int fileId) {
+		if (aClass21Array1661 == null) {
 			return null;
 		}
 		if (fileId == 0) {
 			return null;
 		}
-		ModelHeader modelHeader = modelHeaderCache[fileId];
+		ModelHeader modelHeader = aClass21Array1661[fileId];
 		if (modelHeader == null) {
 			int cacheIndex = CacheFileRequest.MODEL;// default model index
 			if (fileId >= 65535) {
@@ -175,11 +177,11 @@ public class Model extends Animable {
 		}
 	}
 
-	public static boolean isModelLoaded(int fileId) {
-		if (modelHeaderCache == null) {
+	public static boolean method463(int fileId) {
+		if (aClass21Array1661 == null) {
 			return false;
 		}
-		ModelHeader modelHeader = modelHeaderCache[fileId];
+		ModelHeader modelHeader = aClass21Array1661[fileId];
 		if (modelHeader == null) {
 			int cacheIndex = CacheFileRequest.MODEL;// default model index
 			if (fileId >= 65535) {
@@ -221,25 +223,25 @@ public class Model extends Animable {
 	}
 
 	public static void nullify() {
-		modelHeaderCache = null;
+		aClass21Array1661 = null;
 		aBooleanArray1663 = null;
-		outOfReach = null;
-		projected_vertex_y = null;
+		aBooleanArray1664 = null;
+		anIntArray1666 = null;
 		anIntArray1667 = null;
-		camera_vertex_y = null;
-		camera_vertex_x = null;
-		camera_vertex_z = null;
-		depthListIndices = null;
-		faceLists = null;
+		anIntArray1668 = null;
+		anIntArray1669 = null;
+		anIntArray1670 = null;
+		anIntArray1671 = null;
+		anIntArrayArray1672 = null;
 		anIntArray1673 = null;
 		anIntArrayArray1674 = null;
 		anIntArray1675 = null;
 		anIntArray1676 = null;
 		anIntArray1677 = null;
-		SINE = null;
-		COSINE = null;
-		hsl2rgb = null;
-		lightDecay = null;
+		modelIntArray1 = null;
+		modelIntArray2 = null;
+		modelIntArray3 = null;
+		modelIntArray4 = null;
 	}
 
 	private boolean aBoolean1618;
@@ -292,52 +294,50 @@ public class Model extends Animable {
 	public Model(boolean flag, boolean flag1, boolean flag2, Model model) {
 		aBoolean1618 = true;
 		aBoolean1659 = false;
+		anInt1620++;
 		vertexCount = model.vertexCount;
 		triangle_count = model.triangle_count;
 		textured_triangle_count = model.textured_triangle_count;
-
 		if (flag2) {
+			modelParticles = model.modelParticles;
 			vertexX = model.vertexX;
 			vertexY = model.vertexY;
 			vertexZ = model.vertexZ;
 		} else {
+			modelParticles = new int[vertexCount];
 			vertexX = new int[vertexCount];
 			vertexY = new int[vertexCount];
 			vertexZ = new int[vertexCount];
-
 			for (int j = 0; j < vertexCount; j++) {
+				//modelParticles[j] = model.modelParticles[j];//TODO: HERE CAUSES MAPS TO GO BLACK
 				vertexX[j] = model.vertexX[j];
 				vertexY[j] = model.vertexY[j];
 				vertexZ[j] = model.vertexZ[j];
 			}
-		}
 
+		}
 		if (flag) {
 			colors = model.colors;
 		} else {
 			colors = new int[triangle_count];
-
-			for (int k = 0; k < triangle_count; k++) {
+			for (int k = 0; k < triangle_count; k++)
 				colors[k] = model.colors[k];
-			}
-		}
 
+		}
 		if (flag1) {
 			alpha = model.alpha;
 		} else {
 			alpha = new int[triangle_count];
-
 			if (model.alpha == null) {
-				for (int l = 0; l < triangle_count; l++) {
+				for (int l = 0; l < triangle_count; l++)
 					alpha[l] = 0;
-				}
+
 			} else {
-				for (int i1 = 0; i1 < triangle_count; i1++) {
+				for (int i1 = 0; i1 < triangle_count; i1++)
 					alpha[i1] = model.alpha[i1];
-				}
+
 			}
 		}
-
 		vertex_skin_types = model.vertex_skin_types;
 		triangle_skin_types = model.triangle_skin_types;
 		face_fill_attributes = model.face_fill_attributes;
@@ -353,6 +353,7 @@ public class Model extends Animable {
 
 	public Model(boolean flag, boolean flag1, Model model) {
 		aBoolean1618 = true;
+		anInt1620++;
 		aBoolean1659 = false;
 		vertexCount = model.vertexCount;
 		triangle_count = model.triangle_count;
@@ -409,7 +410,7 @@ public class Model extends Animable {
 			face_shade_c = model.face_shade_c;
 			face_fill_attributes = model.face_fill_attributes;
 		}
-
+		modelParticles = model.modelParticles;
 		vertexX = model.vertexX;
 		vertexZ = model.vertexZ;
 		colors = model.colors;
@@ -433,7 +434,7 @@ public class Model extends Animable {
 	}
 
 	private Model(int modelId) {
-		byte[] is = modelHeaderCache[modelId].aByteArray368;
+		byte[] is = aClass21Array1661[modelId].aByteArray368;
 
 		if (is[is.length - 1] == -1 && is[is.length - 2] == -1) {
 			read622Model(is, modelId);
@@ -452,11 +453,48 @@ public class Model extends Animable {
 					priorities[j] = 10;
 			}
 		}
+		
+		int[][] particleConfiguration = ParticleConfiguration.getParticlesForModel(modelId);
+		int particle;
+		if (particleConfiguration != null) {
+			for (particle = 0; particle < particleConfiguration.length; particle++) {
+				int[] var5 = particleConfiguration[particle];
+				int var6;
+				if (var5[0] == -1) {
+					for (var6 = 0; var6 < triangle_viewspace_x.length; ++var6) {
+						modelParticles[triangle_viewspace_x[var6]] = var5[1] + 1;
+					}
+				} else if (var5[0] == -2) {
+					for (var6 = 0; var6 < triangle_viewspace_y.length; ++var6) {
+						modelParticles[triangle_viewspace_y[var6]] = var5[1] + 1;
+					}
+				} else if (var5[0] == -3) {
+					for (var6 = 0; var6 < triangle_viewspace_z.length; ++var6) {
+						modelParticles[triangle_viewspace_z[var6]] = var5[1] + 1;
+					}
+				} else if (var5[0] == -4) {
+					for (var6 = 0; var6 < triangle_viewspace_x.length; ++var6) {
+						modelParticles[triangle_viewspace_x[var6]] = var5[1] + 1;
+					}
+
+					for (var6 = 0; var6 < triangle_viewspace_y.length; ++var6) {
+						modelParticles[triangle_viewspace_y[var6]] = var5[1] + 1;
+					}
+
+					for (var6 = 0; var6 < triangle_viewspace_z.length; ++var6) {
+						modelParticles[triangle_viewspace_z[var6]] = var5[1] + 1;
+					}
+				} else {
+					modelParticles[var5[0]] = var5[1] + 1;
+				}
+			}
+		}
 	}
 
 	public Model(int i, Model amodel[]) {
 		aBoolean1618 = true;
 		aBoolean1659 = false;
+		anInt1620++;
 		boolean flag = false;
 		boolean flag1 = false;
 		boolean flag2 = false;
@@ -491,7 +529,7 @@ public class Model extends Animable {
 				flag3 |= model.triangle_skin_types != null;
 			}
 		}
-
+		modelParticles = new int[vertexCount];
 		vertexX = new int[vertexCount];
 		vertexY = new int[vertexCount];
 		vertexZ = new int[vertexCount];
@@ -587,6 +625,7 @@ public class Model extends Animable {
 		int i = 2;
 		aBoolean1618 = true;
 		aBoolean1659 = false;
+		anInt1620++;
 		boolean flag1 = false;
 		boolean flag2 = false;
 		boolean flag3 = false;
@@ -617,7 +656,7 @@ public class Model extends Animable {
 				flag4 |= model.colors != null;
 			}
 		}
-
+		modelParticles = new int[vertexCount];
 		vertexX = new int[vertexCount];
 		vertexY = new int[vertexCount];
 		vertexZ = new int[vertexCount];
@@ -719,6 +758,7 @@ public class Model extends Animable {
 			anIntArray1623 = new int[vertexCount + 10000];
 			anIntArray1624 = new int[vertexCount + 10000];
 		}
+		modelParticles = new int[vertexCount];
 		vertexX = anIntArray1622;
 		vertexY = anIntArray1623;
 		vertexZ = anIntArray1624;
@@ -726,6 +766,9 @@ public class Model extends Animable {
 			vertexX[k] = model.vertexX[k];
 			vertexY[k] = model.vertexY[k];
 			vertexZ[k] = model.vertexZ[k];
+			if (modelParticles != null) {
+				modelParticles[k] = model.modelParticles[k];
+			}
 		}
 
 		if (flag) {
@@ -766,6 +809,7 @@ public class Model extends Animable {
 
 	private final int method465(Model model, int i) {
 		int j = -1;
+		int particle = model.modelParticles[i];
 		int k = model.vertexX[i];
 		int l = model.vertexY[i];
 		int i1 = model.vertexZ[i];
@@ -778,6 +822,7 @@ public class Model extends Animable {
 		}
 
 		if (j == -1) {
+			modelParticles[vertexCount] = particle;
 			vertexX[vertexCount] = k;
 			vertexY[vertexCount] = l;
 			vertexZ[vertexCount] = i1;
@@ -1183,22 +1228,22 @@ public class Model extends Animable {
 						int l6 = (k & 0xff) * 8;
 						int i7 = (l & 0xff) * 8;
 						if (i7 != 0) {
-							int j7 = SINE[i7];
-							int i8 = COSINE[i7];
+							int j7 = modelIntArray1[i7];
+							int i8 = modelIntArray2[i7];
 							int l8 = vertexY[k5] * j7 + vertexX[k5] * i8 >> 16;
 							vertexY[k5] = vertexY[k5] * i8 - vertexX[k5] * j7 >> 16;
 							vertexX[k5] = l8;
 						}
 						if (k6 != 0) {
-							int k7 = SINE[k6];
-							int j8 = COSINE[k6];
+							int k7 = modelIntArray1[k6];
+							int j8 = modelIntArray2[k6];
 							int i9 = vertexY[k5] * j8 - vertexZ[k5] * k7 >> 16;
 							vertexZ[k5] = vertexY[k5] * k7 + vertexZ[k5] * j8 >> 16;
 							vertexY[k5] = i9;
 						}
 						if (l6 != 0) {
-							int l7 = SINE[l6];
-							int k8 = COSINE[l6];
+							int l7 = modelIntArray1[l6];
+							int k8 = modelIntArray2[l6];
 							int j9 = vertexZ[k5] * l7 + vertexX[k5] * k8 >> 16;
 							vertexZ[k5] = vertexZ[k5] * k8 - vertexX[k5] * l7 >> 16;
 							vertexX[k5] = j9;
@@ -1262,8 +1307,8 @@ public class Model extends Animable {
 	}
 
 	public void rotateX(int i) {
-		int k = SINE[i];
-		int l = COSINE[i];
+		int k = modelIntArray1[i];
+		int l = modelIntArray2[i];
 
 		for (int i1 = 0; i1 < vertexCount; i1++) {
 			int j1 = vertexY[i1] * l - vertexZ[i1] * k >> 16;
@@ -1477,14 +1522,14 @@ public class Model extends Animable {
 		int i = 0;
 		int l1 = Canvas3D.centerX;
 		int i2 = Canvas3D.centerY;
-		int j2 = SINE[i];
-		int k2 = COSINE[i];
-		int l2 = SINE[j];
-		int i3 = COSINE[j];
-		int j3 = SINE[k];
-		int k3 = COSINE[k];
-		int l3 = SINE[l];
-		int i4 = COSINE[l];
+		int j2 = modelIntArray1[i];
+		int k2 = modelIntArray2[i];
+		int l2 = modelIntArray1[j];
+		int i3 = modelIntArray2[j];
+		int j3 = modelIntArray1[k];
+		int k3 = modelIntArray2[k];
+		int l3 = modelIntArray1[l];
+		int i4 = modelIntArray2[l];
 		int j4 = j1 * l3 + k1 * i4 >> 16;
 		for (int k4 = 0; k4 < vertexCount; k4++) {
 			int l4 = vertexX[k4];
@@ -1516,11 +1561,12 @@ public class Model extends Animable {
 				return;
 			}
 			projected_vertex_x[k4] = l1 + (l4 << 9) / j5;
-			projected_vertex_y[k4] = i2 + (i5 << 9) / j5;
+			anIntArray1666[k4] = i2 + (i5 << 9) / j5;
+			anIntArray1670[k4] = j5;
 			if (textured_triangle_count > 0) {
-				camera_vertex_y[k4] = l4;
-				camera_vertex_x[k4] = i5;
-				camera_vertex_z[k4] = j5;
+				anIntArray1668[k4] = l4;
+				anIntArray1669[k4] = i5;
+				anIntArray1670[k4] = j5;
 			}
 		}
 
@@ -1535,6 +1581,10 @@ public class Model extends Animable {
 
 	@Override
 	public void method443(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int uid, int newuid) {
+		J = j1 + Client.instance.xCameraPos;
+		S = k1 + Client.instance.zCameraPos;
+		A = l1 + Client.instance.yCameraPos;
+		E = i;
 		int j2 = l1 * i1 - j1 * l >> 16;
 		int k2 = k1 * j + j2 * k >> 16;
 		int l2 = anInt1650 * k >> 16;
@@ -1603,8 +1653,8 @@ public class Model extends Animable {
 		int l6 = 0;
 		int i7 = 0;
 		if (i != 0) {
-			l6 = SINE[i];
-			i7 = COSINE[i];
+			l6 = modelIntArray1[i];
+			i7 = modelIntArray2[i];
 		}
 		for (int j7 = 0; j7 < vertexCount; j7++) {
 			int k7 = vertexX[j7];
@@ -1627,17 +1677,18 @@ public class Model extends Animable {
 			anIntArray1667[j7] = i8 - k2;
 			if (i8 >= 50) {
 				projected_vertex_x[j7] = l5 + (k7 << Client.log_view_dist) / i8;
-				projected_vertex_y[j7] = j6 + (l7 << Client.log_view_dist) / i8;
+				anIntArray1666[j7] = j6 + (l7 << Client.log_view_dist) / i8;
+				anIntArray1670[j7] = 18;
 			} else {
 				projected_vertex_x[j7] = -5000;
 				flag = true;
 			}
 			if (flag || textured_triangle_count > 0) {
-				camera_vertex_y[j7] = k7;
-				camera_vertex_x[j7] = l7;
-				camera_vertex_z[j7] = i8;
+				anIntArray1668[j7] = k7;
+				anIntArray1669[j7] = l7;
+				anIntArray1670[j7] = i8;
 			} else if (fog) {
-				camera_vertex_z[j7] = i8;
+				anIntArray1670[j7] = i8;
 			}
 		}
 		try {
@@ -1652,7 +1703,7 @@ public class Model extends Animable {
 
 	private final void translateToScreen(boolean flag, boolean flag1, int i, int id) {
 		for (int j = 0; j < diagonal3D; j++) {
-			depthListIndices[j] = 0;
+			anIntArray1671[j] = 0;
 		}
 
 		for (int k = 0; k < triangle_count; k++) {
@@ -1664,19 +1715,19 @@ public class Model extends Animable {
 				int l3 = projected_vertex_x[k1];
 				int k4 = projected_vertex_x[j2];
 				if (flag && (i3 == -5000 || l3 == -5000 || k4 == -5000)) {
-					outOfReach[k] = true;
+					aBooleanArray1664[k] = true;
 					int j5 = (anIntArray1667[l] + anIntArray1667[k1] + anIntArray1667[j2]) / 3 + anInt1653;
-					faceLists[j5][depthListIndices[j5]++] = k;
+					anIntArrayArray1672[j5][anIntArray1671[j5]++] = k;
 				} else {
-					if (flag1 && method486(anInt1685, anInt1686, projected_vertex_y[l], projected_vertex_y[k1],
-							projected_vertex_y[j2], i3, l3, k4)) {
+					if (flag1 && method486(anInt1685, anInt1686, anIntArray1666[l], anIntArray1666[k1],
+							anIntArray1666[j2], i3, l3, k4)) {
 						mapObjIds[anInt1687] = id;
 						anIntArray1688[anInt1687++] = i;
 						flag1 = false;
 					}
-					if ((i3 - l3) * (projected_vertex_y[j2] - projected_vertex_y[k1])
-							- (projected_vertex_y[l] - projected_vertex_y[k1]) * (k4 - l3) > 0) {
-						outOfReach[k] = false;
+					if ((i3 - l3) * (anIntArray1666[j2] - anIntArray1666[k1])
+							- (anIntArray1666[l] - anIntArray1666[k1]) * (k4 - l3) > 0) {
+						aBooleanArray1664[k] = false;
 						if (i3 < 0 || l3 < 0 || k4 < 0 || i3 > Canvas2D.centerX || l3 > Canvas2D.centerX
 								|| k4 > Canvas2D.centerX) {
 							aBooleanArray1663[k] = true;
@@ -1684,7 +1735,7 @@ public class Model extends Animable {
 							aBooleanArray1663[k] = false;
 						}
 						int k5 = (anIntArray1667[l] + anIntArray1667[k1] + anIntArray1667[j2]) / 3 + anInt1653;
-						faceLists[k5][depthListIndices[k5]++] = k;
+						anIntArrayArray1672[k5][anIntArray1671[k5]++] = k;
 					}
 				}
 			}
@@ -1692,9 +1743,9 @@ public class Model extends Animable {
 
 		if (priorities == null) {
 			for (int i1 = diagonal3D - 1; i1 >= 0; i1--) {
-				int l1 = depthListIndices[i1];
+				int l1 = anIntArray1671[i1];
 				if (l1 > 0) {
-					int ai[] = faceLists[i1];
+					int ai[] = anIntArrayArray1672[i1];
 					for (int j3 = 0; j3 < l1; j3++) {
 						rasterise(ai[j3]);
 					}
@@ -1710,9 +1761,9 @@ public class Model extends Animable {
 		}
 
 		for (int i2 = diagonal3D - 1; i2 >= 0; i2--) {
-			int k2 = depthListIndices[i2];
+			int k2 = anIntArray1671[i2];
 			if (k2 > 0) {
-				int ai1[] = faceLists[i2];
+				int ai1[] = anIntArrayArray1672[i2];
 				for (int i4 = 0; i4 < k2; i4++) {
 					int l4 = ai1[i4];
 					int l5 = priorities[l4];
@@ -1823,10 +1874,43 @@ public class Model extends Animable {
 				i5 = -1000;
 			}
 		}
+		for (int vertex = 0; vertex < vertexCount; ++vertex) {
+			int var26 = modelParticles[vertex] - 1;
+			if (var26 >= 0) {
+				Particle particle = Particle.PARTICLE_ARRAY[var26];
+				int x = vertexX[vertex];
+				int y = vertexY[vertex];
+				int z = vertexZ[vertex];
+				int depth = anIntArray1670[vertex];//TODO: HERE I THINK
+				int var21;
+				if (E != 0) {
+					int var20 = modelIntArray1[E];
+					var21 = modelIntArray2[E];
+					int var22 = z * var20 + x * var21 >> 16;
+					z = z * var21 - x * var20 >> 16;
+					x = var22;
+				}
+
+				x += J;
+				z += A;
+				Position point = new Position(x, -y, z);
+
+				for (var21 = 0; var21 < particle.D(); ++var21) {
+					ParticleDisplay var29 = new ParticleDisplay(particle, point, depth);
+					Client.instance.I(var29);
+				}
+			}
+		}
 	}
+	
+	private int E = 0;
+	private int J;
+	public int S = 0;
+	public int A = 0;
+	public int[] modelParticles;
 
 	private final void rasterise(int i) {
-		if (outOfReach[i]) {
+		if (aBooleanArray1664[i]) {
 			reduce(i);
 			return;
 		}
@@ -1846,55 +1930,55 @@ public class Model extends Animable {
 			i1 = face_fill_attributes[i] & 3;
 		}
 		if (i1 == 0) {
-			Canvas3D.drawShadedTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
+			Canvas3D.drawShadedTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
 					projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i],
 					face_shade_b[i], face_shade_c[i]);
 			if (fog) {
-				Canvas3D.drawFogTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
-						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], camera_vertex_z[j],
-						camera_vertex_z[k], camera_vertex_z[l]);
+				Canvas3D.drawFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
+						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], anIntArray1670[j],
+						anIntArray1670[k], anIntArray1670[l]);
 			}
 		} else if (i1 == 1) {
-			Canvas3D.drawFlatTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
-					projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], hsl2rgb[face_shade_a[i]]);
+			Canvas3D.drawFlatTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
+					projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], modelIntArray3[face_shade_a[i]]);
 			if (fog) {
-				Canvas3D.drawFogTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
-						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], camera_vertex_z[j],
-						camera_vertex_z[k], camera_vertex_z[l]);
+				Canvas3D.drawFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
+						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], anIntArray1670[j],
+						anIntArray1670[k], anIntArray1670[l]);
 			}
 		} else if (i1 == 2) {
 			int j1 = face_fill_attributes[i] >> 2;
 			int l1 = texture_map_x[j1];
 			int j2 = texture_map_y[j1];
 			int l2 = texture_map_z[j1];
-			Canvas3D.drawTexturedTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
+			Canvas3D.drawTexturedTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
 					projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i],
-					face_shade_b[i], face_shade_c[i], camera_vertex_y[l1], camera_vertex_y[j2], camera_vertex_y[l2],
-					camera_vertex_x[l1], camera_vertex_x[j2], camera_vertex_x[l2], camera_vertex_z[l1],
-					camera_vertex_z[j2], camera_vertex_z[l2], colors[i]);
+					face_shade_b[i], face_shade_c[i], anIntArray1668[l1], anIntArray1668[j2], anIntArray1668[l2],
+					anIntArray1669[l1], anIntArray1669[j2], anIntArray1669[l2], anIntArray1670[l1],
+					anIntArray1670[j2], anIntArray1670[l2], colors[i]);
 			if (fog) {
-				Canvas3D.drawTexturedFogTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
-						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], camera_vertex_z[j],
-						camera_vertex_z[k], camera_vertex_z[l], camera_vertex_y[l1], camera_vertex_y[j2],
-						camera_vertex_y[l2], camera_vertex_x[l1], camera_vertex_x[j2], camera_vertex_x[l2],
-						camera_vertex_z[l1], camera_vertex_z[j2], camera_vertex_z[l2], colors[i]);
+				Canvas3D.drawTexturedFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
+						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], anIntArray1670[j],
+						anIntArray1670[k], anIntArray1670[l], anIntArray1668[l1], anIntArray1668[j2],
+						anIntArray1668[l2], anIntArray1669[l1], anIntArray1669[j2], anIntArray1669[l2],
+						anIntArray1670[l1], anIntArray1670[j2], anIntArray1670[l2], colors[i]);
 			}
 		} else if (i1 == 3) {
 			int k1 = face_fill_attributes[i] >> 2;
 			int i2 = texture_map_x[k1];
 			int k2 = texture_map_y[k1];
 			int i3 = texture_map_z[k1];
-			Canvas3D.drawTexturedTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
+			Canvas3D.drawTexturedTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
 					projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i],
-					face_shade_a[i], face_shade_a[i], camera_vertex_y[i2], camera_vertex_y[k2], camera_vertex_y[i3],
-					camera_vertex_x[i2], camera_vertex_x[k2], camera_vertex_x[i3], camera_vertex_z[i2],
-					camera_vertex_z[k2], camera_vertex_z[i3], colors[i]);
+					face_shade_a[i], face_shade_a[i], anIntArray1668[i2], anIntArray1668[k2], anIntArray1668[i3],
+					anIntArray1669[i2], anIntArray1669[k2], anIntArray1669[i3], anIntArray1670[i2],
+					anIntArray1670[k2], anIntArray1670[i3], colors[i]);
 			if (fog) {
-				Canvas3D.drawTexturedFogTriangle(projected_vertex_y[j], projected_vertex_y[k], projected_vertex_y[l],
-						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], camera_vertex_z[j],
-						camera_vertex_z[k], camera_vertex_z[l], camera_vertex_y[i2], camera_vertex_y[k2],
-						camera_vertex_y[i3], camera_vertex_x[i2], camera_vertex_x[k2], camera_vertex_x[i3],
-						camera_vertex_z[i2], camera_vertex_z[k2], camera_vertex_z[i3], colors[i]);
+				Canvas3D.drawTexturedFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
+						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], anIntArray1670[j],
+						anIntArray1670[k], anIntArray1670[l], anIntArray1668[i2], anIntArray1668[k2],
+						anIntArray1668[i3], anIntArray1669[i2], anIntArray1669[k2], anIntArray1669[i3],
+						anIntArray1670[i2], anIntArray1670[k2], anIntArray1670[i3], colors[i]);
 			}
 		}
 	}
@@ -1911,70 +1995,70 @@ public class Model extends Animable {
 		int i1 = triangle_viewspace_x[i];
 		int j1 = triangle_viewspace_y[i];
 		int k1 = triangle_viewspace_z[i];
-		int l1 = camera_vertex_z[i1];
-		int i2 = camera_vertex_z[j1];
-		int j2 = camera_vertex_z[k1];
+		int l1 = anIntArray1670[i1];
+		int i2 = anIntArray1670[j1];
+		int j2 = anIntArray1670[k1];
 
 		if (l1 >= 50) {
 			anIntArray1678[l] = projected_vertex_x[i1];
-			anIntArray1679[l] = projected_vertex_y[i1];
+			anIntArray1679[l] = anIntArray1666[i1];
 			anIntArray1680[l++] = face_shade_a[i];
 		} else {
-			int k2 = camera_vertex_y[i1];
-			int k3 = camera_vertex_x[i1];
+			int k2 = anIntArray1668[i1];
+			int k3 = anIntArray1669[i1];
 			int k4 = face_shade_a[i];
 			if (j2 >= 50) {
-				int k5 = (50 - l1) * lightDecay[j2 - l1];
-				anIntArray1678[l] = j + (k2 + ((camera_vertex_y[k1] - k2) * k5 >> 16) << Client.log_view_dist) / 50;
-				anIntArray1679[l] = k + (k3 + ((camera_vertex_x[k1] - k3) * k5 >> 16) << Client.log_view_dist) / 50;
+				int k5 = (50 - l1) * modelIntArray4[j2 - l1];
+				anIntArray1678[l] = j + (k2 + ((anIntArray1668[k1] - k2) * k5 >> 16) << Client.log_view_dist) / 50;
+				anIntArray1679[l] = k + (k3 + ((anIntArray1669[k1] - k3) * k5 >> 16) << Client.log_view_dist) / 50;
 				anIntArray1680[l++] = k4 + ((face_shade_c[i] - k4) * k5 >> 16);
 			}
 			if (i2 >= 50) {
-				int l5 = (50 - l1) * lightDecay[i2 - l1];
-				anIntArray1678[l] = j + (k2 + ((camera_vertex_y[j1] - k2) * l5 >> 16) << Client.log_view_dist) / 50;
-				anIntArray1679[l] = k + (k3 + ((camera_vertex_x[j1] - k3) * l5 >> 16) << Client.log_view_dist) / 50;
+				int l5 = (50 - l1) * modelIntArray4[i2 - l1];
+				anIntArray1678[l] = j + (k2 + ((anIntArray1668[j1] - k2) * l5 >> 16) << Client.log_view_dist) / 50;
+				anIntArray1679[l] = k + (k3 + ((anIntArray1669[j1] - k3) * l5 >> 16) << Client.log_view_dist) / 50;
 				anIntArray1680[l++] = k4 + ((face_shade_b[i] - k4) * l5 >> 16);
 			}
 		}
 		if (i2 >= 50) {
 			anIntArray1678[l] = projected_vertex_x[j1];
-			anIntArray1679[l] = projected_vertex_y[j1];
+			anIntArray1679[l] = anIntArray1666[j1];
 			anIntArray1680[l++] = face_shade_b[i];
 		} else {
-			int l2 = camera_vertex_y[j1];
-			int l3 = camera_vertex_x[j1];
+			int l2 = anIntArray1668[j1];
+			int l3 = anIntArray1669[j1];
 			int l4 = face_shade_b[i];
 			if (l1 >= 50) {
-				int i6 = (50 - i2) * lightDecay[l1 - i2];
-				anIntArray1678[l] = j + (l2 + ((camera_vertex_y[i1] - l2) * i6 >> 16) << Client.log_view_dist) / 50;
-				anIntArray1679[l] = k + (l3 + ((camera_vertex_x[i1] - l3) * i6 >> 16) << Client.log_view_dist) / 50;
+				int i6 = (50 - i2) * modelIntArray4[l1 - i2];
+				anIntArray1678[l] = j + (l2 + ((anIntArray1668[i1] - l2) * i6 >> 16) << Client.log_view_dist) / 50;
+				anIntArray1679[l] = k + (l3 + ((anIntArray1669[i1] - l3) * i6 >> 16) << Client.log_view_dist) / 50;
 				anIntArray1680[l++] = l4 + ((face_shade_a[i] - l4) * i6 >> 16);
 			}
 			if (j2 >= 50) {
-				int j6 = (50 - i2) * lightDecay[j2 - i2];
-				anIntArray1678[l] = j + (l2 + ((camera_vertex_y[k1] - l2) * j6 >> 16) << Client.log_view_dist) / 50;
-				anIntArray1679[l] = k + (l3 + ((camera_vertex_x[k1] - l3) * j6 >> 16) << Client.log_view_dist) / 50;
+				int j6 = (50 - i2) * modelIntArray4[j2 - i2];
+				anIntArray1678[l] = j + (l2 + ((anIntArray1668[k1] - l2) * j6 >> 16) << Client.log_view_dist) / 50;
+				anIntArray1679[l] = k + (l3 + ((anIntArray1669[k1] - l3) * j6 >> 16) << Client.log_view_dist) / 50;
 				anIntArray1680[l++] = l4 + ((face_shade_c[i] - l4) * j6 >> 16);
 			}
 		}
 		if (j2 >= 50) {
 			anIntArray1678[l] = projected_vertex_x[k1];
-			anIntArray1679[l] = projected_vertex_y[k1];
+			anIntArray1679[l] = anIntArray1666[k1];
 			anIntArray1680[l++] = face_shade_c[i];
 		} else {
-			int i3 = camera_vertex_y[k1];
-			int i4 = camera_vertex_x[k1];
+			int i3 = anIntArray1668[k1];
+			int i4 = anIntArray1669[k1];
 			int i5 = face_shade_c[i];
 			if (i2 >= 50) {
-				int k6 = (50 - j2) * lightDecay[i2 - j2];
-				anIntArray1678[l] = j + (i3 + ((camera_vertex_y[j1] - i3) * k6 >> 16) << Client.log_view_dist) / 50;
-				anIntArray1679[l] = k + (i4 + ((camera_vertex_x[j1] - i4) * k6 >> 16) << Client.log_view_dist) / 50;
+				int k6 = (50 - j2) * modelIntArray4[i2 - j2];
+				anIntArray1678[l] = j + (i3 + ((anIntArray1668[j1] - i3) * k6 >> 16) << Client.log_view_dist) / 50;
+				anIntArray1679[l] = k + (i4 + ((anIntArray1669[j1] - i4) * k6 >> 16) << Client.log_view_dist) / 50;
 				anIntArray1680[l++] = i5 + ((face_shade_b[i] - i5) * k6 >> 16);
 			}
 			if (l1 >= 50) {
-				int l6 = (50 - j2) * lightDecay[l1 - j2];
-				anIntArray1678[l] = j + (i3 + ((camera_vertex_y[i1] - i3) * l6 >> 16) << Client.log_view_dist) / 50;
-				anIntArray1679[l] = k + (i4 + ((camera_vertex_x[i1] - i4) * l6 >> 16) << Client.log_view_dist) / 50;
+				int l6 = (50 - j2) * modelIntArray4[l1 - j2];
+				anIntArray1678[l] = j + (i3 + ((anIntArray1668[i1] - i3) * l6 >> 16) << Client.log_view_dist) / 50;
+				anIntArray1679[l] = k + (i4 + ((anIntArray1669[i1] - i4) * l6 >> 16) << Client.log_view_dist) / 50;
 				anIntArray1680[l++] = i5 + ((face_shade_a[i] - i5) * l6 >> 16);
 			}
 		}
@@ -2001,25 +2085,25 @@ public class Model extends Animable {
 					Canvas3D.drawShadedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
 							anIntArray1680[2]);
 				} else if (meshType == 1) {
-					Canvas3D.drawFlatTriangle(i7, j7, k7, j3, j4, j5, hsl2rgb[face_shade_a[i]]);
+					Canvas3D.drawFlatTriangle(i7, j7, k7, j3, j4, j5, modelIntArray3[face_shade_a[i]]);
 				} else if (meshType == 2) {
 					int j8 = face_fill_attributes[i] >> 2;
 					int k9 = texture_map_x[j8];
 					int k10 = texture_map_y[j8];
 					int k11 = texture_map_z[j8];
 					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
-							anIntArray1680[2], camera_vertex_y[k9], camera_vertex_y[k10], camera_vertex_y[k11],
-							camera_vertex_x[k9], camera_vertex_x[k10], camera_vertex_x[k11], camera_vertex_z[k9],
-							camera_vertex_z[k10], camera_vertex_z[k11], colors[i]);
+							anIntArray1680[2], anIntArray1668[k9], anIntArray1668[k10], anIntArray1668[k11],
+							anIntArray1669[k9], anIntArray1669[k10], anIntArray1669[k11], anIntArray1670[k9],
+							anIntArray1670[k10], anIntArray1670[k11], colors[i]);
 				} else if (meshType == 3) {
 					int k8 = face_fill_attributes[i] >> 2;
 					int l9 = texture_map_x[k8];
 					int l10 = texture_map_y[k8];
 					int l11 = texture_map_z[k8];
 					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, face_shade_a[i], face_shade_a[i],
-							face_shade_a[i], camera_vertex_y[l9], camera_vertex_y[l10], camera_vertex_y[l11],
-							camera_vertex_x[l9], camera_vertex_x[l10], camera_vertex_x[l11], camera_vertex_z[l9],
-							camera_vertex_z[l10], camera_vertex_z[l11], colors[i]);
+							face_shade_a[i], anIntArray1668[l9], anIntArray1668[l10], anIntArray1668[l11],
+							anIntArray1669[l9], anIntArray1669[l10], anIntArray1669[l11], anIntArray1670[l9],
+							anIntArray1670[l10], anIntArray1670[l11], colors[i]);
 				}
 			}
 			if (l == 4) {
@@ -2041,7 +2125,7 @@ public class Model extends Animable {
 					return;
 				}
 				if (i8 == 1) {
-					int l8 = hsl2rgb[face_shade_a[i]];
+					int l8 = modelIntArray3[face_shade_a[i]];
 					Canvas3D.drawFlatTriangle(i7, j7, k7, j3, j4, j5, l8);
 					Canvas3D.drawFlatTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], l8);
 					return;
@@ -2052,13 +2136,13 @@ public class Model extends Animable {
 					int i11 = texture_map_y[i9];
 					int i12 = texture_map_z[i9];
 					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
-							anIntArray1680[2], camera_vertex_y[i10], camera_vertex_y[i11], camera_vertex_y[i12],
-							camera_vertex_x[i10], camera_vertex_x[i11], camera_vertex_x[i12], camera_vertex_z[i10],
-							camera_vertex_z[i11], camera_vertex_z[i12], colors[i]);
+							anIntArray1680[2], anIntArray1668[i10], anIntArray1668[i11], anIntArray1668[i12],
+							anIntArray1669[i10], anIntArray1669[i11], anIntArray1669[i12], anIntArray1670[i10],
+							anIntArray1670[i11], anIntArray1670[i12], colors[i]);
 					Canvas3D.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3],
-							anIntArray1680[0], anIntArray1680[2], anIntArray1680[3], camera_vertex_y[i10],
-							camera_vertex_y[i11], camera_vertex_y[i12], camera_vertex_x[i10], camera_vertex_x[i11],
-							camera_vertex_x[i12], camera_vertex_z[i10], camera_vertex_z[i11], camera_vertex_z[i12],
+							anIntArray1680[0], anIntArray1680[2], anIntArray1680[3], anIntArray1668[i10],
+							anIntArray1668[i11], anIntArray1668[i12], anIntArray1669[i10], anIntArray1669[i11],
+							anIntArray1669[i12], anIntArray1670[i10], anIntArray1670[i11], anIntArray1670[i12],
 							colors[i]);
 					return;
 				}
@@ -2068,13 +2152,13 @@ public class Model extends Animable {
 					int j11 = texture_map_y[j9];
 					int j12 = texture_map_z[j9];
 					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, face_shade_a[i], face_shade_a[i],
-							face_shade_a[i], camera_vertex_y[j10], camera_vertex_y[j11], camera_vertex_y[j12],
-							camera_vertex_x[j10], camera_vertex_x[j11], camera_vertex_x[j12], camera_vertex_z[j10],
-							camera_vertex_z[j11], camera_vertex_z[j12], colors[i]);
+							face_shade_a[i], anIntArray1668[j10], anIntArray1668[j11], anIntArray1668[j12],
+							anIntArray1669[j10], anIntArray1669[j11], anIntArray1669[j12], anIntArray1670[j10],
+							anIntArray1670[j11], anIntArray1670[j12], colors[i]);
 					Canvas3D.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], face_shade_a[i],
-							face_shade_a[i], face_shade_a[i], camera_vertex_y[j10], camera_vertex_y[j11],
-							camera_vertex_y[j12], camera_vertex_x[j10], camera_vertex_x[j11], camera_vertex_x[j12],
-							camera_vertex_z[j10], camera_vertex_z[j11], camera_vertex_z[j12], colors[i]);
+							face_shade_a[i], face_shade_a[i], anIntArray1668[j10], anIntArray1668[j11],
+							anIntArray1668[j12], anIntArray1669[j10], anIntArray1669[j11], anIntArray1669[j12],
+							anIntArray1670[j10], anIntArray1670[j11], anIntArray1670[j12], colors[i]);
 				}
 			}
 		}
@@ -2285,7 +2369,7 @@ public class Model extends Animable {
 		int numVertices = nc1.getUnsignedShort();
 		int numTriangles = nc1.getUnsignedShort();
 		int numTextureTriangles = nc1.getUnsignedByte();
-		ModelHeader ModelDef_1 = modelHeaderCache[modelID] = new ModelHeader();
+		ModelHeader ModelDef_1 = aClass21Array1661[modelID] = new ModelHeader();
 		ModelDef_1.aByteArray368 = abyte0;
 		ModelDef_1.anInt369 = numVertices;
 		ModelDef_1.anInt370 = numTriangles;
@@ -2392,6 +2476,7 @@ public class Model extends Animable {
 		int[] facePoint1 = new int[numTriangles];
 		int[] facePoint2 = new int[numTriangles];
 		int[] facePoint3 = new int[numTriangles];
+		this.modelParticles = new int[numVertices];// 525
 		vertex_skin_types = new int[numVertices];
 		face_fill_attributes = new int[numTriangles];
 		priorities = new int[numTriangles];
@@ -2648,7 +2733,7 @@ public class Model extends Animable {
 		int vertexCount = data.getUnsignedShort();
 		int triangle_count = data.getUnsignedShort();
 		int textured_triangle_count = data.getUnsignedByte();
-		ModelHeader ModelDef_1 = modelHeaderCache[modelID] = new ModelHeader();
+		ModelHeader ModelDef_1 = aClass21Array1661[modelID] = new ModelHeader();
 		ModelDef_1.aByteArray368 = abyte0;
 		ModelDef_1.anInt369 = vertexCount;
 		ModelDef_1.anInt370 = triangle_count;
@@ -2780,6 +2865,7 @@ public class Model extends Animable {
 		int[] triangle_viewspace_x = new int[triangle_count];
 		int[] triangle_viewspace_y = new int[triangle_count];
 		int[] triangle_viewspace_z = new int[triangle_count];
+		this.modelParticles = new int[triangle_count];// 622
 		vertex_skin_types = new int[vertexCount];
 		face_fill_attributes = new int[triangle_count];
 		priorities = new int[triangle_count];
@@ -3050,15 +3136,19 @@ public class Model extends Animable {
 			}
 		}
 	}
+	
+	public static int anInt1620;
 
 	private void readOldModel(int i) {
 		int j = -870;
+		anInt1620++;
 		aBoolean1618 = true;
 		aBoolean1659 = false;
-		ModelHeader modelHeader = modelHeaderCache[i];
+		ModelHeader modelHeader = aClass21Array1661[i];
 		vertexCount = modelHeader.anInt369;
 		triangle_count = modelHeader.anInt370;
 		textured_triangle_count = modelHeader.anInt371;
+		modelParticles = new int[vertexCount];
 		vertexX = new int[vertexCount];
 		vertexY = new int[vertexCount];
 		vertexZ = new int[vertexCount];
@@ -3203,6 +3293,22 @@ public class Model extends Animable {
 			texture_map_z[tri] = stream.getUnsignedShort();
 		}
 	}
+	
+	private void downscale33() {
+        for (int i = 0; i != vertexCount; ++i) {
+            vertexX[i] = (vertexX[i] + 7) >> 3;
+            vertexY[i] = (vertexY[i] + 7) >> 3;
+            vertexZ[i] = (vertexZ[i] + 7) >> 3;
+        }
+    }
+	
+	 public void upscale(int size) {
+	        for (int i_10_ = 0; i_10_ < vertexCount; i_10_++) {
+	        	vertexX[i_10_] <<= size;
+	        	vertexX[i_10_] <<= size;
+	        	vertexZ[i_10_] <<= size;
+	        }
+	    }
 
 	public void scale2(int scale) {
 		for (int i1 = 0; i1 < vertexCount; i1++) {

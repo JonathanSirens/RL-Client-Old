@@ -11,7 +11,7 @@ import java.awt.image.ImageProducer;
 
 public final class RSImageProducer implements ImageProducer, ImageObserver {
 
-	private final int[] anIntArray315;
+	public final int[] anIntArray315;
 	public final int anInt316;
 	public final int anInt317;
 	private final ColorModel aColorModel318;

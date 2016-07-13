@@ -33,10 +33,10 @@ public final class Canvas3D extends Canvas2D {
 	private static int[] OFFSETS_512_334 = null;
 	private static int[] OFFSETS_765_503 = null;
 	public static int SINE[];
-
-	public static final int FOREGROUND = 0x5DA4C9;
-	public static final int FOG_COLOR_A = 0x5D00C9;
-	public static final int FOG_COLOR_B = 0xA400;
+//0xC8C0A8
+	public static final int FOREGROUND = 0xC8C0A8;//0x5DA4C9
+	public static final int FOG_COLOR_A = 0xC800A8;//0xC800A8
+	public static final int FOG_COLOR_B = 0xC000;
 
 	static {
 		anIntArray1468 = new int[512];
@@ -3285,19 +3285,11 @@ public final class Canvas3D extends Canvas2D {
 
 	public static void drawTexturedTriangle(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2,
 			int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int textureId) {
-		if (textureId < 0 || textureId >= 51) {
-			// drawShadedTriangle(i, j, k, l, i1, j1, k1, l1, i2);
-			// return;
-		}
-		if (Configuration.hdShading) {
+		if (Configuration.hdShading && notTextured) {
 			drawHDTexturedTriangle(i, j, k, l, i1, j1, k1, l1, i2, j2, k2, l2, i3, j3, k3, l3, i4, j4, textureId);
 			return;
 		}
 		int ai[] = getTexturePixels(textureId);
-		/*
-		 * if (col >= 0xffff) { col = -1; } if (col >= 0) { col =
-		 * Model.hsl2rgb[col]; }
-		 */
 		opaque = !transparentTextures[textureId];
 		k2 = j2 - k2;
 		j3 = i3 - j3;

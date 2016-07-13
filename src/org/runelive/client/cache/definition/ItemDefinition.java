@@ -5182,7 +5182,7 @@ public final class ItemDefinition {
 				itemDef.name = "TokHaar-Kal";
 				itemDef.value = 60000;
 				itemDef.maleWearId = 62575;
-				itemDef.maleWearId = 62582;
+				itemDef.femaleWearId = 62582;
 				itemDef.groundActions = new String[5];
 				itemDef.groundActions[2] = "Take";
 				itemDef.modelOffset1 = -4;
@@ -6574,7 +6574,7 @@ public final class ItemDefinition {
 			return model;
 		}
 
-		model = Model.fetchModel(modelID);
+		model = Model.method462(modelID);
 
 		if (model == null) {
 			return null;
@@ -6613,11 +6613,11 @@ public final class ItemDefinition {
 
 		boolean flag = true;
 
-		if (!Model.isModelLoaded(k)) {
+		if (!Model.method463(k)) {
 			flag = false;
 		}
 
-		if (l != -1 && !Model.isModelLoaded(l)) {
+		if (l != -1 && !Model.method463(l)) {
 			flag = false;
 		}
 
@@ -6637,10 +6637,10 @@ public final class ItemDefinition {
 			return null;
 		}
 
-		Model model = Model.fetchModel(k);
+		Model model = Model.method462(k);
 
 		if (l != -1) {
-			Model model_1 = Model.fetchModel(l);
+			Model model_1 = Model.method462(l);
 			Model models[] = { model, model_1 };
 			model = new Model(2, models);
 		}
@@ -6671,15 +6671,15 @@ public final class ItemDefinition {
 
 		boolean flag = true;
 
-		if (!Model.isModelLoaded(k)) {
+		if (!Model.method463(k)) {
 			flag = false;
 		}
 
-		if (l != -1 && !Model.isModelLoaded(l)) {
+		if (l != -1 && !Model.method463(l)) {
 			flag = false;
 		}
 
-		if (i1 != -1 && !Model.isModelLoaded(i1)) {
+		if (i1 != -1 && !Model.method463(i1)) {
 			flag = false;
 		}
 
@@ -6701,16 +6701,16 @@ public final class ItemDefinition {
 			return null;
 		}
 
-		Model model = Model.fetchModel(j);
+		Model model = Model.method462(j);
 
 		if (k != -1) {
 			if (l != -1) {
-				Model model_1 = Model.fetchModel(k);
-				Model model_3 = Model.fetchModel(l);
+				Model model_1 = Model.method462(k);
+				Model model_3 = Model.method462(l);
 				Model model_1s[] = { model, model_1, model_3 };
 				model = new Model(3, model_1s);
 			} else {
-				Model model_2 = Model.fetchModel(k);
+				Model model_2 = Model.method462(k);
 				Model models[] = { model, model_2 };
 				model = new Model(2, models);
 			}
@@ -6763,7 +6763,7 @@ public final class ItemDefinition {
 			}
 		}
 
-		Model model = Model.fetchModel(modelID);
+		Model model = Model.method462(modelID);
 
 		if (model == null) {
 			return null;

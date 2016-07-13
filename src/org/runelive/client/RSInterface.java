@@ -3041,7 +3041,7 @@ public class RSInterface {
 			return model;
 		}
 		if (i == 1) {
-			model = Model.fetchModel(j);
+			model = Model.method462(j);
 		}
 		if (i == 2) {
 			model = MobDefinition.get(j).method160();
