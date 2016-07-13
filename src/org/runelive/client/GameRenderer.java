@@ -383,6 +383,12 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 				}
 				if (mouseX > IS[OFFX] + IS[POSX] && mouseY > IS[OFFY] + IS[POSY]
 						&& mouseX < IS[OFFX] + IS[POSX] + IS[WIDTH] && mouseY < IS[OFFY] + IS[POSY] + IS[HEIGHT]) {
+					canZoom = false;
+				} else {
+					canZoom = true;
+				}
+				if (mouseX > IS[OFFX] + IS[POSX] && mouseY > IS[OFFY] + IS[POSY]
+						&& mouseX < IS[OFFX] + IS[POSX] + IS[WIDTH] && mouseY < IS[OFFY] + IS[POSY] + IS[HEIGHT]) {
 					switch (InterfaceID[TAB]) {
 					case 962: /* Music Tab */
 						IS[SENSITIVITY] = 30;
@@ -428,9 +434,34 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 			}
 
 			if (InterfaceID[WINDOW] != -1) {
+				int w = 512, h = 334;
+				int x = (Client.clientWidth / 2) - 256;
+				int y = (Client.clientHeight / 2) - 167;
+				int count = 4;
+				if (GameFrame.getScreenMode() != ScreenMode.FIXED) {
+					for (int i = 0; i < count; i++) {
+						if (x + w > (Client.clientWidth - 225)) {
+							x = x - 30;
+							if (x < 0) {
+								x = 0;
+							}
+						}
+						if (y + h > (Client.clientHeight - 182)) {
+							y = y - 30;
+							if (y < 0) {
+								y = 0;
+							}
+						}
+					}
+				}
 				RSInterface Window = RSInterface.interfaceCache[InterfaceID[WINDOW]];
-				InterfaceSetting[OFFX] = 4;
-				InterfaceSetting[OFFY] = 4;
+				if (Client.openInterfaceID == 5292) {
+					InterfaceSetting[OFFX] = GameFrame.getScreenMode() == ScreenMode.FIXED ? 4 : (Client.clientWidth / 2) - 356;
+					InterfaceSetting[OFFY] = GameFrame.getScreenMode() == ScreenMode.FIXED ? 4 : (Client.clientHeight / 2) - 230;
+				} else {
+					InterfaceSetting[OFFX] = GameFrame.getScreenMode() == ScreenMode.FIXED ? 4 : x;
+					InterfaceSetting[OFFY] = GameFrame.getScreenMode() == ScreenMode.FIXED ? 4 : y;
+				}
 
 				for (int Index = 0; Index < Window.children.length; Index++) {
 					if (RSInterface.interfaceCache[Window.children[Index]].scrollMax > 0) {
@@ -442,7 +473,12 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 						break;
 					}
 				}
-
+				if (mouseX > IS[OFFX] + IS[POSX] && mouseY > IS[OFFY] + IS[POSY]
+						&& mouseX < IS[OFFX] + IS[POSX] + IS[WIDTH] && mouseY < IS[OFFY] + IS[POSY] + IS[HEIGHT]) {
+					canZoom = false;
+				} else {
+					canZoom = true;
+				}
 				if (mouseX > IS[OFFX] + IS[POSX] && mouseY > IS[OFFY] + IS[POSY]
 						&& mouseX < IS[OFFX] + IS[POSX] + IS[WIDTH] && mouseY < IS[OFFY] + IS[POSY] + IS[HEIGHT]) {
 
@@ -814,8 +850,7 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 		setClickMode2(0);
 	}
 
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {
+	/*public void mouseWheelMoved(MouseWheelEvent e) {
 		int rotation = e.getWheelRotation();
 		int xPos = Client.instance.chatArea.getxPos();
 		int yPos = Client.instance.chatArea.getyPos();
@@ -838,20 +873,58 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 				Client.instance.setInputTaken(true);
 			}
 		} else if (Client.instance.loggedIn) {
-			boolean zoom = GameFrame.getScreenMode() == ScreenMode.FIXED ? (mouseX < 512)
-					: (mouseX < Client.clientWidth - 200);
+			boolean zoom = GameFrame.getScreenMode() == ScreenMode.FIXED ? (mouseX < 512) : (mouseX < Client.clientWidth - 200);
 			if (zoom && Client.openInterfaceID == -1) {
 				Client.clientZoom += rotation * 30;
 
-				if (Client.clientZoom < -630 && !(GameFrame.getScreenMode() == ScreenMode.FIXED))
-					Client.clientZoom = -630;
-				else if (Client.clientZoom < -790 && GameFrame.getScreenMode() == ScreenMode.FIXED)
-					Client.clientZoom = -790;
-				if (Client.clientZoom > 1230)
-					Client.clientZoom = 1230;
+				if (rotation == -1) {
+					if (Client.clientZoom > 200) {
+						Client.clientZoom -= 15;
+					}
+				} else {
+					if (Client.clientZoom < 900) {
+						Client.clientZoom += 15;
+					}
+				}
 			}
 			Client.instance.setInputTaken(true);
 		}
+	}*/
+	public boolean canZoom = true;
+	
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent event) {
+		int rotation = event.getWheelRotation();
+		interfaceScrollCheck(event);
+		if(mouseX > 0 && mouseX < 512 && mouseY > Client.clientHeight - 165 && mouseY < Client.clientHeight - 25) {
+			int scrollPos = Client.anInt1089;
+			scrollPos -= rotation * 30;		
+			if(scrollPos < 0)
+				scrollPos = 0;
+			if(scrollPos > Client.anInt1211 - 110)
+				scrollPos = Client.anInt1211 - 110;
+			if(Client.anInt1089 != scrollPos) {
+				Client.anInt1089 = scrollPos;
+				Client.instance.setInputTaken(true);
+			}
+		}
+		if (Client.openInterfaceID == -1) {
+			if (canZoom) {
+				if(mouseX > 0 && mouseX < 512 && mouseY > Client.clientHeight - 165 && mouseY < Client.clientHeight - 25) {
+					return;
+				}
+				if (rotation == -1) {
+					if (Client.clientZoom > 200) {
+						Client.clientZoom -= 15;
+					}
+				} else {
+					if (Client.clientZoom < 900) {
+						Client.clientZoom += 15;
+					}
+				}
+			}
+		}
+		Client.instance.setInputTaken(true);
 	}
 
 	@Override

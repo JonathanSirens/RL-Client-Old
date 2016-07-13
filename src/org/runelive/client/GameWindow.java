@@ -82,7 +82,7 @@ final class GameWindow extends JFrame {
 	public static void setFixed() {
 		if (instance.isUndecorated()) {
 			instance.dispose();
-			instance = new GameWindow(applet, minimumSize.width, minimumSize.height, false, false);
+			instance = new GameWindow(applet, 765, 503, false, false);
 		} else {
 			instance.setSize(minimumSize);
 			instance.setResizable(false);

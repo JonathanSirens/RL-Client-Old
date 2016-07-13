@@ -3093,7 +3093,7 @@ public class RSInterface {
 		if (j != -1) {
 			model_1.applyTransform(j);
 		}
-		model_1.light(64, 768, -50, -10, -50, true);
+		model_1.light(84, 1000, -90, -580, -90, true);
 		return model_1;
 	}
 

@@ -318,7 +318,7 @@ public final class Player extends Entity {
 
 			model_1.createBones();
 			model_1.scaleT(132, 132, 132);
-			model_1.light(64, 850, -30, -50, -30, true);
+			model_1.light(84, 1000, -90, -580, -90, true);
 			mruNodes.removeFromCache(model_1, l);
 			aLong1697 = l;
 		}

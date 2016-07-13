@@ -818,10 +818,10 @@ public final class WorldController {
 	}
 
 	void method305(int i, int k, int i1) {
-		int j = 100;
-		int l = 5500;
-		int k1 = l >> 4;
-
+		int j = 90;// was parameter
+		int l = 768;// was parameter
+		int j1 = (int) Math.sqrt(k * k + i * i + i1 * i1);
+		int k1 = l * j1 >> 8;
 		for (int l1 = 0; l1 < anInt437; l1++) {
 			for (int i2 = 0; i2 < anInt438; i2++) {
 				for (int j2 = 0; j2 < anInt439; j2++) {

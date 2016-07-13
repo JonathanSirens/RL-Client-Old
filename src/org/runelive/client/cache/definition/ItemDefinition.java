@@ -6725,7 +6725,7 @@ public final class ItemDefinition {
 		}
 
 		//Cheap fix for the offsets of female wield models
-		if (i == 1) {
+		/*if (i == 1) {
 			if (id == 11283 || id == 11284 || id == 11285) {
 				model.translate(-3, 0, 0);
 			}
@@ -6737,7 +6737,7 @@ public final class ItemDefinition {
 					model.translate(3, femaleWieldY - 12, 5);
 				}
 			}
-		}
+		}*/
 
 		if (modifiedModelColors != null) {
 			for (int i1 = 0; i1 < modifiedModelColors.length; i1++) {

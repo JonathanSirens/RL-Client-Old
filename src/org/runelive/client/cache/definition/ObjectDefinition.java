@@ -1918,7 +1918,7 @@ public final class ObjectDefinition {
 				} else if (opcode == 21)
 					adjustToTerrain = true;
 				else if (opcode == 22)
-					nonFlatShading = false;
+					nonFlatShading = true;
 				else if (opcode == 23)
 					aBoolean764 = true;
 				else if (opcode == 24) {
