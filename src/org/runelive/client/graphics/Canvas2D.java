@@ -489,6 +489,9 @@ public class Canvas2D extends NodeSub {
 
 	public static void setAllPixelsToZero() {
 		int i = width * height;
+		if (i > pixels.length - 1) {
+			i = pixels.length - 1;
+		}
 		for (int j = 0; j < i; j++) {
 			pixels[j] = 0;
 		}

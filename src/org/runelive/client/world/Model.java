@@ -15,7 +15,6 @@ import org.runelive.client.renderable.Animable;
 
 public class Model extends Animable {
 
-	private static final int MAX_POLYGON = 15000;
 	public static boolean aBoolean1684;
 	private static boolean aBooleanArray1663[] = new boolean[8000];
 	private static boolean aBooleanArray1664[] = new boolean[8000];
@@ -27,28 +26,28 @@ public class Model extends Animable {
 	public static int anInt1685;
 	public static int anInt1686;
 	public static int anInt1687;
-	private static int anIntArray1622[] = new int[MAX_POLYGON];
-	private static int anIntArray1623[] = new int[MAX_POLYGON];
-	private static int anIntArray1624[] = new int[MAX_POLYGON];
-	private static int anIntArray1625[] = new int[MAX_POLYGON];
-	private static int projected_vertex_x[] = new int[MAX_POLYGON];
-	private static int anIntArray1666[] = new int[MAX_POLYGON];
-	private static int anIntArray1667[] = new int[MAX_POLYGON];
-	private static int anIntArray1668[] = new int[MAX_POLYGON];
-	private static int anIntArray1669[] = new int[MAX_POLYGON];
-	private static int anIntArray1670[] = new int[MAX_POLYGON];
-	private static int anIntArray1671[] = new int[MAX_POLYGON];
+	private static int anIntArray1622[] = new int[2000];
+	private static int anIntArray1623[] = new int[2000];
+	private static int anIntArray1624[] = new int[2000];
+	private static int anIntArray1625[] = new int[2000];
+	private static int projected_vertex_x[] = new int[8000];
+	private static int anIntArray1666[] = new int[8000];
+	private static int anIntArray1667[] = new int[8000];
+	private static int anIntArray1668[] = new int[8000];
+	private static int anIntArray1669[] = new int[8000];
+	private static int anIntArray1670[] = new int[8000];
+	private static int anIntArray1671[] = new int[1500];
 	private static int anIntArray1673[] = new int[12];
-	private static int anIntArray1675[] = new int[MAX_POLYGON];
-	private static int anIntArray1676[] = new int[MAX_POLYGON];
+	private static int anIntArray1675[] = new int[2000];
+	private static int anIntArray1676[] = new int[2000];
 	private static int anIntArray1677[] = new int[12];
 	private static int anIntArray1678[] = new int[10];
 	private static int anIntArray1679[] = new int[10];
 	private static int anIntArray1680[] = new int[10];
-	public static int mapObjIds[] = new int[MAX_POLYGON];
-	public static int anIntArray1688[] = new int[MAX_POLYGON];
-	private static int anIntArrayArray1672[][] = new int[MAX_POLYGON][512];
-	private static int anIntArrayArray1674[][] = new int[12][MAX_POLYGON];
+	public static int mapObjIds[] = new int[1000];
+	public static int anIntArray1688[] = new int[1000];
+	private static int anIntArrayArray1672[][] = new int[1500][512];
+	private static int anIntArrayArray1674[][] = new int[12][2000];
 	private static CacheFileRequester onDemandRequester;
 	public static int modelIntArray1[];
 	public static int modelIntArray2[];
@@ -295,6 +294,7 @@ public class Model extends Animable {
 		aBoolean1618 = true;
 		aBoolean1659 = false;
 		anInt1620++;
+		modelParticles = model.modelParticles;
 		vertexCount = model.vertexCount;
 		triangle_count = model.triangle_count;
 		textured_triangle_count = model.textured_triangle_count;
@@ -1562,7 +1562,6 @@ public class Model extends Animable {
 			}
 			projected_vertex_x[k4] = l1 + (l4 << 9) / j5;
 			anIntArray1666[k4] = i2 + (i5 << 9) / j5;
-			anIntArray1670[k4] = j5;
 			if (textured_triangle_count > 0) {
 				anIntArray1668[k4] = l4;
 				anIntArray1669[k4] = i5;
@@ -1678,7 +1677,6 @@ public class Model extends Animable {
 			if (i8 >= 50) {
 				projected_vertex_x[j7] = l5 + (k7 << Client.log_view_dist) / i8;
 				anIntArray1666[j7] = j6 + (l7 << Client.log_view_dist) / i8;
-				anIntArray1670[j7] = 18;
 			} else {
 				projected_vertex_x[j7] = -5000;
 				flag = true;
@@ -3129,7 +3127,8 @@ public class Model extends Animable {
 		this.triangle_viewspace_x = triangle_viewspace_x;
 		this.triangle_viewspace_y = triangle_viewspace_y;
 		this.triangle_viewspace_z = triangle_viewspace_z;
-		scale2(4);// 2 is too big -- 3 is almost right
+		upscale(1);
+		downscale();
 		if (priorities != null) {
 			for (int j = 0; j < priorities.length; j++) {
 				priorities[j] = 10;
@@ -3293,6 +3292,22 @@ public class Model extends Animable {
 			texture_map_z[tri] = stream.getUnsignedShort();
 		}
 	}
+	
+	private void downscale() {
+        for (int i = 0; i != vertexCount; ++i) {
+            vertexX[i] = (vertexX[i] + 7) >> 3;
+            vertexY[i] = (vertexY[i] + 7) >> 3;
+            vertexZ[i] = (vertexZ[i] + 7) >> 3;
+        }
+    }
+	
+	 public void upscale(int size) {
+	        for (int i_10_ = 0; i_10_ < vertexCount; i_10_++) {
+	        	vertexX[i_10_] <<= size;
+	        	vertexY[i_10_] <<= size;
+	        	vertexZ[i_10_] <<= size;
+	        }
+	    }
 
 	public void scale2(int scale) {
 		for (int i1 = 0; i1 < vertexCount; i1++) {

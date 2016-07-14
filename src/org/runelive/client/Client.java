@@ -5575,12 +5575,14 @@ public class Client extends GameRenderer {
 			} else if ((getWalkableInterfaceId() == 201 || getWalkableInterfaceId() == 197) && GameFrame.getScreenMode() != ScreenMode.FIXED) {
 				drawInterface(0, getScreenWidth() - 765 + 15, RSInterface.interfaceCache[getWalkableInterfaceId()],
 						0 - 255 + 10 + 4);
+				
+			} else if ((getWalkableInterfaceId() == 25347) && GameFrame.getScreenMode() != ScreenMode.FIXED) {
+				drawInterface(0, getScreenWidth() - 750, RSInterface.interfaceCache[getWalkableInterfaceId()], 0);	
 			} else {
 				drawInterface(0, 0, RSInterface.interfaceCache[getWalkableInterfaceId()], 0);
 			}
 			if (getWalkableInterfaceId() == 197) {
-				drawInterface(0, getScreenWidth() - 765 - (GameFrame.getScreenMode() != ScreenMode.FIXED ? 30 : 0),
-						RSInterface.interfaceCache[42020], 10);
+				drawInterface(0, getScreenWidth() - 765 - (GameFrame.getScreenMode() != ScreenMode.FIXED ? 30 : 0), RSInterface.interfaceCache[42020], 10);
 			}
 		}
 
@@ -8153,7 +8155,7 @@ public class Client extends GameRenderer {
 		if (!loggedIn) {
 			resetLogout();
 		}
-
+		toggleSize(ScreenMode.FIXED);
 		try {
 			rsSocket.close();
 		} catch (Exception _ex) {
@@ -10750,7 +10752,7 @@ public class Client extends GameRenderer {
 		Model.anInt1687 = 0;
 		Model.anInt1685 = super.mouseX - 4;
 		Model.anInt1686 = super.mouseY - 4;
-
+		Canvas2D.setAllPixelsToZero();
 		// blue fog: 0x5DA4C9, white: 0xc8c0a8
 		Canvas2D.drawPixels(getScreenHeight(), 0, 0, Configuration.FOG_ENABLED ? 0xC8C0A8 : 0, getScreenWidth());
 		// Canvas2D.drawAlphaGradient(0, 0, getScreenWidth(),
@@ -10819,14 +10821,14 @@ public class Client extends GameRenderer {
 							int pixel = var31 + var28 * Canvas3D.width;
 							int var34;
 							if (var16.getImage() != null) {
-								//if (Texture.depthBuffer != null) {
-									//if (Texture.depthBuffer[pixel++] >> 16 >= particle.F()) {
+								//if (Canvas3D.depthBuffer != null) {
+									//if (Canvas3D.depthBuffer[pixel++] >> 16 >= particle.F()) {
 										var16.getImage().drawTransparentSprite(var13[0], var13[1], alpha);
 									//}
 								//}
 							} else {
 								try {
-									//if (Texture.depthBuffer[pixel++] >> 16 >= particle.F()) {
+									//if (Canvas3D.depthBuffer[pixel++] >> 16 >= particle.F()) {
 										for (var34 = var31; var34 <= var32; ++var34) {
 											int dstR = (gameScreenIP.anIntArray315[pixel] >> 16 & 255) * srcAlpha;
 											int dstG = (gameScreenIP.anIntArray315[pixel] >> 8 & 255) * srcAlpha;
@@ -16008,6 +16010,7 @@ public class Client extends GameRenderer {
 		}
 		method58(10, 0, false, 0);
 		updateGraphics(true);
+		toggleSize(ScreenMode.FIXED);
 		Settings.save();
 	}
 

@@ -247,29 +247,6 @@ public class ChatArea extends GameFrame {
 			}
 
 			Canvas3D.lineOffsets = client.anIntArray1180;
-			/*
-			 * if(screenMode != ScreenMode.FIXED && !componentHidden()) {
-			 * if((client.mouseX >= getOffSetX() && client.mouseX <=
-			 * getOffSetX() + getWidth() && client.mouseY >= resizeY - 8 &&
-			 * client.mouseY <= resizeY + 8) && client.getClickType() ==
-			 * ClickType.DRAG) { isDragging = true; } if(client.getClickType()
-			 * != ClickType.DRAG) isDragging = false;
-			 *
-			 * if(isDragging) { resizeY = client.mouseY;
-			 *
-			 * if(resizeY <= 20) resizeY = 20;
-			 *
-			 * if(resizeY <= getyPos() - 271) resizeY = getyPos() - 271;
-			 *
-			 * if(resizeY >= getyPos() - 10) resizeY = getyPos() - 10;
-			 *
-			 * if(getHeight() < 400 || getHeight() >= 150) setHeight(getyPos() +
-			 * 150 - resizeY - 10);
-			 *
-			 * //System.out.println("YPos: "+getyPos()+ " Height: "+
-			 * getHeight()+" ResizeY: "+resizeY); //System.out.println(getyPos()
-			 * - 400); } }
-			 */
 
 			if (screenMode == ScreenMode.FIXED) {
 				CacheSpriteLoader.getCacheSprite(3).drawSprite(getOffSetX(), getOffSetY());
@@ -281,7 +258,6 @@ public class ChatArea extends GameFrame {
 
 						for (int i = 0; i < getHeight() - 35; i++) {
 							int opacity = (int) (i * rate);
-							// if(resizeY + i < Client.clientHeight - 26)
 							Canvas2D.fillRect(getOffSetX() + 5, getOffSetY() + 121 - i, getWidth() - 10, 1, 0, opacity);
 
 						}
@@ -291,10 +267,6 @@ public class ChatArea extends GameFrame {
 					} else {
 						CacheSpriteLoader.getCacheSprite(3).drawTransparentSprite(getOffSetX(), getOffSetY(), 255);
 					}
-
-					// for(int i = 0; i < getWidth)
-					// Canvas2D.drawHorizontalLine(resizeY, 0x807660,
-					// getWidth() - 20, getOffSetX() + 5);
 				}
 			}
 			channel.drawChannelButtons(client, screenMode);
@@ -324,8 +296,7 @@ public class ChatArea extends GameFrame {
 				RSFontSystem textDrawingArea = client.newRegularFont;
 				int messageY = -3;
 				int scrollPosition = 0;
-				Canvas2D.setBounds(getOffSetX() + 8, getOffSetY() + 7, getOffSetX() + getWidth() - 22,
-						getOffSetY() + getHeight() - 28);
+				Canvas2D.setBounds(getOffSetX() + 8, getOffSetY() + 7, getOffSetX() + getWidth() - 22, getOffSetY() + getHeight() - 28);
 
 				for (int i = 0; i < 500; i++) {
 					if (client.chatMessages[i] != null) {
@@ -350,8 +321,7 @@ public class ChatArea extends GameFrame {
 
 						// Don't show Private messages in "All" if split chat is
 						// enabled.
-						if (client.chatTypeView == 0 && chatType >= 5 && chatType <= 7
-								&& client.splitPrivateChat == 1) {
+						if (client.chatTypeView == 0 && chatType >= 5 && chatType <= 7 && client.splitPrivateChat == 1) {
 							continue;
 						}
 
@@ -678,10 +648,10 @@ public class ChatArea extends GameFrame {
 					}
 					drawOffsetX += 2;
 					textDrawingArea.drawBasicString(Client.myPlayer.name + ":", drawOffsetX, drawOffsetY,
-							screenMode == ScreenMode.FIXED ? 0 : 0xffffff, -1, true);
+							screenMode == ScreenMode.FIXED ? 0 : 0xffffff, screenMode == ScreenMode.FIXED ? -1 : 0, true);
 					drawOffsetX += textDrawingArea.getTextWidth(Client.myPlayer.name) + 2;
 					textDrawingArea.drawBasicString(" " + RSFontSystem.handleOldSyntax(client.inputString) + "*",
-							drawOffsetX, drawOffsetY, getScreenMode() == ScreenMode.FIXED ? 255 : 0x7fa9ff, -1, false);
+							drawOffsetX, drawOffsetY, getScreenMode() == ScreenMode.FIXED ? 255 : 0x7fa9ff, screenMode == ScreenMode.FIXED ? -1 : 0, false);
 				}
 
 				// drawSplitChatSelectionBox(client);
