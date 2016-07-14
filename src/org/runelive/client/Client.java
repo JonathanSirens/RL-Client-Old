@@ -10821,23 +10821,17 @@ public class Client extends GameRenderer {
 							int pixel = var31 + var28 * Canvas3D.width;
 							int var34;
 							if (var16.getImage() != null) {
-<<<<<<< HEAD
 								//if (Canvas3D.depthBuffer != null) {
 									//if (Canvas3D.depthBuffer[pixel++] >> 16 >= particle.F()) {
-=======
 								//if (Texture.depthBuffer != null) {
 									//if (Texture.depthBuffer[pixel++] >> 16 >= particle.F()) {
->>>>>>> origin/master
 										var16.getImage().drawTransparentSprite(var13[0], var13[1], alpha);
 									//}
 								//}
 							} else {
 								try {
-<<<<<<< HEAD
 									//if (Canvas3D.depthBuffer[pixel++] >> 16 >= particle.F()) {
-=======
 									//if (Texture.depthBuffer[pixel++] >> 16 >= particle.F()) {
->>>>>>> origin/master
 										for (var34 = var31; var34 <= var32; ++var34) {
 											int dstR = (gameScreenIP.anIntArray315[pixel] >> 16 & 255) * srcAlpha;
 											int dstG = (gameScreenIP.anIntArray315[pixel] >> 8 & 255) * srcAlpha;
