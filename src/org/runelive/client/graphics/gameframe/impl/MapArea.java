@@ -243,7 +243,7 @@ public class MapArea extends GameFrame {
 
 	public void displayMoneyPouch(Client client) {
 		final boolean fixed = GameFrame.getScreenMode() == ScreenMode.FIXED;
-		int x = fixed ? 446 : Client.clientWidth - 146;
+		int x = fixed ? 446 : Client.clientWidth - 135;
 		int y = fixed ? 0 : 118;
 		int color = 0xffffff;
 		long amount = 0;
@@ -258,20 +258,18 @@ public class MapArea extends GameFrame {
 		} else {
 			color = 65280;
 		}
-		if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(559), x, fixed ? 82 : 48 + y)
+		if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(559), x, fixed ? 82 : 43 + y)
 				|| client.inSprite(false, CacheSpriteLoader.getCacheSprite(566),
 						getxPos() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 90 : -2),
 						GameFrame.getScreenMode() != ScreenMode.FIXED ? 160 : 82)) {
-			CacheSpriteLoader.getCacheSprite(559).drawSprite(x, fixed ? 85 : 48 + y);
+			CacheSpriteLoader.getCacheSprite(559).drawSprite(x, fixed ? 85 : 43 + y);
 		} else {
-			CacheSpriteLoader.getCacheSprite(561).drawSprite(x, fixed ? 85 : 48 + y);
+			CacheSpriteLoader.getCacheSprite(561).drawSprite(x, fixed ? 85 : 43 + y);
 		}
 		x -= 6;
 		value = "" + client.getMoneyInPouch() + "";
 		client.newRegularFont.drawBasicString("" + client.getMoneyInPouch(),
-				x + 55 - (value != null ? value.length() * 6 : 0), (fixed ? 100 : 64) + y, color, 0);
-		// client.smallText.drawRegularText(true, x + 55 - (value != null ?
-		// value.length() * 6 : 0), color, value, (fixed ? 100 : 64) + y);
+				x + 55 - (value != null ? value.length() * 6 : 0), (fixed ? 100 : 60) + y, color, 0);
 	}
 
 	public void displayXPCounter(Client client) {
@@ -428,8 +426,8 @@ public class MapArea extends GameFrame {
 		}
 
 		if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(566),
-				getxPos() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 90 : -2),
-				GameFrame.getScreenMode() != ScreenMode.FIXED ? 160 : 82)) {
+				getxPos() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : -2),
+				GameFrame.getScreenMode() != ScreenMode.FIXED ? 155 : 82)) {
 			client.menuActionName[3] = "Toggle money pouch";
 			client.menuActionID[3] = 712;
 			client.menuActionName[2] = "Withdraw money pouch";
@@ -458,11 +456,11 @@ public class MapArea extends GameFrame {
 			client.menuActionRow = 2;
 		}
 		// if (mouseInRegion(522, 121, 559, 157)) {
-		if (client.mouseX >= 522 && client.mouseX <= 559 && client.mouseY >= 121 && client.mouseY <= 157) {
+		/*if (client.mouseX >= 522 && client.mouseX <= 559 && client.mouseY >= 121 && client.mouseY <= 157) {
 			client.menuActionName[1] = "Toggle Special Attack";
 			client.menuActionID[1] = 10003;
 			client.menuActionRow = 2;
-		}
+		}*/
 		if (mouseInRegion(client, getScreenMode().ordinal() == 0 ? client.clientWidth - 74 : client.getOrbX(3),
 				client.getOrbY(3), (getScreenMode().ordinal() == 0 ? client.clientWidth - 74 : client.getOrbX(3)) + 57,
 				client.getOrbY(3) + 34)) {
@@ -634,7 +632,7 @@ public class MapArea extends GameFrame {
 			/*
 			 * Spec Orb
 			 */
-			client.drawSpecOrb();
+			//client.drawSpecOrb();
 
 			/*
 			 * Orbs
@@ -673,30 +671,34 @@ public class MapArea extends GameFrame {
 				int y = fixed ? 0 : 118;
 				if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(559), x, fixed ? 82 : 48 + y)
 						|| client.inSprite(false, CacheSpriteLoader.getCacheSprite(565),
-								getxPos() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 90 : -2),
-								GameFrame.getScreenMode() != ScreenMode.FIXED ? 160 : 82)) {
+								getxPos() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : -2),
+								GameFrame.getScreenMode() != ScreenMode.FIXED ? 155 : 82)) {
 					CacheSpriteLoader.getCacheSprite(564).drawSprite(
-							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 90 : -2),
-							GameFrame.getScreenMode() != ScreenMode.FIXED ? 160 : 82);
+							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : -2),
+							GameFrame.getScreenMode() != ScreenMode.FIXED ? 155 : 82);
 				} else {
 					CacheSpriteLoader.getCacheSprite(566).drawSprite(
-							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 90 : -2),
-							GameFrame.getScreenMode() != ScreenMode.FIXED ? 160 : 82);
+							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : -2),
+							GameFrame.getScreenMode() != ScreenMode.FIXED ? 155 : 82);
 				}
 			} else {
 				if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(566),
-						getxPos() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 90 : -2),
-						GameFrame.getScreenMode() != ScreenMode.FIXED ? 160 : 82)) {
+						getxPos() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : -2),
+						GameFrame.getScreenMode() != ScreenMode.FIXED ? 155 : 82)) {
 					CacheSpriteLoader.getCacheSprite(564).drawSprite(
-							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 90 : -2),
-							GameFrame.getScreenMode() != ScreenMode.FIXED ? 160 : 82);
+							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : -2),
+							GameFrame.getScreenMode() != ScreenMode.FIXED ? 155 : 82);
 				} else {
 					CacheSpriteLoader.getCacheSprite(566).drawSprite(
-							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 90 : -2),
-							GameFrame.getScreenMode() != ScreenMode.FIXED ? 160 : 82);
+							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : -2),
+							GameFrame.getScreenMode() != ScreenMode.FIXED ? 155 : 82);
 				}
 			}
-
+			if (GameFrame.getScreenMode() != ScreenMode.FIXED) {
+				CacheSpriteLoader.getCacheSprite(461).drawSprite(Client.clientWidth - 45, 129);
+			}
+			CacheSpriteLoader.getCacheSprite(456).drawSprite(GameFrame.getScreenMode() == ScreenMode.FIXED ? 6 : Client.clientWidth - 40, GameFrame.getScreenMode() == ScreenMode.FIXED ? 124 : 133);
+			
 			if (Client.tabID == 14) {
 				CacheSpriteLoader.getCacheSprite(343)
 						.drawSprite(getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 149 : 225), 0);

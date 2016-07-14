@@ -14,6 +14,7 @@ public class Canvas2D extends NodeSub {
 	public static int centerX;
 	public static int centerY;
 	public static int middleY;
+	public static float[] depthBuffer;
 
 	public static void fillRectangle(int color, int y, int widthz, int heightz, int opacity, int x) {
 		if (x < topX) {
@@ -365,7 +366,8 @@ public class Canvas2D extends NodeSub {
 		}
 	}
 
-	public static void initDrawingArea(int h, int w, int ai[]) {
+	public static void initDrawingArea(int h, int w, int ai[], float depth[]) {
+		depthBuffer = depth;
 		pixels = ai;
 		width = w;
 		height = h;
@@ -494,6 +496,7 @@ public class Canvas2D extends NodeSub {
 		}
 		for (int j = 0; j < i; j++) {
 			pixels[j] = 0;
+			depthBuffer[j] = Float.MAX_VALUE;
 		}
 
 	}

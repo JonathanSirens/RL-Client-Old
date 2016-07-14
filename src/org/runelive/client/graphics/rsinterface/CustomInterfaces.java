@@ -408,21 +408,6 @@ public class CustomInterfaces extends RSInterface {
 			addHoverButtonWSpriteLoader(79949 + i, 622, 60, 27, "Set Exp Goal", 1322, -1, 1);
 			addHoverButtonWSpriteLoader(79974 + i, 622, 60, 27, "Clear Goal", 1323, -1, 1);
 			addHoverButtonWSpriteLoader(80000 + i, 622, 60, 27, "Prestige", 5000 + i, -1, 1);
-			/*
-			 * addHoverButton(79924 + i,
-			 * getSprite("Interfaces/Skilltab/Button"), 0, 60, 27,
-			 * "Set Level Goal", 1321, -1, 1); addHoverButton(79949 + i,
-			 * getSprite("Interfaces/Skilltab/Button"), 0, 60, 27,
-			 * "Set Exp Goal", 1322, -1, 1); addHoverButton(79974 + i,
-			 * getSprite("Interfaces/Skilltab/Button"), 0, 60, 27, "Clear Goal",
-			 * 1323, -1, 1); addHoverButton(80000 + i,
-			 * getSprite("Interfaces/Skilltab/Button"), 0, 60, 27, "Prestige",
-			 * 5000+i, -1, 1);
-			 * 
-			 * 
-			 * addSprite(icons[i], getSprite("Interfaces/Skilltab/" +
-			 * spriteNames[i]));
-			 */
 			addSpriteLoader(icons[i], spriteIds[i]);
 		}
 

@@ -3,13 +3,13 @@ package org.runelive.client.particles.impl;
 import org.runelive.client.particles.Particle;
 import org.runelive.client.particles.Position;
 
-public class MaxParticle extends Particle {
+public final class MaxParticle extends Particle {
 	
 	public MaxParticle() {
 		this.Z(new Position(0, -3, 0));
 		this.getImage(new Position(0, -3, 0));
 		this.getImage(19);
-		this.setRGB(16777215);
+		this.setRGB(16776960);
 		this.I(1);
 		this.Z(1.5F);
 		this.getImage(0.0F);

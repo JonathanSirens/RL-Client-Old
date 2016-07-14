@@ -649,7 +649,7 @@ public class Sprite extends Canvas2D {
 	}
 
 	public void method343() {
-		Canvas2D.initDrawingArea(myHeight, myWidth, myPixels);
+		Canvas2D.initDrawingArea(myHeight, myWidth, myPixels, null);
 	}
 
 	public void decodePalette(int i, int j, int k) {

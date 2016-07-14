@@ -17,6 +17,7 @@ public final class Class40 {
 	public final int anInt685;
 	public final int anInt686;
 	public final int anInt687;
+	public static final int[] depthPoint = new int[6];
 	public static final int[] anIntArray688 = new int[6];
 	public static final int[] anIntArray689 = new int[6];
 	public static final int[] anIntArray690 = new int[6];

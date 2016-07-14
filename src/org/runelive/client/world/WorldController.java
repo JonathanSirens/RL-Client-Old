@@ -1864,65 +1864,64 @@ public final class WorldController {
 	private void method315(Class43 class43, int i, int j, int k, int l, int i1, int j1, int k1) {
 		int l1;
 		int i2 = l1 = (j1 << 7) - anInt455;
-		int z2;
-		int z1 = z2 = (k1 << 7) - anInt457;
+		int j2;
+		int k2 = j2 = (k1 << 7) - anInt457;
 		int l2;
 		int i3 = l2 = i2 + 128;
-		int z4;
-		int z3 = z4 = z1 + 128;
+		int j3;
+		int k3 = j3 = k2 + 128;
 		int l3 = anIntArrayArrayArray440[i][j1][k1] - anInt456;
 		int i4 = anIntArrayArrayArray440[i][j1 + 1][k1] - anInt456;
 		int j4 = anIntArrayArrayArray440[i][j1 + 1][k1 + 1] - anInt456;
 		int k4 = anIntArrayArrayArray440[i][j1][k1 + 1] - anInt456;
-		int l4 = z1 * l + i2 * i1 >> 16;
-		z1 = z1 * i1 - i2 * l >> 16;
+		int l4 = k2 * l + i2 * i1 >> 16;
+		k2 = k2 * i1 - i2 * l >> 16;
 		i2 = l4;
-		l4 = l3 * k - z1 * j >> 16;
-		z1 = l3 * j + z1 * k >> 16;
+		l4 = l3 * k - k2 * j >> 16;
+		k2 = l3 * j + k2 * k >> 16;
 		l3 = l4;
-		if (z1 < 50) {
+		if (k2 < 50) {
 			return;
 		}
-		l4 = z2 * l + i3 * i1 >> 16;
-		z2 = z2 * i1 - i3 * l >> 16;
+		l4 = j2 * l + i3 * i1 >> 16;
+		j2 = j2 * i1 - i3 * l >> 16;
 		i3 = l4;
-		l4 = i4 * k - z2 * j >> 16;
-		z2 = i4 * j + z2 * k >> 16;
+		l4 = i4 * k - j2 * j >> 16;
+		j2 = i4 * j + j2 * k >> 16;
 		i4 = l4;
-		if (z2 < 50) {
+		if (j2 < 50) {
 			return;
 		}
-		l4 = z3 * l + l2 * i1 >> 16;
-		z3 = z3 * i1 - l2 * l >> 16;
+		l4 = k3 * l + l2 * i1 >> 16;
+		k3 = k3 * i1 - l2 * l >> 16;
 		l2 = l4;
-		l4 = j4 * k - z3 * j >> 16;
-		z3 = j4 * j + z3 * k >> 16;
+		l4 = j4 * k - k3 * j >> 16;
+		k3 = j4 * j + k3 * k >> 16;
 		j4 = l4;
-		if (z3 < 50) {
+		if (k3 < 50) {
 			return;
 		}
-		l4 = z4 * l + l1 * i1 >> 16;
-		z4 = z4 * i1 - l1 * l >> 16;
+		l4 = j3 * l + l1 * i1 >> 16;
+		j3 = j3 * i1 - l1 * l >> 16;
 		l1 = l4;
-		l4 = k4 * k - z4 * j >> 16;
-		z4 = k4 * j + z4 * k >> 16;
+		l4 = k4 * k - j3 * j >> 16;
+		j3 = k4 * j + j3 * k >> 16;
 		k4 = l4;
-		if (z4 < 50) {
+		if (j3 < 50) {
 			return;
 		}
-		int x1 = Canvas3D.centerX + (i2 << Client.log_view_dist) / z1;
-		int y1 = Canvas3D.centerY + (l3 << Client.log_view_dist) / z1;
-		int x2 = Canvas3D.centerX + (i3 << Client.log_view_dist) / z2;
-		int y2 = Canvas3D.centerY + (i4 << Client.log_view_dist) / z2;
-		int x3 = Canvas3D.centerX + (l2 << Client.log_view_dist) / z3;
-		int y3 = Canvas3D.centerY + (j4 << Client.log_view_dist) / z3;
-		int x4 = Canvas3D.centerX + (l1 << Client.log_view_dist) / z4;
-		int y4 = Canvas3D.centerY + (k4 << Client.log_view_dist) / z4;
+		int i5 = Canvas3D.centerX + (i2 << Client.log_view_dist) / k2;
+		int j5 = Canvas3D.centerY + (l3 << Client.log_view_dist) / k2;
+		int k5 = Canvas3D.centerX + (i3 << Client.log_view_dist) / j2;
+		int l5 = Canvas3D.centerY + (i4 << Client.log_view_dist) / j2;
+		int i6 = Canvas3D.centerX + (l2 << Client.log_view_dist) / k3;
+		int j6 = Canvas3D.centerY + (j4 << Client.log_view_dist) / k3;
+		int k6 = Canvas3D.centerX + (l1 << Client.log_view_dist) / j3;
+		int l6 = Canvas3D.centerY + (k4 << Client.log_view_dist) / j3;
 		Canvas3D.alpha = 0;
-		if ((x3 - x4) * (y2 - y4) - (y3 - y4) * (x2 - x4) > 0) {
-			Canvas3D.restrict_edges = x3 < 0 || x4 < 0 || x2 < 0 || x3 > Canvas2D.centerX || x4 > Canvas2D.centerX
-					|| x2 > Canvas2D.centerX;
-			if (aBoolean467 && method318(anInt468, anInt469, y3, y4, y2, x3, x4, x2)) {
+		if ((i6 - k6) * (l5 - l6) - (j6 - l6) * (k5 - k6) > 0) {
+			Canvas3D.restrict_edges = i6 < 0 || k6 < 0 || k5 < 0 || i6 > Canvas2D.centerX || k6 > Canvas2D.centerX || k5 > Canvas2D.centerX;
+			if (aBoolean467 && method318(anInt468, anInt469, j6, l6, l5, i6, k6, k5)) {
 				anInt470 = j1;
 				anInt471 = k1;
 			}
@@ -1930,65 +1929,52 @@ public final class WorldController {
 				if (class43.anInt718 != 0xbc614e) {
 					if (Configuration.hdTexturing && class43.anInt720 != -1) {
 						if (class43.aBoolean721) {
-							Canvas3D.drawMaterializedTriangle(y3, y4, y2, x3, x4, x2, class43.anInt718,
-									class43.anInt719, class43.anInt717, i2, i3, l1, l3, i4, k4, z1, z2, z4,
-									class43.anInt720);
+							Canvas3D.drawMaterializedTriangle(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719, class43.anInt717, i2, i3, l1, l3, i4, k4, k2, j2, j3, class43.anInt720, k3, j3, j2);
 						} else {
-							Canvas3D.drawMaterializedTriangle(y3, y4, y2, x3, x4, x2, class43.anInt718,
-									class43.anInt719, class43.anInt717, l2, l1, i3, j4, k4, i4, z3, z4, z2,
-									class43.anInt720);
+							Canvas3D.drawMaterializedTriangle(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719, class43.anInt717, l2, l1, i3, j4, k4, i4, k3, j3, j2, class43.anInt720, k3, j3, j2);
 						}
 					} else {
-						Canvas3D.drawShadedTriangle(y3, y4, y2, x3, x4, x2, class43.anInt718, class43.anInt719,
-								class43.anInt717);
+						Canvas3D.method374(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719, class43.anInt717, k3, j3, j2);
 					}
 				}
 			} else if (!lowDetail) {
 				if (class43.aBoolean721) {
-					Canvas3D.drawTexturedTriangle(y3, y4, y2, x3, x4, x2, class43.anInt718, class43.anInt719,
-							class43.anInt717, i2, i3, l1, l3, i4, k4, z1, z2, z4, class43.anInt720);
+					Canvas3D.method378(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719, class43.anInt717, i2, i3, l1, l3, i4, k4, k2, j2, j3, class43.anInt720, k3, j3, j2);
 				} else {
-					Canvas3D.drawTexturedTriangle(y3, y4, y2, x3, x4, x2, class43.anInt718, class43.anInt719,
-							class43.anInt717, l2, l1, i3, j4, k4, i4, z3, z4, z2, class43.anInt720);
+					Canvas3D.method378(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719, class43.anInt717, l2, l1, i3, j4, k4, i4, k3, j3, j2, class43.anInt720, k3, j3, j2);
 				}
 			} else {
 				int i7 = anIntArray485[class43.anInt720];
-				Canvas3D.drawShadedTriangle(y3, y4, y2, x3, x4, x2, method317(i7, class43.anInt718),
-						method317(i7, class43.anInt719), method317(i7, class43.anInt717));
+				Canvas3D.method374(j6, l6, l5, i6, k6, k5, method317(i7, class43.anInt718), method317(i7, class43.anInt719), method317(i7, class43.anInt717), k3, j3, j2);
 			}
 			if (fog) {
-				Canvas3D.drawFogTriangle(y3, y4, y2, x3, x4, x2, z3, z4, z2);
+				Canvas3D.drawFogTriangle(j6, l6, l5, i6, k6, k5, k3, j3, j2);
 			}
 		}
-		if ((x1 - x2) * (y4 - y2) - (y1 - y2) * (x4 - x2) > 0) {
-			Canvas3D.restrict_edges = x1 < 0 || x2 < 0 || x4 < 0 || x1 > Canvas2D.centerX || x2 > Canvas2D.centerX
-					|| x4 > Canvas2D.centerX;
-			if (aBoolean467 && method318(anInt468, anInt469, y1, y2, y4, x1, x2, x4)) {
+		if ((i5 - k5) * (l6 - l5) - (j5 - l5) * (k6 - k5) > 0) {
+			Canvas3D.restrict_edges = i5 < 0 || k5 < 0 || k6 < 0 || i5 > Canvas2D.centerX || k5 > Canvas2D.centerX || k6 > Canvas2D.centerX;
+			if (aBoolean467 && method318(anInt468, anInt469, j5, l5, l6, i5, k5, k6)) {
 				anInt470 = j1;
 				anInt471 = k1;
 			}
 			if (class43.anInt720 == -1 || class43.anInt720 > 50) {
 				if (class43.anInt716 != 0xbc614e) {
 					if (Configuration.hdTexturing && class43.anInt720 != -1) {
-						Canvas3D.drawMaterializedTriangle(y1, y2, y4, x1, x2, x4, class43.anInt716, class43.anInt717,
-								class43.anInt719, i2, i3, l1, l3, i4, k4, z1, z2, z4, class43.anInt720);
+						Canvas3D.drawMaterializedTriangle(j5, l5, l6, i5, k5, k6, class43.anInt716, class43.anInt717, class43.anInt719, i2, i3, l1, l3, i4, k4, k2, j2, j3, class43.anInt720, k2, j2, j3);
 					} else {
-						Canvas3D.drawShadedTriangle(y1, y2, y4, x1, x2, x4, class43.anInt716, class43.anInt717,
-								class43.anInt719);
+						Canvas3D.method374(j5, l5, l6, i5, k5, k6, class43.anInt716, class43.anInt717, class43.anInt719, k2, j2, j3);
 					}
 				}
 			} else {
-				if (!lowDetail) {
-					Canvas3D.drawTexturedTriangle(y1, y2, y4, x1, x2, x4, class43.anInt716, class43.anInt717,
-							class43.anInt719, i2, i3, l1, l3, i4, k4, z1, z2, z4, class43.anInt720);
-				} else {
-					int j7 = anIntArray485[class43.anInt720];
-					Canvas3D.drawShadedTriangle(y1, y2, y4, x1, x2, x4, method317(j7, class43.anInt716),
-							method317(j7, class43.anInt717), method317(j7, class43.anInt719));
+				if(!lowDetail) {
+					Canvas3D.method378(j5, l5, l6, i5, k5, k6, class43.anInt716, class43.anInt717, class43.anInt719, i2, i3, l1, l3, i4, k4, k2, j2, j3, class43.anInt720, k2, j2, j3);
+					return;
 				}
+				int j7 = anIntArray485[class43.anInt720];
+				Canvas3D.method374(j5, l5, l6, i5, k5, k6, method317(j7, class43.anInt716), method317(j7, class43.anInt717), method317(j7, class43.anInt719), k2, j2, j3);
 			}
 			if (fog) {
-				Canvas3D.drawFogTriangle(y1, y2, y4, x1, x2, x4, z1, z2, z4);
+				Canvas3D.drawFogTriangle(j5, l5, l6, i5, k5, k6, k2, j2, j3);
 			}
 		}
 	}
@@ -2017,6 +2003,7 @@ public final class WorldController {
 			}
 			Class40.anIntArray688[l1] = Canvas3D.centerX + (i2 << Client.log_view_dist) / i3;
 			Class40.anIntArray689[l1] = Canvas3D.centerY + (k2 << Client.log_view_dist) / i3;
+			Class40.depthPoint[l1] = i3;
 		}
 
 		Canvas3D.alpha = 0;
@@ -2025,69 +2012,46 @@ public final class WorldController {
 			int l2 = class40.anIntArray679[j2];
 			int j3 = class40.anIntArray680[j2];
 			int l3 = class40.anIntArray681[j2];
-			int x1 = Class40.anIntArray688[l2];
-			int x2 = Class40.anIntArray688[j3];
-			int x3 = Class40.anIntArray688[l3];
-			int y1 = Class40.anIntArray689[l2];
-			int y2 = Class40.anIntArray689[j3];
-			int y3 = Class40.anIntArray689[l3];
-			if ((x1 - x2) * (y3 - y2) - (y1 - y2) * (x3 - x2) > 0) {
-				Canvas3D.restrict_edges = x1 < 0 || x2 < 0 || x3 < 0 || x1 > Canvas2D.centerX || x2 > Canvas2D.centerX
-						|| x3 > Canvas2D.centerX;
-				if (aBoolean467 && method318(anInt468, anInt469, y1, y2, y3, x1, x2, x3)) {
+			int i4 = Class40.anIntArray688[l2];
+			int j4 = Class40.anIntArray688[j3];
+			int k4 = Class40.anIntArray688[l3];
+			int l4 = Class40.anIntArray689[l2];
+			int i5 = Class40.anIntArray689[j3];
+			int j5 = Class40.anIntArray689[l3];
+			if ((i4 - j4) * (j5 - i5) - (l4 - i5) * (k4 - j4) > 0) {
+				Canvas3D.restrict_edges = i4 < 0 || j4 < 0 || k4 < 0 || i4 > Canvas2D.centerX || j4 > Canvas2D.centerX || k4 > Canvas2D.centerX;
+				if (aBoolean467 && method318(anInt468, anInt469, l4, i5, j5, i4, j4, k4)) {
 					anInt470 = i;
 					anInt471 = i1;
 				}
-				if (class40.anIntArray682 == null || class40.anIntArray682[j2] == -1
-						|| class40.anIntArray682[j2] > 50) {
+				if (class40.anIntArray682 == null || class40.anIntArray682[j2] == -1 || class40.anIntArray682[j2] > 50) {
 					if (class40.anIntArray676[j2] != 0xbc614e) {
-						if (Configuration.hdTexturing && class40.anIntArray682 != null
-								&& class40.anIntArray682[j2] != -1) {
+						if (Configuration.hdTexturing && class40.anIntArray682 != null && class40.anIntArray682[j2] != -1) {
 							if (class40.aBoolean683 || class40.anIntArray682[j2] == 505) {
-								Canvas3D.drawMaterializedTriangle(y1, y2, y3, x1, x2, x3, class40.anIntArray676[j2],
-										class40.anIntArray677[j2], class40.anIntArray678[j2], Class40.anIntArray690[0],
-										Class40.anIntArray690[1], Class40.anIntArray690[3], Class40.anIntArray691[0],
-										Class40.anIntArray691[1], Class40.anIntArray691[3], Class40.anIntArray692[0],
-										Class40.anIntArray692[1], Class40.anIntArray692[3], class40.anIntArray682[j2]);
+								Canvas3D.drawMaterializedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2], class40.anIntArray677[j2], class40.anIntArray678[j2], Class40.anIntArray690[0], Class40.anIntArray690[1], Class40.anIntArray690[3], Class40.anIntArray691[0], Class40.anIntArray691[1], Class40.anIntArray691[3], Class40.anIntArray692[0], Class40.anIntArray692[1], Class40.anIntArray692[3], class40.anIntArray682[j2], Class40.depthPoint[l2], Class40.depthPoint[j3], Class40.depthPoint[l3]);
 							} else {
-								Canvas3D.drawMaterializedTriangle(y1, y2, y3, x1, x2, x3, class40.anIntArray676[j2],
-										class40.anIntArray677[j2], class40.anIntArray678[j2], Class40.anIntArray690[l2],
-										Class40.anIntArray690[j3], Class40.anIntArray690[l3], Class40.anIntArray691[l2],
-										Class40.anIntArray691[j3], Class40.anIntArray691[l3], Class40.anIntArray692[l2],
-										Class40.anIntArray692[j3], Class40.anIntArray692[l3],
-										class40.anIntArray682[j2]);
+								Canvas3D.drawMaterializedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2], class40.anIntArray677[j2], class40.anIntArray678[j2], Class40.anIntArray690[l2], Class40.anIntArray690[j3], Class40.anIntArray690[l3], Class40.anIntArray691[l2], Class40.anIntArray691[j3], Class40.anIntArray691[l3], Class40.anIntArray692[l2], Class40.anIntArray692[j3], Class40.anIntArray692[l3], class40.anIntArray682[j2], Class40.depthPoint[l2], Class40.depthPoint[j3], Class40.depthPoint[l3]);
 							}
 						} else {
-							Canvas3D.drawShadedTriangle(y1, y2, y3, x1, x2, x3, class40.anIntArray676[j2],
-									class40.anIntArray677[j2], class40.anIntArray678[j2]);
+							Canvas3D.method374(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2], class40.anIntArray677[j2], class40.anIntArray678[j2], Class40.depthPoint[l2], Class40.depthPoint[j3], Class40.depthPoint[l3]);
 						}
 					}
 				} else if (!lowDetail) {
-					if (/* true || */class40.aBoolean683) {
-						Canvas3D.drawTexturedTriangle(y1, y2, y3, x1, x2, x3, class40.anIntArray676[j2],
-								class40.anIntArray677[j2], class40.anIntArray678[j2], Class40.anIntArray690[0],
-								Class40.anIntArray690[1], Class40.anIntArray690[3], Class40.anIntArray691[0],
-								Class40.anIntArray691[1], Class40.anIntArray691[3], Class40.anIntArray692[0],
-								Class40.anIntArray692[1], Class40.anIntArray692[3], class40.anIntArray682[j2]);
+					if (class40.aBoolean683) {
+						Canvas3D.method378(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2], class40.anIntArray677[j2], class40.anIntArray678[j2], Class40.anIntArray690[0], Class40.anIntArray690[1], Class40.anIntArray690[3], Class40.anIntArray691[0], Class40.anIntArray691[1], Class40.anIntArray691[3], Class40.anIntArray692[0], Class40.anIntArray692[1], Class40.anIntArray692[3], class40.anIntArray682[j2], Class40.depthPoint[l2], Class40.depthPoint[j3], Class40.depthPoint[l3]);
 					} else {
-						Canvas3D.drawTexturedTriangle(y1, y2, y3, x1, x2, x3, class40.anIntArray676[j2],
-								class40.anIntArray677[j2], class40.anIntArray678[j2], Class40.anIntArray690[l2],
-								Class40.anIntArray690[j3], Class40.anIntArray690[l3], Class40.anIntArray691[l2],
-								Class40.anIntArray691[j3], Class40.anIntArray691[l3], Class40.anIntArray692[l2],
-								Class40.anIntArray692[j3], Class40.anIntArray692[l3], class40.anIntArray682[j2]);
+						Canvas3D.method378(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2], class40.anIntArray677[j2], class40.anIntArray678[j2], Class40.anIntArray690[l2], Class40.anIntArray690[j3], Class40.anIntArray690[l3], Class40.anIntArray691[l2], Class40.anIntArray691[j3], Class40.anIntArray691[l3], Class40.anIntArray692[l2], Class40.anIntArray692[j3], Class40.anIntArray692[l3], class40.anIntArray682[j2], Class40.depthPoint[l2], Class40.depthPoint[j3], Class40.depthPoint[l3]);
 					}
 				} else {
 					int k5 = anIntArray485[class40.anIntArray682[j2]];
-					Canvas3D.drawShadedTriangle(y1, y2, y3, x1, x2, x3, method317(k5, class40.anIntArray676[j2]),
-							method317(k5, class40.anIntArray677[j2]), method317(k5, class40.anIntArray678[j2]));
+					Canvas3D.method374(l4, i5, j5, i4, j4, k4, method317(k5, class40.anIntArray676[j2]), method317(k5, class40.anIntArray677[j2]), method317(k5, class40.anIntArray678[j2]), Class40.depthPoint[l2], Class40.depthPoint[j3], Class40.depthPoint[l3]);
 				}
 				if (fog) {
-					Canvas3D.drawFogTriangle(y1, y2, y3, x1, x2, x3, Class40.anIntArray692[l2],
+					Canvas3D.drawFogTriangle(l4, i5, j5, i4, j4, k4, Class40.anIntArray692[l2],
 							Class40.anIntArray692[j3], Class40.anIntArray692[l3]);
 				}
 			}
 		}
-
 	}
 
 	private int method317(int j, int k) {

@@ -6790,6 +6790,16 @@ public class Client extends GameRenderer {
 							i4 = 0xffffff;
 						}
 					}
+					if (GameFrame.getScreenMode() != ScreenMode.FIXED) {
+						if ((backDialogID != -1 || dialogID != -1 || childInterface.message.contains("Click here to continue")) && (class9.id == backDialogID || class9.id == dialogID)) {
+							if (i4 == 0xffff00) {
+								i4 = 255;
+							}
+							if (i4 == 49152) {
+								i4 = 0xffffff;
+							}
+						}
+					}
 					if (childInterface.parentID == 1151 || childInterface.parentID == 12855) {
 						switch (i4) {
 						case 16773120:
@@ -10753,14 +10763,10 @@ public class Client extends GameRenderer {
 		Model.anInt1685 = super.mouseX - 4;
 		Model.anInt1686 = super.mouseY - 4;
 		Canvas2D.setAllPixelsToZero();
-		// blue fog: 0x5DA4C9, white: 0xc8c0a8
-		Canvas2D.drawPixels(getScreenHeight(), 0, 0, Configuration.FOG_ENABLED ? 0xC8C0A8 : 0, getScreenWidth());
-		// Canvas2D.drawAlphaGradient(0, 0, getScreenWidth(),
-		// getScreenHeight(), 0x5DA4C9, 0x9DA4C2, 255);
+		Canvas2D.drawPixels(GameFrame.getScreenMode() == ScreenMode.FIXED ? 334 : getScreenHeight(), 0, 0, Configuration.FOG_ENABLED ? 0xc8c0a8 : 0, GameFrame.getScreenMode() == ScreenMode.FIXED ? 512 : getScreenWidth());
 
 		if (loggedIn) {
-			worldController.method313(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, j, yCameraCurve,
-					Configuration.FOG_ENABLED);
+			worldController.method313(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, j, yCameraCurve, Configuration.FOG_ENABLED);
 			worldController.clearObj5Cache();
 		}
 		
@@ -10821,17 +10827,14 @@ public class Client extends GameRenderer {
 							int pixel = var31 + var28 * Canvas3D.width;
 							int var34;
 							if (var16.getImage() != null) {
-								//if (Canvas3D.depthBuffer != null) {
-									//if (Canvas3D.depthBuffer[pixel++] >> 16 >= particle.F()) {
-								//if (Texture.depthBuffer != null) {
-									//if (Texture.depthBuffer[pixel++] >> 16 >= particle.F()) {
+								if (Canvas2D.depthBuffer != null) {
+									if (Canvas2D.depthBuffer[pixel++] >= particle.F()) {
 										var16.getImage().drawTransparentSprite(var13[0], var13[1], alpha);
-									//}
-								//}
+									}
+								}
 							} else {
 								try {
-									//if (Canvas3D.depthBuffer[pixel++] >> 16 >= particle.F()) {
-									//if (Texture.depthBuffer[pixel++] >> 16 >= particle.F()) {
+									if (Canvas2D.depthBuffer[pixel++] >= particle.F()) {
 										for (var34 = var31; var34 <= var32; ++var34) {
 											int dstR = (gameScreenIP.anIntArray315[pixel] >> 16 & 255) * srcAlpha;
 											int dstG = (gameScreenIP.anIntArray315[pixel] >> 8 & 255) * srcAlpha;
@@ -10839,7 +10842,7 @@ public class Client extends GameRenderer {
 											int rgb = (srcR + dstR >> 8 << 16) + (srcG + dstG >> 8 << 8) + (srcB + dstB >> 8);
 											gameScreenIP.anIntArray315[pixel++] = rgb;
 										}
-									//}
+									}
 								} catch (Exception exception) {
 
 								}
@@ -12242,6 +12245,8 @@ public class Client extends GameRenderer {
 							launchURL("http://rune.live/store/");
 						} else if (inputString.toLowerCase().startsWith("::fps")) {
 							fpsOn = !fpsOn;
+						} else if (inputString.toLowerCase().startsWith("::mipmap")) {
+							Canvas3D.mipmapping = !Canvas3D.mipmapping;
 						} else {
 							getOut().putOpcode(103);
 							getOut().putByte(inputString.length() - 1);
@@ -17424,21 +17429,21 @@ public class Client extends GameRenderer {
 
 	public void updateGameArea() {
 		try {
-			Canvas3D.setBounds(getScreenWidth(), getScreenHeight());
+			Canvas3D.method365(getScreenWidth(), getScreenHeight());
 			fullScreenTextureArray = Canvas3D.lineOffsets;
-			Canvas3D.setBounds(
+			Canvas3D.method365(
 					GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible()
 							? chatAreaIP != null ? chatAreaIP.anInt316 : 519 : getScreenWidth(),
 					GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible()
 							? chatAreaIP != null ? chatAreaIP.anInt317 : 165 : getScreenHeight());
 			anIntArray1180 = Canvas3D.lineOffsets;
-			Canvas3D.setBounds(
+			Canvas3D.method365(
 					GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible()
 							? tabAreaIP != null ? tabAreaIP.anInt316 : 346 : getScreenWidth(),
 					GameFrame.getScreenMode() == ScreenMode.FIXED && isGameFrameVisible()
 							? tabAreaIP != null ? tabAreaIP.anInt317 : 335 : getScreenHeight());
 			anIntArray1181 = Canvas3D.lineOffsets;
-			Canvas3D.setBounds(gameAreaWidth, gameAreaHeight);
+			Canvas3D.method365(gameAreaWidth, gameAreaHeight);
 			anIntArray1182 = Canvas3D.lineOffsets;
 			int ai[] = new int[9];
 

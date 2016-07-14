@@ -11,6 +11,7 @@ import java.awt.image.ImageProducer;
 
 public final class RSImageProducer implements ImageProducer, ImageObserver {
 
+	public final float depthBuffer[];
 	public final int[] anIntArray315;
 	public final int anInt316;
 	public final int anInt317;
@@ -21,6 +22,7 @@ public final class RSImageProducer implements ImageProducer, ImageObserver {
 	public RSImageProducer(int i, int j, Component component) {
 		anInt316 = i;
 		anInt317 = j;
+		depthBuffer = new float[i * j];
 		anIntArray315 = new int[i * j];
 		aColorModel318 = new DirectColorModel(32, 0xff0000, 65280, 255);
 		anImage320 = component.createImage(this);
@@ -53,7 +55,7 @@ public final class RSImageProducer implements ImageProducer, ImageObserver {
 	}
 
 	public void initDrawingArea() {
-		Canvas2D.initDrawingArea(anInt317, anInt316, anIntArray315);
+		Canvas2D.initDrawingArea(anInt317, anInt316, anIntArray315, depthBuffer);
 	}
 
 	@Override

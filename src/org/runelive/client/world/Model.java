@@ -1568,6 +1568,8 @@ public class Model extends Animable {
 				anIntArray1668[k4] = l4;
 				anIntArray1669[k4] = i5;
 				anIntArray1670[k4] = j5;
+			} else {
+				anIntArray1670[k4] = j5;
 			}
 		}
 
@@ -1679,7 +1681,6 @@ public class Model extends Animable {
 			if (i8 >= 50) {
 				projected_vertex_x[j7] = l5 + (k7 << Client.log_view_dist) / i8;
 				anIntArray1666[j7] = j6 + (l7 << Client.log_view_dist) / i8;
-				anIntArray1670[j7] = 18;
 			} else {
 				projected_vertex_x[j7] = -5000;
 				flag = true;
@@ -1688,7 +1689,7 @@ public class Model extends Animable {
 				anIntArray1668[j7] = k7;
 				anIntArray1669[j7] = l7;
 				anIntArray1670[j7] = i8;
-			} else if (fog) {
+			} else {
 				anIntArray1670[j7] = i8;
 			}
 		}
@@ -1699,9 +1700,7 @@ public class Model extends Animable {
 			return;
 		}
 	}
-
-	public static boolean fog;
-
+	
 	private final void translateToScreen(boolean flag, boolean flag1, int i, int id) {
 		for (int j = 0; j < diagonal3D; j++) {
 			anIntArray1671[j] = 0;
@@ -1931,17 +1930,14 @@ public class Model extends Animable {
 			i1 = face_fill_attributes[i] & 3;
 		}
 		if (i1 == 0) {
-			Canvas3D.drawShadedTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
-					projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i],
-					face_shade_b[i], face_shade_c[i]);
+			Canvas3D.method374(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l], projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i], face_shade_b[i], face_shade_c[i], anIntArray1670[j], anIntArray1670[k], anIntArray1670[l]);
 			if (fog) {
 				Canvas3D.drawFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
 						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], anIntArray1670[j],
 						anIntArray1670[k], anIntArray1670[l]);
 			}
 		} else if (i1 == 1) {
-			Canvas3D.drawFlatTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
-					projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], modelIntArray3[face_shade_a[i]]);
+			Canvas3D.method376(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l], projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], modelIntArray3[face_shade_a[i]], anIntArray1670[j], anIntArray1670[k], anIntArray1670[l]);
 			if (fog) {
 				Canvas3D.drawFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
 						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], anIntArray1670[j],
@@ -1952,11 +1948,7 @@ public class Model extends Animable {
 			int l1 = texture_map_x[j1];
 			int j2 = texture_map_y[j1];
 			int l2 = texture_map_z[j1];
-			Canvas3D.drawTexturedTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
-					projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i],
-					face_shade_b[i], face_shade_c[i], anIntArray1668[l1], anIntArray1668[j2], anIntArray1668[l2],
-					anIntArray1669[l1], anIntArray1669[j2], anIntArray1669[l2], anIntArray1670[l1],
-					anIntArray1670[j2], anIntArray1670[l2], colors[i]);
+			Canvas3D.method378(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l], projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i], face_shade_b[i], face_shade_c[i], anIntArray1668[l1], anIntArray1668[j2], anIntArray1668[l2], anIntArray1669[l1], anIntArray1669[j2], anIntArray1669[l2], anIntArray1670[l1], anIntArray1670[j2], anIntArray1670[l2], colors[i], anIntArray1670[j], anIntArray1670[k], anIntArray1670[l]);
 			if (fog) {
 				Canvas3D.drawTexturedFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
 						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], anIntArray1670[j],
@@ -1969,11 +1961,7 @@ public class Model extends Animable {
 			int i2 = texture_map_x[k1];
 			int k2 = texture_map_y[k1];
 			int i3 = texture_map_z[k1];
-			Canvas3D.drawTexturedTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
-					projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i],
-					face_shade_a[i], face_shade_a[i], anIntArray1668[i2], anIntArray1668[k2], anIntArray1668[i3],
-					anIntArray1669[i2], anIntArray1669[k2], anIntArray1669[i3], anIntArray1670[i2],
-					anIntArray1670[k2], anIntArray1670[i3], colors[i]);
+			Canvas3D.method378(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l], projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], face_shade_a[i], face_shade_a[i], face_shade_a[i], anIntArray1668[i2], anIntArray1668[k2], anIntArray1668[i3], anIntArray1669[i2], anIntArray1669[k2], anIntArray1669[i3], anIntArray1670[i2], anIntArray1670[k2], anIntArray1670[i3], colors[i], anIntArray1670[j], anIntArray1670[k], anIntArray1670[l]);
 			if (fog) {
 				Canvas3D.drawTexturedFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
 						projected_vertex_x[j], projected_vertex_x[k], projected_vertex_x[l], anIntArray1670[j],
@@ -2083,28 +2071,28 @@ public class Model extends Animable {
 					meshType = face_fill_attributes[i] & 3;
 				}
 				if (meshType == 0) {
-					Canvas3D.drawShadedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
-							anIntArray1680[2]);
+					Canvas3D.method374(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
+							anIntArray1680[2], -1F, -1F, -1F);
 				} else if (meshType == 1) {
-					Canvas3D.drawFlatTriangle(i7, j7, k7, j3, j4, j5, modelIntArray3[face_shade_a[i]]);
+					Canvas3D.method376(i7, j7, k7, j3, j4, j5, modelIntArray3[face_shade_a[i]], -1F, -1F, -1F);
 				} else if (meshType == 2) {
 					int j8 = face_fill_attributes[i] >> 2;
 					int k9 = texture_map_x[j8];
 					int k10 = texture_map_y[j8];
 					int k11 = texture_map_z[j8];
-					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
+					Canvas3D.method378(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
 							anIntArray1680[2], anIntArray1668[k9], anIntArray1668[k10], anIntArray1668[k11],
 							anIntArray1669[k9], anIntArray1669[k10], anIntArray1669[k11], anIntArray1670[k9],
-							anIntArray1670[k10], anIntArray1670[k11], colors[i]);
+							anIntArray1670[k10], anIntArray1670[k11], colors[i], -1F, -1F, -1F);
 				} else if (meshType == 3) {
 					int k8 = face_fill_attributes[i] >> 2;
 					int l9 = texture_map_x[k8];
 					int l10 = texture_map_y[k8];
 					int l11 = texture_map_z[k8];
-					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, face_shade_a[i], face_shade_a[i],
+					Canvas3D.method378(i7, j7, k7, j3, j4, j5, face_shade_a[i], face_shade_a[i],
 							face_shade_a[i], anIntArray1668[l9], anIntArray1668[l10], anIntArray1668[l11],
 							anIntArray1669[l9], anIntArray1669[l10], anIntArray1669[l11], anIntArray1670[l9],
-							anIntArray1670[l10], anIntArray1670[l11], colors[i]);
+							anIntArray1670[l10], anIntArray1670[l11], colors[i], -1F, -1F, -1F);
 				}
 			}
 			if (l == 4) {
@@ -2119,16 +2107,16 @@ public class Model extends Animable {
 					i8 = face_fill_attributes[i] & 3;
 				}
 				if (i8 == 0) {
-					Canvas3D.drawShadedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
-							anIntArray1680[2]);
-					Canvas3D.drawShadedTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1680[0],
-							anIntArray1680[2], anIntArray1680[3]);
+					Canvas3D.method374(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
+							anIntArray1680[2], -1F, -1F, -1F);
+					Canvas3D.method374(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1680[0],
+							anIntArray1680[2], anIntArray1680[3], -1F, -1F, -1F);
 					return;
 				}
 				if (i8 == 1) {
 					int l8 = modelIntArray3[face_shade_a[i]];
-					Canvas3D.drawFlatTriangle(i7, j7, k7, j3, j4, j5, l8);
-					Canvas3D.drawFlatTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], l8);
+					Canvas3D.method376(i7, j7, k7, j3, j4, j5, l8, -1F, -1F, -1F);
+					Canvas3D.method376(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], l8, -1F, -1F, -1F);
 					return;
 				}
 				if (i8 == 2) {
@@ -2136,15 +2124,15 @@ public class Model extends Animable {
 					int i10 = texture_map_x[i9];
 					int i11 = texture_map_y[i9];
 					int i12 = texture_map_z[i9];
-					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
+					Canvas3D.method378(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
 							anIntArray1680[2], anIntArray1668[i10], anIntArray1668[i11], anIntArray1668[i12],
 							anIntArray1669[i10], anIntArray1669[i11], anIntArray1669[i12], anIntArray1670[i10],
-							anIntArray1670[i11], anIntArray1670[i12], colors[i]);
-					Canvas3D.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3],
+							anIntArray1670[i11], anIntArray1670[i12], colors[i], -1F, -1F, -1F);
+					Canvas3D.method378(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3],
 							anIntArray1680[0], anIntArray1680[2], anIntArray1680[3], anIntArray1668[i10],
 							anIntArray1668[i11], anIntArray1668[i12], anIntArray1669[i10], anIntArray1669[i11],
 							anIntArray1669[i12], anIntArray1670[i10], anIntArray1670[i11], anIntArray1670[i12],
-							colors[i]);
+							colors[i], -1F, -1F, -1F);
 					return;
 				}
 				if (i8 == 3) {
@@ -2152,14 +2140,14 @@ public class Model extends Animable {
 					int j10 = texture_map_x[j9];
 					int j11 = texture_map_y[j9];
 					int j12 = texture_map_z[j9];
-					Canvas3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5, face_shade_a[i], face_shade_a[i],
+					Canvas3D.method378(i7, j7, k7, j3, j4, j5, face_shade_a[i], face_shade_a[i],
 							face_shade_a[i], anIntArray1668[j10], anIntArray1668[j11], anIntArray1668[j12],
 							anIntArray1669[j10], anIntArray1669[j11], anIntArray1669[j12], anIntArray1670[j10],
-							anIntArray1670[j11], anIntArray1670[j12], colors[i]);
-					Canvas3D.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], face_shade_a[i],
+							anIntArray1670[j11], anIntArray1670[j12], colors[i], -1F, -1F, -1F);
+					Canvas3D.method378(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], face_shade_a[i],
 							face_shade_a[i], face_shade_a[i], anIntArray1668[j10], anIntArray1668[j11],
 							anIntArray1668[j12], anIntArray1669[j10], anIntArray1669[j11], anIntArray1669[j12],
-							anIntArray1670[j10], anIntArray1670[j11], anIntArray1670[j12], colors[i]);
+							anIntArray1670[j10], anIntArray1670[j11], anIntArray1670[j12], colors[i], -1F, -1F, -1F);
 				}
 			}
 		}
@@ -3140,6 +3128,7 @@ public class Model extends Animable {
 	}
 	
 	public static int anInt1620;
+	public static boolean fog;
 
 	private void readOldModel(int i) {
 		int j = -870;
@@ -3308,7 +3297,6 @@ public class Model extends Animable {
 	        for (int i_10_ = 0; i_10_ < vertexCount; i_10_++) {
 	        	vertexX[i_10_] <<= size;
 	        	vertexY[i_10_] <<= size;
-	        	vertexX[i_10_] <<= size;
 	        	vertexZ[i_10_] <<= size;
 	        }
 	    }

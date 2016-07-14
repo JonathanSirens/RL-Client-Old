@@ -6171,6 +6171,7 @@ public final class ItemDefinition {
 		int l1 = Canvas3D.centerY;
 		int ai[] = Canvas3D.lineOffsets;
 		int ai1[] = Canvas2D.pixels;
+		float depth[] = Canvas2D.depthBuffer;
 		int i2 = Canvas2D.width;
 		int j2 = Canvas2D.height;
 		int k2 = Canvas2D.topX;
@@ -6178,7 +6179,7 @@ public final class ItemDefinition {
 		int i3 = Canvas2D.topY;
 		int j3 = Canvas2D.bottomY;
 		Canvas3D.notTextured = false;
-		Canvas2D.initDrawingArea(32, 32, sprite2.myPixels);
+		Canvas2D.initDrawingArea(32, 32, sprite2.myPixels, new float[32*32]);
 		Canvas2D.drawPixels(32, 0, 0, 0, 32);
 		Canvas3D.method364();
 		int k3 = definition.modelZoom;
@@ -6264,7 +6265,7 @@ public final class ItemDefinition {
 			mruNodes1.removeFromCache(sprite2, i);
 		}
 
-		Canvas2D.initDrawingArea(j2, i2, ai1);
+		Canvas2D.initDrawingArea(j2, i2, ai1, depth);
 		Canvas2D.setBounds(k2, i3, l2, j3);
 		Canvas3D.centerX = k1;
 		Canvas3D.centerY = l1;
@@ -6344,6 +6345,7 @@ public final class ItemDefinition {
 		int l1 = Canvas3D.centerY;
 		int ai[] = Canvas3D.lineOffsets;
 		int ai1[] = Canvas2D.pixels;
+		float depth[] = Canvas2D.depthBuffer;
 		int i2 = Canvas2D.width;
 		int j2 = Canvas2D.height;
 		int k2 = Canvas2D.topX;
@@ -6351,7 +6353,7 @@ public final class ItemDefinition {
 		int i3 = Canvas2D.topY;
 		int j3 = Canvas2D.bottomY;
 		Canvas3D.notTextured = false;
-		Canvas2D.initDrawingArea(32, 32, sprite2.myPixels);
+		Canvas2D.initDrawingArea(32, 32, sprite2.myPixels, new float[32*32]);
 		Canvas2D.drawPixels(32, 0, 0, 0, 32);
 		Canvas3D.method364();
 		int k3 = definition.modelZoom;
@@ -6438,7 +6440,7 @@ public final class ItemDefinition {
 			mruNodes1.removeFromCache(sprite2, i);
 		}
 
-		Canvas2D.initDrawingArea(j2, i2, ai1);
+		Canvas2D.initDrawingArea(j2, i2, ai1, depth);
 		Canvas2D.setBounds(k2, i3, l2, j3);
 		Canvas3D.centerX = k1;
 		Canvas3D.centerY = l1;
