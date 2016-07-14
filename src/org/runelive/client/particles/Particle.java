@@ -8,7 +8,7 @@ import org.runelive.client.particles.impl.*;
 public class Particle {
 
 	public static final Particle[] PARTICLE_ARRAY = new Particle[] { new MaxParticle(), new TokHaarParticle(), new DungeoneeringParticle(),
-			new CompletionistParticle(), new TrimmedCompletionistParticle() };
+			new CompletionistParticle(), new TrimmedCompletionistParticle(), new AttackParticle() };
 
 	public static final Random I = new Random(System.currentTimeMillis());
 	private float currentTimeMillis = 1.0F;
