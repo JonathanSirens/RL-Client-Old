@@ -11,8 +11,6 @@ public final class Canvas3D extends Canvas2D {
 	public static Background aBackgroundArray1474s[] = new Background[51];
 	public static boolean restrict_edges;
 	private static boolean opaque;
-	public static boolean mipMapping = true;
-	private static int mipMapLevel;
 	private static boolean[] transparentTextures = new boolean[51];
 	public static int alpha;
 	private static int anInt1473;
@@ -23,8 +21,8 @@ public final class Canvas3D extends Canvas2D {
 	private static int[] anIntArray1476 = new int[51];
 	public static int anIntArray1480[] = new int[51];
 	public static int anIntArray1482[] = new int[0x10000];
-	private static int[][][] anIntArrayArray1478;
-	private static int[][][] anIntArrayArray1479 = new int[51][][];
+	private static int[][] anIntArrayArray1478;
+	private static int[][] anIntArrayArray1479 = new int[51][];
 	private static int[][] anIntArrayArray1483 = new int[51][];
 	public static int centerX;
 	public static int centerY;
@@ -35,15 +33,9 @@ public final class Canvas3D extends Canvas2D {
 	private static int[] OFFSETS_512_334 = null;
 	private static int[] OFFSETS_765_503 = null;
 	public static int SINE[];
-<<<<<<< HEAD
 
-	public static final int FOREGROUND = 0xC8C0A8;
-	public static final int FOG_COLOR_A = 0xC800A8;
-=======
-//0xC8C0A8
 	public static final int FOREGROUND = 0xC8C0A8;//0x5DA4C9
 	public static final int FOG_COLOR_A = 0xC800A8;//0xC800A8
->>>>>>> origin/master
 	public static final int FOG_COLOR_B = 0xC000;
 
 	static {
@@ -112,13 +104,16 @@ public final class Canvas3D extends Canvas2D {
 
 	public static void method367() {
 		if (anIntArrayArray1478 == null) {
-			anInt1477 = 20;
-			anIntArrayArray1478 = new int[anInt1477][][];
-			for (int i = 0; i < anInt1477; i++) {
-				anIntArrayArray1478[i] = new int[][] { new int[16384], new int[4096], new int[1024], new int[256], new int[64], new int[16], new int[4], new int[1] };
+			anInt1477 = 20;// was parameter
+			if (lowDetail) {
+				anIntArrayArray1478 = new int[anInt1477][16384];
+			} else {
+				anIntArrayArray1478 = new int[anInt1477][0x10000];
 			}
-			for (int k = 0; k < 51; k++)
+			for (int k = 0; k < 51; k++) {
 				anIntArrayArray1479[k] = null;
+			}
+
 		}
 	}
 
@@ -177,82 +172,81 @@ public final class Canvas3D extends Canvas2D {
 		anIntArrayArray1479[i] = null;
 	}
 
-	private static int[][] getTexturePixels(int textureId) {
-		anIntArray1480[textureId] = anInt1481++;
-		if (anIntArrayArray1479[textureId] != null)
-			return anIntArrayArray1479[textureId];
-		int[][] texels;
+	private static int[] getTexturePixels(int i) {
+		anIntArray1480[i] = anInt1481++;
+
+		if (anIntArrayArray1479[i] != null) {
+			return anIntArrayArray1479[i];
+		}
+
+		int ai[];
+
 		if (anInt1477 > 0) {
-			texels = anIntArrayArray1478[--anInt1477];
+			ai = anIntArrayArray1478[--anInt1477];
 			anIntArrayArray1478[anInt1477] = null;
 		} else {
-			int lastUsed = 0;
-			int target = -1;
-			for (int l = 0; l < anInt1473; l++)
-				if (anIntArrayArray1479[l] != null && (anIntArray1480[l] < lastUsed || target == -1)) {
-					lastUsed = anIntArray1480[l];
-					target = l;
+			int j = 0;
+			int k = -1;
+
+			for (int l = 0; l < anInt1473; l++) {
+				if (anIntArrayArray1479[l] != null && (anIntArray1480[l] < j || k == -1)) {
+					j = anIntArray1480[l];
+					k = l;
 				}
-
-			texels = anIntArrayArray1479[target];
-			anIntArrayArray1479[target] = null;
-		}
-		anIntArrayArray1479[textureId] = texels;
-		Background background = aBackgroundArray1474s[textureId];
-		int texturePalette[] = anIntArrayArray1483[textureId];
-
-		if (background.imgWidth == 64) {
-			for (int j1 = 0; j1 < 128; j1++) {
-				for (int j2 = 0; j2 < 128; j2++)
-					texels[0][j2 + (j1 << 7)] = texturePalette[background.imgPixels[(j2 >> 1) + ((j1 >> 1) << 6)]];
-
 			}
 
+			ai = anIntArrayArray1479[k];
+			anIntArrayArray1479[k] = null;
+		}
+
+		anIntArrayArray1479[i] = ai;
+		Background background = aBackgroundArray1474s[i];
+		int ai1[] = anIntArrayArray1483[i];
+
+		if (lowDetail) {
+			transparentTextures[i] = false;
+
+			for (int i1 = 0; i1 < 4096; i1++) {
+				int i2 = ai[i1] = ai1[background.imgPixels[i1]] & 0xf8f8ff;
+
+				if (i2 == 0) {
+					transparentTextures[i] = true;
+				}
+
+				ai[4096 + i1] = i2 - (i2 >>> 3) & 0xf8f8ff;
+				ai[8192 + i1] = i2 - (i2 >>> 2) & 0xf8f8ff;
+				ai[12288 + i1] = i2 - (i2 >>> 2) - (i2 >>> 3) & 0xf8f8ff;
+			}
 		} else {
-			for (int k1 = 0; k1 < 16384; k1++)
-				texels[0][k1] = texturePalette[background.imgPixels[k1]];
-
-		}
-		transparentTextures[textureId] = false;
-		for (int l1 = 0; l1 < 16384; l1++) {
-			texels[0][l1] &= 0xf8f8ff;
-			int k2 = texels[0][l1];
-			if (k2 == 0)
-				transparentTextures[textureId] = true;
-		}
-
-		for (int level = 1, size = 64; level < 8; level++) {
-			int[] src = texels[level - 1];
-			int[] dst = texels[level];
-			for (int x = 0; x < size; x++) {
-				for (int y = 0; y < size; y++) {
-					double r = 0, g = 0, b = 0;
-					int count = 0;
-					for (int rgb : new int[] { src[x + (y * size << 1) << 1], src[(x + (y * size << 1) << 1) + 1], src[(x + (y * size << 1) << 1) + (size << 1)], src[(x + (y * size << 1) << 1) + (size << 1) + 1] }) {
-						if (rgb != 0) {
-							double dr = (rgb >> 16 & 0xff) / 255d;
-							double dg = (rgb >> 8 & 0xff) / 255d;
-							double db = (rgb & 0xff) / 255d;
-							r += dr * dr;
-							g += dg * dg;
-							b += db * db;
-							count++;
-						}
-					}
-					if (count != 0) {
-						int ri = Math.round(255 * (float) Math.sqrt(r / count));
-						int gi = Math.round(255 * (float) Math.sqrt(g / count));
-						int bi = Math.round(255 * (float) Math.sqrt(b / count));
-						dst[x + y * size] = ri << 16 | gi << 8 | bi;
-					} else {
-						dst[x + y * size] = 0;
+			if (background.imgWidth == 64) {
+				for (int j1 = 0; j1 < 128; j1++) {
+					for (int j2 = 0; j2 < 128; j2++) {
+						ai[j2 + (j1 << 7)] = ai1[background.imgPixels[(j2 >> 1) + (j1 >> 1 << 6)]];
 					}
 				}
+			} else {
+				for (int k1 = 0; k1 < 16384; k1++) {
+					ai[k1] = ai1[background.imgPixels[k1]];
+				}
 			}
-			size >>= 1;
+
+			transparentTextures[i] = false;
+
+			for (int l1 = 0; l1 < 16384; l1++) {
+				ai[l1] &= 0xf8f8ff;
+				int k2 = ai[l1];
+
+				if (k2 == 0) {
+					transparentTextures[i] = true;
+				}
+
+				ai[16384 + l1] = k2 - (k2 >>> 3) & 0xf8f8ff;
+				ai[32768 + l1] = k2 - (k2 >>> 2) & 0xf8f8ff;
+				ai[49152 + l1] = k2 - (k2 >>> 2) - (k2 >>> 3) & 0xf8f8ff;
+			}
 		}
 
-		return texels;
+		return ai;
 	}
 
 	public static void method372(double d) {
@@ -369,8 +363,8 @@ public final class Canvas3D extends Canvas2D {
 		return (j << 16) + (k << 8) + l;
 	}
 
-	private static final int FOG_BEGIN = 2000;
-	private static final int FOG_END = 3000;
+	private static final int FOG_BEGIN = 2800;
+	private static final int FOG_END = 3300;
 
 	public static void drawFogTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int z1, int z2, int z3) {
 		if (z1 <= FOG_BEGIN && z2 <= FOG_BEGIN && z3 <= FOG_BEGIN) {
@@ -876,13 +870,12 @@ public final class Canvas3D extends Canvas2D {
 	}
 
 	public static void drawTexturedFogTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int z1, int z2, int z3,
-			int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int tex) {
+											   int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int tex) {
 		if (!transparentTextures[tex]) {
 			drawFogTriangle(y1, y2, y3, x1, x2, x3, z1, z2, z3);
 			return;
 		}
-		setMipmapLevel(y1, y2, y3, x1, x2, x3, tex);
-		int ai[] = getTexturePixels(tex)[mipMapLevel];
+		int ai[] = getTexturePixels(tex);
 		k2 = j2 - k2;
 		j3 = i3 - j3;
 		i4 = l3 - i4;
@@ -1413,7 +1406,7 @@ public final class Canvas3D extends Canvas2D {
 	}
 
 	private static void drawTexturedFogScanline(int[] dst, int[] src, int off, int x1, int x2, int z1, int z2, int l1,
-			int i2, int j2, int k2, int l2, int i3) {
+												int i2, int j2, int k2, int l2, int i3) {
 		int i = 0;// was parameter
 		int j = 0;// was parameter
 		if (x1 >= x2) {
@@ -1441,6 +1434,213 @@ public final class Canvas3D extends Canvas2D {
 			}
 		}
 		off += x1;
+		if (lowDetail) {
+			int i4 = 0;
+			int k4 = 0;
+			int k6 = x1 - centerX;
+			l1 += (k2 >> 3) * k6;
+			i2 += (l2 >> 3) * k6;
+			j2 += (i3 >> 3) * k6;
+			int i5 = j2 >> 12;
+			if (i5 != 0) {
+				i = l1 / i5;
+				j = i2 / i5;
+				if (i < 0) {
+					i = 0;
+				} else if (i > 4032) {
+					i = 4032;
+				}
+			}
+			l1 += k2;
+			i2 += l2;
+			j2 += i3;
+			i5 = j2 >> 12;
+			if (i5 != 0) {
+				i4 = l1 / i5;
+				k4 = i2 / i5;
+				if (i4 < 7) {
+					i4 = 7;
+				} else if (i4 > 4032) {
+					i4 = 4032;
+				}
+			}
+			int i7 = i4 - i >> 3;
+			int k7 = k4 - j >> 3;
+			while (k3-- > 0) {
+				if (src[(j & 0xfc0) + (i >> 6)] != 0) {
+					int z = z1 >> 16;
+					if (z > FOG_BEGIN) {
+						if (z >= FOG_END) {
+							dst[off] = FOREGROUND;
+						} else {
+							int rgb = dst[off];
+							int a1 = (z - FOG_BEGIN << 8) / (FOG_END - FOG_BEGIN);
+							int a2 = 256 - a1;
+							dst[off] = getColor(a1, rgb, a2);
+						}
+					}
+				}
+				off++;
+				i += i7;
+				j += k7;
+				z1 += z2;
+				if (src[(j & 0xfc0) + (i >> 6)] != 0) {
+					int z = z1 >> 16;
+					if (z > FOG_BEGIN) {
+						if (z >= FOG_END) {
+							dst[off] = FOREGROUND;
+						} else {
+							int rgb = dst[off];
+							int a1 = (z - FOG_BEGIN << 8) / (FOG_END - FOG_BEGIN);
+							int a2 = 256 - a1;
+							dst[off] = getColor(a1, rgb, a2);
+						}
+					}
+				}
+				off++;
+				i += i7;
+				j += k7;
+				z1 += z2;
+				if (src[(j & 0xfc0) + (i >> 6)] != 0) {
+					int z = z1 >> 16;
+					if (z > FOG_BEGIN) {
+						if (z >= FOG_END) {
+							dst[off] = FOREGROUND;
+						} else {
+							int rgb = dst[off];
+							int a1 = (z - FOG_BEGIN << 8) / (FOG_END - FOG_BEGIN);
+							int a2 = 256 - a1;
+							dst[off] = getColor(a1, rgb, a2);
+						}
+					}
+				}
+				off++;
+				i += i7;
+				j += k7;
+				z1 += z2;
+				if (src[(j & 0xfc0) + (i >> 6)] != 0) {
+					int z = z1 >> 16;
+					if (z > FOG_BEGIN) {
+						if (z >= FOG_END) {
+							dst[off] = FOREGROUND;
+						} else {
+							int rgb = dst[off];
+							int a1 = (z - FOG_BEGIN << 8) / (FOG_END - FOG_BEGIN);
+							int a2 = 256 - a1;
+							dst[off] = getColor(a1, rgb, a2);
+						}
+					}
+				}
+				off++;
+				i += i7;
+				j += k7;
+				z1 += z2;
+				if (src[(j & 0xfc0) + (i >> 6)] != 0) {
+					int z = z1 >> 16;
+					if (z > FOG_BEGIN) {
+						if (z >= FOG_END) {
+							dst[off] = FOREGROUND;
+						} else {
+							int rgb = dst[off];
+							int a1 = (z - FOG_BEGIN << 8) / (FOG_END - FOG_BEGIN);
+							int a2 = 256 - a1;
+							dst[off] = getColor(a1, rgb, a2);
+						}
+					}
+				}
+				off++;
+				i += i7;
+				j += k7;
+				z1 += z2;
+				if (src[(j & 0xfc0) + (i >> 6)] != 0) {
+					int z = z1 >> 16;
+					if (z > FOG_BEGIN) {
+						if (z >= FOG_END) {
+							dst[off] = FOREGROUND;
+						} else {
+							int rgb = dst[off];
+							int a1 = (z - FOG_BEGIN << 8) / (FOG_END - FOG_BEGIN);
+							int a2 = 256 - a1;
+							dst[off] = getColor(a1, rgb, a2);
+						}
+					}
+				}
+				off++;
+				i += i7;
+				j += k7;
+				z1 += z2;
+				if (src[(j & 0xfc0) + (i >> 6)] != 0) {
+					int z = z1 >> 16;
+					if (z > FOG_BEGIN) {
+						if (z >= FOG_END) {
+							dst[off] = FOREGROUND;
+						} else {
+							int rgb = dst[off];
+							int a1 = (z - FOG_BEGIN << 8) / (FOG_END - FOG_BEGIN);
+							int a2 = 256 - a1;
+							dst[off] = getColor(a1, rgb, a2);
+						}
+					}
+				}
+				off++;
+				i += i7;
+				j += k7;
+				z1 += z2;
+				if (src[(j & 0xfc0) + (i >> 6)] != 0) {
+					int z = z1 >> 16;
+					if (z > FOG_BEGIN) {
+						if (z >= FOG_END) {
+							dst[off] = FOREGROUND;
+						} else {
+							int rgb = dst[off];
+							int a1 = (z - FOG_BEGIN << 8) / (FOG_END - FOG_BEGIN);
+							int a2 = 256 - a1;
+							dst[off] = getColor(a1, rgb, a2);
+						}
+					}
+				}
+				off++;
+				i = i4;
+				j = k4;
+				z1 += z2;
+				l1 += k2;
+				i2 += l2;
+				j2 += i3;
+				int k5 = j2 >> 12;
+				if (k5 != 0) {
+					i4 = l1 / k5;
+					k4 = i2 / k5;
+					if (i4 < 7) {
+						i4 = 7;
+					} else if (i4 > 4032) {
+						i4 = 4032;
+					}
+				}
+				i7 = i4 - i >> 3;
+				k7 = k4 - j >> 3;
+			}
+			for (k3 = x2 - x1 & 7; k3-- > 0;) {
+				if (src[(j & 0xfc0) + (i >> 6)] != 0) {
+					int z = z1 >> 16;
+					if (z > FOG_BEGIN) {
+						if (z >= FOG_END) {
+							dst[off] = FOREGROUND;
+						} else {
+							int rgb = dst[off];
+							int a1 = (z - FOG_BEGIN << 8) / (FOG_END - FOG_BEGIN);
+							int a2 = 256 - a1;
+							dst[off] = getColor(a1, rgb, a2);
+						}
+					}
+				}
+				off++;
+				i += i7;
+				j += k7;
+				z1 += z2;
+			}
+
+			return;
+		}
 		int j4 = 0;
 		int l4 = 0;
 		int l6 = x1 - centerX;
@@ -1473,7 +1673,7 @@ public final class Canvas3D extends Canvas2D {
 		int j7 = j4 - i >> 3;
 		int l7 = l4 - j >> 3;
 		while (k3-- > 0) {
-			if (src[texelPos((j & 0x3f80) + (i >> 7))] != 0) {
+			if (src[(j & 0x3f80) + (i >> 7)] != 0) {
 				int z = z1 >> 16;
 				if (z > FOG_BEGIN) {
 					if (z >= FOG_END) {
@@ -1490,7 +1690,7 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			z1 += z2;
-			if (src[texelPos((j & 0x3f80) + (i >> 7))] != 0) {
+			if (src[(j & 0x3f80) + (i >> 7)] != 0) {
 				int z = z1 >> 16;
 				if (z > FOG_BEGIN) {
 					if (z >= FOG_END) {
@@ -1507,7 +1707,7 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			z1 += z2;
-			if (src[texelPos((j & 0x3f80) + (i >> 7))] != 0) {
+			if (src[(j & 0x3f80) + (i >> 7)] != 0) {
 				int z = z1 >> 16;
 				if (z > FOG_BEGIN) {
 					if (z >= FOG_END) {
@@ -1524,7 +1724,7 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			z1 += z2;
-			if (src[texelPos((j & 0x3f80) + (i >> 7))] != 0) {
+			if (src[(j & 0x3f80) + (i >> 7)] != 0) {
 				int z = z1 >> 16;
 				if (z > FOG_BEGIN) {
 					if (z >= FOG_END) {
@@ -1541,7 +1741,7 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			z1 += z2;
-			if (src[texelPos((j & 0x3f80) + (i >> 7))] != 0) {
+			if (src[(j & 0x3f80) + (i >> 7)] != 0) {
 				int z = z1 >> 16;
 				if (z > FOG_BEGIN) {
 					if (z >= FOG_END) {
@@ -1558,7 +1758,7 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			z1 += z2;
-			if (src[texelPos((j & 0x3f80) + (i >> 7))] != 0) {
+			if (src[(j & 0x3f80) + (i >> 7)] != 0) {
 				int z = z1 >> 16;
 				if (z > FOG_BEGIN) {
 					if (z >= FOG_END) {
@@ -1575,7 +1775,7 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			z1 += z2;
-			if (src[texelPos((j & 0x3f80) + (i >> 7))] != 0) {
+			if (src[(j & 0x3f80) + (i >> 7)] != 0) {
 				int z = z1 >> 16;
 				if (z > FOG_BEGIN) {
 					if (z >= FOG_END) {
@@ -1592,7 +1792,7 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			z1 += z2;
-			if (src[texelPos((j & 0x3f80) + (i >> 7))] != 0) {
+			if (src[(j & 0x3f80) + (i >> 7)] != 0) {
 				int z = z1 >> 16;
 				if (z > FOG_BEGIN) {
 					if (z >= FOG_END) {
@@ -1626,7 +1826,7 @@ public final class Canvas3D extends Canvas2D {
 			l7 = l4 - j >> 3;
 		}
 		for (int l3 = x2 - x1 & 7; l3-- > 0;) {
-			if (src[texelPos((j & 0x3f80) + (i >> 7))] != 0) {
+			if (src[(j & 0x3f80) + (i >> 7)] != 0) {
 				int z = z1 >> 16;
 				if (z > FOG_BEGIN) {
 					if (z >= FOG_END) {
@@ -3082,73 +3282,15 @@ public final class Canvas3D extends Canvas2D {
 		}
 
 	}
-<<<<<<< HEAD
-	
-	private static void setMipmapLevel(int y1, int y2, int y3, int x1, int x2, int x3, int tex) {
-		if (!notTextured) {
-			mipMapLevel = 0;
-			return;
-		}
-		if (!mipMapping) {
-			if (mipMapLevel != 0) {
-				mipMapLevel = 0;
-			}
-			return;
-		}
-		if (tex == 17 || tex == 34) {
-			mipMapLevel = 0;
-			return;
-		}
-		int textureArea = x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2) >> 1;
-		if (textureArea < 0) {
-			textureArea = -textureArea;
-		}
-		if (textureArea > 16384) {
-			mipMapLevel = 0;
-		} else if (textureArea > 4096) {
-			mipMapLevel = 1;
-		} else if (textureArea > 1024) {
-			mipMapLevel = 1;
-		} else if (textureArea > 256) {
-			mipMapLevel = 2;
-		} else if (textureArea > 64) {
-			mipMapLevel = 3;
-		} else if (textureArea > 16) {
-			mipMapLevel = 4;
-		} else if (textureArea > 4) {
-			mipMapLevel = 5;
-		} else if (textureArea > 1) {
-			mipMapLevel = 6;
-		} else {
-			mipMapLevel = 7;
-		}
-	}
-	
-	private static int texelPos(int defaultIndex) {
-		int x = (defaultIndex & 127) >> mipMapLevel;
-		int y = (defaultIndex >> 7) >> mipMapLevel;
-		return x + (y << (7 - mipMapLevel));
-	}
-	
-	public static void method378_2(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int k4) {
-		try {
-		k1 = 0x7f - k1;
-		l1 = 0x7f - l1;
-		i2 = 0x7f - i2;
-		setMipmapLevel(i, j, k, l, i1, j1, k4);
-		int ai[] = getTexturePixels(k4)[mipMapLevel];
-		opaque = !transparentTextures[k4];
-=======
 
 	public static void drawTexturedTriangle(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2,
-			int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int textureId) {
+											int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int textureId) {
 		if (Configuration.hdShading && notTextured) {
 			drawHDTexturedTriangle(i, j, k, l, i1, j1, k1, l1, i2, j2, k2, l2, i3, j3, k3, l3, i4, j4, textureId);
 			return;
 		}
 		int ai[] = getTexturePixels(textureId);
 		opaque = !transparentTextures[textureId];
->>>>>>> origin/master
 		k2 = j2 - k2;
 		j3 = i3 - j3;
 		i4 = l3 - i4;
@@ -3183,12 +3325,15 @@ public final class Canvas3D extends Canvas2D {
 			j8 = (k1 - i2 << 16) / (i - k);
 		}
 		if (i <= j && i <= k) {
-			if (i >= bottomY)
+			if (i >= Canvas2D.bottomY) {
 				return;
-			if (j > bottomY)
-				j = bottomY;
-			if (k > bottomY)
-				k = bottomY;
+			}
+			if (j > Canvas2D.bottomY) {
+				j = Canvas2D.bottomY;
+			}
+			if (k > Canvas2D.bottomY) {
+				k = Canvas2D.bottomY;
+			}
 			if (j < k) {
 				j1 = l <<= 16;
 				i2 = k1 <<= 16;
@@ -3215,23 +3360,23 @@ public final class Canvas3D extends Canvas2D {
 					j -= i;
 					i = lineOffsets[i];
 					while (--j >= 0) {
-						method379_2(pixels, ai, i, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+						method379(Canvas2D.pixels, ai, i, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 						j1 += i8;
 						l += i7;
 						i2 += j8;
 						k1 += j7;
-						i += width;
+						i += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 					while (--k >= 0) {
-						method379_2(pixels, ai, i, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+						method379(Canvas2D.pixels, ai, i, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 						j1 += i8;
 						i1 += k7;
 						i2 += j8;
 						l1 += l7;
-						i += width;
+						i += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -3242,23 +3387,23 @@ public final class Canvas3D extends Canvas2D {
 				j -= i;
 				i = lineOffsets[i];
 				while (--j >= 0) {
-					method379_2(pixels, ai, i, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, i, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 					j1 += i8;
 					l += i7;
 					i2 += j8;
 					k1 += j7;
-					i += width;
+					i += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--k >= 0) {
-					method379_2(pixels, ai, i, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, i, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 					j1 += i8;
 					i1 += k7;
 					i2 += j8;
 					l1 += l7;
-					i += width;
+					i += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -3290,23 +3435,23 @@ public final class Canvas3D extends Canvas2D {
 				k -= i;
 				i = lineOffsets[i];
 				while (--k >= 0) {
-					method379_2(pixels, ai, i, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, i, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 					i1 += i8;
 					l += i7;
 					l1 += j8;
 					k1 += j7;
-					i += width;
+					i += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--j >= 0) {
-					method379_2(pixels, ai, i, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, i, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 					j1 += k7;
 					l += i7;
 					i2 += l7;
 					k1 += j7;
-					i += width;
+					i += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -3317,23 +3462,23 @@ public final class Canvas3D extends Canvas2D {
 			k -= i;
 			i = lineOffsets[i];
 			while (--k >= 0) {
-				method379_2(pixels, ai, i, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, i, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 				i1 += i8;
 				l += i7;
 				l1 += j8;
 				k1 += j7;
-				i += width;
+				i += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--j >= 0) {
-				method379_2(pixels, ai, i, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, i, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 				j1 += k7;
 				l += i7;
 				i2 += l7;
 				k1 += j7;
-				i += width;
+				i += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -3341,12 +3486,15 @@ public final class Canvas3D extends Canvas2D {
 			return;
 		}
 		if (j <= k) {
-			if (j >= bottomY)
+			if (j >= Canvas2D.bottomY) {
 				return;
-			if (k > bottomY)
-				k = bottomY;
-			if (i > bottomY)
-				i = bottomY;
+			}
+			if (k > Canvas2D.bottomY) {
+				k = Canvas2D.bottomY;
+			}
+			if (i > Canvas2D.bottomY) {
+				i = Canvas2D.bottomY;
+			}
 			if (k < i) {
 				l = i1 <<= 16;
 				k1 = l1 <<= 16;
@@ -3373,23 +3521,23 @@ public final class Canvas3D extends Canvas2D {
 					k -= j;
 					j = lineOffsets[j];
 					while (--k >= 0) {
-						method379_2(pixels, ai, j, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+						method379(Canvas2D.pixels, ai, j, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 						l += i7;
 						i1 += k7;
 						k1 += j7;
 						l1 += l7;
-						j += width;
+						j += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 					while (--i >= 0) {
-						method379_2(pixels, ai, j, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+						method379(Canvas2D.pixels, ai, j, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 						l += i7;
 						j1 += i8;
 						k1 += j7;
 						i2 += j8;
-						j += width;
+						j += Canvas2D.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -3400,23 +3548,23 @@ public final class Canvas3D extends Canvas2D {
 				k -= j;
 				j = lineOffsets[j];
 				while (--k >= 0) {
-					method379_2(pixels, ai, j, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, j, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 					l += i7;
 					i1 += k7;
 					k1 += j7;
 					l1 += l7;
-					j += width;
+					j += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--i >= 0) {
-					method379_2(pixels, ai, j, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, j, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 					l += i7;
 					j1 += i8;
 					k1 += j7;
 					i2 += j8;
-					j += width;
+					j += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -3448,23 +3596,23 @@ public final class Canvas3D extends Canvas2D {
 				i -= j;
 				j = lineOffsets[j];
 				while (--i >= 0) {
-					method379_2(pixels, ai, j, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, j, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 					j1 += i7;
 					i1 += k7;
 					i2 += j7;
 					l1 += l7;
-					j += width;
+					j += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--k >= 0) {
-					method379_2(pixels, ai, j, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, j, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 					l += i8;
 					i1 += k7;
 					k1 += j8;
 					l1 += l7;
-					j += width;
+					j += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -3475,35 +3623,38 @@ public final class Canvas3D extends Canvas2D {
 			i -= j;
 			j = lineOffsets[j];
 			while (--i >= 0) {
-				method379_2(pixels, ai, j, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, j, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 				j1 += i7;
 				i1 += k7;
 				i2 += j7;
 				l1 += l7;
-				j += width;
+				j += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--k >= 0) {
-				method379_2(pixels, ai, j, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, j, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 				l += i8;
 				i1 += k7;
 				k1 += j8;
 				l1 += l7;
-				j += width;
+				j += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			return;
 		}
-		if (k >= bottomY)
+		if (k >= Canvas2D.bottomY) {
 			return;
-		if (i > bottomY)
-			i = bottomY;
-		if (j > bottomY)
-			j = bottomY;
+		}
+		if (i > Canvas2D.bottomY) {
+			i = Canvas2D.bottomY;
+		}
+		if (j > Canvas2D.bottomY) {
+			j = Canvas2D.bottomY;
+		}
 		if (i < j) {
 			i1 = j1 <<= 16;
 			l1 = i2 <<= 16;
@@ -3530,23 +3681,23 @@ public final class Canvas3D extends Canvas2D {
 				i -= k;
 				k = lineOffsets[k];
 				while (--i >= 0) {
-					method379_2(pixels, ai, k, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, k, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 					i1 += k7;
 					j1 += i8;
 					l1 += l7;
 					i2 += j8;
-					k += width;
+					k += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 				while (--j >= 0) {
-					method379_2(pixels, ai, k, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+					method379(Canvas2D.pixels, ai, k, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 					i1 += k7;
 					l += i7;
 					l1 += l7;
 					k1 += j7;
-					k += width;
+					k += Canvas2D.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -3557,23 +3708,23 @@ public final class Canvas3D extends Canvas2D {
 			i -= k;
 			k = lineOffsets[k];
 			while (--i >= 0) {
-				method379_2(pixels, ai, k, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, k, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 				i1 += k7;
 				j1 += i8;
 				l1 += l7;
 				i2 += j8;
-				k += width;
+				k += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--j >= 0) {
-				method379_2(pixels, ai, k, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, k, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 				i1 += k7;
 				l += i7;
 				l1 += l7;
 				k1 += j7;
-				k += width;
+				k += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -3605,23 +3756,23 @@ public final class Canvas3D extends Canvas2D {
 			j -= k;
 			k = lineOffsets[k];
 			while (--j >= 0) {
-				method379_2(pixels, ai, k, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, k, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 				l += k7;
 				j1 += i8;
 				k1 += l7;
 				i2 += j8;
-				k += width;
+				k += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 			while (--i >= 0) {
-				method379_2(pixels, ai, k, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+				method379(Canvas2D.pixels, ai, k, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
 				i1 += i7;
 				j1 += i8;
 				l1 += j7;
 				i2 += j8;
-				k += width;
+				k += Canvas2D.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
@@ -3632,59 +3783,235 @@ public final class Canvas3D extends Canvas2D {
 		j -= k;
 		k = lineOffsets[k];
 		while (--j >= 0) {
-			method379_2(pixels, ai, k, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+			method379(Canvas2D.pixels, ai, k, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
 			l += k7;
 			j1 += i8;
 			k1 += l7;
 			i2 += j8;
-			k += width;
+			k += Canvas2D.width;
 			l4 += j5;
 			k5 += i6;
 			j6 += l6;
 		}
 		while (--i >= 0) {
-			method379_2(pixels, ai, k, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+			method379(Canvas2D.pixels, ai, k, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
 			i1 += i7;
 			j1 += i8;
 			l1 += j7;
 			i2 += j8;
-			k += width;
+			k += Canvas2D.width;
 			l4 += j5;
 			k5 += i6;
 			j6 += l6;
 		}
-		} catch(Exception e) {
-		}
 	}
 
-	private static void method379_2(int ai[], int ai1[], int k, int x1, int x2, int lig1, int lig2, int l1, int i2, int j2, int k2, int l2, int i3) {
+	private static void method379(int ai[], int ai1[], int k, int l, int i1, int j1, int k1, int l1, int i2, int j2,
+								  int k2, int l2, int i3) {
 		int i = 0;// was parameter
 		int j = 0;// was parameter
-		if (x1 >= x2)
+		if (l >= i1) {
 			return;
-		int dlig = (lig2 - lig1) / (x2 - x1);
+		}
+		int j3;
 		int k3;
 		if (restrict_edges) {
-			if (x2 > bottomX)
-				x2 = bottomX;
-			if (x1 < 0) {
-				lig1 -= x1 * dlig;
-				x1 = 0;
+			j3 = (k1 - j1) / (i1 - l);
+			if (i1 > Canvas2D.centerX) {
+				i1 = Canvas2D.centerX;
 			}
-			if (x1 >= x2)
+			if (l < 0) {
+				j1 -= l * j3;
+				l = 0;
+			}
+			if (l >= i1) {
 				return;
-			k3 = x2 - x1 >> 3;
+			}
+			k3 = i1 - l >> 3;
+			j3 <<= 12;
+			j1 <<= 9;
 		} else {
-			if (x2 - x1 > 7) {
-				k3 = x2 - x1 >> 3;
+			if (i1 - l > 7) {
+				k3 = i1 - l >> 3;
+				j3 = (k1 - j1) * anIntArray1468[k3] >> 6;
 			} else {
 				k3 = 0;
+				j3 = 0;
 			}
+			j1 <<= 9;
 		}
-		k += x1;
+		k += l;
+		if (lowDetail) {
+			int i4 = 0;
+			int k4 = 0;
+			int k6 = l - centerX;
+			l1 += (k2 >> 3) * k6;
+			i2 += (l2 >> 3) * k6;
+			j2 += (i3 >> 3) * k6;
+			int i5 = j2 >> 12;
+			if (i5 != 0) {
+				i = l1 / i5;
+				j = i2 / i5;
+				if (i < 0) {
+					i = 0;
+				} else if (i > 4032) {
+					i = 4032;
+				}
+			}
+			l1 += k2;
+			i2 += l2;
+			j2 += i3;
+			i5 = j2 >> 12;
+			if (i5 != 0) {
+				i4 = l1 / i5;
+				k4 = i2 / i5;
+				if (i4 < 7) {
+					i4 = 7;
+				} else if (i4 > 4032) {
+					i4 = 4032;
+				}
+			}
+			int i7 = i4 - i >> 3;
+			int k7 = k4 - j >> 3;
+			i += (j1 & 0x600000) >> 3;
+			int i8 = j1 >> 23;
+			if (opaque) {
+				while (k3-- > 0) {
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					i += i7;
+					j += k7;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					i += i7;
+					j += k7;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					i += i7;
+					j += k7;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					i += i7;
+					j += k7;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					i += i7;
+					j += k7;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					i += i7;
+					j += k7;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					i += i7;
+					j += k7;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					i = i4;
+					j = k4;
+					l1 += k2;
+					i2 += l2;
+					j2 += i3;
+					int j5 = j2 >> 12;
+					if (j5 != 0) {
+						i4 = l1 / j5;
+						k4 = i2 / j5;
+						if (i4 < 7) {
+							i4 = 7;
+						} else if (i4 > 4032) {
+							i4 = 4032;
+						}
+					}
+					i7 = i4 - i >> 3;
+					k7 = k4 - j >> 3;
+					j1 += j3;
+					i += (j1 & 0x600000) >> 3;
+					i8 = j1 >> 23;
+				}
+				for (k3 = i1 - l & 7; k3-- > 0;) {
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					i += i7;
+					j += k7;
+				}
+
+				return;
+			}
+			while (k3-- > 0) {
+				int k8;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+					ai[k] = k8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+					ai[k] = k8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+					ai[k] = k8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+					ai[k] = k8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+					ai[k] = k8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+					ai[k] = k8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+					ai[k] = k8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+					ai[k] = k8;
+				}
+				k++;
+				i = i4;
+				j = k4;
+				l1 += k2;
+				i2 += l2;
+				j2 += i3;
+				int k5 = j2 >> 12;
+				if (k5 != 0) {
+					i4 = l1 / k5;
+					k4 = i2 / k5;
+					if (i4 < 7) {
+						i4 = 7;
+					} else if (i4 > 4032) {
+						i4 = 4032;
+					}
+				}
+				i7 = i4 - i >> 3;
+				k7 = k4 - j >> 3;
+				j1 += j3;
+				i += (j1 & 0x600000) >> 3;
+				i8 = j1 >> 23;
+			}
+			for (k3 = i1 - l & 7; k3-- > 0;) {
+				int l8;
+				if ((l8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+					ai[k] = l8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+			}
+
+			return;
+		}
 		int j4 = 0;
 		int l4 = 0;
-		int l6 = x1 - centerX;
+		int l6 = l - centerX;
 		l1 += (k2 >> 3) * l6;
 		i2 += (l2 >> 3) * l6;
 		j2 += (i3 >> 3) * l6;
@@ -3692,10 +4019,11 @@ public final class Canvas3D extends Canvas2D {
 		if (l5 != 0) {
 			i = l1 / l5;
 			j = i2 / l5;
-			if (i < 0)
+			if (i < 0) {
 				i = 0;
-			else if (i > 16256)
+			} else if (i > 16256) {
 				i = 16256;
+			}
 		}
 		l1 += k2;
 		i2 += l2;
@@ -3704,65 +4032,42 @@ public final class Canvas3D extends Canvas2D {
 		if (l5 != 0) {
 			j4 = l1 / l5;
 			l4 = i2 / l5;
-			if (j4 < 7)
+			if (j4 < 7) {
 				j4 = 7;
-			else if (j4 > 16256)
+			} else if (j4 > 16256) {
 				j4 = 16256;
+			}
 		}
 		int j7 = j4 - i >> 3;
 		int l7 = l4 - j >> 3;
+		i += j1 & 0x600000;
+		int j8 = j1 >> 23;
 		if (opaque) {
 			while (k3-- > 0) {
-				int i9;
-				int l;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				lig1 += dlig;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				lig1 += dlig;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				lig1 += dlig;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				lig1 += dlig;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				lig1 += dlig;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				lig1 += dlig;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				lig1 += dlig;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i = j4;
 				j = l4;
-				lig1 += dlig;
 				l1 += k2;
 				i2 += l2;
 				j2 += i3;
@@ -3770,94 +4075,76 @@ public final class Canvas3D extends Canvas2D {
 				if (i6 != 0) {
 					j4 = l1 / i6;
 					l4 = i2 / i6;
-					if (j4 < 7)
+					if (j4 < 7) {
 						j4 = 7;
-					else if (j4 > 16256)
+					} else if (j4 > 16256) {
 						j4 = 16256;
+					}
 				}
 				j7 = j4 - i >> 3;
 				l7 = l4 - j >> 3;
+				j1 += j3;
+				i += j1 & 0x600000;
+				j8 = j1 >> 23;
 			}
-			for (k3 = x2 - x1 & 7; k3-- > 0;) {
-				int j9;
-				int l;
-				j9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((j9 & 0xff00ff) * l & ~0xff00ff) + ((j9 & 0xff00) * l & 0xff0000) >> 7;
+			for (k3 = i1 - l & 7; k3-- > 0;) {
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				lig1 += dlig;
 			}
 
 			return;
 		}
 		while (k3-- > 0) {
 			int i9;
-			int l;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+				ai[k] = i9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			lig1 += dlig;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+				ai[k] = i9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			lig1 += dlig;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+				ai[k] = i9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			lig1 += dlig;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+				ai[k] = i9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			lig1 += dlig;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+				ai[k] = i9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			lig1 += dlig;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+				ai[k] = i9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			lig1 += dlig;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+				ai[k] = i9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			lig1 += dlig;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+				ai[k] = i9;
 			}
 			k++;
 			i = j4;
 			j = l4;
-			lig1 += dlig;
 			l1 += k2;
 			i2 += l2;
 			j2 += i3;
@@ -3865,39 +4152,36 @@ public final class Canvas3D extends Canvas2D {
 			if (j6 != 0) {
 				j4 = l1 / j6;
 				l4 = i2 / j6;
-				if (j4 < 7)
+				if (j4 < 7) {
 					j4 = 7;
-				else if (j4 > 16256)
+				} else if (j4 > 16256) {
 					j4 = 16256;
+				}
 			}
 			j7 = j4 - i >> 3;
 			l7 = l4 - j >> 3;
+			j1 += j3;
+			i += j1 & 0x600000;
+			j8 = j1 >> 23;
 		}
-		for (int l3 = x2 - x1 & 7; l3-- > 0;) {
+		for (int l3 = i1 - l & 7; l3-- > 0;) {
 			int j9;
-			int l;
-			if ((j9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((j9 & 0xff00ff) * l & ~0xff00ff) + ((j9 & 0xff00) * l & 0xff0000) >> 7;
+			if ((j9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+				ai[k] = j9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			lig1 += dlig;
 		}
+
 	}
 
-	public static void drawTexturedTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int l1, int l2, int l3,
-			int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int textureId) {
-		if (!notTextured) {
-			method378_2(y1, y2, y3, x1, x2, x3, l1, l2, l3, tx1, tx2, tx3, ty1, ty2, ty3, tz1, tz2, tz3, textureId);
-			return;
-		}
+	public static void drawHDTexturedTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int l1, int l2, int l3,
+											  int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int textureId) {
 		l1 = 0x7f - l1 << 1;
 		l2 = 0x7f - l2 << 1;
 		l3 = 0x7f - l3 << 1;
-		setMipmapLevel(y1, y2, y3, x1, x2, x3, textureId);
-		int ai[] = getTexturePixels(textureId)[mipMapLevel];;
+		int ai[] = getTexturePixels(textureId);
 		opaque = !transparentTextures[textureId];
 		tx2 = tx1 - tx2;
 		ty2 = ty1 - ty2;
@@ -4419,7 +4703,7 @@ public final class Canvas3D extends Canvas2D {
 	}
 
 	private static void drawHDTexturedScanline(int ai[], int ai1[], int k, int x1, int x2, int l1, int l2, int a1,
-			int i2, int j2, int k2, int a2, int i3) {
+											   int i2, int j2, int k2, int a2, int i3) {
 		int i = 0;// was parameter
 		int j = 0;// was parameter
 		if (x1 >= x2) {
@@ -4441,6 +4725,216 @@ public final class Canvas3D extends Canvas2D {
 		}
 		n = x2 - x1 >> 3;
 		k += x1;
+		if (lowDetail) {
+			int i4 = 0;
+			int k4 = 0;
+			int k6 = x1 - centerX;
+			a1 += (k2 >> 3) * k6;
+			i2 += (a2 >> 3) * k6;
+			j2 += (i3 >> 3) * k6;
+			int i5 = j2 >> 12;
+			if (i5 != 0) {
+				i = a1 / i5;
+				j = i2 / i5;
+				if (i < 0) {
+					i = 0;
+				} else if (i > 4032) {
+					i = 4032;
+				}
+			}
+			a1 += k2;
+			i2 += a2;
+			j2 += i3;
+			i5 = j2 >> 12;
+			if (i5 != 0) {
+				i4 = a1 / i5;
+				k4 = i2 / i5;
+				if (i4 < 7) {
+					i4 = 7;
+				} else if (i4 > 4032) {
+					i4 = 4032;
+				}
+			}
+			int i7 = i4 - i >> 3;
+			int k7 = k4 - j >> 3;
+			if (opaque) {
+				int rgb;
+				int l;
+				while (n-- > 0) {
+					rgb = ai1[(j & 0xfc0) + (i >> 6)];
+					l = l1 >> 16;
+					ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
+					i += i7;
+					j += k7;
+					l1 += dl;
+					rgb = ai1[(j & 0xfc0) + (i >> 6)];
+					l = l1 >> 16;
+					ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
+					i += i7;
+					j += k7;
+					l1 += dl;
+					rgb = ai1[(j & 0xfc0) + (i >> 6)];
+					l = l1 >> 16;
+					ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
+					i += i7;
+					j += k7;
+					l1 += dl;
+					rgb = ai1[(j & 0xfc0) + (i >> 6)];
+					l = l1 >> 16;
+					ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
+					i += i7;
+					j += k7;
+					l1 += dl;
+					rgb = ai1[(j & 0xfc0) + (i >> 6)];
+					l = l1 >> 16;
+					ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
+					i += i7;
+					j += k7;
+					l1 += dl;
+					rgb = ai1[(j & 0xfc0) + (i >> 6)];
+					l = l1 >> 16;
+					ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
+					i += i7;
+					j += k7;
+					l1 += dl;
+					rgb = ai1[(j & 0xfc0) + (i >> 6)];
+					l = l1 >> 16;
+					ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
+					i += i7;
+					j += k7;
+					l1 += dl;
+					rgb = ai1[(j & 0xfc0) + (i >> 6)];
+					l = l1 >> 16;
+					ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
+					i += i7;
+					j += k7;
+					l1 += dl;
+					a1 += k2;
+					i2 += a2;
+					j2 += i3;
+					int j5 = j2 >> 12;
+					if (j5 != 0) {
+						i4 = a1 / j5;
+						k4 = i2 / j5;
+						if (i4 < 7) {
+							i4 = 7;
+						} else if (i4 > 4032) {
+							i4 = 4032;
+						}
+					}
+					i7 = i4 - i >> 3;
+					k7 = k4 - j >> 3;
+					l1 += dl;
+				}
+				for (n = x2 - x1 & 7; n-- > 0;) {
+					rgb = ai1[(j & 0xfc0) + (i >> 6)];
+					l = l1 >> 16;
+					ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
+					i += i7;
+					j += k7;
+					l1 += dl;
+				}
+				return;
+			}
+			while (n-- > 0) {
+				int k8;
+				int l;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)]) != 0) {
+					l = l1 >> 16;
+					ai[k] = ((k8 & 0xff00ff) * l & ~0xff00ff) + ((k8 & 0xff00) * l & 0xff0000) >> 8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				l1 += dl;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)]) != 0) {
+					l = l1 >> 16;
+					ai[k] = ((k8 & 0xff00ff) * l & ~0xff00ff) + ((k8 & 0xff00) * l & 0xff0000) >> 8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				l1 += dl;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)]) != 0) {
+					l = l1 >> 16;
+					ai[k] = ((k8 & 0xff00ff) * l & ~0xff00ff) + ((k8 & 0xff00) * l & 0xff0000) >> 8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				l1 += dl;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)]) != 0) {
+					l = l1 >> 16;
+					ai[k] = ((k8 & 0xff00ff) * l & ~0xff00ff) + ((k8 & 0xff00) * l & 0xff0000) >> 8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				l1 += dl;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)]) != 0) {
+					l = l1 >> 16;
+					ai[k] = ((k8 & 0xff00ff) * l & ~0xff00ff) + ((k8 & 0xff00) * l & 0xff0000) >> 8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				l1 += dl;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)]) != 0) {
+					l = l1 >> 16;
+					ai[k] = ((k8 & 0xff00ff) * l & ~0xff00ff) + ((k8 & 0xff00) * l & 0xff0000) >> 8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				l1 += dl;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)]) != 0) {
+					l = l1 >> 16;
+					ai[k] = ((k8 & 0xff00ff) * l & ~0xff00ff) + ((k8 & 0xff00) * l & 0xff0000) >> 8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				l1 += dl;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)]) != 0) {
+					l = l1 >> 16;
+					ai[k] = ((k8 & 0xff00ff) * l & ~0xff00ff) + ((k8 & 0xff00) * l & 0xff0000) >> 8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				l1 += dl;
+				a1 += k2;
+				i2 += a2;
+				j2 += i3;
+				int k5 = j2 >> 12;
+				if (k5 != 0) {
+					i4 = a1 / k5;
+					k4 = i2 / k5;
+					if (i4 < 7) {
+						i4 = 7;
+					} else if (i4 > 4032) {
+						i4 = 4032;
+					}
+				}
+				i7 = i4 - i >> 3;
+				k7 = k4 - j >> 3;
+				l1 += dl;
+			}
+			for (n = x2 - x1 & 7; n-- > 0;) {
+				int l8;
+				int l;
+				if ((l8 = ai1[(j & 0xfc0) + (i >> 6)]) != 0) {
+					l = l1 >> 16;
+					ai[k] = ((l8 & 0xff00ff) * l & ~0xff00ff) + ((l8 & 0xff00) * l & 0xff0000) >> 8;
+				}
+				k++;
+				i += i7;
+				j += k7;
+				l1 += dl;
+			}
+
+			return;
+		}
 		int j4 = 0;
 		int l4 = 0;
 		int l6 = x1 - centerX;
@@ -4476,49 +4970,49 @@ public final class Canvas3D extends Canvas2D {
 			while (n-- > 0) {
 				int rgb;
 				int l;
-				rgb = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				rgb = ai1[(j & 0x3f80) + (i >> 7)];
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
 				j += l7;
 				l1 += dl;
-				rgb = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				rgb = ai1[(j & 0x3f80) + (i >> 7)];
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
 				j += l7;
 				l1 += dl;
-				rgb = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				rgb = ai1[(j & 0x3f80) + (i >> 7)];
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
 				j += l7;
 				l1 += dl;
-				rgb = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				rgb = ai1[(j & 0x3f80) + (i >> 7)];
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
 				j += l7;
 				l1 += dl;
-				rgb = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				rgb = ai1[(j & 0x3f80) + (i >> 7)];
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
 				j += l7;
 				l1 += dl;
-				rgb = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				rgb = ai1[(j & 0x3f80) + (i >> 7)];
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
 				j += l7;
 				l1 += dl;
-				rgb = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				rgb = ai1[(j & 0x3f80) + (i >> 7)];
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
 				j += l7;
 				l1 += dl;
-				rgb = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				rgb = ai1[(j & 0x3f80) + (i >> 7)];
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
@@ -4544,7 +5038,7 @@ public final class Canvas3D extends Canvas2D {
 			for (n = x2 - x1 & 7; n-- > 0;) {
 				int rgb;
 				int l;
-				rgb = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				rgb = ai1[(j & 0x3f80) + (i >> 7)];
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
@@ -4557,7 +5051,7 @@ public final class Canvas3D extends Canvas2D {
 		while (n-- > 0) {
 			int i9;
 			int l;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -4566,7 +5060,7 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			l1 += dl;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -4575,7 +5069,7 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			l1 += dl;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -4584,7 +5078,7 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			l1 += dl;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -4593,7 +5087,7 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			l1 += dl;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -4602,7 +5096,7 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			l1 += dl;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -4611,7 +5105,7 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			l1 += dl;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -4620,7 +5114,7 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			l1 += dl;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -4649,7 +5143,7 @@ public final class Canvas3D extends Canvas2D {
 		for (int l3 = x2 - x1 & 7; l3-- > 0;) {
 			int j9;
 			int l;
-			if ((j9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+			if ((j9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((j9 & 0xff00ff) * l & ~0xff00ff) + ((j9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -4662,14 +5156,44 @@ public final class Canvas3D extends Canvas2D {
 
 	}
 
+	private static int textureMipmap;
+
+	private static int texelPos(int defaultIndex) {
+		int x = defaultIndex & 127;
+		int y = defaultIndex >> 7;
+		x >>= textureMipmap;
+		y >>= textureMipmap;
+		return x + (y << 7 - textureMipmap);
+	}
+
 	public static void drawMaterializedTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int hsl1, int hsl2,
-			int hsl3, int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int tex) {
+												int hsl3, int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int tex) {
 		if (!Configuration.hdTexturing || Texture.get(tex) == null) {
 			drawShadedTriangle(y1, y2, y3, x1, x2, x3, hsl1, hsl2, hsl3);
 			return;
 		}
-		setMipmapLevel(y1, y2, y3, x1, x2, x3, tex);
-		int[] ai = Texture.get(tex).mipmaps[mipMapLevel];
+		int area = x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2) >> 1;
+		if (area < 0) {
+			area = -area;
+		}
+		if (area > 4096) {
+			textureMipmap = 1;
+		} else if (area > 1024) {
+			textureMipmap = 1;
+		} else if (area > 256) {
+			textureMipmap = 2;
+		} else if (area > 64) {
+			textureMipmap = 3;
+		} else if (area > 16) {
+			textureMipmap = 4;
+		} else if (area > 4) {
+			textureMipmap = 5;
+		} else if (area > 1) {
+			textureMipmap = 6;
+		} else {
+			textureMipmap = 7;
+		}
+		int[] ai = Texture.get(tex).mipmaps[textureMipmap];
 		tx2 = tx1 - tx2;
 		ty2 = ty1 - ty2;
 		tz2 = tz1 - tz2;
@@ -5210,7 +5734,7 @@ public final class Canvas3D extends Canvas2D {
 	}
 
 	private static void drawMaterializedScanline(int dst[], int src[], int off, int x1, int x2, int hsl1, int hsl2,
-			int l1, int i2, int j2, int k2, int l2, int i3) {
+												 int l1, int i2, int j2, int k2, int l2, int i3) {
 		int i = 0;// was parameter
 		int j = 0;// was parameter
 		if (x1 >= x2) {

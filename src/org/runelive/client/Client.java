@@ -1256,7 +1256,7 @@ public class Client extends GameRenderer {
 		getOut().putOpcode(185);
 		getOut().putShort(6667);
 	}
-	
+
 	private ArrayList<ParticleDisplay> displayedParticles;
 	private ArrayList<ParticleDisplay> particlesToBeRemoved;
 
@@ -1478,52 +1478,52 @@ public class Client extends GameRenderer {
 			dumpItemImages(false);
 		}
 		switch (cmd) {
-		case "reloaditf":
-			try {
-				TextDrawingArea[] fonts = { smallText, normalText, boldText, fancyText };
-				Archive interfaceArchive = getArchive(3, "interface", "interface", expectedCRCs[3], 35);
-				Archive mediaArchive = getArchive(4, "2d graphics", "media", expectedCRCs[4], 40);
-				RSInterface.unpack(interfaceArchive, fonts, mediaArchive);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			break;
-		case "hitmarks":
-			Configuration.NEW_HITMARKS = !Configuration.NEW_HITMARKS;
-			break;
-		case "customobj":
-			CustomObjects.spawn();
-			break;
-		case "cursors":
-			Configuration.NEW_CURSORS = !Configuration.NEW_CURSORS;
-			break;
-		case "data":
-			dataOn = !dataOn;
-			break;
-		case "fps":
-			fpsOn = !fpsOn;
-			break;
-		case "noclip":
-			if (myRights == 3) {
-				for (int k1 = 0; k1 < 4; k1++) {
-					for (int i2 = 1; i2 < 103; i2++) {
-						for (int k2 = 1; k2 < 103; k2++)
-							clippingPlanes[k1].clipData[i2][k2] = 0;
+			case "reloaditf":
+				try {
+					TextDrawingArea[] fonts = { smallText, normalText, boldText, fancyText };
+					Archive interfaceArchive = getArchive(3, "interface", "interface", expectedCRCs[3], 35);
+					Archive mediaArchive = getArchive(4, "2d graphics", "media", expectedCRCs[4], 40);
+					RSInterface.unpack(interfaceArchive, fonts, mediaArchive);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				break;
+			case "hitmarks":
+				Configuration.NEW_HITMARKS = !Configuration.NEW_HITMARKS;
+				break;
+			case "customobj":
+				CustomObjects.spawn();
+				break;
+			case "cursors":
+				Configuration.NEW_CURSORS = !Configuration.NEW_CURSORS;
+				break;
+			case "data":
+				dataOn = !dataOn;
+				break;
+			case "fps":
+				fpsOn = !fpsOn;
+				break;
+			case "noclip":
+				if (myRights == 3) {
+					for (int k1 = 0; k1 < 4; k1++) {
+						for (int i2 = 1; i2 < 103; i2++) {
+							for (int k2 = 1; k2 < 103; k2++)
+								clippingPlanes[k1].clipData[i2][k2] = 0;
 
+						}
 					}
 				}
-			}
-			break;
-		case "rsi":
-			Archive streamLoader_1 = getArchive(3, "interface", "interface", expectedCRCs[3], 35);
-			Archive mediaArchive = getArchive(4, "2d graphics", "media", expectedCRCs[4], 40);
-			TextDrawingArea[] aclass30_sub2_sub1_sub4s = { smallText, normalText, boldText, fancyText };
-			RSInterface.unpack(streamLoader_1, aclass30_sub2_sub1_sub4s, mediaArchive);
-			break;
-		case "idf":
-			Archive streamLoader = getArchive(2, "config", "config", expectedCRCs[2], 30);
-			ItemDefinition.unpackConfig(streamLoader);
-			break;
+				break;
+			case "rsi":
+				Archive streamLoader_1 = getArchive(3, "interface", "interface", expectedCRCs[3], 35);
+				Archive mediaArchive = getArchive(4, "2d graphics", "media", expectedCRCs[4], 40);
+				TextDrawingArea[] aclass30_sub2_sub1_sub4s = { smallText, normalText, boldText, fancyText };
+				RSInterface.unpack(streamLoader_1, aclass30_sub2_sub1_sub4s, mediaArchive);
+				break;
+			case "idf":
+				Archive streamLoader = getArchive(2, "config", "config", expectedCRCs[2], 30);
+				ItemDefinition.unpackConfig(streamLoader);
+				break;
 		}
 		/** Add Commands Here **/
 		if (loggedIn) {
@@ -1535,7 +1535,7 @@ public class Client extends GameRenderer {
 
 	/**
 	 * Dumps the item images for all items in the cache.
-	 * 
+	 *
 	 * @param dumpByName
 	 */
 	public void dumpItemImages(boolean dumpByName) {
@@ -1547,7 +1547,7 @@ public class Client extends GameRenderer {
 
 	/**
 	 * Dumps a sprite with the specified name.
-	 * 
+	 *
 	 * @param image
 	 */
 	public void dumpImage(Sprite image, String name) {
@@ -1571,7 +1571,7 @@ public class Client extends GameRenderer {
 
 	/**
 	 * Turns an Image into a BufferedImage.
-	 * 
+	 *
 	 * @param image
 	 * @return
 	 */
@@ -1586,7 +1586,7 @@ public class Client extends GameRenderer {
 
 	/**
 	 * Makes the specified color transparent in a buffered image.
-	 * 
+	 *
 	 * @param im
 	 * @param color
 	 * @return
@@ -2558,7 +2558,7 @@ public class Client extends GameRenderer {
 	}
 
 	private void buildInterfaceMenu(int xPadding, RSInterface rsInterface, int xPos, int yPadding, int yPos,
-			int scrollPoint) {
+									int scrollPoint) {
 		if (rsInterface == null) {
 			rsInterface = RSInterface.interfaceCache[21356];
 		}
@@ -2879,10 +2879,10 @@ public class Client extends GameRenderer {
 												if (children.actions[j4] != null) {
 													String s = myRights == 3
 															? children.actions[j4] + " @lre@" + definition.name + " "
-																	+ definition.id
+															+ definition.id
 															: children.actions[j4] + " @lre@" + definition.name;
 													if (children.parentID == 5382) {
-														ignoreExamine = true; 
+														ignoreExamine = true;
 													}
 													int interfaceId = children.id;
 													if (children.parentID == 3321 && openInterfaceID == 42000) {
@@ -3520,7 +3520,7 @@ public class Client extends GameRenderer {
 	}
 
 	public void hitmarkDrawNew(Entity e, int hitLength, int type, int icon, int damage, int soak, int move, int opacity,
-			int mask) {
+							   int mask) {
 		if (spriteDrawX > -1) {
 			int drawPos = 0;
 			if (mask == 0) {
@@ -3548,15 +3548,15 @@ public class Client extends GameRenderer {
 				}
 				switch (hitLength) {
 				/* Trial and error shit, terrible hardcoding :( */
-				case 1:
-					x = 8;
-					break;
-				case 2:
-					x = 4;
-					break;
-				case 3:
-					x = 1;
-					break;
+					case 1:
+						x = 8;
+						break;
+					case 2:
+						x = 4;
+						break;
+					case 3:
+						x = 1;
+						break;
 				}
 				if (soak > 0) {
 					x -= 16;
@@ -3912,19 +3912,19 @@ public class Client extends GameRenderer {
 		// System.out.println(action);
 
 		switch (action) {
-		case 1050:
-			getOut().putOpcode(185);
-			getOut().putShort(152);
-			break;
-		case 1013:
-			PlayerHandler.totalXP = 0;
-			getOut().putOpcode(185);
-			getOut().putShort(1013);
-			break;
-		case 1036:
-			getOut().putOpcode(185);
-			getOut().putShort(1036);
-			break;
+			case 1050:
+				getOut().putOpcode(185);
+				getOut().putShort(152);
+				break;
+			case 1013:
+				PlayerHandler.totalXP = 0;
+				getOut().putOpcode(185);
+				getOut().putShort(1013);
+				break;
+			case 1036:
+				getOut().putOpcode(185);
+				getOut().putShort(1036);
+				break;
 		}
 
 		if (action == 1014) {
@@ -4070,28 +4070,28 @@ public class Client extends GameRenderer {
 		}
 		if (action == 315) {
 			switch (interfaceId) {
-			case 24654:
-				amountOrNameInput = "";
-				getGrandExchange().totalItemResults = 0;
-				getGrandExchange().searching = !getGrandExchange().searching;// inputDialogState
-																				// ==
-																				// 3
-																				// ?
-																				// false
-																				// :
-																				// true;
-				inputDialogState = inputDialogState == 3 ? 0 : 3;
-				break;
-			case 26016: // fixed
-				toggleSize(ScreenMode.FIXED);
-				break;
+				case 24654:
+					amountOrNameInput = "";
+					getGrandExchange().totalItemResults = 0;
+					getGrandExchange().searching = !getGrandExchange().searching;// inputDialogState
+					// ==
+					// 3
+					// ?
+					// false
+					// :
+					// true;
+					inputDialogState = inputDialogState == 3 ? 0 : 3;
+					break;
+				case 26016: // fixed
+					toggleSize(ScreenMode.FIXED);
+					break;
 
-			case 26019: // resizable
-				toggleSize(ScreenMode.RESIZABLE);
-				break;
+				case 26019: // resizable
+					toggleSize(ScreenMode.RESIZABLE);
+					break;
 
-			case 26022: // fullscreen
-				toggleSize(ScreenMode.FULLSCREEN);
+				case 26022: // fullscreen
+					toggleSize(ScreenMode.FULLSCREEN);
 			}
 
 			RSInterface class9 = RSInterface.interfaceCache[interfaceId];
@@ -4110,26 +4110,26 @@ public class Client extends GameRenderer {
 
 			if (flag8) {
 				switch (interfaceId) {
-				case 21341:
-					sendFrame248(21172, 3213);
-					resetInterfaceAnimation(21172);
-					inputTaken = true;
-					break;
-				case 17231:// Quick prayer confirm
-					saveQuickSelection();
-					break;
-				default:
-					if (interfaceId >= 17202 && interfaceId <= 17227 || interfaceId == 17279 || interfaceId == 17280) {
-						try {
-							togglePrayerState(interfaceId);
-						} catch (Exception e) {
-							e.printStackTrace();
+					case 21341:
+						sendFrame248(21172, 3213);
+						resetInterfaceAnimation(21172);
+						inputTaken = true;
+						break;
+					case 17231:// Quick prayer confirm
+						saveQuickSelection();
+						break;
+					default:
+						if (interfaceId >= 17202 && interfaceId <= 17227 || interfaceId == 17279 || interfaceId == 17280) {
+							try {
+								togglePrayerState(interfaceId);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						} else {
+							getOut().putOpcode(185);
+							getOut().putShort(interfaceId);
 						}
-					} else {
-						getOut().putOpcode(185);
-						getOut().putShort(interfaceId);
-					}
-					break;
+						break;
 				}
 			}
 		}
@@ -4738,17 +4738,17 @@ public class Client extends GameRenderer {
 				}
 
 				switch (interfaceId) {
-				case 25841:// More options
-					i2 = openInterfaceID == 26000 ? 0 : 1;
-					sendFrame36(175, i2);
+					case 25841:// More options
+						i2 = openInterfaceID == 26000 ? 0 : 1;
+						sendFrame36(175, i2);
 
-					if (i2 == 1) {
-						openInterfaceID = 26000;
-					} else {
-						openInterfaceID = -1;
-					}
+						if (i2 == 1) {
+							openInterfaceID = 26000;
+						} else {
+							openInterfaceID = -1;
+						}
 
-					break;
+						break;
 				}
 			}
 		}
@@ -5104,108 +5104,108 @@ public class Client extends GameRenderer {
 		}
 		if (action == 169) {
 			switch (interfaceId) {
-			case 26026:
-				Configuration.DISPLAY_HP_ABOVE_HEAD = !Configuration.DISPLAY_HP_ABOVE_HEAD;
-				pushMessage(
-						"Displaying hp above head turned " + (Configuration.DISPLAY_HP_ABOVE_HEAD ? "on" : "off") + ".",
-						0, "");
-				Settings.save();
-				updateSetting(interfaceId, !Configuration.DISPLAY_HP_ABOVE_HEAD);
-				break;
-			case 26027:
-				Configuration.DISPLAY_USERNAMES_ABOVE_HEAD = !Configuration.DISPLAY_USERNAMES_ABOVE_HEAD;
-				pushMessage("Displaying usernames above head turned "
-						+ (Configuration.DISPLAY_USERNAMES_ABOVE_HEAD ? "on" : "off") + ".", 0, "");
-				Settings.save();
-				updateSetting(interfaceId, !Configuration.DISPLAY_USERNAMES_ABOVE_HEAD);
-				break;
-			case 26031:
-				GameFrameConstants.gameframeType = GameFrameConstants.gameframeType == GameFrameType.FRAME_525
-						? GameFrameType.FRAME_554 : GameFrameType.FRAME_525;
-				pushMessage("Gameframe toggled.", 0, "");
-				Settings.save();
-				updateSetting(interfaceId, GameFrameConstants.gameframeType == GameFrameType.FRAME_525);
-				break;
-			case 26035:
-				Configuration.FOG_ENABLED = !Configuration.FOG_ENABLED;
-				pushMessage("HD Fog toggled.", 0, "");
-				Settings.save();
-				updateSetting(interfaceId, !Configuration.FOG_ENABLED);
-				break;
-			case 26037:
-				Configuration.TOGGLE_ROOF_OFF = !Configuration.TOGGLE_ROOF_OFF;
-				pushMessage("Roofs have been toggled.", 0, "");
-				Settings.save();
-				updateSetting(interfaceId, !Configuration.TOGGLE_ROOF_OFF);
-				loadRegion();
-				break;
-			case 26014:
-				Configuration.NEW_HITMARKS = !Configuration.NEW_HITMARKS;
-				pushMessage("New hitmarks turned " + (Configuration.NEW_HITMARKS ? "on" : "off") + ".", 0, "");
-				Settings.save();
-				updateSetting(interfaceId, !Configuration.NEW_HITMARKS);
-				break;
-			case 26007:
-				Configuration.NEW_FUNCTION_KEYS = !Configuration.NEW_FUNCTION_KEYS;
-				pushMessage("New function keys turned " + (Configuration.NEW_FUNCTION_KEYS ? "on" : "off") + ".", 0,
-						"");
-				Settings.save();
-				updateSetting(interfaceId, !Configuration.NEW_FUNCTION_KEYS);
-				break;
-			case 26010:
-				Configuration.NEW_CURSORS = !Configuration.NEW_CURSORS;
-				pushMessage("New cursors turned " + (Configuration.NEW_CURSORS ? "on" : "off") + ".", 0, "");
-				Settings.save();
-				updateSetting(interfaceId, !Configuration.NEW_CURSORS);
-				oldCursor = null;
-				if (!Configuration.NEW_CURSORS) {
-					getGameComponent().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				} else {
-					super.setCursor(CursorData.CURSOR_0);
-				}
-				break;
-			case 26008:
-				Configuration.NEW_HEALTH_BARS = !Configuration.NEW_HEALTH_BARS;
-				pushMessage("New health bars turned " + (Configuration.NEW_HEALTH_BARS ? "on" : "off") + ".", 0, "");
-				Settings.save();
-				updateSetting(interfaceId, !Configuration.NEW_HEALTH_BARS);
-				break;
-			case 26029:
-				Configuration.CONSTITUTION_ENABLED = !Configuration.CONSTITUTION_ENABLED;
-				pushMessage("Constitution turned " + (Configuration.CONSTITUTION_ENABLED ? "on" : "off") + ".", 0, "");
-				Settings.save();
-				updateSetting(interfaceId, !Configuration.CONSTITUTION_ENABLED);
-				break;
-			case 26033:
-				Configuration.NOTIFICATIONS_ENABLED = !Configuration.NOTIFICATIONS_ENABLED;
-				pushMessage("Push notifications turned " + (Configuration.NOTIFICATIONS_ENABLED ? "on" : "off") + ".",
-						0, "");
-				Settings.save();
-				updateSetting(interfaceId, !Configuration.NOTIFICATIONS_ENABLED);
-				break;
-			case 26054:
-				setLowDetail();
-				loadRegion();
-				pushMessage("Set to low detail.", 0, "");
-				Settings.save();
-				updateSetting(interfaceId, false);
-				updateSetting(26058, false);
-				break;
-			case 26058:
-				setHighDetail();
-				loadRegion();
-				pushMessage("Set to high detail.", 0, "");
-				Settings.save();
-				updateSetting(interfaceId, false);
-				updateSetting(26054, false);
-				break;
+				case 26026:
+					Configuration.DISPLAY_HP_ABOVE_HEAD = !Configuration.DISPLAY_HP_ABOVE_HEAD;
+					pushMessage(
+							"Displaying hp above head turned " + (Configuration.DISPLAY_HP_ABOVE_HEAD ? "on" : "off") + ".",
+							0, "");
+					Settings.save();
+					updateSetting(interfaceId, !Configuration.DISPLAY_HP_ABOVE_HEAD);
+					break;
+				case 26027:
+					Configuration.DISPLAY_USERNAMES_ABOVE_HEAD = !Configuration.DISPLAY_USERNAMES_ABOVE_HEAD;
+					pushMessage("Displaying usernames above head turned "
+							+ (Configuration.DISPLAY_USERNAMES_ABOVE_HEAD ? "on" : "off") + ".", 0, "");
+					Settings.save();
+					updateSetting(interfaceId, !Configuration.DISPLAY_USERNAMES_ABOVE_HEAD);
+					break;
+				case 26031:
+					GameFrameConstants.gameframeType = GameFrameConstants.gameframeType == GameFrameType.FRAME_525
+							? GameFrameType.FRAME_554 : GameFrameType.FRAME_525;
+					pushMessage("Gameframe toggled.", 0, "");
+					Settings.save();
+					updateSetting(interfaceId, GameFrameConstants.gameframeType == GameFrameType.FRAME_525);
+					break;
+				case 26035:
+					Configuration.FOG_ENABLED = !Configuration.FOG_ENABLED;
+					pushMessage("HD Fog toggled.", 0, "");
+					Settings.save();
+					updateSetting(interfaceId, !Configuration.FOG_ENABLED);
+					break;
+				case 26037:
+					Configuration.TOGGLE_ROOF_OFF = !Configuration.TOGGLE_ROOF_OFF;
+					pushMessage("Roofs have been toggled.", 0, "");
+					Settings.save();
+					updateSetting(interfaceId, !Configuration.TOGGLE_ROOF_OFF);
+					loadRegion();
+					break;
+				case 26014:
+					Configuration.NEW_HITMARKS = !Configuration.NEW_HITMARKS;
+					pushMessage("New hitmarks turned " + (Configuration.NEW_HITMARKS ? "on" : "off") + ".", 0, "");
+					Settings.save();
+					updateSetting(interfaceId, !Configuration.NEW_HITMARKS);
+					break;
+				case 26007:
+					Configuration.NEW_FUNCTION_KEYS = !Configuration.NEW_FUNCTION_KEYS;
+					pushMessage("New function keys turned " + (Configuration.NEW_FUNCTION_KEYS ? "on" : "off") + ".", 0,
+							"");
+					Settings.save();
+					updateSetting(interfaceId, !Configuration.NEW_FUNCTION_KEYS);
+					break;
+				case 26010:
+					Configuration.NEW_CURSORS = !Configuration.NEW_CURSORS;
+					pushMessage("New cursors turned " + (Configuration.NEW_CURSORS ? "on" : "off") + ".", 0, "");
+					Settings.save();
+					updateSetting(interfaceId, !Configuration.NEW_CURSORS);
+					oldCursor = null;
+					if (!Configuration.NEW_CURSORS) {
+						getGameComponent().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					} else {
+						super.setCursor(CursorData.CURSOR_0);
+					}
+					break;
+				case 26008:
+					Configuration.NEW_HEALTH_BARS = !Configuration.NEW_HEALTH_BARS;
+					pushMessage("New health bars turned " + (Configuration.NEW_HEALTH_BARS ? "on" : "off") + ".", 0, "");
+					Settings.save();
+					updateSetting(interfaceId, !Configuration.NEW_HEALTH_BARS);
+					break;
+				case 26029:
+					Configuration.CONSTITUTION_ENABLED = !Configuration.CONSTITUTION_ENABLED;
+					pushMessage("Constitution turned " + (Configuration.CONSTITUTION_ENABLED ? "on" : "off") + ".", 0, "");
+					Settings.save();
+					updateSetting(interfaceId, !Configuration.CONSTITUTION_ENABLED);
+					break;
+				case 26033:
+					Configuration.NOTIFICATIONS_ENABLED = !Configuration.NOTIFICATIONS_ENABLED;
+					pushMessage("Push notifications turned " + (Configuration.NOTIFICATIONS_ENABLED ? "on" : "off") + ".",
+							0, "");
+					Settings.save();
+					updateSetting(interfaceId, !Configuration.NOTIFICATIONS_ENABLED);
+					break;
+				case 26054:
+					setLowDetail();
+					loadRegion();
+					pushMessage("Set to low detail.", 0, "");
+					Settings.save();
+					updateSetting(interfaceId, false);
+					updateSetting(26058, false);
+					break;
+				case 26058:
+					setHighDetail();
+					loadRegion();
+					pushMessage("Set to high detail.", 0, "");
+					Settings.save();
+					updateSetting(interfaceId, false);
+					updateSetting(26054, false);
+					break;
 
-			default:
-				getOut().putOpcode(185);
-				getOut().putShort(interfaceId);
-				if (interfaceId == 26003) {
-					return;
-				}
+				default:
+					getOut().putOpcode(185);
+					getOut().putShort(interfaceId);
+					if (interfaceId == 26003) {
+						return;
+					}
 			}
 
 			RSInterface rsinterface = RSInterface.interfaceCache[interfaceId];
@@ -5288,21 +5288,21 @@ public class Client extends GameRenderer {
 
 	public void sendPacket185(int button, int toggle, int type) {
 		switch (type) {
-		case 135:
-			RSInterface class9 = RSInterface.interfaceCache[button];
-			boolean flag8 = true;
-			if (class9.contentType > 0)
-				flag8 = promptUserForInput(class9);
-			if (flag8) {
-				getOut().putOpcode(185);
-				getOut().putShort(button);
-			}
-			break;
+			case 135:
+				RSInterface class9 = RSInterface.interfaceCache[button];
+				boolean flag8 = true;
+				if (class9.contentType > 0)
+					flag8 = promptUserForInput(class9);
+				if (flag8) {
+					getOut().putOpcode(185);
+					getOut().putShort(button);
+				}
+				break;
 		}
 	}
 
 	private boolean doWalkTo(int type, int j, int k, int i1, int j1, int k1, int l1, int i2, int j2, boolean flag,
-			int k2) {
+							 int k2) {
 		byte byte0 = 104;
 		byte byte1 = 104;
 
@@ -5575,9 +5575,9 @@ public class Client extends GameRenderer {
 			} else if ((getWalkableInterfaceId() == 201 || getWalkableInterfaceId() == 197) && GameFrame.getScreenMode() != ScreenMode.FIXED) {
 				drawInterface(0, getScreenWidth() - 765 + 15, RSInterface.interfaceCache[getWalkableInterfaceId()],
 						0 - 255 + 10 + 4);
-				
+
 			} else if ((getWalkableInterfaceId() == 25347) && GameFrame.getScreenMode() != ScreenMode.FIXED) {
-				drawInterface(0, getScreenWidth() - 750, RSInterface.interfaceCache[getWalkableInterfaceId()], 0);	
+				drawInterface(0, getScreenWidth() - 750, RSInterface.interfaceCache[getWalkableInterfaceId()], 0);
 			} else {
 				drawInterface(0, 0, RSInterface.interfaceCache[getWalkableInterfaceId()], 0);
 			}
@@ -6499,13 +6499,13 @@ public class Client extends GameRenderer {
 				}
 			}
 			if (childInterface.id == 1194 || childInterface.id == 12856) // Removes
-																			// black
-																			// box
-																			// when
-																			// not
-																			// hovering
-																			// in
-																			// spellbooks
+				// black
+				// box
+				// when
+				// not
+				// hovering
+				// in
+				// spellbooks
 				continue;
 			if (childInterface.type == 0) {
 				// System.out.println(childInterface.id);
@@ -6792,12 +6792,12 @@ public class Client extends GameRenderer {
 					}
 					if (childInterface.parentID == 1151 || childInterface.parentID == 12855) {
 						switch (i4) {
-						case 16773120:
-							i4 = 0xFE981F;
-							break;
-						case 7040819:
-							i4 = 0xAF6A1A;
-							break;
+							case 16773120:
+								i4 = 0xFE981F;
+								break;
+							case 7040819:
+								i4 = 0xAF6A1A;
+								break;
 						}
 					}
 					for (int l6 = childY + textDrawingArea.anInt1497; s.length() > 0; l6 += textDrawingArea.anInt1497) {
@@ -6863,8 +6863,8 @@ public class Client extends GameRenderer {
 						if (imageDraw > 0 && xOffset > 0) {
 							int drawImageY = childY + 14;
 							if (imageDraw >= 841 && imageDraw <= 849) { // Clan
-																		// chat
-																		// images
+								// chat
+								// images
 								xOffset -= 5;
 								drawImageY -= 7;
 							}
@@ -7203,7 +7203,7 @@ public class Client extends GameRenderer {
 						}
 						if (Skills.SKILL_ID(childInterface.id) == childInterface.id && xPos + boxWidth + interfaceX + class9.width > 765) {
 							xPos = 765 - boxWidth - interfaceX - class9.width - 3;
-	                    }
+						}
 					} else {
 						if (xPos < childX + 5) {
 							xPos = childX + 5;
@@ -7381,7 +7381,7 @@ public class Client extends GameRenderer {
 	public int gameScreenDrawX = 4, gameScreenDrawY = 4;
 
 	public void recreateClientFrame(boolean undecorative, int width, int height, boolean resizable, int displayMode,
-			boolean toggle) {
+									boolean toggle) {
 		recreateClientFrame(undecorative, width, height, resizable);
 	}
 
@@ -7687,14 +7687,14 @@ public class Client extends GameRenderer {
 
 	public int getXTextOffset(int index) {
 		switch (index) {
-		case 1:
-			return 280;
-		case 2:
-			return 351;
-		case 3:
-			return 427;
-		case 4:
-			return 495;
+			case 1:
+				return 280;
+			case 2:
+				return 351;
+			case 3:
+				return 427;
+			case 4:
+				return 495;
 		}
 		return 206;
 	}
@@ -7868,7 +7868,7 @@ public class Client extends GameRenderer {
 			}
 		}
 	}
-	
+
 	public void detectCursor(String tooltip) {
 		if (!Configuration.NEW_CURSORS)
 			return;
@@ -7917,7 +7917,7 @@ public class Client extends GameRenderer {
 	}
 
 	public void drawScrollbar(int barHeight, int scrollPos, int yPos, int xPos, int contentHeight, boolean newScroller,
-			boolean isTransparent) {
+							  boolean isTransparent) {
 		int backingAmount = (barHeight - 32) / 5;
 		int scrollPartHeight = (barHeight - 32) * barHeight / contentHeight;
 		int scrollerID;
@@ -9068,11 +9068,11 @@ public class Client extends GameRenderer {
 						x = (clientWidth - 237 - RSInterface.interfaceCache[5292].width) / 2;
 					}
 					if (anInt1084 == 5382 && super.mouseY >= y && super.mouseY <= y + 37) {// check
-																							// if
-																							// bank
-																							// interface
+						// if
+						// bank
+						// interface
 						if (super.mouseX >= 28 + x && super.mouseX <= 74 + x) {// tab
-																				// 1
+							// 1
 							getOut().createFrame(214);
 							getOut().method433(5);// 5 = maintab
 							getOut().method424(0);
@@ -9081,80 +9081,80 @@ public class Client extends GameRenderer {
 
 						}
 						if (super.mouseX >= 75 + x && super.mouseX <= 121 + x) {// tab
-																				// 1
+							// 1
 							getOut().createFrame(214);
 							getOut().method433(13);// tab # x 13 (originally
-													// movewindow)
+							// movewindow)
 							getOut().method424(0);
 							getOut().method433(anInt1085);// Selected item slot
 							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
 						if (super.mouseX >= 122 + x && super.mouseX <= 168 + x) {// tab
-																					// 2
+							// 2
 							getOut().createFrame(214);
 							getOut().method433(26);// tab # x 13 (originally
-													// movewindow)
+							// movewindow)
 							getOut().method424(0);
 							getOut().method433(anInt1085);// Selected item slot
 							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
 						if (super.mouseX >= 169 + x && super.mouseX <= 215 + x) {// tab
-																					// 3
+							// 3
 							getOut().createFrame(214);
 							getOut().method433(39);// tab # x 13 (originally
-													// movewindow)
+							// movewindow)
 							getOut().method424(0);
 							getOut().method433(anInt1085);// Selected item slot
 							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
 						if (super.mouseX >= 216 + x && super.mouseX <= 262 + x) {// tab
-																					// 4
+							// 4
 							getOut().createFrame(214);
 							getOut().method433(52);// tab # x 13 (originally
-													// movewindow)
+							// movewindow)
 							getOut().method424(0);
 							getOut().method433(anInt1085);// Selected item slot
 							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
 						if (super.mouseX >= 263 + x && super.mouseX <= 309 + x) {// tab
-																					// 5
+							// 5
 							getOut().createFrame(214);
 							getOut().method433(65);// tab # x 13 (originally
-													// movewindow)
+							// movewindow)
 							getOut().method424(0);
 							getOut().method433(anInt1085);// Selected item slot
 							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
 						if (super.mouseX >= 310 + x && super.mouseX <= 356 + x) {// tab
-																					// 6
+							// 6
 							getOut().createFrame(214);
 							getOut().method433(78);// tab # x 13 (originally
-													// movewindow)
+							// movewindow)
 							getOut().method424(0);
 							getOut().method433(anInt1085);// Selected item slot
 							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
 						if (super.mouseX >= 357 + x && super.mouseX <= 403 + x) {// tab
-																					// 7
+							// 7
 							getOut().createFrame(214);
 							getOut().method433(91);// tab # x 13 (originally
-													// movewindow)
+							// movewindow)
 							getOut().method424(0);
 							getOut().method433(anInt1085);// Selected item slot
 							getOut().method431(mouseInvInterfaceIndex);// unused
 
 						}
 						if (super.mouseX >= 404 + x && super.mouseX <= 450 + x) {// tab
-																					// 8
+							// 8
 							getOut().createFrame(214);
 							getOut().method433(104);// tab # x 13 (originally
-													// movewindow)
+							// movewindow)
 							getOut().method424(0);
 							getOut().method433(anInt1085);// Selected item slot
 							getOut().method431(mouseInvInterfaceIndex);// unused
@@ -9472,8 +9472,8 @@ public class Client extends GameRenderer {
 				if (entity.currentForcedAnimFrame < animation.frameCount
 						&& entity.frameDelay > animation.getFrameLength(entity.currentForcedAnimFrame)) {
 					entity.frameDelay = 1; // this is the frame delay. 0 is what
-											// it's normally at. higher number =
-											// faster animations.
+					// it's normally at. higher number =
+					// faster animations.
 					entity.currentForcedAnimFrame++;
 					entity.nextIdleAnimationFrame++;
 				}
@@ -9528,7 +9528,7 @@ public class Client extends GameRenderer {
 
 				for (entity.anInt1528++; entity.currentAnimFrame < animation_3.frameCount
 						&& entity.anInt1528 > animation_3
-								.getFrameLength(entity.currentAnimFrame); entity.currentAnimFrame++) {
+						.getFrameLength(entity.currentAnimFrame); entity.currentAnimFrame++) {
 					entity.anInt1528 -= animation_3.getFrameLength(entity.currentAnimFrame);
 				}
 
@@ -9615,19 +9615,19 @@ public class Client extends GameRenderer {
 			try {
 				if (FrameReader.animationlist[Integer
 						.parseInt(Integer.toHexString(SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0])
-								.substring(0,
-										Integer.toHexString(
-												SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0]).length()
-												- 4),
+										.substring(0,
+												Integer.toHexString(
+														SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0]).length()
+														- 4),
 								16)].length == 0)
 					onDemandFetcher
 							.pushRequest(1,
 									Integer.parseInt(Integer
-											.toHexString(SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0])
-											.substring(0,
-													Integer.toHexString(
-															SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0])
-															.length() - 4),
+													.toHexString(SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0])
+													.substring(0,
+															Integer.toHexString(
+																	SpotAnimDefinition.cache[player.gfxId].animation.frameIDs[0])
+																	.length() - 4),
 											16));
 			} catch (Exception e) {
 			}
@@ -9942,7 +9942,7 @@ public class Client extends GameRenderer {
 					if (class30_sub1.anInt1302 == 0 && class30_sub1.anInt1297 >= 1 && class30_sub1.anInt1298 >= 1
 							&& class30_sub1.anInt1297 <= 102 && class30_sub1.anInt1298 <= 102
 							&& (class30_sub1.anInt1291 < 0
-									|| ObjectManager.method178(class30_sub1.anInt1291, class30_sub1.anInt1293))) {
+							|| ObjectManager.method178(class30_sub1.anInt1291, class30_sub1.anInt1293))) {
 						method142(class30_sub1.anInt1298, class30_sub1.anInt1295, class30_sub1.anInt1292,
 								class30_sub1.anInt1293, class30_sub1.anInt1297, class30_sub1.anInt1296,
 								class30_sub1.anInt1291);
@@ -10242,7 +10242,7 @@ public class Client extends GameRenderer {
 				if (class19_1 != null) {
 					for (Item class30_sub2_sub4_sub2_3 = (Item) class19_1
 							.getTail(); class30_sub2_sub4_sub2_3 != null; class30_sub2_sub4_sub2_3 = (Item) class19_1
-									.next()) {
+							.next()) {
 						if (class30_sub2_sub4_sub2_3.id != (l8 & 0x7fff) || class30_sub2_sub4_sub2_3.amount != k11) {
 							continue;
 						}
@@ -10704,7 +10704,7 @@ public class Client extends GameRenderer {
 			}
 		}
 	}
-	
+
 	public static boolean displayParticles = true;
 
 	private void method146() {
@@ -10763,7 +10763,7 @@ public class Client extends GameRenderer {
 					Configuration.FOG_ENABLED);
 			worldController.clearObj5Cache();
 		}
-		
+
 		Iterator<ParticleDisplay> iterator;
 		ParticleDisplay particle;
 		if (displayParticles) {
@@ -10821,30 +10821,24 @@ public class Client extends GameRenderer {
 							int pixel = var31 + var28 * Canvas3D.width;
 							int var34;
 							if (var16.getImage() != null) {
-<<<<<<< HEAD
 								//if (Canvas3D.depthBuffer != null) {
-									//if (Canvas3D.depthBuffer[pixel++] >> 16 >= particle.F()) {
-=======
+								//if (Canvas3D.depthBuffer[pixel++] >> 16 >= particle.F()) {
 								//if (Texture.depthBuffer != null) {
-									//if (Texture.depthBuffer[pixel++] >> 16 >= particle.F()) {
->>>>>>> origin/master
-										var16.getImage().drawTransparentSprite(var13[0], var13[1], alpha);
-									//}
+								//if (Texture.depthBuffer[pixel++] >> 16 >= particle.F()) {
+								var16.getImage().drawTransparentSprite(var13[0], var13[1], alpha);
+								//}
 								//}
 							} else {
 								try {
-<<<<<<< HEAD
 									//if (Canvas3D.depthBuffer[pixel++] >> 16 >= particle.F()) {
-=======
 									//if (Texture.depthBuffer[pixel++] >> 16 >= particle.F()) {
->>>>>>> origin/master
-										for (var34 = var31; var34 <= var32; ++var34) {
-											int dstR = (gameScreenIP.anIntArray315[pixel] >> 16 & 255) * srcAlpha;
-											int dstG = (gameScreenIP.anIntArray315[pixel] >> 8 & 255) * srcAlpha;
-											int dstB = (gameScreenIP.anIntArray315[pixel] & 255) * srcAlpha;
-											int rgb = (srcR + dstR >> 8 << 16) + (srcG + dstG >> 8 << 8) + (srcB + dstB >> 8);
-											gameScreenIP.anIntArray315[pixel++] = rgb;
-										}
+									for (var34 = var31; var34 <= var32; ++var34) {
+										int dstR = (gameScreenIP.anIntArray315[pixel] >> 16 & 255) * srcAlpha;
+										int dstG = (gameScreenIP.anIntArray315[pixel] >> 8 & 255) * srcAlpha;
+										int dstB = (gameScreenIP.anIntArray315[pixel] & 255) * srcAlpha;
+										int rgb = (srcR + dstR >> 8 << 16) + (srcG + dstG >> 8 << 8) + (srcB + dstB >> 8);
+										gameScreenIP.anIntArray315[pixel++] = rgb;
+									}
 									//}
 								} catch (Exception exception) {
 
@@ -10933,7 +10927,7 @@ public class Client extends GameRenderer {
 			xCameraCurve = l1;
 		}
 	}
-	
+
 	public final int[] write(int var1, int var2, int var3, int var4, int var5) {
 		if (var1 >= 128 && var3 >= 128 && var1 <= 13056 && var3 <= 13056) {
 			int var6 = method42(plane, var3, var1) - var2;
@@ -11681,32 +11675,32 @@ public class Client extends GameRenderer {
 
 	public int getOrbX(int orb) {
 		switch (orb) {
-		case 0:
-			return GameFrame.getScreenMode().ordinal() != 0 ? clientWidth - 212 : 172;
-		case 1:
-			return GameFrame.getScreenMode().ordinal() != 0 ? clientWidth - 215 : 188;
-		case 2:
-			return GameFrame.getScreenMode().ordinal() != 0 ? clientWidth - 203 : 188;
-		case 3:
-			return GameFrame.getScreenMode().ordinal() != 0 ? clientWidth - 180 : 172;
-		case 4:
-			return 4;
+			case 0:
+				return GameFrame.getScreenMode().ordinal() != 0 ? clientWidth - 212 : 172;
+			case 1:
+				return GameFrame.getScreenMode().ordinal() != 0 ? clientWidth - 215 : 188;
+			case 2:
+				return GameFrame.getScreenMode().ordinal() != 0 ? clientWidth - 203 : 188;
+			case 3:
+				return GameFrame.getScreenMode().ordinal() != 0 ? clientWidth - 180 : 172;
+			case 4:
+				return 4;
 		}
 		return 0;
 	}
 
 	public int getOrbY(int orb) {
 		switch (orb) {
-		case 0:
-			return GameFrame.getScreenMode().ordinal() != 0 ? 39 : 15;
-		case 1:
-			return GameFrame.getScreenMode().ordinal() != 0 ? 73 : 54;
-		case 2:
-			return GameFrame.getScreenMode().ordinal() != 0 ? 107 : 93;
-		case 3:
-			return GameFrame.getScreenMode().ordinal() != 0 ? 141 : 128;
-		case 4:
-			return 120;
+			case 0:
+				return GameFrame.getScreenMode().ordinal() != 0 ? 39 : 15;
+			case 1:
+				return GameFrame.getScreenMode().ordinal() != 0 ? 73 : 54;
+			case 2:
+				return GameFrame.getScreenMode().ordinal() != 0 ? 107 : 93;
+			case 3:
+				return GameFrame.getScreenMode().ordinal() != 0 ? 141 : 128;
+			case 4:
+				return 120;
 		}
 		return 0;
 	}
@@ -11762,7 +11756,7 @@ public class Client extends GameRenderer {
 	private void method55() {
 		for (PlayerProjectile class30_sub2_sub4_sub4 = (PlayerProjectile) getaClass19_1013()
 				.getTail(); class30_sub2_sub4_sub4 != null; class30_sub2_sub4_sub4 = (PlayerProjectile) getaClass19_1013()
-						.next()) {
+				.next()) {
 			if (class30_sub2_sub4_sub4.anInt1597 != plane || loopCycle > class30_sub2_sub4_sub4.anInt1572) {
 				class30_sub2_sub4_sub4.unlink();
 			} else if (loopCycle >= class30_sub2_sub4_sub4.anInt1571) {
@@ -12103,7 +12097,7 @@ public class Client extends GameRenderer {
 						}
 					} else if ((this.friendsListAction == 13) && (this.promptInput.length() > 0)
 							&& ((this.promptInput.toLowerCase().matches("\\d+[a-z&&[kmb]]"))
-									|| (this.promptInput.matches("\\d+")))) {
+							|| (this.promptInput.matches("\\d+")))) {
 						int goalExp = 0;
 						try {
 							goalExp = Integer.parseInt(promptInput.trim().toLowerCase().replaceAll("k", "000")
@@ -12417,19 +12411,19 @@ public class Client extends GameRenderer {
 				try {
 					if (FrameReader.animationlist[Integer
 							.parseInt(Integer.toHexString(SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0])
-									.substring(0,
-											Integer.toHexString(
-													SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0]).length()
-													- 4),
+											.substring(0,
+													Integer.toHexString(
+															SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0]).length()
+															- 4),
 									16)].length == 0)
 						onDemandFetcher
 								.pushRequest(1,
 										Integer.parseInt(Integer
-												.toHexString(SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0])
-												.substring(0,
-														Integer.toHexString(
-																SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0])
-																.length() - 4),
+														.toHexString(SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0])
+														.substring(0,
+																Integer.toHexString(
+																		SpotAnimDefinition.cache[npc.gfxId].animation.frameIDs[0])
+																		.length() - 4),
 												16));
 				} catch (Exception e) {
 				}
@@ -12921,1433 +12915,1433 @@ public class Client extends GameRenderer {
 			anInt841 = pktType;
 
 			switch (pktType) {
-			case 81:
-				updatePlayers(pktSize, getInputBuffer());
-				sendFrame36(175, openInterfaceID == 26000 ? 1 : 0);
-				aBoolean1080 = false;
-				pktType = -1;
-				return true;
+				case 81:
+					updatePlayers(pktSize, getInputBuffer());
+					sendFrame36(175, openInterfaceID == 26000 ? 1 : 0);
+					aBoolean1080 = false;
+					pktType = -1;
+					return true;
 
-			case 88:
-				int xface = getInputBuffer().getSignedShort();
-				int yface = getInputBuffer().getSignedShort();
-				int npcindex = getInputBuffer().getShortBigEndian();
-				if (npcindex < npcArray.length) {
-					NPC npc = npcArray[npcindex];
-					if (npc != null) {
-						npc.anInt1538 = xface;
-						npc.anInt1539 = yface;
-					}
-				}
-				pktType = -1;
-				return true;
-
-			case 176:
-				daysSinceRecovChange = getInputBuffer().method427();
-				unreadMessages = getInputBuffer().method435();
-				membersInt = getInputBuffer().getUnsignedByte();
-				anInt1193 = getInputBuffer().method440();
-				daysSinceLastLogin = getInputBuffer().getUnsignedShort();
-
-				pktType = -1;
-				return true;
-
-			case 64:
-				anInt1268 = getInputBuffer().method427();
-				anInt1269 = getInputBuffer().method428();
-
-				for (int j = anInt1268; j < anInt1268 + 8; j++) {
-					for (int l9 = anInt1269; l9 < anInt1269 + 8; l9++) {
-						if (groundArray[plane][j][l9] != null) {
-							groundArray[plane][j][l9] = null;
-							spawnGroundItem(j, l9);
+				case 88:
+					int xface = getInputBuffer().getSignedShort();
+					int yface = getInputBuffer().getSignedShort();
+					int npcindex = getInputBuffer().getShortBigEndian();
+					if (npcindex < npcArray.length) {
+						NPC npc = npcArray[npcindex];
+						if (npc != null) {
+							npc.anInt1538 = xface;
+							npc.anInt1539 = yface;
 						}
 					}
-				}
+					pktType = -1;
+					return true;
 
-				for (Class30_Sub1 class30_sub1 = (Class30_Sub1) getaClass19_1179()
-						.getTail(); class30_sub1 != null; class30_sub1 = (Class30_Sub1) getaClass19_1179().next()) {
-					if (class30_sub1.anInt1297 >= anInt1268 && class30_sub1.anInt1297 < anInt1268 + 8
-							&& class30_sub1.anInt1298 >= anInt1269 && class30_sub1.anInt1298 < anInt1269 + 8
-							&& class30_sub1.anInt1295 == plane) {
-						class30_sub1.anInt1294 = 0;
+				case 176:
+					daysSinceRecovChange = getInputBuffer().method427();
+					unreadMessages = getInputBuffer().method435();
+					membersInt = getInputBuffer().getUnsignedByte();
+					anInt1193 = getInputBuffer().method440();
+					daysSinceLastLogin = getInputBuffer().getUnsignedShort();
+
+					pktType = -1;
+					return true;
+
+				case 64:
+					anInt1268 = getInputBuffer().method427();
+					anInt1269 = getInputBuffer().method428();
+
+					for (int j = anInt1268; j < anInt1268 + 8; j++) {
+						for (int l9 = anInt1269; l9 < anInt1269 + 8; l9++) {
+							if (groundArray[plane][j][l9] != null) {
+								groundArray[plane][j][l9] = null;
+								spawnGroundItem(j, l9);
+							}
+						}
 					}
-				}
-				pktType = -1;
-				return true;
 
-			case 9:
-				int state = getInputBuffer().getUnsignedShort();
-				int seconds = getInputBuffer().getUnsignedShort();
-				fadingScreen = new FadingScreen("Welcome to Zulrah's shrine", (byte) 1, (byte) 5);
-				pktType = -1;
-				return true;
+					for (Class30_Sub1 class30_sub1 = (Class30_Sub1) getaClass19_1179()
+							.getTail(); class30_sub1 != null; class30_sub1 = (Class30_Sub1) getaClass19_1179().next()) {
+						if (class30_sub1.anInt1297 >= anInt1268 && class30_sub1.anInt1297 < anInt1268 + 8
+								&& class30_sub1.anInt1298 >= anInt1269 && class30_sub1.anInt1298 < anInt1269 + 8
+								&& class30_sub1.anInt1295 == plane) {
+							class30_sub1.anInt1294 = 0;
+						}
+					}
+					pktType = -1;
+					return true;
 
-			case 185:
-				int k = getInputBuffer().getShortBigEndianA();
+				case 9:
+					int state = getInputBuffer().getUnsignedShort();
+					int seconds = getInputBuffer().getUnsignedShort();
+					fadingScreen = new FadingScreen("Welcome to Zulrah's shrine", (byte) 1, (byte) 5);
+					pktType = -1;
+					return true;
 
-				RSInterface.interfaceCache[k].mediaType = 3;
-				if (myPlayer.desc == null) {
-					RSInterface.interfaceCache[k].mediaID = (myPlayer.anIntArray1700[0] << 25)
-							+ (myPlayer.anIntArray1700[4] << 20) + (myPlayer.equipment[0] << 15)
-							+ (myPlayer.equipment[8] << 10) + (myPlayer.equipment[11] << 5) + myPlayer.equipment[1];
-				} else {
-					RSInterface.interfaceCache[k].mediaID = (int) (0x12345678L + myPlayer.desc.id);
-				}
-				pktType = -1;
-				return true;
+				case 185:
+					int k = getInputBuffer().getShortBigEndianA();
+
+					RSInterface.interfaceCache[k].mediaType = 3;
+					if (myPlayer.desc == null) {
+						RSInterface.interfaceCache[k].mediaID = (myPlayer.anIntArray1700[0] << 25)
+								+ (myPlayer.anIntArray1700[4] << 20) + (myPlayer.equipment[0] << 15)
+								+ (myPlayer.equipment[8] << 10) + (myPlayer.equipment[11] << 5) + myPlayer.equipment[1];
+					} else {
+						RSInterface.interfaceCache[k].mediaID = (int) (0x12345678L + myPlayer.desc.id);
+					}
+					pktType = -1;
+					return true;
 
 			/* Clan chat packet */
-			case 217:
-				try {
-					name = getInputBuffer().getString();
-					message = getInputBuffer().getString();
-					clanName = getInputBuffer().getString();
-					rights = getInputBuffer().getUnsignedShort();
+				case 217:
+					try {
+						name = getInputBuffer().getString();
+						message = getInputBuffer().getString();
+						clanName = getInputBuffer().getString();
+						rights = getInputBuffer().getUnsignedShort();
 					/*
 					 * String addon = null; if(rights < 4) addon =
 					 * "@cr"+rights+"@";
 					 */
-					String tag = name.replaceAll("null", "");
-					message = TextInput.processText(message);
-					// message = Censor.doCensor(message);
-					pushMessage(message, 16, tag);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				pktType = -1;
-				return true;
-
-			case 107:
-				cameraViewChanged = false;
-				for (int l = 0; l < 5; l++) {
-					aBooleanArray876[l] = false;
-				}
-				pktType = -1;
-				return true;
-
-			case 72:
-				int i1 = getInputBuffer().getShortBigEndian();
-				RSInterface class9 = RSInterface.interfaceCache[i1];
-				for (int k15 = 0; k15 < class9.inv.length; k15++) {
-					class9.inv[k15] = -1;
-					class9.inv[k15] = 0;
-				}
-				pktType = -1;
-				return true;
-
-			case 214:
-				ignoreCount = getInputBuffer().getShort();
-				for (int i2 = 0; i2 < ignoreCount; i2++) {
-					ignoreListAsLongs[i2] = Long.parseLong(getInputBuffer().getString());
-				}
-				pktType = -1;
-				return true;
-
-			case 244:
-				String data = getInputBuffer().getString();
-				getGrandExchange().update(data);
-				pktType = -1;
-				return true;
-
-			case 166:
-				cameraViewChanged = true;
-				spinPacketX = getInputBuffer().getUnsignedByte();
-				spinPacketY = getInputBuffer().getUnsignedByte();
-				spinPacketHeight = getInputBuffer().getUnsignedShort();
-				spinPacketConstantSpeed = getInputBuffer().getUnsignedByte();
-				spinPacketVariableSpeed = getInputBuffer().getUnsignedByte();
-				if (spinPacketVariableSpeed >= 100) {
-					xCameraPos = spinPacketX * 128 + 64;
-					yCameraPos = spinPacketY * 128 + 64;
-
-					zCameraPos = method42(plane, yCameraPos, xCameraPos) - spinPacketHeight;
-				}
-				pktType = -1;
-				return true;
-
-			case 134:
-				// needDrawTabArea = true;
-
-				int skillId = getInputBuffer().getUnsignedByte();
-				int exp = getInputBuffer().method439();
-				int level = getInputBuffer().getUnsignedShort();
-				int maxLevel = getInputBuffer().getUnsignedShort();
-				int gainedExperience = exp - currentExp[skillId];
-				currentExp[skillId] = exp;
-				currentStats[skillId] = level;
-				maxStats[skillId] = maxLevel;
-				if (gainedExperience > 0)
-					PlayerHandler.addXP(skillId, gainedExperience);
-				if (skillId == 23) {
-					setInterfaceText("" + maxLevel + "", 28171);
-				}
-				if (skillId == 5) {
-
-				}
-				pktType = -1;
-				return true;
-
-			case 71:
-				int l1 = getInputBuffer().getUnsignedShort();
-				int j10 = getInputBuffer().method426();
-				if (l1 == 65535) {
-					l1 = -1;
-				}
-				tabInterfaceIDs[j10] = l1;
-				prayerInterfaceType = tabInterfaceIDs[5];
-				tabAreaAltered = true;
-				pktType = -1;
-				return true;
-
-			case 74:
-				int songId = getInputBuffer().getShortBigEndian();
-				if (songId == 65535) {
-					songId = -1;
-				}
-				if (songId != -1 || prevSong != 0) {
-					if (songId != -1 && currentSong != songId && musicVolume != 0 && prevSong == 0) {
-						method58(10, musicVolume, false, songId);
+						String tag = name.replaceAll("null", "");
+						message = TextInput.processText(message);
+						// message = Censor.doCensor(message);
+						pushMessage(message, 16, tag);
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-				} else {
-					method55(false);
-				}
-				currentSong = songId;
-				pktType = -1;
-				return true;
-
-			case 121:
-				int tempSongId = getInputBuffer().getShortBigEndianA();
-				int tempSongDelay = getInputBuffer().method435();
-				if (tempSongId == 65535) {
-					tempSongId = -1;
-				}
-				if (musicVolume != 0 && tempSongDelay != -1) {
-					method56(musicVolume, false, tempSongId);
-					prevSong = tempSongDelay * 20;
-				}
-				pktType = -1;
-				return true;
-
-			case 109:
-				resetLogout();
-				pktType = -1;
-				return false;
-
-			case 70:
-				int modifierX = getInputBuffer().getSignedShort();
-				int modifierY = getInputBuffer().method437();
-				int widgetId = getInputBuffer().getShortBigEndian();
-				RSInterface widget = RSInterface.interfaceCache[widgetId];
-				widget.xOffset = modifierX;
-				widget.yOffset = modifierY;
-				pktType = -1;
-				return true;
-
-			case 73:
-			case 241:
-				int l2 = anInt1069;
-				int i11 = anInt1070;
-				if (pktType == 73) {
-					l2 = mapX = getInputBuffer().method435();
-					i11 = mapY = getInputBuffer().getUnsignedShort();
-					aBoolean1159 = false;
-				}
-				if (pktType == 241) {
-					i11 = getInputBuffer().method435();
-					getInputBuffer().initBitAccess();
-					for (int j16 = 0; j16 < 4; j16++) {
-						for (int l20 = 0; l20 < 13; l20++) {
-							for (int j23 = 0; j23 < 13; j23++) {
-								int emptyFloor = getInputBuffer().getBits(1);
-								if (emptyFloor == 1) {
-									anIntArrayArrayArray1129[j16][l20][j23] = getInputBuffer().getBits(26);
-								} else {
-									anIntArrayArrayArray1129[j16][l20][j23] = -1;
-								}
-							}
-						}
-					}
-					getInputBuffer().finishBitAccess();
-					l2 = getInputBuffer().getUnsignedShort();
-					aBoolean1159 = true;
-				}
-				if (anInt1069 == l2 && anInt1070 == i11 && loadingStage == 2) {
 					pktType = -1;
 					return true;
-				}
-				anInt1069 = l2;
-				anInt1070 = i11;
-				baseX = (anInt1069 - 6) * 8;
-				baseY = (anInt1070 - 6) * 8;
-				aBoolean1141 = (anInt1069 / 8 == 48 || anInt1069 / 8 == 49) && anInt1070 / 8 == 48;
-				if (anInt1069 / 8 == 48 && anInt1070 / 8 == 148) {
-					aBoolean1141 = true;
-				}
-				loadingStage = 1;
-				aLong824 = System.currentTimeMillis();
-				gameScreenIP.initDrawingArea();
-				// CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
-				drawLoadingMessages("Loading " + onDemandFetcher.getRemaining() + " files - please wait... ");
-				if (!resizing) {
-					gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
-				}
-				if (pktType == 73) {
-					int k16 = 0;
-					for (int i21 = (anInt1069 - 6) / 8; i21 <= (anInt1069 + 6) / 8; i21++) {
-						for (int k23 = (anInt1070 - 6) / 8; k23 <= (anInt1070 + 6) / 8; k23++) {
-							k16++;
-						}
+
+				case 107:
+					cameraViewChanged = false;
+					for (int l = 0; l < 5; l++) {
+						aBooleanArray876[l] = false;
 					}
-					localFloorMapData = new byte[k16][];
-					localObjectMapData = new byte[k16][];
-					anIntArray1234 = new int[k16];
-					floorMap = new int[k16];
-					objectMap = new int[k16];
-					k16 = 0;
-					for (int l23 = (anInt1069 - 6) / 8; l23 <= (anInt1069 + 6) / 8; l23++) {
-						for (int j26 = (anInt1070 - 6) / 8; j26 <= (anInt1070 + 6) / 8; j26++) {
-							anIntArray1234[k16] = (l23 << 8) + j26;
-							if (aBoolean1141
-									&& (j26 == 49 || j26 == 149 || j26 == 147 || l23 == 50 || l23 == 49 && j26 == 47)) {
-								floorMap[k16] = -1;
-								objectMap[k16] = -1;
-								k16++;
-							} else {
-								int k28 = floorMap[k16] = onDemandFetcher.getMapCount(0, j26, l23);
-								if (k28 != -1) {
-									onDemandFetcher.pushRequest(3, k28);
-								}
-								int j30 = objectMap[k16] = onDemandFetcher.getMapCount(1, j26, l23);
-								if (j30 != -1) {
-									onDemandFetcher.pushRequest(3, j30);
-								}
-								k16++;
-							}
-						}
-					}
-				}
-				if (pktType == 241) {
-					int l16 = 0;
-					int ai[] = new int[676];
-					for (int i24 = 0; i24 < 4; i24++) {
-						for (int k26 = 0; k26 < 13; k26++) {
-							for (int l28 = 0; l28 < 13; l28++) {
-								int k30 = anIntArrayArrayArray1129[i24][k26][l28];
-								if (k30 != -1) {
-									int k31 = k30 >> 14 & 0x3ff;
-									int i32 = k30 >> 3 & 0x7ff;
-									int k32 = (k31 / 8 << 8) + i32 / 8;
-									for (int j33 = 0; j33 < l16; j33++) {
-										if (ai[j33] != k32) {
-											continue;
-										}
-										k32 = -1;
-
-									}
-									if (k32 != -1) {
-										ai[l16++] = k32;
-									}
-								}
-							}
-						}
-					}
-					localFloorMapData = new byte[l16][];
-					localObjectMapData = new byte[l16][];
-					anIntArray1234 = new int[l16];
-					floorMap = new int[l16];
-					objectMap = new int[l16];
-					for (int l26 = 0; l26 < l16; l26++) {
-						int i29 = anIntArray1234[l26] = ai[l26];
-						int l30 = i29 >> 8 & 0xff;
-						int l31 = i29 & 0xff;
-						int j32 = floorMap[l26] = onDemandFetcher.getMapCount(0, l31, l30);
-						if (j32 != -1) {
-							onDemandFetcher.pushRequest(3, j32);
-						}
-						int i33 = objectMap[l26] = onDemandFetcher.getMapCount(1, l31, l30);
-						if (i33 != -1) {
-							onDemandFetcher.pushRequest(3, i33);
-						}
-					}
-				}
-				int i17 = baseX - anInt1036;
-				int j21 = baseY - anInt1037;
-				anInt1036 = baseX;
-				anInt1037 = baseY;
-				for (int j24 = 0; j24 < 16384; j24++) {
-					NPC npc = npcArray[j24];
-					if (npc != null) {
-						for (int j29 = 0; j29 < 10; j29++) {
-							npc.smallX[j29] -= i17;
-							npc.smallY[j29] -= j21;
-						}
-						npc.x -= i17 * 128;
-						npc.y -= j21 * 128;
-					}
-				}
-				for (int i27 = 0; i27 < getMaxPlayers(); i27++) {
-					Player player = playerArray[i27];
-					if (player != null) {
-						for (int i31 = 0; i31 < 10; i31++) {
-							player.smallX[i31] -= i17;
-							player.smallY[i31] -= j21;
-						}
-						player.x -= i17 * 128;
-						player.y -= j21 * 128;
-					}
-				}
-				aBoolean1080 = true;
-				byte byte1 = 0;
-				byte byte2 = 104;
-				byte byte3 = 1;
-				if (i17 < 0) {
-					byte1 = 103;
-					byte2 = -1;
-					byte3 = -1;
-				}
-				byte byte4 = 0;
-				byte byte5 = 104;
-				byte byte6 = 1;
-				if (j21 < 0) {
-					byte4 = 103;
-					byte5 = -1;
-					byte6 = -1;
-				}
-				for (int k33 = byte1; k33 != byte2; k33 += byte3) {
-					for (int l33 = byte4; l33 != byte5; l33 += byte6) {
-						int i34 = k33 + i17;
-						int j34 = l33 + j21;
-						for (int k34 = 0; k34 < 4; k34++) {
-							if (i34 >= 0 && j34 >= 0 && i34 < 104 && j34 < 104) {
-								groundArray[k34][k33][l33] = groundArray[k34][i34][j34];
-							} else {
-								groundArray[k34][k33][l33] = null;
-							}
-						}
-					}
-				}
-				for (Class30_Sub1 class30_sub1_1 = (Class30_Sub1) getaClass19_1179()
-						.getTail(); class30_sub1_1 != null; class30_sub1_1 = (Class30_Sub1) getaClass19_1179().next()) {
-					class30_sub1_1.anInt1297 -= i17;
-					class30_sub1_1.anInt1298 -= j21;
-					if (class30_sub1_1.anInt1297 < 0 || class30_sub1_1.anInt1298 < 0 || class30_sub1_1.anInt1297 >= 104
-							|| class30_sub1_1.anInt1298 >= 104) {
-						class30_sub1_1.unlink();
-					}
-				}
-				if (destX != 0) {
-					destX -= i17;
-					destY -= j21;
-				}
-				cameraViewChanged = false;
-				pktType = -1;
-				return true;
-
-			case 208:
-				int i3 = getInputBuffer().getUnsignedShort();
-				System.out.println("" + i3);
-				if (i3 == 65535)
-					i3 = -1;
-				if (i3 >= 0)
-					resetInterfaceAnimation(i3);
-				setWalkableInterfaceId(i3);
-				pktType = -1;
-				return true;
-
-			case 99:
-				anInt1021 = getInputBuffer().getUnsignedByte();
-				pktType = -1;
-				return true;
-
-			case 75:
-				int j3 = getInputBuffer().getShortBigEndianA();
-				int j11 = getInputBuffer().getShortBigEndianA();
-				RSInterface.interfaceCache[j11].mediaType = 2;
-				RSInterface.interfaceCache[j11].mediaID = j3;
-				pktType = -1;
-				return true;
-
-			case 114:
-				systemUpdateTimer = getInputBuffer().getShortBigEndian() * 30;
-				pktType = -1;
-				return true;
-
-			case 118:
-				systemRestartTimer = getInputBuffer().getShortBigEndian() * 30;
-				pktType = -1;
-				return true;
-
-			case 116:
-				String textie = getInputBuffer().getString();
-				int time = getInputBuffer().getShort();
-				announcementTimer = time * 30;
-				announcement = textie;
-				pktType = -1;
-				return true;
-
-			case 60:
-				anInt1269 = getInputBuffer().getUnsignedByte();
-				anInt1268 = getInputBuffer().method427();
-				while (getInputBuffer().position < pktSize) {
-					int k3 = getInputBuffer().getUnsignedByte();
-					parseEntityPacket(getInputBuffer(), k3);
-				}
-				pktType = -1;
-				return true;
-
-			case 35:
-				int l3 = getInputBuffer().getUnsignedByte();
-				int k11 = getInputBuffer().getUnsignedByte();
-				int j17 = getInputBuffer().getUnsignedByte();
-				int k21 = getInputBuffer().getUnsignedByte();
-				aBooleanArray876[l3] = true;
-				anIntArray873[l3] = k11;
-				anIntArray1203[l3] = j17;
-				anIntArray928[l3] = k21;
-				anIntArray1030[l3] = 0;
-				pktType = -1;
-				return true;
-
-			case 174:
-				int id = getInputBuffer().getUnsignedShort();
-				int type = getInputBuffer().getUnsignedByte();
-				int delay = getInputBuffer().getUnsignedShort();
-				if (soundEffectVolume != 0 && type != 0 && soundCount < 50) {
-					sound[soundCount] = id;
-					soundType[soundCount] = type;
-					soundDelay[soundCount] = delay;
-					aClass26Array1468[soundCount] = null;
-					soundCount++;
-				}
-				pktType = -1;
-				return true;
-
-			case 104:
-				int j4 = getInputBuffer().method427();
-				int i12 = getInputBuffer().method426();
-				String s6 = getInputBuffer().getString();
-				if (j4 >= 1 && j4 <= 5) {
-					if (s6.equalsIgnoreCase("null")) {
-						s6 = null;
-					}
-					atPlayerActions[j4 - 1] = s6;
-					atPlayerArray[j4 - 1] = i12 == 0;
-				}
-				pktType = -1;
-				return true;
-
-			case 78:
-				destX = 0;
-				pktType = -1;
-				return true;
-			case 253:
-				String s = getInputBuffer().getString();
-				if (consoleOpen) {
-					printConsoleMessage(s, 0);
-				} else if (s.endsWith(":tradereq:")) {
-					String s3 = s.substring(0, s.indexOf(":"));
-					long l17 = TextClass.longForName(s3);
-					boolean flag2 = false;
-					for (int j27 = 0; j27 < ignoreCount; j27++) {
-						if (ignoreListAsLongs[j27] != l17) {
-							continue;
-						}
-						flag2 = true;
-
-					}
-					if (!flag2 && anInt1251 == 0) {
-						pushMessage("wishes to trade with you.", 4, s3);
-					}
-				} else if (s.startsWith(":clan:")) {
-					pushMessage(s.substring(6, s.length()), 16, "");
-				} else if (s.endsWith("#url#")) {
-					String link = s.substring(0, s.indexOf("#"));
-					pushMessage("Join us at: ", 9, link);
-				} else if (s.endsWith(":duelreq:")) {
-					String s4 = s.substring(0, s.indexOf(":"));
-					long l18 = TextClass.longForName(s4);
-					boolean flag3 = false;
-					for (int k27 = 0; k27 < ignoreCount; k27++) {
-						if (ignoreListAsLongs[k27] != l18) {
-							continue;
-						}
-						flag3 = true;
-
-					}
-					if (!flag3 && anInt1251 == 0) {
-						pushMessage("wishes to duel with you.", 8, s4);
-					}
-				} else if (s.endsWith(":chalreq:")) {
-					String s5 = s.substring(0, s.indexOf(":"));
-					long l19 = TextClass.longForName(s5);
-					boolean flag4 = false;
-					for (int l27 = 0; l27 < ignoreCount; l27++) {
-						if (ignoreListAsLongs[l27] != l19) {
-							continue;
-						}
-						flag4 = true;
-
-					}
-					if (!flag4 && anInt1251 == 0) {
-						String s8 = s.substring(s.indexOf(":") + 1, s.length() - 9);
-						pushMessage(s8, 8, s5);
-					}
-				} else {
-					pushMessage(s, 0, "");
-				}
-				pktType = -1;
-				return true;
-
-			case 1:
-				for (int k4 = 0; k4 < playerArray.length; k4++) {
-					if (playerArray[k4] != null) {
-						playerArray[k4].anim = -1;
-					}
-				}
-				for (int j12 = 0; j12 < npcArray.length; j12++) {
-					if (npcArray[j12] != null) {
-						npcArray[j12].anim = -1;
-					}
-				}
-				pktType = -1;
-				return true;
-
-			case 50:
-				long l4 = getInputBuffer().getLong();
-				int i18 = getInputBuffer().getUnsignedByte();
-				int send_message = getInputBuffer().getUnsignedByte();
-				String s7 = TextClass.fixName(TextClass.nameForLong(l4));
-				for (int k24 = 0; k24 < friendCount; k24++) {
-					if (l4 != friendsListAsLongs[k24]) {
-						continue;
-					}
-					if (friendsNodeIDs[k24] != i18) {
-						friendsNodeIDs[k24] = i18;
-						if (i18 >= 2) {
-							if (send_message == 0)
-								pushMessage(s7 + " has logged in.", 5, "");
-						}
-						if (i18 <= 1) {
-							if (send_message == 0)
-								pushMessage(s7 + " has logged out.", 5, "");
-						}
-					}
-					s7 = null;
-
-				}
-				if (s7 != null && friendCount < 200) {
-					friendsListAsLongs[friendCount] = l4;
-					friendsList[friendCount] = s7;
-					friendsNodeIDs[friendCount] = i18;
-					friendCount++;
-				}
-				for (boolean flag6 = false; !flag6;) {
-					flag6 = true;
-					for (int k29 = 0; k29 < friendCount - 1; k29++) {
-						if (friendsNodeIDs[k29] != nodeID && friendsNodeIDs[k29 + 1] == nodeID
-								|| friendsNodeIDs[k29] == 0 && friendsNodeIDs[k29 + 1] != 0) {
-							int j31 = friendsNodeIDs[k29];
-							friendsNodeIDs[k29] = friendsNodeIDs[k29 + 1];
-							friendsNodeIDs[k29 + 1] = j31;
-							String s10 = friendsList[k29];
-							friendsList[k29] = friendsList[k29 + 1];
-							friendsList[k29 + 1] = s10;
-							long l32 = friendsListAsLongs[k29];
-							friendsListAsLongs[k29] = friendsListAsLongs[k29 + 1];
-							friendsListAsLongs[k29 + 1] = l32;
-							flag6 = false;
-						}
-					}
-				}
-				pktType = -1;
-				return true;
-
-			case 110:
-				energy = getInputBuffer().getUnsignedByte();
-				pktType = -1;
-				return true;
-
-			case 113:
-				running = getInputBuffer().getUnsignedByte() > 0;
-				variousSettings[173] = running ? 1 : 0;
-				mapArea.run.setOrbState(running);
-				pktType = -1;
-				return true;
-
-			case 254:
-				anInt855 = getInputBuffer().getUnsignedByte();
-				if (anInt855 == 1) {
-					anInt1222 = getInputBuffer().getUnsignedShort();
-				}
-				if (anInt855 >= 2 && anInt855 <= 6) {
-					if (anInt855 == 2) {
-						anInt937 = 64;
-						anInt938 = 64;
-					}
-					if (anInt855 == 3) {
-						anInt937 = 0;
-						anInt938 = 64;
-					}
-					if (anInt855 == 4) {
-						anInt937 = 128;
-						anInt938 = 64;
-					}
-					if (anInt855 == 5) {
-						anInt937 = 64;
-						anInt938 = 0;
-					}
-					if (anInt855 == 6) {
-						anInt937 = 64;
-						anInt938 = 128;
-					}
-					anInt855 = 5;
-					anInt934 = getInputBuffer().getUnsignedShort();
-					anInt935 = getInputBuffer().getUnsignedShort();
-					anInt936 = getInputBuffer().getUnsignedByte();
-				}
-				if (anInt855 == 10) {
-					anInt933 = getInputBuffer().getUnsignedShort();
-				}
-				pktType = -1;
-				return true;
-
-			case 248:
-				int i5 = getInputBuffer().method435();
-				int k12 = getInputBuffer().getUnsignedShort();
-				if (backDialogID != -1) {
-					backDialogID = -1;
-					inputTaken = true;
-				}
-				if (inputDialogState != 0) {
-					inputDialogState = 0;
-					inputTaken = true;
-				}
-				openInterfaceID = i5;
-				invOverlayInterfaceID = k12;
-				tabAreaAltered = true;
-				aBoolean1149 = false;
-				pktType = -1;
-				return true;
-
-			case 79:
-				int j5 = getInputBuffer().getShortBigEndian();
-				int l12 = getInputBuffer().method435();
-				RSInterface class9_3 = RSInterface.interfaceCache[j5];
-				if (class9_3 != null && class9_3.type == 0) {
-					if (l12 < 0) {
-						l12 = 0;
-					}
-					if (l12 > class9_3.scrollMax - class9_3.height) {
-						l12 = class9_3.scrollMax - class9_3.height;
-					}
-					class9_3.scrollPosition = l12;
-				}
-				pktType = -1;
-				return true;
-
-			case 68:
-				for (int k5 = 0; k5 < variousSettings.length; k5++) {
-					if (variousSettings[k5] != settings[k5]) {
-						variousSettings[k5] = settings[k5];
-						updateConfig(k5);
-					}
-				}
-
-				pktType = -1;
-				return true;
-
-			case 196:
-				final long l5 = getInputBuffer().getLong();
-				getInputBuffer().getIntLittleEndian();
-				int playerRights = getInputBuffer().getUnsignedByte();
-				boolean flag5 = false;
-
-				if (playerRights <= 1) {
-					for (int l29 = 0; l29 < ignoreCount; l29++) {
-						if (ignoreListAsLongs[l29] != l5) {
-							continue;
-						}
-
-						flag5 = true;
-					}
-				}
-
-				if (!flag5 && anInt1251 == 0) {
-					try {
-						String message = TextInput.readChatboxText(pktSize - 13, getInputBuffer());
-						final String name = TextClass.fixName(TextClass.nameForLong(l5));
-
-						if (Configuration.NOTIFICATIONS_ENABLED) {
-							AlertifyBuilder bldr = new AlertifyBuilder();
-
-							if (playerRights == 3) {
-								bldr.type(AlertifyType.WARNING);
-							} else {
-								bldr.type(AlertifyType.SUCCESS);
-							}
-
-							Alertify.show(bldr.text(name + ": " + message).autoClose(5000L)
-									.callback(new AlertifyWindowClick() {
-										@Override
-										public void alertClicked(AlertifyWindow window) {
-											// Request window focus if the
-											// client is
-											// minimized
-											requestFocusInWindow();
-											instance.requestFocus();
-											mainFrame.toFront();
-											mainFrame.setState(Frame.NORMAL);
-											instance.setVisible(true);
-
-											// Upon click, open the reply box
-											inputTaken = true;
-											inputDialogState = 0;
-											messagePromptRaised = true;
-											promptInput = "";
-											friendsListAction = 3;
-											aLong953 = l5;
-											promptMessage = "Enter message to send to " + name;
-										}
-									}).build());
-						}
-						if (playerRights != 0) {
-							pushMessage(message, 7, getPrefix(playerRights) + name);
-						} else {
-							pushMessage(message, 3, name);
-						}
-					} catch (Exception exception1) {
-						exception1.printStackTrace();
-						Signlink.reportError("cde1");
-					}
-				}
-
-				pktType = -1;
-				return true;
-
-			case 85:
-				anInt1269 = getInputBuffer().method427();
-				anInt1268 = getInputBuffer().method427();
-				pktType = -1;
-				return true;
-
-			case 123:
-				printConsoleMessage(getInputBuffer().getString(), 1);
-				pktType = -1;
-				return true;
-
-			case 128:
-				currentTarget = null;
-				pktType = -1;
-				return true;
-
-			case 125:
-				int targetIndex = getInputBuffer().getShort();
-				int targetType = getInputBuffer().getByte();
-				if (targetType == 0) { /* DONT READ DAMAGE LIST FOR PLRS */
-					currentTarget = targetIndex < playerArray.length ? playerArray[targetIndex] : null;
 					pktType = -1;
 					return true;
-				} else {
-					currentTarget = targetIndex < npcArray.length ? npcArray[targetIndex] : null;
-				}
-				if (currentTarget == null) {
+
+				case 72:
+					int i1 = getInputBuffer().getShortBigEndian();
+					RSInterface class9 = RSInterface.interfaceCache[i1];
+					for (int k15 = 0; k15 < class9.inv.length; k15++) {
+						class9.inv[k15] = -1;
+						class9.inv[k15] = 0;
+					}
 					pktType = -1;
 					return true;
-				}
-				NPC npc = (NPC) currentTarget;
-				npc.damageDealers.clear();
-				boolean readDamageList = getInputBuffer().getByte() == 1;
-				if (readDamageList) {
-					int length = getInputBuffer().getByte();
-					for (int t = 0; t < length; t++) {
-						String player = getInputBuffer().getString();
-						int damage = getInputBuffer().getShort();
-						npc.damageDealers.add(new DamageDealer(player, damage));
+
+				case 214:
+					ignoreCount = getInputBuffer().getShort();
+					for (int i2 = 0; i2 < ignoreCount; i2++) {
+						ignoreListAsLongs[i2] = Long.parseLong(getInputBuffer().getString());
 					}
-				}
-				pktType = -1;
-				return true;
+					pktType = -1;
+					return true;
 
-			case 24:
-				anInt1054 = getInputBuffer().method428();
+				case 244:
+					String data = getInputBuffer().getString();
+					getGrandExchange().update(data);
+					pktType = -1;
+					return true;
 
-				if (anInt1054 == tabID) {
-					if (anInt1054 == 3) {
-						tabID = 1;
+				case 166:
+					cameraViewChanged = true;
+					spinPacketX = getInputBuffer().getUnsignedByte();
+					spinPacketY = getInputBuffer().getUnsignedByte();
+					spinPacketHeight = getInputBuffer().getUnsignedShort();
+					spinPacketConstantSpeed = getInputBuffer().getUnsignedByte();
+					spinPacketVariableSpeed = getInputBuffer().getUnsignedByte();
+					if (spinPacketVariableSpeed >= 100) {
+						xCameraPos = spinPacketX * 128 + 64;
+						yCameraPos = spinPacketY * 128 + 64;
+
+						zCameraPos = method42(plane, yCameraPos, xCameraPos) - spinPacketHeight;
+					}
+					pktType = -1;
+					return true;
+
+				case 134:
+					// needDrawTabArea = true;
+
+					int skillId = getInputBuffer().getUnsignedByte();
+					int exp = getInputBuffer().method439();
+					int level = getInputBuffer().getUnsignedShort();
+					int maxLevel = getInputBuffer().getUnsignedShort();
+					int gainedExperience = exp - currentExp[skillId];
+					currentExp[skillId] = exp;
+					currentStats[skillId] = level;
+					maxStats[skillId] = maxLevel;
+					if (gainedExperience > 0)
+						PlayerHandler.addXP(skillId, gainedExperience);
+					if (skillId == 23) {
+						setInterfaceText("" + maxLevel + "", 28171);
+					}
+					if (skillId == 5) {
+
+					}
+					pktType = -1;
+					return true;
+
+				case 71:
+					int l1 = getInputBuffer().getUnsignedShort();
+					int j10 = getInputBuffer().method426();
+					if (l1 == 65535) {
+						l1 = -1;
+					}
+					tabInterfaceIDs[j10] = l1;
+					prayerInterfaceType = tabInterfaceIDs[5];
+					tabAreaAltered = true;
+					pktType = -1;
+					return true;
+
+				case 74:
+					int songId = getInputBuffer().getShortBigEndian();
+					if (songId == 65535) {
+						songId = -1;
+					}
+					if (songId != -1 || prevSong != 0) {
+						if (songId != -1 && currentSong != songId && musicVolume != 0 && prevSong == 0) {
+							method58(10, musicVolume, false, songId);
+						}
 					} else {
-						tabID = 3;
+						method55(false);
 					}
-				}
-
-				pktType = -1;
-				return true;
-
-			case 246:
-				int i6 = getInputBuffer().getShortBigEndian();
-				int i13 = getInputBuffer().getUnsignedShort();
-				int k18 = getInputBuffer().getUnsignedShort();
-
-				if (k18 == 65535) {
-					RSInterface.interfaceCache[i6].mediaType = 0;
+					currentSong = songId;
 					pktType = -1;
 					return true;
-				} else {
-					ItemDefinition itemDef = ItemDefinition.get(k18);
-					RSInterface.interfaceCache[i6].mediaType = 4;
-					RSInterface.interfaceCache[i6].mediaID = k18;
-					RSInterface.interfaceCache[i6].modelRotation1 = itemDef.modelRotation1;
-					RSInterface.interfaceCache[i6].modelRotation2 = itemDef.modelRotation2;
-					RSInterface.interfaceCache[i6].modelZoom = itemDef.modelZoom * 100 / i13;
-					pktType = -1;
-					return true;
-				}
 
-			case 171:
-				boolean flag1 = getInputBuffer().getUnsignedByte() == 1;
-				int j13 = getInputBuffer().getUnsignedShort();
-				RSInterface.interfaceCache[j13].interfaceShown = flag1;
-				pktType = -1;
-				return true;
-
-			case 142:
-				int j6 = getInputBuffer().getShortBigEndian();
-				resetInterfaceAnimation(j6);
-
-				if (backDialogID != -1) {
-					backDialogID = -1;
-					inputTaken = true;
-				}
-
-				if (inputDialogState != 0) {
-					inputDialogState = 0;
-					inputTaken = true;
-				}
-
-				invOverlayInterfaceID = j6;
-				tabAreaAltered = true;
-				openInterfaceID = -1;
-				aBoolean1149 = false;
-				pktType = -1;
-				return true;
-
-			case 45:
-				long totalxp = getInputBuffer().getLong();
-				PlayerHandler.totalXP = totalxp;
-				pktType = -1;
-				return true;
-
-			case 124:
-				int skillID = getInputBuffer().getUnsignedByte();
-				int gainedXP = getInputBuffer().getIntLittleEndian();
-				int totalEXP = getInputBuffer().getIntLittleEndian();
-				PlayerHandler.addXP(skillID, gainedXP);
-				PlayerHandler.totalXP = totalEXP;
-				pktType = -1;
-				return true;
-
-			case 126:
-				String text = getInputBuffer().getString();
-				int frame = getInputBuffer().getShort();
-				if (text.startsWith("http://") || text.startsWith("www.")) {
-					launchURL(text);
-					pktType = -1;
-					return true;
-				} else if (frame == 1 && text.contains("[CLEAR]")) {
-					for (int i = 0; i < clanMembers.size(); i++) {
-						clanMembers.remove(clanMembers.get(i));
+				case 121:
+					int tempSongId = getInputBuffer().getShortBigEndianA();
+					int tempSongDelay = getInputBuffer().method435();
+					if (tempSongId == 65535) {
+						tempSongId = -1;
+					}
+					if (musicVolume != 0 && tempSongDelay != -1) {
+						method56(musicVolume, false, tempSongId);
+						prevSong = tempSongDelay * 20;
 					}
 					pktType = -1;
 					return true;
-				} else if (frame == 1 && text.equals("ZULRAHFADE")) {
-					fadingScreen = new FadingScreen("Welcome to Zulrah's shrine", (byte) 1, (byte) 5);
-					pktType = -1;
-					return true;
-				} else if (text.equals("[CLOSEMENU]") && frame == 0) {
-					menuOpen = false;
-					pktType = -1;
-					return true;
-				} else if (frame == 1 && text.contains("[CLAN]")) {
-					String[] clan_name = text.split("-");
-					if (!clanMembers.contains(clan_name[1]))
-						clanMembers.add(clan_name[1]);
 
+				case 109:
+					resetLogout();
+					pktType = -1;
+					return false;
+
+				case 70:
+					int modifierX = getInputBuffer().getSignedShort();
+					int modifierY = getInputBuffer().method437();
+					int widgetId = getInputBuffer().getShortBigEndian();
+					RSInterface widget = RSInterface.interfaceCache[widgetId];
+					widget.xOffset = modifierX;
+					widget.yOffset = modifierY;
 					pktType = -1;
 					return true;
-				} else if (frame == 1 && text.contains("[REMOVE]")) {
-					String[] clan_name = text.split("-");
-					clanMembers.remove(clan_name[1]);
-					pktType = -1;
-					return true;
-				}
-				if (text.contains(":moneypouchearning:")) {
-					try {
-						long l = Long.parseLong(text.substring(19));
-						this.moneyPouchEarning = l;
-						this.moneyPouchEarningTimer = 250;
-						this.earnOrLoss = false;
-						// this.coinActiveHover = this.coinActiveHoverGreen;
-					} catch (NumberFormatException ex) {
-						ex.printStackTrace();
+
+				case 73:
+				case 241:
+					int l2 = anInt1069;
+					int i11 = anInt1070;
+					if (pktType == 73) {
+						l2 = mapX = getInputBuffer().method435();
+						i11 = mapY = getInputBuffer().getUnsignedShort();
+						aBoolean1159 = false;
 					}
-					this.pktType = -1;
-					return true;
-				}
-				if (text.contains(":moneypouchloss:")) {
-					try {
-						long l = Long.parseLong(text.substring(16));
-						this.moneyPouchEarning = l;
-						this.moneyPouchEarningTimer = 250;
-						this.earnOrLoss = true;
-						// this.coinActiveHover = this.coinActiveHoverYellow;
-					} catch (NumberFormatException ex) {
-						ex.printStackTrace();
+					if (pktType == 241) {
+						i11 = getInputBuffer().method435();
+						getInputBuffer().initBitAccess();
+						for (int j16 = 0; j16 < 4; j16++) {
+							for (int l20 = 0; l20 < 13; l20++) {
+								for (int j23 = 0; j23 < 13; j23++) {
+									int emptyFloor = getInputBuffer().getBits(1);
+									if (emptyFloor == 1) {
+										anIntArrayArrayArray1129[j16][l20][j23] = getInputBuffer().getBits(26);
+									} else {
+										anIntArrayArrayArray1129[j16][l20][j23] = -1;
+									}
+								}
+							}
+						}
+						getInputBuffer().finishBitAccess();
+						l2 = getInputBuffer().getUnsignedShort();
+						aBoolean1159 = true;
 					}
-					this.pktType = -1;
-					return true;
-				}
-				updateStrings(text, frame);
-				setInterfaceText(text, frame);
-				pktType = -1;
-				return true;
-
-			case 180:
-				int rankId = getInputBuffer().getUnsignedShort();
-				int frameId = getInputBuffer().getUnsignedShort();
-				int rankSpriteIDs[] = { 93, 102, 96, 97, 98, 99, 100, 101, 94, -1, -1, 95 };
-				/**
-				 * 94 = owner 95 = admin 96 = one arrow up 97 = 2x arrow up 98 =
-				 * 3 arrow up 99 = orange star 100 = silver star 101 = golden
-				 * star 102 = friend
-				 */
-				RSInterface icons = RSInterface.interfaceCache[frameId];
-
-				if (icons != null) {
-					icons.sprite1 = icons.sprite2 = CacheSpriteLoader.getCacheSprite(rankSpriteIDs[rankId]);
-				}
-
-				rankSpriteIDs = null;
-				icons = null;
-				pktType = -1;
-				return true;
-
-			case 181:
-
-				pktType = -1;
-				return true;
-
-			case 182:
-				pktType = -1;
-				return true;
-
-			case 206:
-				publicChatMode = getInputBuffer().getUnsignedByte();
-				privateChatMode = getInputBuffer().getUnsignedByte();
-				tradeMode = getInputBuffer().getUnsignedByte();
-				inputTaken = true;
-				pktType = -1;
-				return true;
-
-			case 86:
-				int l = getInputBuffer().getUnsignedByte();
-				if (plane != l && l >= 0 && l < 4) {
-					plane = l;
-				}
-				pktType = -1;
-				return true;
-
-			case 240:
-				weight = getInputBuffer().getSignedShort();
-				pktType = -1;
-				return true;
-
-			case 8:
-				int k6 = getInputBuffer().getShortBigEndianA();
-				int l13 = getInputBuffer().getUnsignedShort();
-				RSInterface.interfaceCache[k6].mediaType = 1;
-				RSInterface.interfaceCache[k6].mediaID = l13;
-				pktType = -1;
-				return true;
-
-			case 91:
-				poisoned = getInputBuffer().getUnsignedShort() > 0;
-				pktType = -1;
-				return true;
-
-			case 90:
-				venom = getInputBuffer().getUnsignedShort() > 0;
-				pktType = -1;
-				return true;
-
-			case 122:
-				int l6 = getInputBuffer().getShortBigEndianA();
-				int i14 = getInputBuffer().getShortBigEndianA();
-				int i19 = i14 >> 10 & 0x1f;
-				int i22 = i14 >> 5 & 0x1f;
-				int l24 = i14 & 0x1f;
-				RSInterface.interfaceCache[l6].textColor = (i19 << 19) + (i22 << 11) + (l24 << 3);
-				pktType = -1;
-				return true;
-
-			case 53:
-				// needDrawTabArea = true;
-				try {
-
-					int rsi_frame = getInputBuffer().getUnsignedShort();
-					RSInterface class9_1 = RSInterface.interfaceCache[rsi_frame];
-					int totalItems = getInputBuffer().getUnsignedShort();
-					if (class9_1 == null || class9_1.inv == null || class9_1.invStackSizes == null) {
+					if (anInt1069 == l2 && anInt1070 == i11 && loadingStage == 2) {
 						pktType = -1;
 						return true;
 					}
-					int it = -1;
-					for (int idx = 0; idx < totalItems; idx++) {
-						int itemAmt = getInputBuffer().getUnsignedByte();
-						if (itemAmt == 255)
-							itemAmt = getInputBuffer().method440();
-						it = getInputBuffer().getShortBigEndianA();
-						class9_1.inv[idx] = it;
-						class9_1.invStackSizes[idx] = itemAmt;
+					anInt1069 = l2;
+					anInt1070 = i11;
+					baseX = (anInt1069 - 6) * 8;
+					baseY = (anInt1070 - 6) * 8;
+					aBoolean1141 = (anInt1069 / 8 == 48 || anInt1069 / 8 == 49) && anInt1070 / 8 == 48;
+					if (anInt1069 / 8 == 48 && anInt1070 / 8 == 148) {
+						aBoolean1141 = true;
 					}
-
-					for (int idx = totalItems; idx < class9_1.inv.length
-							&& idx < class9_1.invStackSizes.length; idx++) {
-						class9_1.inv[idx] = 0;
-						class9_1.invStackSizes[idx] = 0;
+					loadingStage = 1;
+					aLong824 = System.currentTimeMillis();
+					gameScreenIP.initDrawingArea();
+					// CacheSpriteLoader.getCacheSprite(1105).drawSprite(8, 9);
+					drawLoadingMessages("Loading " + onDemandFetcher.getRemaining() + " files - please wait... ");
+					if (!resizing) {
+						gameScreenIP.drawGraphics(gameScreenDrawY, super.graphics, gameScreenDrawX);
 					}
-					if (rsi_frame == 24680) {
-						getGrandExchange().itemSelected = it;
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				pktType = -1;
-				return true;
-
-			case 230:
-				int j7 = getInputBuffer().method435();
-				int j14 = getInputBuffer().getUnsignedShort();
-				int k19 = getInputBuffer().getUnsignedShort();
-				int k22 = getInputBuffer().getShortBigEndianA();
-				RSInterface.interfaceCache[j14].modelRotation1 = k19;
-				RSInterface.interfaceCache[j14].modelRotation2 = k22;
-				RSInterface.interfaceCache[j14].modelZoom = j7;
-				pktType = -1;
-				return true;
-
-			case 221:
-				setAnInt900(getInputBuffer().getUnsignedByte());
-				pktType = -1;
-				return true;
-
-			case 112:
-				ironman = getInputBuffer().getUnsignedByte();
-				pktType = -1;
-				return true;
-
-			case 115:
-				showClanOptions = getInputBuffer().getUnsignedByte();
-				updateClanChatTab();
-				pktType = -1;
-				return true;
-
-			case 177:
-				cameraViewChanged = true;
-				moveCameraX = getInputBuffer().getUnsignedByte();
-				moveCameraY = getInputBuffer().getUnsignedByte();
-				moveCameraZ = getInputBuffer().getUnsignedShort();
-				moveCameraSpeed = getInputBuffer().getUnsignedByte();
-				moveCameraAngle = getInputBuffer().getUnsignedByte();
-
-				if (moveCameraAngle >= 100) {
-					int k7 = moveCameraX * 128 + 64;
-					int k14 = moveCameraY * 128 + 64;
-					int i20 = method42(plane, k14, k7) - moveCameraZ;
-					int l22 = k7 - xCameraPos;
-					int k25 = i20 - zCameraPos;
-					int j28 = k14 - yCameraPos;
-					int i30 = (int) Math.sqrt(l22 * l22 + j28 * j28);
-					yCameraCurve = (int) (Math.atan2(k25, i30) * 325.94900000000001D) & 0x7ff;
-					xCameraCurve = (int) (Math.atan2(l22, j28) * -325.94900000000001D) & 0x7ff;
-
-					if (yCameraCurve < 128) {
-						yCameraCurve = 128;
-					}
-
-					if (yCameraCurve > 383) {
-						yCameraCurve = 383;
-					}
-				}
-
-				pktType = -1;
-				return true;
-
-			case 38:
-				int auto = getInputBuffer().getUnsignedShort();
-				if (auto == -1) {
-					autoCast = false;
-					autocastId = 0;
-				} else {
-					autoCast = true;
-					autocastId = auto;
-				}
-				pktType = -1;
-				return true;
-
-			case 127:
-				myRights = getInputBuffer().getUnsignedByte();
-				pktType = -1;
-				return true;
-
-			case 249:
-				anInt1046 = getInputBuffer().method426();
-				playerId = getInputBuffer().getUnsignedShort();
-				pktType = -1;
-				return true;
-
-			case 65:
-				updateNPCs(getInputBuffer(), pktSize);
-				pktType = -1;
-				return true;
-
-			case 27:
-				inputTitle = new String(getInputBuffer().getString());
-				messagePromptRaised = false;
-				inputDialogState = 1;
-				amountOrNameInput = "";
-				inputTaken = true;
-				pktType = -1;
-				return true;
-
-			case 187:
-				inputTitle = new String(getInputBuffer().getString());
-				messagePromptRaised = false;
-				inputDialogState = 2;
-				amountOrNameInput = "";
-				inputTaken = true;
-				pktType = -1;
-				return true;
-
-			case 97:
-				int l7 = getInputBuffer().getUnsignedShort();
-				resetInterfaceAnimation(l7);
-
-				if (invOverlayInterfaceID != -1) {
-					invOverlayInterfaceID = -1;
-					tabAreaAltered = true;
-				}
-
-				if (backDialogID != -1) {
-					backDialogID = -1;
-					inputTaken = true;
-				}
-
-				if (inputDialogState != 0) {
-					inputDialogState = 0;
-					inputTaken = true;
-				}
-
-				openInterfaceID = l7;
-				aBoolean1149 = false;
-				pktType = -1;
-				return true;
-
-			case 218:
-				int i8 = getInputBuffer().method438();
-				dialogID = i8;
-				inputTaken = true;
-				pktType = -1;
-				return true;
-
-			case 87:
-				int configId = getInputBuffer().getShortBigEndian();
-				int configValue = getInputBuffer().method439();
-				settings[configId] = configValue;
-
-				switch (configId) {
-				case 2000:
-					updateBankInterface();
-					break;
-				}
-				if (configId < 2000) {
-					if (variousSettings[configId] != configValue) {
-						variousSettings[configId] = configValue;
-						updateConfig(configId);
-
-						if (dialogID != -1) {
-							inputTaken = true;
+					if (pktType == 73) {
+						int k16 = 0;
+						for (int i21 = (anInt1069 - 6) / 8; i21 <= (anInt1069 + 6) / 8; i21++) {
+							for (int k23 = (anInt1070 - 6) / 8; k23 <= (anInt1070 + 6) / 8; k23++) {
+								k16++;
+							}
+						}
+						localFloorMapData = new byte[k16][];
+						localObjectMapData = new byte[k16][];
+						anIntArray1234 = new int[k16];
+						floorMap = new int[k16];
+						objectMap = new int[k16];
+						k16 = 0;
+						for (int l23 = (anInt1069 - 6) / 8; l23 <= (anInt1069 + 6) / 8; l23++) {
+							for (int j26 = (anInt1070 - 6) / 8; j26 <= (anInt1070 + 6) / 8; j26++) {
+								anIntArray1234[k16] = (l23 << 8) + j26;
+								if (aBoolean1141
+										&& (j26 == 49 || j26 == 149 || j26 == 147 || l23 == 50 || l23 == 49 && j26 == 47)) {
+									floorMap[k16] = -1;
+									objectMap[k16] = -1;
+									k16++;
+								} else {
+									int k28 = floorMap[k16] = onDemandFetcher.getMapCount(0, j26, l23);
+									if (k28 != -1) {
+										onDemandFetcher.pushRequest(3, k28);
+									}
+									int j30 = objectMap[k16] = onDemandFetcher.getMapCount(1, j26, l23);
+									if (j30 != -1) {
+										onDemandFetcher.pushRequest(3, j30);
+									}
+									k16++;
+								}
+							}
 						}
 					}
-				}
+					if (pktType == 241) {
+						int l16 = 0;
+						int ai[] = new int[676];
+						for (int i24 = 0; i24 < 4; i24++) {
+							for (int k26 = 0; k26 < 13; k26++) {
+								for (int l28 = 0; l28 < 13; l28++) {
+									int k30 = anIntArrayArrayArray1129[i24][k26][l28];
+									if (k30 != -1) {
+										int k31 = k30 >> 14 & 0x3ff;
+										int i32 = k30 >> 3 & 0x7ff;
+										int k32 = (k31 / 8 << 8) + i32 / 8;
+										for (int j33 = 0; j33 < l16; j33++) {
+											if (ai[j33] != k32) {
+												continue;
+											}
+											k32 = -1;
 
-				pktType = -1;
-				return true;
-
-			case 89:
-				loadRegion();
-				pktType = -1;
-				return true;
-
-			case 36:
-				int settingId = getInputBuffer().getShortBigEndian();
-				byte settingValue = getInputBuffer().getSignedByte();
-				if (settingId == -55) {
-					for (int i : RSInterface.interfaceCache[3213].children) {
-						RSInterface.interfaceCache[i].invSpritePadY = settingValue >= 1 ? 0 : 6;
+										}
+										if (k32 != -1) {
+											ai[l16++] = k32;
+										}
+									}
+								}
+							}
+						}
+						localFloorMapData = new byte[l16][];
+						localObjectMapData = new byte[l16][];
+						anIntArray1234 = new int[l16];
+						floorMap = new int[l16];
+						objectMap = new int[l16];
+						for (int l26 = 0; l26 < l16; l26++) {
+							int i29 = anIntArray1234[l26] = ai[l26];
+							int l30 = i29 >> 8 & 0xff;
+							int l31 = i29 & 0xff;
+							int j32 = floorMap[l26] = onDemandFetcher.getMapCount(0, l31, l30);
+							if (j32 != -1) {
+								onDemandFetcher.pushRequest(3, j32);
+							}
+							int i33 = objectMap[l26] = onDemandFetcher.getMapCount(1, l31, l30);
+							if (i33 != -1) {
+								onDemandFetcher.pushRequest(3, i33);
+							}
+						}
 					}
-					if (settingValue >= 1) {
-						RSInterface.interfaceCache[16546].message = settingValue == 1 ? "Add to bag"
-								: "View bag contents";
-						lootingBag = true;
-					} else {
-						lootingBag = false;
+					int i17 = baseX - anInt1036;
+					int j21 = baseY - anInt1037;
+					anInt1036 = baseX;
+					anInt1037 = baseY;
+					for (int j24 = 0; j24 < 16384; j24++) {
+						NPC npc = npcArray[j24];
+						if (npc != null) {
+							for (int j29 = 0; j29 < 10; j29++) {
+								npc.smallX[j29] -= i17;
+								npc.smallY[j29] -= j21;
+							}
+							npc.x -= i17 * 128;
+							npc.y -= j21 * 128;
+						}
+					}
+					for (int i27 = 0; i27 < getMaxPlayers(); i27++) {
+						Player player = playerArray[i27];
+						if (player != null) {
+							for (int i31 = 0; i31 < 10; i31++) {
+								player.smallX[i31] -= i17;
+								player.smallY[i31] -= j21;
+							}
+							player.x -= i17 * 128;
+							player.y -= j21 * 128;
+						}
+					}
+					aBoolean1080 = true;
+					byte byte1 = 0;
+					byte byte2 = 104;
+					byte byte3 = 1;
+					if (i17 < 0) {
+						byte1 = 103;
+						byte2 = -1;
+						byte3 = -1;
+					}
+					byte byte4 = 0;
+					byte byte5 = 104;
+					byte byte6 = 1;
+					if (j21 < 0) {
+						byte4 = 103;
+						byte5 = -1;
+						byte6 = -1;
+					}
+					for (int k33 = byte1; k33 != byte2; k33 += byte3) {
+						for (int l33 = byte4; l33 != byte5; l33 += byte6) {
+							int i34 = k33 + i17;
+							int j34 = l33 + j21;
+							for (int k34 = 0; k34 < 4; k34++) {
+								if (i34 >= 0 && j34 >= 0 && i34 < 104 && j34 < 104) {
+									groundArray[k34][k33][l33] = groundArray[k34][i34][j34];
+								} else {
+									groundArray[k34][k33][l33] = null;
+								}
+							}
+						}
+					}
+					for (Class30_Sub1 class30_sub1_1 = (Class30_Sub1) getaClass19_1179()
+							.getTail(); class30_sub1_1 != null; class30_sub1_1 = (Class30_Sub1) getaClass19_1179().next()) {
+						class30_sub1_1.anInt1297 -= i17;
+						class30_sub1_1.anInt1298 -= j21;
+						if (class30_sub1_1.anInt1297 < 0 || class30_sub1_1.anInt1298 < 0 || class30_sub1_1.anInt1297 >= 104
+								|| class30_sub1_1.anInt1298 >= 104) {
+							class30_sub1_1.unlink();
+						}
+					}
+					if (destX != 0) {
+						destX -= i17;
+						destY -= j21;
+					}
+					cameraViewChanged = false;
+					pktType = -1;
+					return true;
+
+				case 208:
+					int i3 = getInputBuffer().getUnsignedShort();
+					System.out.println("" + i3);
+					if (i3 == 65535)
+						i3 = -1;
+					if (i3 >= 0)
+						resetInterfaceAnimation(i3);
+					setWalkableInterfaceId(i3);
+					pktType = -1;
+					return true;
+
+				case 99:
+					anInt1021 = getInputBuffer().getUnsignedByte();
+					pktType = -1;
+					return true;
+
+				case 75:
+					int j3 = getInputBuffer().getShortBigEndianA();
+					int j11 = getInputBuffer().getShortBigEndianA();
+					RSInterface.interfaceCache[j11].mediaType = 2;
+					RSInterface.interfaceCache[j11].mediaID = j3;
+					pktType = -1;
+					return true;
+
+				case 114:
+					systemUpdateTimer = getInputBuffer().getShortBigEndian() * 30;
+					pktType = -1;
+					return true;
+
+				case 118:
+					systemRestartTimer = getInputBuffer().getShortBigEndian() * 30;
+					pktType = -1;
+					return true;
+
+				case 116:
+					String textie = getInputBuffer().getString();
+					int time = getInputBuffer().getShort();
+					announcementTimer = time * 30;
+					announcement = textie;
+					pktType = -1;
+					return true;
+
+				case 60:
+					anInt1269 = getInputBuffer().getUnsignedByte();
+					anInt1268 = getInputBuffer().method427();
+					while (getInputBuffer().position < pktSize) {
+						int k3 = getInputBuffer().getUnsignedByte();
+						parseEntityPacket(getInputBuffer(), k3);
 					}
 					pktType = -1;
 					return true;
-				}
-				settings[settingId] = settingValue;
-				switch (settingId) {
-				case 2000:
-					updateBankInterface();
-					break;
-				case 19:
-					LOOP_MUSIC = settingValue == 1 ? true : false;
-					break;
-				case 293:
-					int sprite = settingValue == 0 ? 607
-							: settingValue == 1 ? 606 : settingValue == 2 ? 608 : settingValue == 3 ? 609 : 610;
-					RSInterface.interfaceCache[12348].sprite1 = CacheSpriteLoader.getCacheSprite(sprite);
-					break;
-				}
-				if (settingId < 2000) {
-					if (variousSettings[settingId] != settingValue) {
-						variousSettings[settingId] = settingValue;
-						updateConfig(settingId);
-						if (dialogID != -1) {
-							inputTaken = true;
+
+				case 35:
+					int l3 = getInputBuffer().getUnsignedByte();
+					int k11 = getInputBuffer().getUnsignedByte();
+					int j17 = getInputBuffer().getUnsignedByte();
+					int k21 = getInputBuffer().getUnsignedByte();
+					aBooleanArray876[l3] = true;
+					anIntArray873[l3] = k11;
+					anIntArray1203[l3] = j17;
+					anIntArray928[l3] = k21;
+					anIntArray1030[l3] = 0;
+					pktType = -1;
+					return true;
+
+				case 174:
+					int id = getInputBuffer().getUnsignedShort();
+					int type = getInputBuffer().getUnsignedByte();
+					int delay = getInputBuffer().getUnsignedShort();
+					if (soundEffectVolume != 0 && type != 0 && soundCount < 50) {
+						sound[soundCount] = id;
+						soundType[soundCount] = type;
+						soundDelay[soundCount] = delay;
+						aClass26Array1468[soundCount] = null;
+						soundCount++;
+					}
+					pktType = -1;
+					return true;
+
+				case 104:
+					int j4 = getInputBuffer().method427();
+					int i12 = getInputBuffer().method426();
+					String s6 = getInputBuffer().getString();
+					if (j4 >= 1 && j4 <= 5) {
+						if (s6.equalsIgnoreCase("null")) {
+							s6 = null;
+						}
+						atPlayerActions[j4 - 1] = s6;
+						atPlayerArray[j4 - 1] = i12 == 0;
+					}
+					pktType = -1;
+					return true;
+
+				case 78:
+					destX = 0;
+					pktType = -1;
+					return true;
+				case 253:
+					String s = getInputBuffer().getString();
+					if (consoleOpen) {
+						printConsoleMessage(s, 0);
+					} else if (s.endsWith(":tradereq:")) {
+						String s3 = s.substring(0, s.indexOf(":"));
+						long l17 = TextClass.longForName(s3);
+						boolean flag2 = false;
+						for (int j27 = 0; j27 < ignoreCount; j27++) {
+							if (ignoreListAsLongs[j27] != l17) {
+								continue;
+							}
+							flag2 = true;
+
+						}
+						if (!flag2 && anInt1251 == 0) {
+							pushMessage("wishes to trade with you.", 4, s3);
+						}
+					} else if (s.startsWith(":clan:")) {
+						pushMessage(s.substring(6, s.length()), 16, "");
+					} else if (s.endsWith("#url#")) {
+						String link = s.substring(0, s.indexOf("#"));
+						pushMessage("Join us at: ", 9, link);
+					} else if (s.endsWith(":duelreq:")) {
+						String s4 = s.substring(0, s.indexOf(":"));
+						long l18 = TextClass.longForName(s4);
+						boolean flag3 = false;
+						for (int k27 = 0; k27 < ignoreCount; k27++) {
+							if (ignoreListAsLongs[k27] != l18) {
+								continue;
+							}
+							flag3 = true;
+
+						}
+						if (!flag3 && anInt1251 == 0) {
+							pushMessage("wishes to duel with you.", 8, s4);
+						}
+					} else if (s.endsWith(":chalreq:")) {
+						String s5 = s.substring(0, s.indexOf(":"));
+						long l19 = TextClass.longForName(s5);
+						boolean flag4 = false;
+						for (int l27 = 0; l27 < ignoreCount; l27++) {
+							if (ignoreListAsLongs[l27] != l19) {
+								continue;
+							}
+							flag4 = true;
+
+						}
+						if (!flag4 && anInt1251 == 0) {
+							String s8 = s.substring(s.indexOf(":") + 1, s.length() - 9);
+							pushMessage(s8, 8, s5);
+						}
+					} else {
+						pushMessage(s, 0, "");
+					}
+					pktType = -1;
+					return true;
+
+				case 1:
+					for (int k4 = 0; k4 < playerArray.length; k4++) {
+						if (playerArray[k4] != null) {
+							playerArray[k4].anim = -1;
 						}
 					}
-				}
-				pktType = -1;
-				return true;
+					for (int j12 = 0; j12 < npcArray.length; j12++) {
+						if (npcArray[j12] != null) {
+							npcArray[j12].anim = -1;
+						}
+					}
+					pktType = -1;
+					return true;
 
-			case 61:
-				drawMultiwayIcon = getInputBuffer().getUnsignedByte();
-				pktType = -1;
-				return true;
+				case 50:
+					long l4 = getInputBuffer().getLong();
+					int i18 = getInputBuffer().getUnsignedByte();
+					int send_message = getInputBuffer().getUnsignedByte();
+					String s7 = TextClass.fixName(TextClass.nameForLong(l4));
+					for (int k24 = 0; k24 < friendCount; k24++) {
+						if (l4 != friendsListAsLongs[k24]) {
+							continue;
+						}
+						if (friendsNodeIDs[k24] != i18) {
+							friendsNodeIDs[k24] = i18;
+							if (i18 >= 2) {
+								if (send_message == 0)
+									pushMessage(s7 + " has logged in.", 5, "");
+							}
+							if (i18 <= 1) {
+								if (send_message == 0)
+									pushMessage(s7 + " has logged out.", 5, "");
+							}
+						}
+						s7 = null;
 
-			case 103:
-				doingDungeoneering = getInputBuffer().getUnsignedByte() == 1;
-				pktType = -1;
-				return true;
+					}
+					if (s7 != null && friendCount < 200) {
+						friendsListAsLongs[friendCount] = l4;
+						friendsList[friendCount] = s7;
+						friendsNodeIDs[friendCount] = i18;
+						friendCount++;
+					}
+					for (boolean flag6 = false; !flag6;) {
+						flag6 = true;
+						for (int k29 = 0; k29 < friendCount - 1; k29++) {
+							if (friendsNodeIDs[k29] != nodeID && friendsNodeIDs[k29 + 1] == nodeID
+									|| friendsNodeIDs[k29] == 0 && friendsNodeIDs[k29 + 1] != 0) {
+								int j31 = friendsNodeIDs[k29];
+								friendsNodeIDs[k29] = friendsNodeIDs[k29 + 1];
+								friendsNodeIDs[k29 + 1] = j31;
+								String s10 = friendsList[k29];
+								friendsList[k29] = friendsList[k29 + 1];
+								friendsList[k29 + 1] = s10;
+								long l32 = friendsListAsLongs[k29];
+								friendsListAsLongs[k29] = friendsListAsLongs[k29 + 1];
+								friendsListAsLongs[k29 + 1] = l32;
+								flag6 = false;
+							}
+						}
+					}
+					pktType = -1;
+					return true;
 
-			case 200:
-				int l8 = getInputBuffer().getUnsignedShort();
-				int animId = getInputBuffer().getSignedShort();
-				RSInterface class9_4 = RSInterface.interfaceCache[l8];
-				class9_4.disabledAnimationId = animId;
-				class9_4.modelZoom = 2000;
+				case 110:
+					energy = getInputBuffer().getUnsignedByte();
+					pktType = -1;
+					return true;
 
-				if (animId == -1) {
-					class9_4.anInt246 = 0;
-					class9_4.anInt208 = 0;
-				}
+				case 113:
+					running = getInputBuffer().getUnsignedByte() > 0;
+					variousSettings[173] = running ? 1 : 0;
+					mapArea.run.setOrbState(running);
+					pktType = -1;
+					return true;
 
-				pktType = -1;
-				return true;
+				case 254:
+					anInt855 = getInputBuffer().getUnsignedByte();
+					if (anInt855 == 1) {
+						anInt1222 = getInputBuffer().getUnsignedShort();
+					}
+					if (anInt855 >= 2 && anInt855 <= 6) {
+						if (anInt855 == 2) {
+							anInt937 = 64;
+							anInt938 = 64;
+						}
+						if (anInt855 == 3) {
+							anInt937 = 0;
+							anInt938 = 64;
+						}
+						if (anInt855 == 4) {
+							anInt937 = 128;
+							anInt938 = 64;
+						}
+						if (anInt855 == 5) {
+							anInt937 = 64;
+							anInt938 = 0;
+						}
+						if (anInt855 == 6) {
+							anInt937 = 64;
+							anInt938 = 128;
+						}
+						anInt855 = 5;
+						anInt934 = getInputBuffer().getUnsignedShort();
+						anInt935 = getInputBuffer().getUnsignedShort();
+						anInt936 = getInputBuffer().getUnsignedByte();
+					}
+					if (anInt855 == 10) {
+						anInt933 = getInputBuffer().getUnsignedShort();
+					}
+					pktType = -1;
+					return true;
 
-			case 219:
-				if (invOverlayInterfaceID != -1) {
-					invOverlayInterfaceID = -1;
+				case 248:
+					int i5 = getInputBuffer().method435();
+					int k12 = getInputBuffer().getUnsignedShort();
+					if (backDialogID != -1) {
+						backDialogID = -1;
+						inputTaken = true;
+					}
+					if (inputDialogState != 0) {
+						inputDialogState = 0;
+						inputTaken = true;
+					}
+					openInterfaceID = i5;
+					invOverlayInterfaceID = k12;
 					tabAreaAltered = true;
-				}
+					aBoolean1149 = false;
+					pktType = -1;
+					return true;
 
-				if (backDialogID != -1) {
-					backDialogID = -1;
-					inputTaken = true;
-				}
+				case 79:
+					int j5 = getInputBuffer().getShortBigEndian();
+					int l12 = getInputBuffer().method435();
+					RSInterface class9_3 = RSInterface.interfaceCache[j5];
+					if (class9_3 != null && class9_3.type == 0) {
+						if (l12 < 0) {
+							l12 = 0;
+						}
+						if (l12 > class9_3.scrollMax - class9_3.height) {
+							l12 = class9_3.scrollMax - class9_3.height;
+						}
+						class9_3.scrollPosition = l12;
+					}
+					pktType = -1;
+					return true;
 
-				if (inputDialogState != 0) {
-					inputDialogState = 0;
-					inputTaken = true;
-				}
-
-				openInterfaceID = -1;
-				aBoolean1149 = false;
-				pktType = -1;
-				return true;
-
-			case 34:
-				int rsIntId = getInputBuffer().getUnsignedShort();
-				RSInterface rsInt = RSInterface.interfaceCache[rsIntId];
-
-				while (getInputBuffer().position < pktSize) {
-					int itemSlot = getInputBuffer().getSmart();
-					int itemInvId = getInputBuffer().getUnsignedShort();
-					int itemAmount = getInputBuffer().getUnsignedByte();
-
-					if (itemAmount == 255) {
-						itemAmount = getInputBuffer().getIntLittleEndian();
+				case 68:
+					for (int k5 = 0; k5 < variousSettings.length; k5++) {
+						if (variousSettings[k5] != settings[k5]) {
+							variousSettings[k5] = settings[k5];
+							updateConfig(k5);
+						}
 					}
 
-					if (itemSlot >= 0 && itemSlot < rsInt.inv.length) {
-						rsInt.inv[itemSlot] = itemInvId;
-						rsInt.invStackSizes[itemSlot] = itemAmount;
+					pktType = -1;
+					return true;
+
+				case 196:
+					final long l5 = getInputBuffer().getLong();
+					getInputBuffer().getIntLittleEndian();
+					int playerRights = getInputBuffer().getUnsignedByte();
+					boolean flag5 = false;
+
+					if (playerRights <= 1) {
+						for (int l29 = 0; l29 < ignoreCount; l29++) {
+							if (ignoreListAsLongs[l29] != l5) {
+								continue;
+							}
+
+							flag5 = true;
+						}
 					}
-				}
 
-				pktType = -1;
-				return true;
+					if (!flag5 && anInt1251 == 0) {
+						try {
+							String message = TextInput.readChatboxText(pktSize - 13, getInputBuffer());
+							final String name = TextClass.fixName(TextClass.nameForLong(l5));
 
-			case 4:
-			case 44:
-			case 84:
-			case 101:
-			case 105:
-			case 117:
-			case 147:
-			case 151:
-			case 156:
-			case 160:
-			case 215:
-				parseEntityPacket(getInputBuffer(), pktType);
-				pktType = -1;
-				return true;
+							if (Configuration.NOTIFICATIONS_ENABLED) {
+								AlertifyBuilder bldr = new AlertifyBuilder();
 
-			case 108:
-				specActivated = getInputBuffer().getUnsignedByte() == 1;
-				pktType = -1;
-				return true;
+								if (playerRights == 3) {
+									bldr.type(AlertifyType.WARNING);
+								} else {
+									bldr.type(AlertifyType.SUCCESS);
+								}
 
-			case 111:
-				currentSpec = getInputBuffer().getUnsignedByte();
-				pktType = -1;
-				return true;
+								Alertify.show(bldr.text(name + ": " + message).autoClose(5000L)
+										.callback(new AlertifyWindowClick() {
+											@Override
+											public void alertClicked(AlertifyWindow window) {
+												// Request window focus if the
+												// client is
+												// minimized
+												requestFocusInWindow();
+												instance.requestFocus();
+												mainFrame.toFront();
+												mainFrame.setState(Frame.NORMAL);
+												instance.setVisible(true);
 
-			case 106:
-				tabID = getInputBuffer().method427();
-				tabAreaAltered = true;
-				pktType = -1;
-				return true;
+												// Upon click, open the reply box
+												inputTaken = true;
+												inputDialogState = 0;
+												messagePromptRaised = true;
+												promptInput = "";
+												friendsListAction = 3;
+												aLong953 = l5;
+												promptMessage = "Enter message to send to " + name;
+											}
+										}).build());
+							}
+							if (playerRights != 0) {
+								pushMessage(message, 7, getPrefix(playerRights) + name);
+							} else {
+								pushMessage(message, 3, name);
+							}
+						} catch (Exception exception1) {
+							exception1.printStackTrace();
+							Signlink.reportError("cde1");
+						}
+					}
 
-			case 164:
-				int j9 = getInputBuffer().getShortBigEndian();
-				if (chatArea.componentHidden()) {
-					chatArea.setHideComponent(false);
-				}
-				resetInterfaceAnimation(j9);
+					pktType = -1;
+					return true;
 
-				if (invOverlayInterfaceID != -1) {
-					invOverlayInterfaceID = -1;
+				case 85:
+					anInt1269 = getInputBuffer().method427();
+					anInt1268 = getInputBuffer().method427();
+					pktType = -1;
+					return true;
+
+				case 123:
+					printConsoleMessage(getInputBuffer().getString(), 1);
+					pktType = -1;
+					return true;
+
+				case 128:
+					currentTarget = null;
+					pktType = -1;
+					return true;
+
+				case 125:
+					int targetIndex = getInputBuffer().getShort();
+					int targetType = getInputBuffer().getByte();
+					if (targetType == 0) { /* DONT READ DAMAGE LIST FOR PLRS */
+						currentTarget = targetIndex < playerArray.length ? playerArray[targetIndex] : null;
+						pktType = -1;
+						return true;
+					} else {
+						currentTarget = targetIndex < npcArray.length ? npcArray[targetIndex] : null;
+					}
+					if (currentTarget == null) {
+						pktType = -1;
+						return true;
+					}
+					NPC npc = (NPC) currentTarget;
+					npc.damageDealers.clear();
+					boolean readDamageList = getInputBuffer().getByte() == 1;
+					if (readDamageList) {
+						int length = getInputBuffer().getByte();
+						for (int t = 0; t < length; t++) {
+							String player = getInputBuffer().getString();
+							int damage = getInputBuffer().getShort();
+							npc.damageDealers.add(new DamageDealer(player, damage));
+						}
+					}
+					pktType = -1;
+					return true;
+
+				case 24:
+					anInt1054 = getInputBuffer().method428();
+
+					if (anInt1054 == tabID) {
+						if (anInt1054 == 3) {
+							tabID = 1;
+						} else {
+							tabID = 3;
+						}
+					}
+
+					pktType = -1;
+					return true;
+
+				case 246:
+					int i6 = getInputBuffer().getShortBigEndian();
+					int i13 = getInputBuffer().getUnsignedShort();
+					int k18 = getInputBuffer().getUnsignedShort();
+
+					if (k18 == 65535) {
+						RSInterface.interfaceCache[i6].mediaType = 0;
+						pktType = -1;
+						return true;
+					} else {
+						ItemDefinition itemDef = ItemDefinition.get(k18);
+						RSInterface.interfaceCache[i6].mediaType = 4;
+						RSInterface.interfaceCache[i6].mediaID = k18;
+						RSInterface.interfaceCache[i6].modelRotation1 = itemDef.modelRotation1;
+						RSInterface.interfaceCache[i6].modelRotation2 = itemDef.modelRotation2;
+						RSInterface.interfaceCache[i6].modelZoom = itemDef.modelZoom * 100 / i13;
+						pktType = -1;
+						return true;
+					}
+
+				case 171:
+					boolean flag1 = getInputBuffer().getUnsignedByte() == 1;
+					int j13 = getInputBuffer().getUnsignedShort();
+					RSInterface.interfaceCache[j13].interfaceShown = flag1;
+					pktType = -1;
+					return true;
+
+				case 142:
+					int j6 = getInputBuffer().getShortBigEndian();
+					resetInterfaceAnimation(j6);
+
+					if (backDialogID != -1) {
+						backDialogID = -1;
+						inputTaken = true;
+					}
+
+					if (inputDialogState != 0) {
+						inputDialogState = 0;
+						inputTaken = true;
+					}
+
+					invOverlayInterfaceID = j6;
 					tabAreaAltered = true;
-				}
+					openInterfaceID = -1;
+					aBoolean1149 = false;
+					pktType = -1;
+					return true;
 
-				backDialogID = j9;
-				inputTaken = true;
-				openInterfaceID = -1;
-				aBoolean1149 = false;
-				pktType = -1;
-				return true;
+				case 45:
+					long totalxp = getInputBuffer().getLong();
+					PlayerHandler.totalXP = totalxp;
+					pktType = -1;
+					return true;
+
+				case 124:
+					int skillID = getInputBuffer().getUnsignedByte();
+					int gainedXP = getInputBuffer().getIntLittleEndian();
+					int totalEXP = getInputBuffer().getIntLittleEndian();
+					PlayerHandler.addXP(skillID, gainedXP);
+					PlayerHandler.totalXP = totalEXP;
+					pktType = -1;
+					return true;
+
+				case 126:
+					String text = getInputBuffer().getString();
+					int frame = getInputBuffer().getShort();
+					if (text.startsWith("http://") || text.startsWith("www.")) {
+						launchURL(text);
+						pktType = -1;
+						return true;
+					} else if (frame == 1 && text.contains("[CLEAR]")) {
+						for (int i = 0; i < clanMembers.size(); i++) {
+							clanMembers.remove(clanMembers.get(i));
+						}
+						pktType = -1;
+						return true;
+					} else if (frame == 1 && text.equals("ZULRAHFADE")) {
+						fadingScreen = new FadingScreen("Welcome to Zulrah's shrine", (byte) 1, (byte) 5);
+						pktType = -1;
+						return true;
+					} else if (text.equals("[CLOSEMENU]") && frame == 0) {
+						menuOpen = false;
+						pktType = -1;
+						return true;
+					} else if (frame == 1 && text.contains("[CLAN]")) {
+						String[] clan_name = text.split("-");
+						if (!clanMembers.contains(clan_name[1]))
+							clanMembers.add(clan_name[1]);
+
+						pktType = -1;
+						return true;
+					} else if (frame == 1 && text.contains("[REMOVE]")) {
+						String[] clan_name = text.split("-");
+						clanMembers.remove(clan_name[1]);
+						pktType = -1;
+						return true;
+					}
+					if (text.contains(":moneypouchearning:")) {
+						try {
+							long l = Long.parseLong(text.substring(19));
+							this.moneyPouchEarning = l;
+							this.moneyPouchEarningTimer = 250;
+							this.earnOrLoss = false;
+							// this.coinActiveHover = this.coinActiveHoverGreen;
+						} catch (NumberFormatException ex) {
+							ex.printStackTrace();
+						}
+						this.pktType = -1;
+						return true;
+					}
+					if (text.contains(":moneypouchloss:")) {
+						try {
+							long l = Long.parseLong(text.substring(16));
+							this.moneyPouchEarning = l;
+							this.moneyPouchEarningTimer = 250;
+							this.earnOrLoss = true;
+							// this.coinActiveHover = this.coinActiveHoverYellow;
+						} catch (NumberFormatException ex) {
+							ex.printStackTrace();
+						}
+						this.pktType = -1;
+						return true;
+					}
+					updateStrings(text, frame);
+					setInterfaceText(text, frame);
+					pktType = -1;
+					return true;
+
+				case 180:
+					int rankId = getInputBuffer().getUnsignedShort();
+					int frameId = getInputBuffer().getUnsignedShort();
+					int rankSpriteIDs[] = { 93, 102, 96, 97, 98, 99, 100, 101, 94, -1, -1, 95 };
+					/**
+					 * 94 = owner 95 = admin 96 = one arrow up 97 = 2x arrow up 98 =
+					 * 3 arrow up 99 = orange star 100 = silver star 101 = golden
+					 * star 102 = friend
+					 */
+					RSInterface icons = RSInterface.interfaceCache[frameId];
+
+					if (icons != null) {
+						icons.sprite1 = icons.sprite2 = CacheSpriteLoader.getCacheSprite(rankSpriteIDs[rankId]);
+					}
+
+					rankSpriteIDs = null;
+					icons = null;
+					pktType = -1;
+					return true;
+
+				case 181:
+
+					pktType = -1;
+					return true;
+
+				case 182:
+					pktType = -1;
+					return true;
+
+				case 206:
+					publicChatMode = getInputBuffer().getUnsignedByte();
+					privateChatMode = getInputBuffer().getUnsignedByte();
+					tradeMode = getInputBuffer().getUnsignedByte();
+					inputTaken = true;
+					pktType = -1;
+					return true;
+
+				case 86:
+					int l = getInputBuffer().getUnsignedByte();
+					if (plane != l && l >= 0 && l < 4) {
+						plane = l;
+					}
+					pktType = -1;
+					return true;
+
+				case 240:
+					weight = getInputBuffer().getSignedShort();
+					pktType = -1;
+					return true;
+
+				case 8:
+					int k6 = getInputBuffer().getShortBigEndianA();
+					int l13 = getInputBuffer().getUnsignedShort();
+					RSInterface.interfaceCache[k6].mediaType = 1;
+					RSInterface.interfaceCache[k6].mediaID = l13;
+					pktType = -1;
+					return true;
+
+				case 91:
+					poisoned = getInputBuffer().getUnsignedShort() > 0;
+					pktType = -1;
+					return true;
+
+				case 90:
+					venom = getInputBuffer().getUnsignedShort() > 0;
+					pktType = -1;
+					return true;
+
+				case 122:
+					int l6 = getInputBuffer().getShortBigEndianA();
+					int i14 = getInputBuffer().getShortBigEndianA();
+					int i19 = i14 >> 10 & 0x1f;
+					int i22 = i14 >> 5 & 0x1f;
+					int l24 = i14 & 0x1f;
+					RSInterface.interfaceCache[l6].textColor = (i19 << 19) + (i22 << 11) + (l24 << 3);
+					pktType = -1;
+					return true;
+
+				case 53:
+					// needDrawTabArea = true;
+					try {
+
+						int rsi_frame = getInputBuffer().getUnsignedShort();
+						RSInterface class9_1 = RSInterface.interfaceCache[rsi_frame];
+						int totalItems = getInputBuffer().getUnsignedShort();
+						if (class9_1 == null || class9_1.inv == null || class9_1.invStackSizes == null) {
+							pktType = -1;
+							return true;
+						}
+						int it = -1;
+						for (int idx = 0; idx < totalItems; idx++) {
+							int itemAmt = getInputBuffer().getUnsignedByte();
+							if (itemAmt == 255)
+								itemAmt = getInputBuffer().method440();
+							it = getInputBuffer().getShortBigEndianA();
+							class9_1.inv[idx] = it;
+							class9_1.invStackSizes[idx] = itemAmt;
+						}
+
+						for (int idx = totalItems; idx < class9_1.inv.length
+								&& idx < class9_1.invStackSizes.length; idx++) {
+							class9_1.inv[idx] = 0;
+							class9_1.invStackSizes[idx] = 0;
+						}
+						if (rsi_frame == 24680) {
+							getGrandExchange().itemSelected = it;
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					pktType = -1;
+					return true;
+
+				case 230:
+					int j7 = getInputBuffer().method435();
+					int j14 = getInputBuffer().getUnsignedShort();
+					int k19 = getInputBuffer().getUnsignedShort();
+					int k22 = getInputBuffer().getShortBigEndianA();
+					RSInterface.interfaceCache[j14].modelRotation1 = k19;
+					RSInterface.interfaceCache[j14].modelRotation2 = k22;
+					RSInterface.interfaceCache[j14].modelZoom = j7;
+					pktType = -1;
+					return true;
+
+				case 221:
+					setAnInt900(getInputBuffer().getUnsignedByte());
+					pktType = -1;
+					return true;
+
+				case 112:
+					ironman = getInputBuffer().getUnsignedByte();
+					pktType = -1;
+					return true;
+
+				case 115:
+					showClanOptions = getInputBuffer().getUnsignedByte();
+					updateClanChatTab();
+					pktType = -1;
+					return true;
+
+				case 177:
+					cameraViewChanged = true;
+					moveCameraX = getInputBuffer().getUnsignedByte();
+					moveCameraY = getInputBuffer().getUnsignedByte();
+					moveCameraZ = getInputBuffer().getUnsignedShort();
+					moveCameraSpeed = getInputBuffer().getUnsignedByte();
+					moveCameraAngle = getInputBuffer().getUnsignedByte();
+
+					if (moveCameraAngle >= 100) {
+						int k7 = moveCameraX * 128 + 64;
+						int k14 = moveCameraY * 128 + 64;
+						int i20 = method42(plane, k14, k7) - moveCameraZ;
+						int l22 = k7 - xCameraPos;
+						int k25 = i20 - zCameraPos;
+						int j28 = k14 - yCameraPos;
+						int i30 = (int) Math.sqrt(l22 * l22 + j28 * j28);
+						yCameraCurve = (int) (Math.atan2(k25, i30) * 325.94900000000001D) & 0x7ff;
+						xCameraCurve = (int) (Math.atan2(l22, j28) * -325.94900000000001D) & 0x7ff;
+
+						if (yCameraCurve < 128) {
+							yCameraCurve = 128;
+						}
+
+						if (yCameraCurve > 383) {
+							yCameraCurve = 383;
+						}
+					}
+
+					pktType = -1;
+					return true;
+
+				case 38:
+					int auto = getInputBuffer().getUnsignedShort();
+					if (auto == -1) {
+						autoCast = false;
+						autocastId = 0;
+					} else {
+						autoCast = true;
+						autocastId = auto;
+					}
+					pktType = -1;
+					return true;
+
+				case 127:
+					myRights = getInputBuffer().getUnsignedByte();
+					pktType = -1;
+					return true;
+
+				case 249:
+					anInt1046 = getInputBuffer().method426();
+					playerId = getInputBuffer().getUnsignedShort();
+					pktType = -1;
+					return true;
+
+				case 65:
+					updateNPCs(getInputBuffer(), pktSize);
+					pktType = -1;
+					return true;
+
+				case 27:
+					inputTitle = new String(getInputBuffer().getString());
+					messagePromptRaised = false;
+					inputDialogState = 1;
+					amountOrNameInput = "";
+					inputTaken = true;
+					pktType = -1;
+					return true;
+
+				case 187:
+					inputTitle = new String(getInputBuffer().getString());
+					messagePromptRaised = false;
+					inputDialogState = 2;
+					amountOrNameInput = "";
+					inputTaken = true;
+					pktType = -1;
+					return true;
+
+				case 97:
+					int l7 = getInputBuffer().getUnsignedShort();
+					resetInterfaceAnimation(l7);
+
+					if (invOverlayInterfaceID != -1) {
+						invOverlayInterfaceID = -1;
+						tabAreaAltered = true;
+					}
+
+					if (backDialogID != -1) {
+						backDialogID = -1;
+						inputTaken = true;
+					}
+
+					if (inputDialogState != 0) {
+						inputDialogState = 0;
+						inputTaken = true;
+					}
+
+					openInterfaceID = l7;
+					aBoolean1149 = false;
+					pktType = -1;
+					return true;
+
+				case 218:
+					int i8 = getInputBuffer().method438();
+					dialogID = i8;
+					inputTaken = true;
+					pktType = -1;
+					return true;
+
+				case 87:
+					int configId = getInputBuffer().getShortBigEndian();
+					int configValue = getInputBuffer().method439();
+					settings[configId] = configValue;
+
+					switch (configId) {
+						case 2000:
+							updateBankInterface();
+							break;
+					}
+					if (configId < 2000) {
+						if (variousSettings[configId] != configValue) {
+							variousSettings[configId] = configValue;
+							updateConfig(configId);
+
+							if (dialogID != -1) {
+								inputTaken = true;
+							}
+						}
+					}
+
+					pktType = -1;
+					return true;
+
+				case 89:
+					loadRegion();
+					pktType = -1;
+					return true;
+
+				case 36:
+					int settingId = getInputBuffer().getShortBigEndian();
+					byte settingValue = getInputBuffer().getSignedByte();
+					if (settingId == -55) {
+						for (int i : RSInterface.interfaceCache[3213].children) {
+							RSInterface.interfaceCache[i].invSpritePadY = settingValue >= 1 ? 0 : 6;
+						}
+						if (settingValue >= 1) {
+							RSInterface.interfaceCache[16546].message = settingValue == 1 ? "Add to bag"
+									: "View bag contents";
+							lootingBag = true;
+						} else {
+							lootingBag = false;
+						}
+						pktType = -1;
+						return true;
+					}
+					settings[settingId] = settingValue;
+					switch (settingId) {
+						case 2000:
+							updateBankInterface();
+							break;
+						case 19:
+							LOOP_MUSIC = settingValue == 1 ? true : false;
+							break;
+						case 293:
+							int sprite = settingValue == 0 ? 607
+									: settingValue == 1 ? 606 : settingValue == 2 ? 608 : settingValue == 3 ? 609 : 610;
+							RSInterface.interfaceCache[12348].sprite1 = CacheSpriteLoader.getCacheSprite(sprite);
+							break;
+					}
+					if (settingId < 2000) {
+						if (variousSettings[settingId] != settingValue) {
+							variousSettings[settingId] = settingValue;
+							updateConfig(settingId);
+							if (dialogID != -1) {
+								inputTaken = true;
+							}
+						}
+					}
+					pktType = -1;
+					return true;
+
+				case 61:
+					drawMultiwayIcon = getInputBuffer().getUnsignedByte();
+					pktType = -1;
+					return true;
+
+				case 103:
+					doingDungeoneering = getInputBuffer().getUnsignedByte() == 1;
+					pktType = -1;
+					return true;
+
+				case 200:
+					int l8 = getInputBuffer().getUnsignedShort();
+					int animId = getInputBuffer().getSignedShort();
+					RSInterface class9_4 = RSInterface.interfaceCache[l8];
+					class9_4.disabledAnimationId = animId;
+					class9_4.modelZoom = 2000;
+
+					if (animId == -1) {
+						class9_4.anInt246 = 0;
+						class9_4.anInt208 = 0;
+					}
+
+					pktType = -1;
+					return true;
+
+				case 219:
+					if (invOverlayInterfaceID != -1) {
+						invOverlayInterfaceID = -1;
+						tabAreaAltered = true;
+					}
+
+					if (backDialogID != -1) {
+						backDialogID = -1;
+						inputTaken = true;
+					}
+
+					if (inputDialogState != 0) {
+						inputDialogState = 0;
+						inputTaken = true;
+					}
+
+					openInterfaceID = -1;
+					aBoolean1149 = false;
+					pktType = -1;
+					return true;
+
+				case 34:
+					int rsIntId = getInputBuffer().getUnsignedShort();
+					RSInterface rsInt = RSInterface.interfaceCache[rsIntId];
+
+					while (getInputBuffer().position < pktSize) {
+						int itemSlot = getInputBuffer().getSmart();
+						int itemInvId = getInputBuffer().getUnsignedShort();
+						int itemAmount = getInputBuffer().getUnsignedByte();
+
+						if (itemAmount == 255) {
+							itemAmount = getInputBuffer().getIntLittleEndian();
+						}
+
+						if (itemSlot >= 0 && itemSlot < rsInt.inv.length) {
+							rsInt.inv[itemSlot] = itemInvId;
+							rsInt.invStackSizes[itemSlot] = itemAmount;
+						}
+					}
+
+					pktType = -1;
+					return true;
+
+				case 4:
+				case 44:
+				case 84:
+				case 101:
+				case 105:
+				case 117:
+				case 147:
+				case 151:
+				case 156:
+				case 160:
+				case 215:
+					parseEntityPacket(getInputBuffer(), pktType);
+					pktType = -1;
+					return true;
+
+				case 108:
+					specActivated = getInputBuffer().getUnsignedByte() == 1;
+					pktType = -1;
+					return true;
+
+				case 111:
+					currentSpec = getInputBuffer().getUnsignedByte();
+					pktType = -1;
+					return true;
+
+				case 106:
+					tabID = getInputBuffer().method427();
+					tabAreaAltered = true;
+					pktType = -1;
+					return true;
+
+				case 164:
+					int j9 = getInputBuffer().getShortBigEndian();
+					if (chatArea.componentHidden()) {
+						chatArea.setHideComponent(false);
+					}
+					resetInterfaceAnimation(j9);
+
+					if (invOverlayInterfaceID != -1) {
+						invOverlayInterfaceID = -1;
+						tabAreaAltered = true;
+					}
+
+					backDialogID = j9;
+					inputTaken = true;
+					openInterfaceID = -1;
+					aBoolean1149 = false;
+					pktType = -1;
+					return true;
 
 			}
 
@@ -15561,7 +15555,7 @@ public class Client extends GameRenderer {
 					}
 				} else if (openInterfaceID != -1 && openInterfaceID != 5292 && super.mouseX > x && super.mouseY > y && super.mouseX < x2 && super.mouseY < y2) {
 					buildInterfaceMenu(x, RSInterface.interfaceCache[openInterfaceID], super.mouseX, y, super.mouseY, 0);
-					
+
 				}
 			} else {
 				try {
@@ -16695,11 +16689,11 @@ public class Client extends GameRenderer {
 		modIcons[8] = CacheSpriteLoader.getCacheSprite2(15); // Super Donator
 		modIcons[9] = CacheSpriteLoader.getCacheSprite2(14); // Extreme Donator
 		modIcons[10] = CacheSpriteLoader.getCacheSprite2(37); // Legendary
-																// Donator
+		// Donator
 		modIcons[11] = CacheSpriteLoader.getCacheSprite2(38); // Uber Donator
 		modIcons[12] = CacheSpriteLoader.getCacheSprite(840); // Regular Ironman
 		modIcons[13] = CacheSpriteLoader.getCacheSprite(839); // Hardcore
-																// Ironman
+		// Ironman
 		modIcons[14] = CacheSpriteLoader.getCacheSprite2(3); // Manager
 		modIcons[15] = CacheSpriteLoader.getCacheSprite2(66); // Wiki Editor
 		modIcons[16] = CacheSpriteLoader.getCacheSprite2(65); // Wiki Manager
@@ -16708,110 +16702,110 @@ public class Client extends GameRenderer {
 
 	public final String loyaltyRank(int i) {
 		switch (i) {
-		case 1:
-			return "The Real";
-		case 2:
-			return "The Boss";
-		case 3:
-			return "Maximum";
-		case 4:
-			return "Completionist";
-		case 5:
-			return "The Loyal";
-		case 6:
-			return "The Devoted";
-		case 7:
-			return "Weakling";
-		case 8:
-			return "Cowardly";
-		case 9:
-			return "Sir Lame";
-		case 10:
-			return "Grumpy";
-		case 11:
-			return "Overlord";
-		case 12:
-			return "Pker";
-		case 13:
-			return "Cheerful";
-		case 14:
-			return "@blu@War-Chief";
-		case 15:
-			return "PK Master";
-		case 16:
-			return "The Wise";
-		case 17:
-			return "The Explorer";
-		case 18:
-			return "@gr3@The Wealthy";
-		case 19:
-			return "Yt'Haar";
-		case 20:
-			return "Champion";
-		case 21:
-			return "The Skilful";
-		case 22:
-			return "Master";
-		case 23:
-			return "Oldschool";
-		case 24:
-			return "The Mighty";
-		case 25:
-			return "Warrior";
-		case 26:
-			return "Magician";
-		case 27:
-			return "Archer";
-		case 28:
-			return "The Faithful";
-		case 29:
-			return "The Lucky";
-		case 30:
-			return "Rioter";
-		case 31:
-			return "Lazy";
-		case 32:
-			return "Void Knight";
-		case 33:
-			return "The Avenger";
-		case 34:
-			return "Wingman";
-		case 35:
-			return "King";
-		case 36:
-			return "Queen";
-		case 37:
-			return "@or3@Donator";
-		case 38:
-			return "@369@Super";
-		case 39:
-			return "@gre@Extreme";
-		case 40:
-			return "@mag@Legendary";
-		case 41:
-			return "@mds@Moderator";
-		case 42:
-			return "@yel@Administrator";
-		case 43:
-			return "@red@Owner";
-		case 44:
-			return "@spt@Support";
-		case 45:
-			return "@dbl@Developer";
-		case 46:
-			return "@yel@Uber";
-		case 47:
-			return "@glb@Global Mod";
-		case 48:
-			return "@wke@Wiki Editor";
-		case 49:
-			return "@325@Wiki Manager";
-		case 50:
-			return "@red@Manager";
-		case 51:
-			return "@hbd@Hybrid";
-		case 52:
-			return "@smm@Staff Manager";
+			case 1:
+				return "The Real";
+			case 2:
+				return "The Boss";
+			case 3:
+				return "Maximum";
+			case 4:
+				return "Completionist";
+			case 5:
+				return "The Loyal";
+			case 6:
+				return "The Devoted";
+			case 7:
+				return "Weakling";
+			case 8:
+				return "Cowardly";
+			case 9:
+				return "Sir Lame";
+			case 10:
+				return "Grumpy";
+			case 11:
+				return "Overlord";
+			case 12:
+				return "Pker";
+			case 13:
+				return "Cheerful";
+			case 14:
+				return "@blu@War-Chief";
+			case 15:
+				return "PK Master";
+			case 16:
+				return "The Wise";
+			case 17:
+				return "The Explorer";
+			case 18:
+				return "@gr3@The Wealthy";
+			case 19:
+				return "Yt'Haar";
+			case 20:
+				return "Champion";
+			case 21:
+				return "The Skilful";
+			case 22:
+				return "Master";
+			case 23:
+				return "Oldschool";
+			case 24:
+				return "The Mighty";
+			case 25:
+				return "Warrior";
+			case 26:
+				return "Magician";
+			case 27:
+				return "Archer";
+			case 28:
+				return "The Faithful";
+			case 29:
+				return "The Lucky";
+			case 30:
+				return "Rioter";
+			case 31:
+				return "Lazy";
+			case 32:
+				return "Void Knight";
+			case 33:
+				return "The Avenger";
+			case 34:
+				return "Wingman";
+			case 35:
+				return "King";
+			case 36:
+				return "Queen";
+			case 37:
+				return "@or3@Donator";
+			case 38:
+				return "@369@Super";
+			case 39:
+				return "@gre@Extreme";
+			case 40:
+				return "@mag@Legendary";
+			case 41:
+				return "@mds@Moderator";
+			case 42:
+				return "@yel@Administrator";
+			case 43:
+				return "@red@Owner";
+			case 44:
+				return "@spt@Support";
+			case 45:
+				return "@dbl@Developer";
+			case 46:
+				return "@yel@Uber";
+			case 47:
+				return "@glb@Global Mod";
+			case 48:
+				return "@wke@Wiki Editor";
+			case 49:
+				return "@325@Wiki Manager";
+			case 50:
+				return "@red@Manager";
+			case 51:
+				return "@hbd@Hybrid";
+			case 52:
+				return "@smm@Staff Manager";
 		}
 		return "";
 	}
@@ -17457,7 +17451,7 @@ public class Client extends GameRenderer {
 
 			WorldController.method310(500, 800, !loggedIn ? getScreenWidth() : gameAreaWidth,
 					!loggedIn ? getScreenHeight() : gameAreaHeight, ai);
-			
+
 			if (GameFrame.getScreenMode() == ScreenMode.RESIZABLE && (clientWidth >= 756) && (clientWidth <= 1025) && (clientHeight >= 494) && (clientHeight <= 850)) {
 				log_view_dist = 9;
 				clientZoom = 675;
@@ -17906,52 +17900,52 @@ public class Client extends GameRenderer {
 
 	private void updateStrings(String str, int i) {
 		switch (i) {
-		case 1675:
-			setInterfaceText(str, 17508);
-			break;// Stab
+			case 1675:
+				setInterfaceText(str, 17508);
+				break;// Stab
 
-		case 1676:
-			setInterfaceText(str, 17509);
-			break;// Slash
+			case 1676:
+				setInterfaceText(str, 17509);
+				break;// Slash
 
-		case 1677:
-			setInterfaceText(str, 17510);
-			break;// Cursh
+			case 1677:
+				setInterfaceText(str, 17510);
+				break;// Cursh
 
-		case 1678:
-			setInterfaceText(str, 17511);
-			break;// Magic
+			case 1678:
+				setInterfaceText(str, 17511);
+				break;// Magic
 
-		case 1679:
-			setInterfaceText(str, 17512);
-			break;// Range
+			case 1679:
+				setInterfaceText(str, 17512);
+				break;// Range
 
-		case 1680:
-			setInterfaceText(str, 17513);
-			break;// Stab
+			case 1680:
+				setInterfaceText(str, 17513);
+				break;// Stab
 
-		case 1681:
-			setInterfaceText(str, 17514);
-			break;// Slash
+			case 1681:
+				setInterfaceText(str, 17514);
+				break;// Slash
 
-		case 1682:
-			setInterfaceText(str, 17515);
-			break;// Crush
+			case 1682:
+				setInterfaceText(str, 17515);
+				break;// Crush
 
-		case 1683:
-			setInterfaceText(str, 17516);
-			break;// Magic
+			case 1683:
+				setInterfaceText(str, 17516);
+				break;// Magic
 
-		case 1684:
-			setInterfaceText(str, 17517);
-			break;// Range
+			case 1684:
+				setInterfaceText(str, 17517);
+				break;// Range
 
-		case 1686:
-			setInterfaceText(str, 17518);
-			break;// Strength
+			case 1686:
+				setInterfaceText(str, 17518);
+				break;// Strength
 
-		case 1687:
-			setInterfaceText(str, 17519);
+			case 1687:
+				setInterfaceText(str, 17519);
 		}
 	}
 
@@ -18326,7 +18320,7 @@ public class Client extends GameRenderer {
 
 		/**
 		 * Creates a new fading screen
-		 * 
+		 *
 		 * @param state
 		 *            the state of the fade
 		 * @param seconds

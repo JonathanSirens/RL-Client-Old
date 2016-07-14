@@ -13,10 +13,10 @@ public class ParticleConfiguration {
 
 	static {
 		//tokhaarkal
-		/*models.put(62575,
+		models.put(62575,
 				new int[][] { { 0, 1 }, { 1, 1 }, { 3, 1 }, { 131, 1 }, { 132, 1 }, { 133, 1 }, { 134, 1 }, { 135, 1 },
 						{ 136, 1 }, { 137, 1 }, { 138, 1 }, { 139, 1 }, { 140, 1 }, { 141, 1 }, { 142, 1 },
-						{ 145, 1 } });*/
+						{ 145, 1 } });
 		
 		// Max cape
 		models.put(65300,
@@ -39,6 +39,9 @@ public class ParticleConfiguration {
 		// Dungeoneering Master Cape
 		models.put(59885, new int[][] { { 387, 2 }, { 385, 2 }, { 376, 2 }, { 382, 2 }, { 379, 2 } });
 		models.put(59887, new int[][] { { 387, 2 }, { 385, 2 }, { 376, 2 }, { 382, 2 }, { 379, 2 } });
+
+		// Attack Master Cape
+		models.put(53347, new int[][] { { 387, 2 }, { 385, 2 }, { 376, 2 }, { 382, 2 }, { 379, 2 } });
 
 	}
 
