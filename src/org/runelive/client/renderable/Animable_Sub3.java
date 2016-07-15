@@ -33,17 +33,17 @@ public final class Animable_Sub3 extends Animable {
 		int cycle1 = spotAnim.animation.delays[animFrameId];//
 		Model model_1 = new Model(true, FrameReader.isNullFrame(frame), false, model);
 		if (!aBoolean1567) {
-			model_1.createBones();
+			model_1.method469();
 			if (Configuration.TWEENING_ENABLED) {
 				model_1.interpolateFrames(frame, nextFrame1, cycle1, duration);
 			} else {
 				model_1.applyTransform(frame);
 			}
-			model_1.triangleSkin = null;
-			model_1.vertexSkin = null;
+			model_1.anIntArrayArray1658 = null;
+			model_1.anIntArrayArray1657 = null;
 		}
 		if (spotAnim.sizeXY != 128 || spotAnim.sizeZ != 128) {
-			model_1.scaleT(spotAnim.sizeXY, spotAnim.sizeXY, spotAnim.sizeZ);
+			model_1.method478(spotAnim.sizeXY, spotAnim.sizeXY, spotAnim.sizeZ);
 		}
 		if (spotAnim.rotation != 0) {
 			if (spotAnim.rotation == 90) {
@@ -59,7 +59,7 @@ public final class Animable_Sub3 extends Animable {
 				model_1.method473();
 			}
 		}
-		model_1.light(64 + spotAnim.shadow, 850 + spotAnim.lightness, -30, -50, -30, true);
+		model_1.method479(64 + spotAnim.shadow, 850 + spotAnim.lightness, -30, -50, -30, true);
 		return model_1;
 	}
 

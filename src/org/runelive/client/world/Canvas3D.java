@@ -2183,9 +2183,759 @@ public final class Canvas3D extends Canvas2D {
 			depth += depth_slope;
 		}
 	}
+
+	public static void method378_2(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int k4) {
+		try {
+			k1 = 0x7f - k1;
+			l1 = 0x7f - l1;
+			i2 = 0x7f - i2;
+			setMipmapLevel(i, j, k, l, i1, j1, k4);
+			int ai[] = method371(k4)[mipMapLevel];
+			aBoolean1463 = !aBooleanArray1475[k4];
+			k2 = j2 - k2;
+			j3 = i3 - j3;
+			i4 = l3 - i4;
+			l2 -= j2;
+			k3 -= i3;
+			j4 -= l3;
+			int l4 = l2 * i3 - k3 * j2 << (Client.log_view_dist == 9 ? 14 : 15);
+			int i5 = k3 * l3 - j4 * i3 << 8;
+			int j5 = j4 * j2 - l2 * l3 << 5;
+			int k5 = k2 * i3 - j3 * j2 << (Client.log_view_dist == 9 ? 14 : 15);
+			int l5 = j3 * l3 - i4 * i3 << 8;
+			int i6 = i4 * j2 - k2 * l3 << 5;
+			int j6 = j3 * l2 - k2 * k3 << (Client.log_view_dist == 9 ? 14 : 15);
+			int k6 = i4 * k3 - j3 * j4 << 8;
+			int l6 = k2 * j4 - i4 * l2 << 5;
+			int i7 = 0;
+			int j7 = 0;
+			if (j != i) {
+				i7 = (i1 - l << 16) / (j - i);
+				j7 = (l1 - k1 << 16) / (j - i);
+			}
+			int k7 = 0;
+			int l7 = 0;
+			if (k != j) {
+				k7 = (j1 - i1 << 16) / (k - j);
+				l7 = (i2 - l1 << 16) / (k - j);
+			}
+			int i8 = 0;
+			int j8 = 0;
+			if (k != i) {
+				i8 = (l - j1 << 16) / (i - k);
+				j8 = (k1 - i2 << 16) / (i - k);
+			}
+			if (i <= j && i <= k) {
+				if (i >= bottomY)
+					return;
+				if (j > bottomY)
+					j = bottomY;
+				if (k > bottomY)
+					k = bottomY;
+				if (j < k) {
+					j1 = l <<= 16;
+					i2 = k1 <<= 16;
+					if (i < 0) {
+						j1 -= i8 * i;
+						l -= i7 * i;
+						i2 -= j8 * i;
+						k1 -= j7 * i;
+						i = 0;
+					}
+					i1 <<= 16;
+					l1 <<= 16;
+					if (j < 0) {
+						i1 -= k7 * j;
+						l1 -= l7 * j;
+						j = 0;
+					}
+					int k8 = i - centerY;
+					l4 += j5 * k8;
+					k5 += i6 * k8;
+					j6 += l6 * k8;
+					if (i != j && i8 < i7 || i == j && i8 > k7) {
+						k -= j;
+						j -= i;
+						i = lineOffsets[i];
+						while (--j >= 0) {
+							method379_2(pixels, ai, i, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+							j1 += i8;
+							l += i7;
+							i2 += j8;
+							k1 += j7;
+							i += width;
+							l4 += j5;
+							k5 += i6;
+							j6 += l6;
+						}
+						while (--k >= 0) {
+							method379_2(pixels, ai, i, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+							j1 += i8;
+							i1 += k7;
+							i2 += j8;
+							l1 += l7;
+							i += width;
+							l4 += j5;
+							k5 += i6;
+							j6 += l6;
+						}
+						return;
+					}
+					k -= j;
+					j -= i;
+					i = lineOffsets[i];
+					while (--j >= 0) {
+						method379_2(pixels, ai, i, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+						j1 += i8;
+						l += i7;
+						i2 += j8;
+						k1 += j7;
+						i += width;
+						l4 += j5;
+						k5 += i6;
+						j6 += l6;
+					}
+					while (--k >= 0) {
+						method379_2(pixels, ai, i, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+						j1 += i8;
+						i1 += k7;
+						i2 += j8;
+						l1 += l7;
+						i += width;
+						l4 += j5;
+						k5 += i6;
+						j6 += l6;
+					}
+					return;
+				}
+				i1 = l <<= 16;
+				l1 = k1 <<= 16;
+				if (i < 0) {
+					i1 -= i8 * i;
+					l -= i7 * i;
+					l1 -= j8 * i;
+					k1 -= j7 * i;
+					i = 0;
+				}
+				j1 <<= 16;
+				i2 <<= 16;
+				if (k < 0) {
+					j1 -= k7 * k;
+					i2 -= l7 * k;
+					k = 0;
+				}
+				int l8 = i - centerY;
+				l4 += j5 * l8;
+				k5 += i6 * l8;
+				j6 += l6 * l8;
+				if (i != k && i8 < i7 || i == k && k7 > i7) {
+					j -= k;
+					k -= i;
+					i = lineOffsets[i];
+					while (--k >= 0) {
+						method379_2(pixels, ai, i, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+						i1 += i8;
+						l += i7;
+						l1 += j8;
+						k1 += j7;
+						i += width;
+						l4 += j5;
+						k5 += i6;
+						j6 += l6;
+					}
+					while (--j >= 0) {
+						method379_2(pixels, ai, i, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+						j1 += k7;
+						l += i7;
+						i2 += l7;
+						k1 += j7;
+						i += width;
+						l4 += j5;
+						k5 += i6;
+						j6 += l6;
+					}
+					return;
+				}
+				j -= k;
+				k -= i;
+				i = lineOffsets[i];
+				while (--k >= 0) {
+					method379_2(pixels, ai, i, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+					i1 += i8;
+					l += i7;
+					l1 += j8;
+					k1 += j7;
+					i += width;
+					l4 += j5;
+					k5 += i6;
+					j6 += l6;
+				}
+				while (--j >= 0) {
+					method379_2(pixels, ai, i, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+					j1 += k7;
+					l += i7;
+					i2 += l7;
+					k1 += j7;
+					i += width;
+					l4 += j5;
+					k5 += i6;
+					j6 += l6;
+				}
+				return;
+			}
+			if (j <= k) {
+				if (j >= bottomY)
+					return;
+				if (k > bottomY)
+					k = bottomY;
+				if (i > bottomY)
+					i = bottomY;
+				if (k < i) {
+					l = i1 <<= 16;
+					k1 = l1 <<= 16;
+					if (j < 0) {
+						l -= i7 * j;
+						i1 -= k7 * j;
+						k1 -= j7 * j;
+						l1 -= l7 * j;
+						j = 0;
+					}
+					j1 <<= 16;
+					i2 <<= 16;
+					if (k < 0) {
+						j1 -= i8 * k;
+						i2 -= j8 * k;
+						k = 0;
+					}
+					int i9 = j - centerY;
+					l4 += j5 * i9;
+					k5 += i6 * i9;
+					j6 += l6 * i9;
+					if (j != k && i7 < k7 || j == k && i7 > i8) {
+						i -= k;
+						k -= j;
+						j = lineOffsets[j];
+						while (--k >= 0) {
+							method379_2(pixels, ai, j, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+							l += i7;
+							i1 += k7;
+							k1 += j7;
+							l1 += l7;
+							j += width;
+							l4 += j5;
+							k5 += i6;
+							j6 += l6;
+						}
+						while (--i >= 0) {
+							method379_2(pixels, ai, j, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+							l += i7;
+							j1 += i8;
+							k1 += j7;
+							i2 += j8;
+							j += width;
+							l4 += j5;
+							k5 += i6;
+							j6 += l6;
+						}
+						return;
+					}
+					i -= k;
+					k -= j;
+					j = lineOffsets[j];
+					while (--k >= 0) {
+						method379_2(pixels, ai, j, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+						l += i7;
+						i1 += k7;
+						k1 += j7;
+						l1 += l7;
+						j += width;
+						l4 += j5;
+						k5 += i6;
+						j6 += l6;
+					}
+					while (--i >= 0) {
+						method379_2(pixels, ai, j, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+						l += i7;
+						j1 += i8;
+						k1 += j7;
+						i2 += j8;
+						j += width;
+						l4 += j5;
+						k5 += i6;
+						j6 += l6;
+					}
+					return;
+				}
+				j1 = i1 <<= 16;
+				i2 = l1 <<= 16;
+				if (j < 0) {
+					j1 -= i7 * j;
+					i1 -= k7 * j;
+					i2 -= j7 * j;
+					l1 -= l7 * j;
+					j = 0;
+				}
+				l <<= 16;
+				k1 <<= 16;
+				if (i < 0) {
+					l -= i8 * i;
+					k1 -= j8 * i;
+					i = 0;
+				}
+				int j9 = j - centerY;
+				l4 += j5 * j9;
+				k5 += i6 * j9;
+				j6 += l6 * j9;
+				if (i7 < k7) {
+					k -= i;
+					i -= j;
+					j = lineOffsets[j];
+					while (--i >= 0) {
+						method379_2(pixels, ai, j, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+						j1 += i7;
+						i1 += k7;
+						i2 += j7;
+						l1 += l7;
+						j += width;
+						l4 += j5;
+						k5 += i6;
+						j6 += l6;
+					}
+					while (--k >= 0) {
+						method379_2(pixels, ai, j, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+						l += i8;
+						i1 += k7;
+						k1 += j8;
+						l1 += l7;
+						j += width;
+						l4 += j5;
+						k5 += i6;
+						j6 += l6;
+					}
+					return;
+				}
+				k -= i;
+				i -= j;
+				j = lineOffsets[j];
+				while (--i >= 0) {
+					method379_2(pixels, ai, j, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+					j1 += i7;
+					i1 += k7;
+					i2 += j7;
+					l1 += l7;
+					j += width;
+					l4 += j5;
+					k5 += i6;
+					j6 += l6;
+				}
+				while (--k >= 0) {
+					method379_2(pixels, ai, j, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+					l += i8;
+					i1 += k7;
+					k1 += j8;
+					l1 += l7;
+					j += width;
+					l4 += j5;
+					k5 += i6;
+					j6 += l6;
+				}
+				return;
+			}
+			if (k >= bottomY)
+				return;
+			if (i > bottomY)
+				i = bottomY;
+			if (j > bottomY)
+				j = bottomY;
+			if (i < j) {
+				i1 = j1 <<= 16;
+				l1 = i2 <<= 16;
+				if (k < 0) {
+					i1 -= k7 * k;
+					j1 -= i8 * k;
+					l1 -= l7 * k;
+					i2 -= j8 * k;
+					k = 0;
+				}
+				l <<= 16;
+				k1 <<= 16;
+				if (i < 0) {
+					l -= i7 * i;
+					k1 -= j7 * i;
+					i = 0;
+				}
+				int k9 = k - centerY;
+				l4 += j5 * k9;
+				k5 += i6 * k9;
+				j6 += l6 * k9;
+				if (k7 < i8) {
+					j -= i;
+					i -= k;
+					k = lineOffsets[k];
+					while (--i >= 0) {
+						method379_2(pixels, ai, k, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+						i1 += k7;
+						j1 += i8;
+						l1 += l7;
+						i2 += j8;
+						k += width;
+						l4 += j5;
+						k5 += i6;
+						j6 += l6;
+					}
+					while (--j >= 0) {
+						method379_2(pixels, ai, k, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+						i1 += k7;
+						l += i7;
+						l1 += l7;
+						k1 += j7;
+						k += width;
+						l4 += j5;
+						k5 += i6;
+						j6 += l6;
+					}
+					return;
+				}
+				j -= i;
+				i -= k;
+				k = lineOffsets[k];
+				while (--i >= 0) {
+					method379_2(pixels, ai, k, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+					i1 += k7;
+					j1 += i8;
+					l1 += l7;
+					i2 += j8;
+					k += width;
+					l4 += j5;
+					k5 += i6;
+					j6 += l6;
+				}
+				while (--j >= 0) {
+					method379_2(pixels, ai, k, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+					i1 += k7;
+					l += i7;
+					l1 += l7;
+					k1 += j7;
+					k += width;
+					l4 += j5;
+					k5 += i6;
+					j6 += l6;
+				}
+				return;
+			}
+			l = j1 <<= 16;
+			k1 = i2 <<= 16;
+			if (k < 0) {
+				l -= k7 * k;
+				j1 -= i8 * k;
+				k1 -= l7 * k;
+				i2 -= j8 * k;
+				k = 0;
+			}
+			i1 <<= 16;
+			l1 <<= 16;
+			if (j < 0) {
+				i1 -= i7 * j;
+				l1 -= j7 * j;
+				j = 0;
+			}
+			int l9 = k - centerY;
+			l4 += j5 * l9;
+			k5 += i6 * l9;
+			j6 += l6 * l9;
+			if (k7 < i8) {
+				i -= j;
+				j -= k;
+				k = lineOffsets[k];
+				while (--j >= 0) {
+					method379_2(pixels, ai, k, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+					l += k7;
+					j1 += i8;
+					k1 += l7;
+					i2 += j8;
+					k += width;
+					l4 += j5;
+					k5 += i6;
+					j6 += l6;
+				}
+				while (--i >= 0) {
+					method379_2(pixels, ai, k, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
+					i1 += i7;
+					j1 += i8;
+					l1 += j7;
+					i2 += j8;
+					k += width;
+					l4 += j5;
+					k5 += i6;
+					j6 += l6;
+				}
+				return;
+			}
+			i -= j;
+			j -= k;
+			k = lineOffsets[k];
+			while (--j >= 0) {
+				method379_2(pixels, ai, k, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
+				l += k7;
+				j1 += i8;
+				k1 += l7;
+				i2 += j8;
+				k += width;
+				l4 += j5;
+				k5 += i6;
+				j6 += l6;
+			}
+			while (--i >= 0) {
+				method379_2(pixels, ai, k, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
+				i1 += i7;
+				j1 += i8;
+				l1 += j7;
+				i2 += j8;
+				k += width;
+				l4 += j5;
+				k5 += i6;
+				j6 += l6;
+			}
+		} catch(Exception e) {
+		}
+	}
+
+	private static void method379_2(int ai[], int ai1[], int k, int x1, int x2, int lig1, int lig2, int l1, int i2, int j2, int k2, int l2, int i3) {
+		int i = 0;// was parameter
+		int j = 0;// was parameter
+		if (x1 >= x2)
+			return;
+		int dlig = (lig2 - lig1) / (x2 - x1);
+		int k3;
+		if (restrict_edges) {
+			if (x2 > bottomX)
+				x2 = bottomX;
+			if (x1 < 0) {
+				lig1 -= x1 * dlig;
+				x1 = 0;
+			}
+			if (x1 >= x2)
+				return;
+			k3 = x2 - x1 >> 3;
+		} else {
+			if (x2 - x1 > 7) {
+				k3 = x2 - x1 >> 3;
+			} else {
+				k3 = 0;
+			}
+		}
+		k += x1;
+		int j4 = 0;
+		int l4 = 0;
+		int l6 = x1 - centerX;
+		l1 += (k2 >> 3) * l6;
+		i2 += (l2 >> 3) * l6;
+		j2 += (i3 >> 3) * l6;
+		int l5 = j2 >> 14;
+		if (l5 != 0) {
+			i = l1 / l5;
+			j = i2 / l5;
+			if (i < 0)
+				i = 0;
+			else if (i > 16256)
+				i = 16256;
+		}
+		l1 += k2;
+		i2 += l2;
+		j2 += i3;
+		l5 = j2 >> 14;
+		if (l5 != 0) {
+			j4 = l1 / l5;
+			l4 = i2 / l5;
+			if (j4 < 7)
+				j4 = 7;
+			else if (j4 > 16256)
+				j4 = 16256;
+		}
+		int j7 = j4 - i >> 3;
+		int l7 = l4 - j >> 3;
+		if (aBoolean1463) {
+			while (k3-- > 0) {
+				int i9;
+				int l;
+				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				l = lig1 >> 8;
+				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				i += j7;
+				j += l7;
+				lig1 += dlig;
+				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				l = lig1 >> 8;
+				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				i += j7;
+				j += l7;
+				lig1 += dlig;
+				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				l = lig1 >> 8;
+				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				i += j7;
+				j += l7;
+				lig1 += dlig;
+				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				l = lig1 >> 8;
+				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				i += j7;
+				j += l7;
+				lig1 += dlig;
+				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				l = lig1 >> 8;
+				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				i += j7;
+				j += l7;
+				lig1 += dlig;
+				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				l = lig1 >> 8;
+				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				i += j7;
+				j += l7;
+				lig1 += dlig;
+				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				l = lig1 >> 8;
+				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				i += j7;
+				j += l7;
+				lig1 += dlig;
+				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				l = lig1 >> 8;
+				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+				i = j4;
+				j = l4;
+				lig1 += dlig;
+				l1 += k2;
+				i2 += l2;
+				j2 += i3;
+				int i6 = j2 >> 14;
+				if (i6 != 0) {
+					j4 = l1 / i6;
+					l4 = i2 / i6;
+					if (j4 < 7)
+						j4 = 7;
+					else if (j4 > 16256)
+						j4 = 16256;
+				}
+				j7 = j4 - i >> 3;
+				l7 = l4 - j >> 3;
+			}
+			for (k3 = x2 - x1 & 7; k3-- > 0;) {
+				int j9;
+				int l;
+				j9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
+				l = lig1 >> 8;
+				ai[k++] = ((j9 & 0xff00ff) * l & ~0xff00ff) + ((j9 & 0xff00) * l & 0xff0000) >> 7;
+				i += j7;
+				j += l7;
+				lig1 += dlig;
+			}
+
+			return;
+		}
+		while (k3-- > 0) {
+			int i9;
+			int l;
+			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+				l = lig1 >> 8;
+				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			}
+			k++;
+			i += j7;
+			j += l7;
+			lig1 += dlig;
+			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+				l = lig1 >> 8;
+				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			}
+			k++;
+			i += j7;
+			j += l7;
+			lig1 += dlig;
+			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+				l = lig1 >> 8;
+				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			}
+			k++;
+			i += j7;
+			j += l7;
+			lig1 += dlig;
+			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+				l = lig1 >> 8;
+				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			}
+			k++;
+			i += j7;
+			j += l7;
+			lig1 += dlig;
+			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+				l = lig1 >> 8;
+				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			}
+			k++;
+			i += j7;
+			j += l7;
+			lig1 += dlig;
+			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+				l = lig1 >> 8;
+				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			}
+			k++;
+			i += j7;
+			j += l7;
+			lig1 += dlig;
+			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+				l = lig1 >> 8;
+				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			}
+			k++;
+			i += j7;
+			j += l7;
+			lig1 += dlig;
+			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+				l = lig1 >> 8;
+				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
+			}
+			k++;
+			i = j4;
+			j = l4;
+			lig1 += dlig;
+			l1 += k2;
+			i2 += l2;
+			j2 += i3;
+			int j6 = j2 >> 14;
+			if (j6 != 0) {
+				j4 = l1 / j6;
+				l4 = i2 / j6;
+				if (j4 < 7)
+					j4 = 7;
+				else if (j4 > 16256)
+					j4 = 16256;
+			}
+			j7 = j4 - i >> 3;
+			l7 = l4 - j >> 3;
+		}
+		for (int l3 = x2 - x1 & 7; l3-- > 0;) {
+			int j9;
+			int l;
+			if ((j9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
+				l = lig1 >> 8;
+				ai[k] = ((j9 & 0xff00ff) * l & ~0xff00ff) + ((j9 & 0xff00) * l & 0xff0000) >> 7;
+			}
+			k++;
+			i += j7;
+			j += l7;
+			lig1 += dlig;
+		}
+	}
 	
 	public static void method378(int y_a, int y_b, int y_c, int x_a, int x_b, int x_c, int l1, int l2, int l3, int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int tex, float z1, float z2, float z3) {
 		try {
+			if (!notTextured) {
+				method378_2(y_a, y_b, y_c, x_a, x_b, x_c, l1, l2, l3, tx1, tx2, tx3, ty1, ty2, ty3, tz1, tz2, tz3, tex);
+				return;
+			}
 		if (z1 < 0.0F || z2 < 0.0F || z3 < 0.0F) {
 			return;
 		}
@@ -3032,757 +3782,6 @@ public final class Canvas3D extends Canvas2D {
 			i += j7;
 			j += l7;
 			shadeValue += dl;
-		}
-	}
-	
-	public static void method378_2(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int k4) {
-		try {
-		k1 = 0x7f - k1;
-		l1 = 0x7f - l1;
-		i2 = 0x7f - i2;
-
-		int area = l * (j - k) + i1 * (k - i) + j1 * (i - j) >> 1;
-		if (area < 0) {
-			area = -area;
-		}
-		setMipmapLevel(i, j, k, l, i1, j1, k4);
-		int ai[] = method371(k4)[mipMapLevel];
-		aBoolean1463 = !aBooleanArray1475[k4];
-		k2 = j2 - k2;
-		j3 = i3 - j3;
-		i4 = l3 - i4;
-		l2 -= j2;
-		k3 -= i3;
-		j4 -= l3;
-		int l4 = l2 * i3 - k3 * j2 << (Client.log_view_dist == 9 ? 14 : 15);
-		int i5 = k3 * l3 - j4 * i3 << 8;
-		int j5 = j4 * j2 - l2 * l3 << 5;
-		int k5 = k2 * i3 - j3 * j2 << (Client.log_view_dist == 9 ? 14 : 15);
-		int l5 = j3 * l3 - i4 * i3 << 8;
-		int i6 = i4 * j2 - k2 * l3 << 5;
-		int j6 = j3 * l2 - k2 * k3 << (Client.log_view_dist == 9 ? 14 : 15);
-		int k6 = i4 * k3 - j3 * j4 << 8;
-		int l6 = k2 * j4 - i4 * l2 << 5;
-		int i7 = 0;
-		int j7 = 0;
-		if (j != i) {
-			i7 = (i1 - l << 16) / (j - i);
-			j7 = (l1 - k1 << 16) / (j - i);
-		}
-		int k7 = 0;
-		int l7 = 0;
-		if (k != j) {
-			k7 = (j1 - i1 << 16) / (k - j);
-			l7 = (i2 - l1 << 16) / (k - j);
-		}
-		int i8 = 0;
-		int j8 = 0;
-		if (k != i) {
-			i8 = (l - j1 << 16) / (i - k);
-			j8 = (k1 - i2 << 16) / (i - k);
-		}
-		if (i <= j && i <= k) {
-			if (i >= bottomY)
-				return;
-			if (j > bottomY)
-				j = bottomY;
-			if (k > bottomY)
-				k = bottomY;
-			if (j < k) {
-				j1 = l <<= 16;
-				i2 = k1 <<= 16;
-				if (i < 0) {
-					j1 -= i8 * i;
-					l -= i7 * i;
-					i2 -= j8 * i;
-					k1 -= j7 * i;
-					i = 0;
-				}
-				i1 <<= 16;
-				l1 <<= 16;
-				if (j < 0) {
-					i1 -= k7 * j;
-					l1 -= l7 * j;
-					j = 0;
-				}
-				int k8 = i - centerY;
-				l4 += j5 * k8;
-				k5 += i6 * k8;
-				j6 += l6 * k8;
-				if (i != j && i8 < i7 || i == j && i8 > k7) {
-					k -= j;
-					j -= i;
-					i = lineOffsets[i];
-					while (--j >= 0) {
-						method379_2(pixels, ai, i, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-						j1 += i8;
-						l += i7;
-						i2 += j8;
-						k1 += j7;
-						i += width;
-						l4 += j5;
-						k5 += i6;
-						j6 += l6;
-					}
-					while (--k >= 0) {
-						method379_2(pixels, ai, i, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-						j1 += i8;
-						i1 += k7;
-						i2 += j8;
-						l1 += l7;
-						i += width;
-						l4 += j5;
-						k5 += i6;
-						j6 += l6;
-					}
-					return;
-				}
-				k -= j;
-				j -= i;
-				i = lineOffsets[i];
-				while (--j >= 0) {
-					method379_2(pixels, ai, i, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-					j1 += i8;
-					l += i7;
-					i2 += j8;
-					k1 += j7;
-					i += width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				while (--k >= 0) {
-					method379_2(pixels, ai, i, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-					j1 += i8;
-					i1 += k7;
-					i2 += j8;
-					l1 += l7;
-					i += width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				return;
-			}
-			i1 = l <<= 16;
-			l1 = k1 <<= 16;
-			if (i < 0) {
-				i1 -= i8 * i;
-				l -= i7 * i;
-				l1 -= j8 * i;
-				k1 -= j7 * i;
-				i = 0;
-			}
-			j1 <<= 16;
-			i2 <<= 16;
-			if (k < 0) {
-				j1 -= k7 * k;
-				i2 -= l7 * k;
-				k = 0;
-			}
-			int l8 = i - centerY;
-			l4 += j5 * l8;
-			k5 += i6 * l8;
-			j6 += l6 * l8;
-			if (i != k && i8 < i7 || i == k && k7 > i7) {
-				j -= k;
-				k -= i;
-				i = lineOffsets[i];
-				while (--k >= 0) {
-					method379_2(pixels, ai, i, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-					i1 += i8;
-					l += i7;
-					l1 += j8;
-					k1 += j7;
-					i += width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				while (--j >= 0) {
-					method379_2(pixels, ai, i, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-					j1 += k7;
-					l += i7;
-					i2 += l7;
-					k1 += j7;
-					i += width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				return;
-			}
-			j -= k;
-			k -= i;
-			i = lineOffsets[i];
-			while (--k >= 0) {
-				method379_2(pixels, ai, i, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-				i1 += i8;
-				l += i7;
-				l1 += j8;
-				k1 += j7;
-				i += width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			while (--j >= 0) {
-				method379_2(pixels, ai, i, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-				j1 += k7;
-				l += i7;
-				i2 += l7;
-				k1 += j7;
-				i += width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			return;
-		}
-		if (j <= k) {
-			if (j >= bottomY)
-				return;
-			if (k > bottomY)
-				k = bottomY;
-			if (i > bottomY)
-				i = bottomY;
-			if (k < i) {
-				l = i1 <<= 16;
-				k1 = l1 <<= 16;
-				if (j < 0) {
-					l -= i7 * j;
-					i1 -= k7 * j;
-					k1 -= j7 * j;
-					l1 -= l7 * j;
-					j = 0;
-				}
-				j1 <<= 16;
-				i2 <<= 16;
-				if (k < 0) {
-					j1 -= i8 * k;
-					i2 -= j8 * k;
-					k = 0;
-				}
-				int i9 = j - centerY;
-				l4 += j5 * i9;
-				k5 += i6 * i9;
-				j6 += l6 * i9;
-				if (j != k && i7 < k7 || j == k && i7 > i8) {
-					i -= k;
-					k -= j;
-					j = lineOffsets[j];
-					while (--k >= 0) {
-						method379_2(pixels, ai, j, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-						l += i7;
-						i1 += k7;
-						k1 += j7;
-						l1 += l7;
-						j += width;
-						l4 += j5;
-						k5 += i6;
-						j6 += l6;
-					}
-					while (--i >= 0) {
-						method379_2(pixels, ai, j, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-						l += i7;
-						j1 += i8;
-						k1 += j7;
-						i2 += j8;
-						j += width;
-						l4 += j5;
-						k5 += i6;
-						j6 += l6;
-					}
-					return;
-				}
-				i -= k;
-				k -= j;
-				j = lineOffsets[j];
-				while (--k >= 0) {
-					method379_2(pixels, ai, j, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-					l += i7;
-					i1 += k7;
-					k1 += j7;
-					l1 += l7;
-					j += width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				while (--i >= 0) {
-					method379_2(pixels, ai, j, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-					l += i7;
-					j1 += i8;
-					k1 += j7;
-					i2 += j8;
-					j += width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				return;
-			}
-			j1 = i1 <<= 16;
-			i2 = l1 <<= 16;
-			if (j < 0) {
-				j1 -= i7 * j;
-				i1 -= k7 * j;
-				i2 -= j7 * j;
-				l1 -= l7 * j;
-				j = 0;
-			}
-			l <<= 16;
-			k1 <<= 16;
-			if (i < 0) {
-				l -= i8 * i;
-				k1 -= j8 * i;
-				i = 0;
-			}
-			int j9 = j - centerY;
-			l4 += j5 * j9;
-			k5 += i6 * j9;
-			j6 += l6 * j9;
-			if (i7 < k7) {
-				k -= i;
-				i -= j;
-				j = lineOffsets[j];
-				while (--i >= 0) {
-					method379_2(pixels, ai, j, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-					j1 += i7;
-					i1 += k7;
-					i2 += j7;
-					l1 += l7;
-					j += width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				while (--k >= 0) {
-					method379_2(pixels, ai, j, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-					l += i8;
-					i1 += k7;
-					k1 += j8;
-					l1 += l7;
-					j += width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				return;
-			}
-			k -= i;
-			i -= j;
-			j = lineOffsets[j];
-			while (--i >= 0) {
-				method379_2(pixels, ai, j, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-				j1 += i7;
-				i1 += k7;
-				i2 += j7;
-				l1 += l7;
-				j += width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			while (--k >= 0) {
-				method379_2(pixels, ai, j, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-				l += i8;
-				i1 += k7;
-				k1 += j8;
-				l1 += l7;
-				j += width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			return;
-		}
-		if (k >= bottomY)
-			return;
-		if (i > bottomY)
-			i = bottomY;
-		if (j > bottomY)
-			j = bottomY;
-		if (i < j) {
-			i1 = j1 <<= 16;
-			l1 = i2 <<= 16;
-			if (k < 0) {
-				i1 -= k7 * k;
-				j1 -= i8 * k;
-				l1 -= l7 * k;
-				i2 -= j8 * k;
-				k = 0;
-			}
-			l <<= 16;
-			k1 <<= 16;
-			if (i < 0) {
-				l -= i7 * i;
-				k1 -= j7 * i;
-				i = 0;
-			}
-			int k9 = k - centerY;
-			l4 += j5 * k9;
-			k5 += i6 * k9;
-			j6 += l6 * k9;
-			if (k7 < i8) {
-				j -= i;
-				i -= k;
-				k = lineOffsets[k];
-				while (--i >= 0) {
-					method379_2(pixels, ai, k, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-					i1 += k7;
-					j1 += i8;
-					l1 += l7;
-					i2 += j8;
-					k += width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				while (--j >= 0) {
-					method379_2(pixels, ai, k, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-					i1 += k7;
-					l += i7;
-					l1 += l7;
-					k1 += j7;
-					k += width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				return;
-			}
-			j -= i;
-			i -= k;
-			k = lineOffsets[k];
-			while (--i >= 0) {
-				method379_2(pixels, ai, k, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-				i1 += k7;
-				j1 += i8;
-				l1 += l7;
-				i2 += j8;
-				k += width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			while (--j >= 0) {
-				method379_2(pixels, ai, k, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-				i1 += k7;
-				l += i7;
-				l1 += l7;
-				k1 += j7;
-				k += width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			return;
-		}
-		l = j1 <<= 16;
-		k1 = i2 <<= 16;
-		if (k < 0) {
-			l -= k7 * k;
-			j1 -= i8 * k;
-			k1 -= l7 * k;
-			i2 -= j8 * k;
-			k = 0;
-		}
-		i1 <<= 16;
-		l1 <<= 16;
-		if (j < 0) {
-			i1 -= i7 * j;
-			l1 -= j7 * j;
-			j = 0;
-		}
-		int l9 = k - centerY;
-		l4 += j5 * l9;
-		k5 += i6 * l9;
-		j6 += l6 * l9;
-		if (k7 < i8) {
-			i -= j;
-			j -= k;
-			k = lineOffsets[k];
-			while (--j >= 0) {
-				method379_2(pixels, ai, k, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-				l += k7;
-				j1 += i8;
-				k1 += l7;
-				i2 += j8;
-				k += width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			while (--i >= 0) {
-				method379_2(pixels, ai, k, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-				i1 += i7;
-				j1 += i8;
-				l1 += j7;
-				i2 += j8;
-				k += width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			return;
-		}
-		i -= j;
-		j -= k;
-		k = lineOffsets[k];
-		while (--j >= 0) {
-			method379_2(pixels, ai, k, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-			l += k7;
-			j1 += i8;
-			k1 += l7;
-			i2 += j8;
-			k += width;
-			l4 += j5;
-			k5 += i6;
-			j6 += l6;
-		}
-		while (--i >= 0) {
-			method379_2(pixels, ai, k, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-			i1 += i7;
-			j1 += i8;
-			l1 += j7;
-			i2 += j8;
-			k += width;
-			l4 += j5;
-			k5 += i6;
-			j6 += l6;
-		}
-		} catch(Exception e) {
-		}
-	}
-
-	private static void method379_2(int ai[], int ai1[], int k, int x1, int x2, int lig1, int lig2, int l1, int i2, int j2, int k2, int l2, int i3) {
-		int i = 0;// was parameter
-		int j = 0;// was parameter
-		if (x1 >= x2)
-			return;
-		int dlig = (lig2 - lig1) / (x2 - x1);
-		int k3;
-		if (restrict_edges) {
-			if (x2 > bottomX)
-				x2 = bottomX;
-			if (x1 < 0) {
-				lig1 -= x1 * dlig;
-				x1 = 0;
-			}
-			if (x1 >= x2)
-				return;
-			k3 = x2 - x1 >> 3;
-		} else {
-			if (x2 - x1 > 7) {
-				k3 = x2 - x1 >> 3;
-			} else {
-				k3 = 0;
-			}
-		}
-		k += x1;
-		int j4 = 0;
-		int l4 = 0;
-		int l6 = x1 - centerX;
-		l1 += (k2 >> 3) * l6;
-		i2 += (l2 >> 3) * l6;
-		j2 += (i3 >> 3) * l6;
-		int l5 = j2 >> 14;
-		if (l5 != 0) {
-			i = l1 / l5;
-			j = i2 / l5;
-			if (i < 0)
-				i = 0;
-			else if (i > 16256)
-				i = 16256;
-		}
-		l1 += k2;
-		i2 += l2;
-		j2 += i3;
-		l5 = j2 >> 14;
-		if (l5 != 0) {
-			j4 = l1 / l5;
-			l4 = i2 / l5;
-			if (j4 < 7)
-				j4 = 7;
-			else if (j4 > 16256)
-				j4 = 16256;
-		}
-		int j7 = j4 - i >> 3;
-		int l7 = l4 - j >> 3;
-		if (aBoolean1463) {
-			while (k3-- > 0) {
-				int i9;
-				int l;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-				i += j7;
-				j += l7;
-				lig1 += dlig;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-				i += j7;
-				j += l7;
-				lig1 += dlig;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-				i += j7;
-				j += l7;
-				lig1 += dlig;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-				i += j7;
-				j += l7;
-				lig1 += dlig;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-				i += j7;
-				j += l7;
-				lig1 += dlig;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-				i += j7;
-				j += l7;
-				lig1 += dlig;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-				i += j7;
-				j += l7;
-				lig1 += dlig;
-				i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-				i = j4;
-				j = l4;
-				lig1 += dlig;
-				l1 += k2;
-				i2 += l2;
-				j2 += i3;
-				int i6 = j2 >> 14;
-				if (i6 != 0) {
-					j4 = l1 / i6;
-					l4 = i2 / i6;
-					if (j4 < 7)
-						j4 = 7;
-					else if (j4 > 16256)
-						j4 = 16256;
-				}
-				j7 = j4 - i >> 3;
-				l7 = l4 - j >> 3;
-			}
-			for (k3 = x2 - x1 & 7; k3-- > 0;) {
-				int j9;
-				int l;
-				j9 = ai1[texelPos((j & 0x3f80) + (i >> 7))];
-				l = lig1 >> 8;
-				ai[k++] = ((j9 & 0xff00ff) * l & ~0xff00ff) + ((j9 & 0xff00) * l & 0xff0000) >> 7;
-				i += j7;
-				j += l7;
-				lig1 += dlig;
-			}
-
-			return;
-		}
-		while (k3-- > 0) {
-			int i9;
-			int l;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-			}
-			k++;
-			i += j7;
-			j += l7;
-			lig1 += dlig;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-			}
-			k++;
-			i += j7;
-			j += l7;
-			lig1 += dlig;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-			}
-			k++;
-			i += j7;
-			j += l7;
-			lig1 += dlig;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-			}
-			k++;
-			i += j7;
-			j += l7;
-			lig1 += dlig;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-			}
-			k++;
-			i += j7;
-			j += l7;
-			lig1 += dlig;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-			}
-			k++;
-			i += j7;
-			j += l7;
-			lig1 += dlig;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-			}
-			k++;
-			i += j7;
-			j += l7;
-			lig1 += dlig;
-			if ((i9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 7;
-			}
-			k++;
-			i = j4;
-			j = l4;
-			lig1 += dlig;
-			l1 += k2;
-			i2 += l2;
-			j2 += i3;
-			int j6 = j2 >> 14;
-			if (j6 != 0) {
-				j4 = l1 / j6;
-				l4 = i2 / j6;
-				if (j4 < 7)
-					j4 = 7;
-				else if (j4 > 16256)
-					j4 = 16256;
-			}
-			j7 = j4 - i >> 3;
-			l7 = l4 - j >> 3;
-		}
-		for (int l3 = x2 - x1 & 7; l3-- > 0;) {
-			int j9;
-			int l;
-			if ((j9 = ai1[texelPos((j & 0x3f80) + (i >> 7))]) != 0) {
-				l = lig1 >> 8;
-				ai[k] = ((j9 & 0xff00ff) * l & ~0xff00ff) + ((j9 & 0xff00) * l & 0xff0000) >> 7;
-			}
-			k++;
-			i += j7;
-			j += l7;
-			lig1 += dlig;
 		}
 	}
 	
@@ -5089,7 +5088,7 @@ public final class Canvas3D extends Canvas2D {
 	public static int anIntArray1482[] = new int[0x10000];
 	private static int[][] anIntArrayArray1483 = new int[textureAmount][];
 	public static boolean mipmapping = true;
-	
+
 	public static final int FOREGROUND = 0xc8c0a8;
 	public static final int FOG_COLOR_A = 0xc800a8;
 	public static final int FOG_COLOR_B = 0xC000;

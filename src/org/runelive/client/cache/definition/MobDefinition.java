@@ -1514,7 +1514,7 @@ public final class MobDefinition {
 		boolean flag1 = false;
 
 		for (int i = 0; i < dialogueModels.length; i++) {
-			if (!Model.method463(dialogueModels[i])) {
+			if (!Model.isModelLoaded(dialogueModels[i])) {
 				flag1 = true;
 			}
 		}
@@ -1526,7 +1526,7 @@ public final class MobDefinition {
 		Model aclass30_sub2_sub4_sub6s[] = new Model[dialogueModels.length];
 
 		for (int j = 0; j < dialogueModels.length; j++) {
-			aclass30_sub2_sub4_sub6s[j] = Model.method462(dialogueModels[j]);
+			aclass30_sub2_sub4_sub6s[j] = Model.fetchModel(dialogueModels[j]);
 		}
 
 		Model model;
@@ -1589,7 +1589,7 @@ public final class MobDefinition {
 			boolean flag = false;
 
 			for (int i1 = 0; i1 < npcModels.length; i1++) {
-				if (!Model.method463(npcModels[i1])) {
+				if (!Model.isModelLoaded(npcModels[i1])) {
 					flag = true;
 				}
 			}
@@ -1601,7 +1601,7 @@ public final class MobDefinition {
 			Model aclass30_sub2_sub4_sub6s[] = new Model[npcModels.length];
 
 			for (int j1 = 0; j1 < npcModels.length; j1++) {
-				aclass30_sub2_sub4_sub6s[j1] = Model.method462(npcModels[j1]);
+				aclass30_sub2_sub4_sub6s[j1] = Model.fetchModel(npcModels[j1]);
 			}
 
 			if (aclass30_sub2_sub4_sub6s.length == 1) {
@@ -1616,8 +1616,8 @@ public final class MobDefinition {
 				}
 			}
 
-			model.createBones();
-			model.light(84 + modelLightning, 1000 + modelShadowing, -90, -580, -90, true);
+			model.method469();
+			model.method479(84 + modelLightning, 1000 + modelShadowing, -90, -580, -90, true);
 			mruNodes.removeFromCache(model, id);
 		}
 
@@ -1639,12 +1639,12 @@ public final class MobDefinition {
 			model_1.applyTransform(frame);
 
 		if (adjustVertextPointsXOrY != 128 || adjustVertextPointZ != 128) {
-			model_1.scaleT(adjustVertextPointsXOrY, adjustVertextPointsXOrY, adjustVertextPointZ);
+			model_1.method478(adjustVertextPointsXOrY, adjustVertextPointsXOrY, adjustVertextPointZ);
 		}
 
 		model_1.method466();
-		model_1.triangleSkin = null;
-		model_1.vertexSkin = null;
+		model_1.anIntArrayArray1658 = null;
+		model_1.anIntArrayArray1657 = null;
 
 		if (npcSizeInSquares == 1) {
 			model_1.aBoolean1659 = true;

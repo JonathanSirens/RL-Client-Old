@@ -1807,8 +1807,6 @@ public class RSInterface {
 		rsi.childX = new int[0];
 		rsi.childY = new int[0];
 
-		// rsi.hideExamine = true;
-
 		rsi.invSpritePadX = 24;
 		rsi.invSpritePadY = 24;
 		rsi.height = 5;
@@ -1816,6 +1814,8 @@ public class RSInterface {
 		rsi.parentID = 5292;
 		rsi.id = index;
 		rsi.type = 2;
+		rsi.hideStackSize = true;
+		rsi.hideExamine = hasOption;
 	}
 
 	private static void addTooltipBox(int id, String text) {
@@ -3041,7 +3041,7 @@ public class RSInterface {
 			return model;
 		}
 		if (i == 1) {
-			model = Model.method462(j);
+			model = Model.fetchModel(j);
 		}
 		if (i == 2) {
 			model = MobDefinition.get(j).method160();
@@ -3080,12 +3080,12 @@ public class RSInterface {
 		if (model == null) {
 			return null;
 		}
-		if (k == -1 && j == -1 && model.colors == null) {
+		if (k == -1 && j == -1 && model.anIntArray1640 == null) {
 			return model;
 		}
 		Model model_1 = new Model(true, FrameReader.isNullFrame(k) & FrameReader.isNullFrame(j), false, model);
 		if (k != -1 || j != -1) {
-			model_1.createBones();
+			model_1.method469();
 		}
 		if (k != -1) {
 			model_1.applyTransform(k);
@@ -3093,7 +3093,7 @@ public class RSInterface {
 		if (j != -1) {
 			model_1.applyTransform(j);
 		}
-		model_1.light(84, 1000, -90, -580, -90, true);
+		model_1.method479(84, 1000, -90, -580, -90, true);
 		return model_1;
 	}
 

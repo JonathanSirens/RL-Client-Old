@@ -41,18 +41,18 @@ public final class NPC extends Entity {
 				int cycle1 = spotAnim.animation.delays[super.currentAnim];
 				int cycle2 = super.animCycle;
 				Model model_2 = new Model(true, FrameReader.isNullFrame(frame), false, model_1);
-				model_2.translate(0, -super.graphicHeight, 0);
-				model_2.createBones();
+				model_2.method475(0, -super.graphicHeight, 0);
+				model_2.method469();
 				// model_2.method470(frame);
 				model_2.interpolateFrames(frame, nextFrame, cycle1, cycle2);
-				model_2.triangleSkin = null;
-				model_2.vertexSkin = null;
+				model_2.anIntArrayArray1658 = null;
+				model_2.anIntArrayArray1657 = null;
 
 				if (spotAnim.sizeXY != 128 || spotAnim.sizeZ != 128) {
-					model_2.scaleT(spotAnim.sizeXY, spotAnim.sizeXY, spotAnim.sizeZ);
+					model_2.method478(spotAnim.sizeXY, spotAnim.sizeXY, spotAnim.sizeZ);
 				}
 
-				model_2.light(64 + spotAnim.shadow, 850 + spotAnim.lightness, -30, -50, -30, true);
+				model_2.method479(64 + spotAnim.shadow, 850 + spotAnim.lightness, -30, -50, -30, true);
 				Model aModel[] = { model, model_2 };
 				model = new Model(aModel);
 			}

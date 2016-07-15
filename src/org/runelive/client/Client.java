@@ -125,6 +125,7 @@ import org.runelive.client.world.ObjectManager;
 import org.runelive.client.world.Texture;
 import org.runelive.client.world.WorldController;
 import org.runelive.client.world.background.ScriptManager;
+import org.runelive.client.world.fog.FogProcessor;
 import org.runelive.client.world.music.Class56;
 import org.runelive.client.world.music.Class56_Sub1_Sub1;
 import org.runelive.client.world.sound.Class25;
@@ -144,10 +145,19 @@ import org.runelive.task.TaskManager;
 
 public class Client extends GameRenderer {
 
+	public static FogProcessor fog = new FogProcessor();
 	public static ResourceLoader resourceLoader;
 	public static final int ANIM_IDX = 2, AUDIO_IDX = 3, IMAGE_IDX = 5, TEXTURE_IDX = 6;
 	private AccountManager accountManager;
 	private GrandExchange grandExchange;
+
+	public int getPlayerX() {
+		return (baseX + (myPlayer.x - 6 >> 7)) >> 3;
+	}
+
+	public int getPlayerY() {
+		return (baseY + (myPlayer.y - 6 >> 7)) >> 3;
+	}
 
 	public int mouseX() {
 		return super.mouseX;
@@ -841,7 +851,7 @@ public class Client extends GameRenderer {
 		ObjectDefinition.lowDetail = true;
 		Configuration.HIGH_DETAIL = false;
 		Configuration.hdTexturing = false;
-		Configuration.hdMinimap = false;
+		Configuration.hdMinimap = true;
 		Configuration.hdShading = true;
 	}
 
@@ -2881,9 +2891,6 @@ public class Client extends GameRenderer {
 															? children.actions[j4] + " @lre@" + definition.name + " "
 																	+ definition.id
 															: children.actions[j4] + " @lre@" + definition.name;
-													if (children.parentID == 5382) {
-														ignoreExamine = true; 
-													}
 													int interfaceId = children.id;
 													if (children.parentID == 3321 && openInterfaceID == 42000) {
 														s = s.replaceAll("Offer", "Pricecheck");
@@ -3380,7 +3387,7 @@ public class Client extends GameRenderer {
 		Player.mruNodes = null;
 		Canvas3D.nullify();
 		WorldController.nullify();
-		Model.nullify();
+		Model.nullLoader();
 		Texture.reset();
 		System.gc();
 	}
@@ -5798,7 +5805,7 @@ public class Client extends GameRenderer {
 			if (loadingStage == 2) {
 				try {
 					worldController.method313(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, method121(),
-							yCameraCurve, Configuration.FOG_ENABLED);
+							yCameraCurve, false);
 					worldController.clearObj5Cache();
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -6055,9 +6062,9 @@ public class Client extends GameRenderer {
 					}
 				}
 
-				model.createBones();
+				model.method469();
 				model.applyTransform(Animation.cache[myPlayer.anInt1511].frameIDs[0]);
-				model.light(64, 850, -30, -50, -30, true);
+				model.method479(64, 850, -30, -50, -30, true);
 				class9.mediaType = 5;
 				class9.mediaID = 0;
 				RSInterface.clearModelCache(aBoolean994, model);
@@ -6078,7 +6085,7 @@ public class Client extends GameRenderer {
 			Model model;
 			final Model[] parts = new Model[petDef.getModelArrayLength()];
 			for (int i = 0; i < petDef.getModelArrayLength(); i++) {
-				parts[i] = Model.method462(petDef.getModelArray()[i]);
+				parts[i] = Model.fetchModel(petDef.getModelArray()[i]);
 			}
 			if (parts.length == 1) {
 				model = parts[0];
@@ -6090,10 +6097,10 @@ public class Client extends GameRenderer {
 				return;
 			}
 
-			model.createBones();
+			model.method469();
 			model.scale2((int) 1.5);
 			model.applyTransform(Animation.cache[petDef.getAnimation()].frameIDs[PetSystem.animationFrame]);
-			model.light(64, 850, -30, -50, -30, true);
+			model.method479(64, 850, -30, -50, -30, true);
 			rsInterface.mediaType = 5;
 			rsInterface.mediaID = 0;
 			RSInterface.clearModelCache(aBoolean994, model);
@@ -6121,7 +6128,7 @@ public class Client extends GameRenderer {
 				}
 
 				int staticFrame = myPlayer.anInt1511;
-				characterDisplay.createBones();
+				characterDisplay.method469();
 				characterDisplay.applyTransform(Animation.cache[staticFrame].frameIDs[0]);
 				rsInterface.mediaType = 5;
 				rsInterface.mediaID = 0;
@@ -6621,7 +6628,6 @@ public class Client extends GameRenderer {
 										} else {
 											selectedItem.drawSprite(k5, j6);
 										}
-
 										if (selectedItem.maxWidth == 33 || childInterface.invStackSizes[i3] != 1) {
 											int k10 = childInterface.invStackSizes[i3];
 
@@ -6981,7 +6987,7 @@ public class Client extends GameRenderer {
 								animation.frameIDs[childInterface.anInt246], flag2);
 					}
 					if (model != null) {
-						model.renderSingle(childInterface.modelRotation2, 0, childInterface.modelRotation1, 0, i5, l5);
+						model.method482(childInterface.modelRotation2, 0, childInterface.modelRotation1, 0, i5, l5);
 					}
 					Canvas3D.centerX = k3;
 					Canvas3D.centerY = j4;
@@ -9072,7 +9078,7 @@ public class Client extends GameRenderer {
 					processRightClick();
 					bankItemDragSprite = null;
 					int x = 0;
-					int y = 0;
+					int y = 40;
 					if (GameFrame.getScreenMode() != ScreenMode.FIXED) {
 						y = 36 + ((clientHeight - 503) / 2);
 						x = (clientWidth - 237 - RSInterface.interfaceCache[5292].width) / 2;
@@ -10763,79 +10769,82 @@ public class Client extends GameRenderer {
 		Model.anInt1685 = super.mouseX - 4;
 		Model.anInt1686 = super.mouseY - 4;
 		Canvas2D.setAllPixelsToZero();
-		Canvas2D.drawPixels(GameFrame.getScreenMode() == ScreenMode.FIXED ? 334 : getScreenHeight(), 0, 0, Configuration.FOG_ENABLED ? 0xc8c0a8 : 0, GameFrame.getScreenMode() == ScreenMode.FIXED ? 512 : getScreenWidth());
 
 		if (loggedIn) {
-			worldController.method313(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, j, yCameraCurve, Configuration.FOG_ENABLED);
+			worldController.method313(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, j, yCameraCurve, false);
 			worldController.clearObj5Cache();
+		}
+
+		boolean underground = (!(getPlayerX() >= 270 && getPlayerX() <= 465 && getPlayerY() >= 335 && getPlayerY() <= 495));
+		if (Configuration.FOG_ENABLED && !underground) {
+			fog.render(2200, 3000, 0xc8c0a8);
 		}
 		
 		Iterator<ParticleDisplay> iterator;
-		ParticleDisplay particle;
+		ParticleDisplay display;
 		if (displayParticles) {
 			iterator = displayedParticles.iterator();
 			while (iterator.hasNext()) {
-				particle = iterator.next();
-				if (particle != null) {
-					particle.C();
-					if (particle.Z()) {
-						particlesToBeRemoved.add(particle);
+				display = iterator.next();
+				if (display != null) {
+					display.C();
+					if (display.Z()) {
+						particlesToBeRemoved.add(display);
 					} else {
-						Particle var16 = particle.B();
-						int var40 = particle.D().I();
-						int var41 = particle.D().Z();
-						int var42 = particle.D().C();
-						int var43;
-						int var44;
-						if (var16.getImage() == null) {
-							var43 = 8;
-							var44 = 8;
+						Particle particle = display.B();
+						int displayX = display.D().I();
+						int displayY = display.D().Z();
+						int displayZ = display.D().C();
+						int width;
+						int height;
+						if (particle.getImage() == null) {
+							width = 8;
+							height = 8;
 						} else {
-							var43 = var16.getImage().myWidth / 4;
-							var44 = var16.getImage().myHeight / 4;
+							width = particle.getImage().myWidth / 4;
+							height = particle.getImage().myHeight / 4;
 						}
-						var43 = (int) (var43 * particle.S());
-						var44 = (int) (var44 * particle.S());
-						int[] var13 = write(var40, var41, var42, var43, var44);
-						var43 = var13[5] - var13[3];
-						var44 = var13[6] - var13[4];
-						int alpha = (int) (particle.getAlpha() * 255.0F);
-						int var21 = (int) (4.0F * particle.S());
+						width = (int) (width * display.S());
+						height = (int) (height * display.S());
+						int[] y = write(displayX, displayY, displayZ, width, height);
+						width = y[5] - y[3];
+						height = y[6] - y[4];
+						int alpha = (int) (display.getAlpha() * 255.0F);
+						int radius = (int) (4.0F * display.S());
 						int srcAlpha = 256 - alpha;
-						int srcR = (particle.getRgb() >> 16 & 255) * alpha;
-						int srcG = (particle.getRgb() >> 8 & 255) * alpha;
-						int srcB = (particle.getRgb() & 255) * alpha;
-						int var26 = var13[1] - var21;
-						if (var26 < 0) {
-							var26 = 0;
+						int srcR = (display.getRgb() >> 16 & 255) * alpha;
+						int srcG = (display.getRgb() >> 8 & 255) * alpha;
+						int srcB = (display.getRgb() & 255) * alpha;
+						int y1 = y[1] - radius;
+						if (y1 < 0) {
+							y1 = 0;
 						}
-						int var27 = var13[1] + var21;
-						if (var27 >= Canvas3D.height) {
-							var27 = Canvas3D.height - 1;
+						int y2 = y[1] + radius;
+						if (y2 >= Canvas3D.height) {
+							y2 = Canvas3D.height - 1;
 						}
-						for (int var28 = var26; var28 <= var27; ++var28) {
-							int var29 = var28 - var13[1];
-							int var30 = (int) Math.sqrt(var21 * var21 - var29 * var29);
-							int var31 = var13[0] - var30;
-							if (var31 < 0) {
-								var31 = 0;
+						for (int iy = y1; iy <= y2; ++iy) {
+							int dy = iy - y[1];
+							int dist = (int) Math.sqrt(radius * radius - dy * dy);
+							int x1 = y[0] - dist;
+							if (x1 < 0) {
+								x1 = 0;
 							}
-							int var32 = var13[0] + var30;
-							if (var32 >= Canvas3D.width) {
-								var32 = Canvas3D.width - 1;
+							int x2 = y[0] + dist;
+							if (x2 >= Canvas3D.width) {
+								x2 = Canvas3D.width - 1;
 							}
-							int pixel = var31 + var28 * Canvas3D.width;
-							int var34;
-							if (var16.getImage() != null) {
+							int pixel = x1 + iy * Canvas3D.width;
+							if (particle.getImage() != null) {
 								if (Canvas2D.depthBuffer != null) {
-									if (Canvas2D.depthBuffer[pixel++] >= particle.F()) {
-										var16.getImage().drawTransparentSprite(var13[0], var13[1], alpha);
+									if (Canvas2D.depthBuffer[pixel++] >= display.F()) {
+										particle.getImage().drawTransparentSprite(y[0], y[1], alpha);
 									}
 								}
 							} else {
 								try {
-									if (Canvas2D.depthBuffer[pixel++] >= particle.F()) {
-										for (var34 = var31; var34 <= var32; ++var34) {
+									if (Canvas2D.depthBuffer[pixel++] >= display.F()) {
+										for (int ix = x1; ix <= x2; ++ix) {
 											int dstR = (gameScreenIP.anIntArray315[pixel] >> 16 & 255) * srcAlpha;
 											int dstG = (gameScreenIP.anIntArray315[pixel] >> 8 & 255) * srcAlpha;
 											int dstB = (gameScreenIP.anIntArray315[pixel] & 255) * srcAlpha;
@@ -10854,11 +10863,11 @@ public class Client extends GameRenderer {
 		} else {
 			iterator = displayedParticles.iterator();
 			while (iterator.hasNext()) {
-				particle = iterator.next();
-				if (particle != null) {
-					particle.C();
-					if (particle.Z()) {
-						particlesToBeRemoved.add(particle);
+				display = iterator.next();
+				if (display != null) {
+					display.C();
+					if (display.Z()) {
+						particlesToBeRemoved.add(display);
 					}
 				}
 			}
@@ -10876,12 +10885,6 @@ public class Client extends GameRenderer {
 			drawTabArea();
 			drawChatArea();
 			drawMinimap();
-		}
-
-		if (loggedIn) {
-			draw3dScreen();
-			drawConsoleArea();
-			drawConsole();
 		}
 
 		if (loggedIn && Configuration.MONEY_POUCH_ENABLED) {
@@ -10917,6 +10920,12 @@ public class Client extends GameRenderer {
 				this.normalText.drawChatInput(color, x, s, y, true);
 				this.moneyPouchEarningTimer -= 1;
 			}
+		}
+
+		if (loggedIn) {
+			draw3dScreen();
+			drawConsoleArea();
+			drawConsole();
 		}
 
 		if (loggedIn) {

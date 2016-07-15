@@ -102,18 +102,18 @@ public final class Player extends Entity {
 				int nextFrame = spotAnim.animation.frameIDs[super.nextGraphicsAnimationFrame];
 				int cycle1 = spotAnim.animation.delays[super.currentAnim];
 				int cycle2 = super.animCycle;
-				model_3.translate(0, -super.graphicHeight, 0);
-				model_3.createBones();
+				model_3.method475(0, -super.graphicHeight, 0);
+				model_3.method469();
 				// .method470(spotAnim.animFrameSequence.frame2IDS[super.anInt1521]);
 				model_3.interpolateFrames(spotAnim.animation.frameIDs[super.currentAnim], nextFrame, cycle1, cycle2);
-				model_3.triangleSkin = null;
-				model_3.vertexSkin = null;
+				model_3.anIntArrayArray1658 = null;
+				model_3.anIntArrayArray1657 = null;
 
 				if (spotAnim.sizeXY != 128 || spotAnim.sizeZ != 128) {
-					model_3.scaleT(spotAnim.sizeXY, spotAnim.sizeXY, spotAnim.sizeZ);
+					model_3.method478(spotAnim.sizeXY, spotAnim.sizeXY, spotAnim.sizeZ);
 				}
 
-				model_3.light(64 + spotAnim.shadow, 850 + spotAnim.lightness, -30, -50, -30, true);
+				model_3.method479(64 + spotAnim.shadow, 850 + spotAnim.lightness, -30, -50, -30, true);
 				Model aclass30_sub2_sub4_sub6_1s[] = { model, model_3 };
 				model = new Model(aclass30_sub2_sub4_sub6_1s);
 			}
@@ -126,7 +126,7 @@ public final class Player extends Entity {
 
 			if (Client.loopCycle >= anInt1707 && Client.loopCycle < anInt1708) {
 				Model model_1 = aModel_1714;
-				model_1.translate(anInt1711 - super.x, anInt1712 - anInt1709, anInt1713 - super.y);
+				model_1.method475(anInt1711 - super.x, anInt1712 - anInt1709, anInt1713 - super.y);
 
 				if (super.turnDirection == 512) {
 					model_1.method473();
@@ -153,7 +153,7 @@ public final class Player extends Entity {
 					model_1.method473();
 				}
 
-				model_1.translate(super.x - anInt1711, anInt1709 - anInt1712, super.y - anInt1713);
+				model_1.method475(super.x - anInt1711, anInt1709 - anInt1712, super.y - anInt1713);
 			}
 		}
 
@@ -316,9 +316,9 @@ public final class Player extends Entity {
 				}
 			}
 
-			model_1.createBones();
-			model_1.scaleT(132, 132, 132);
-			model_1.light(84, 1000, -90, -580, -90, true);
+			model_1.method469();
+			model_1.method478(132, 132, 132);
+			model_1.method479(84, 1000, -90, -580, -90, true);
 			mruNodes.removeFromCache(model_1, l);
 			aLong1697 = l;
 		}
@@ -338,8 +338,8 @@ public final class Player extends Entity {
 		}
 
 		model_2.method466();
-		model_2.triangleSkin = null;
-		model_2.vertexSkin = null;
+		model_2.anIntArrayArray1658 = null;
+		model_2.anIntArrayArray1657 = null;
 		return model_2;
 	}
 

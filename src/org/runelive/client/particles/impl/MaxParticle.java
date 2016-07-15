@@ -6,8 +6,8 @@ import org.runelive.client.particles.Position;
 public final class MaxParticle extends Particle {
 	
 	public MaxParticle() {
-		this.Z(new Position(0, -3, 0));
-		this.getImage(new Position(0, -3, 0));
+		this.Z(new Position(0, -1, 0));
+		this.getImage(new Position(0, -1, 0));
 		this.getImage(19);
 		this.setRGB(16776960);
 		this.I(1);

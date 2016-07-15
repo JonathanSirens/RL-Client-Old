@@ -446,11 +446,11 @@ public class MapArea extends GameFrame {
 			client.menuActionID[2] = 1006;
 			client.menuActionRow = 3;
 		}
-
-		if (client.mouseX >= Client.clientWidth - (getScreenMode() == ScreenMode.FIXED ? 242 : 164)
-				&& client.mouseX <= Client.clientWidth - (getScreenMode() == ScreenMode.FIXED ? 203 : 129)
+	//super.mouseX >= frameWidth - 171 && super.mouseX <= frameWidth  - 130 && super.mouseY >= 0 && super.mouseY <= 38
+		if (client.mouseX >= Client.clientWidth - (getScreenMode() == ScreenMode.FIXED ? 242 : 171)
+				&& client.mouseX <= Client.clientWidth - (getScreenMode() == ScreenMode.FIXED ? 203 : 130)
 				&& client.mouseY > (getScreenMode() == ScreenMode.FIXED ? 6 : 0)
-				&& client.mouseY < (getScreenMode() == ScreenMode.FIXED ? 42 : 37)) {
+				&& client.mouseY < (getScreenMode() == ScreenMode.FIXED ? 42 : 38)) {
 			client.menuActionName[1] = "Face North";
 			client.menuActionID[1] = 1014;
 			client.menuActionRow = 2;
@@ -697,7 +697,12 @@ public class MapArea extends GameFrame {
 			if (GameFrame.getScreenMode() != ScreenMode.FIXED) {
 				CacheSpriteLoader.getCacheSprite(461).drawSprite(Client.clientWidth - 45, 129);
 			}
-			CacheSpriteLoader.getCacheSprite(456).drawSprite(GameFrame.getScreenMode() == ScreenMode.FIXED ? 6 : Client.clientWidth - 40, GameFrame.getScreenMode() == ScreenMode.FIXED ? 124 : 133);
+			if (GameFrame.getScreenMode() == ScreenMode.FIXED ? client.mouseX >= 522 && client.mouseX <= 559 && client.mouseY >= 121 && client.mouseY <= 157 :
+					client.mouseX >= Client.clientWidth - 44 && client.mouseX <= Client.clientWidth - 3 && client.mouseY >= 131 && client.mouseY <= 170) {
+				CacheSpriteLoader.getCacheSprite(457).drawSprite(GameFrame.getScreenMode() == ScreenMode.FIXED ? 6 : Client.clientWidth - 40, GameFrame.getScreenMode() == ScreenMode.FIXED ? 124 : 133);
+			} else {
+				CacheSpriteLoader.getCacheSprite(456).drawSprite(GameFrame.getScreenMode() == ScreenMode.FIXED ? 6 : Client.clientWidth - 40, GameFrame.getScreenMode() == ScreenMode.FIXED ? 124 : 133);
+			}
 			
 			if (Client.tabID == 14) {
 				CacheSpriteLoader.getCacheSprite(343)

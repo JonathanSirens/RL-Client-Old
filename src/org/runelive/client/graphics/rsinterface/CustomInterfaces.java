@@ -2500,14 +2500,14 @@ public class CustomInterfaces extends RSInterface {
 		addSpriteLoader(5293, 713);
 		setBounds(5293, 13, 13, 0, rsinterface);
 
-		addHoverButtonWSpriteLoader(5384, 714, 17, 17, "Close Window", 0, 5380, 1);
+		addHoverButtonWSpriteLoader(5384, 714, 17, 17, "Close", 0, 5380, 1);
 		addHoveredImageWSpriteLoader(5380, 715, 17, 17, 5379);
 
 		setBounds(5384, 476, 16, 3, rsinterface);
 		setBounds(5380, 476, 16, 4, rsinterface);
 		// addButton(5294, 3, "Interfaces/BANK/BANK", "Click here to handle Bank
 		// PIN");
-		addHoverButtonWSpriteLoader(5294, 716, 114, 25, "Manage Bank PIN", -1, 22045, 1);
+		addHoverButtonWSpriteLoader(5294, 716, 114, 25, "View Bank Pin", -1, 22045, 1);
 		addHoveredImageWSpriteLoader(22045, 717, 114, 25, 22046);
 
 		setBounds(5294, 110, 285, 5, rsinterface);
@@ -2517,7 +2517,7 @@ public class CustomInterfaces extends RSInterface {
 		// addHoverButton(22000, "Interfaces/BANK/BANK", 5, 35, 25, "Deposit
 		// Money-Pouch", 0, 22001, 4);
 		// addHoveredButton(22001, "Interfaces/BANK/BANK", 8 ,35, 25, 22002);
-		addHoverButtonWSpriteLoader(27009, 718, 35, 25, "Deposit Money-Pouch", -1, 27010, 1);
+		addHoverButtonWSpriteLoader(27009, 718, 35, 25, "Deposit Money Pouch", -1, 27010, 1);
 		addHoveredImageWSpriteLoader(27010, 719, 35, 25, 27011);
 
 		// addBankHover(22000, 4, 22001, 5, 8, "Interfaces/BANK/BANK", 35, 25,
@@ -2532,7 +2532,7 @@ public class CustomInterfaces extends RSInterface {
 
 		setBounds(22004, 65, 285, 8, rsinterface);
 		setBounds(22005, 50, 225, 9, rsinterface);
-		addBankHover(22008, 4, 22009, 9, 11, "Interfaces/BANK/BANK", 35, 25, 115, 1, "Withdraw as Note", 22010, 10, 12,
+		addBankHover(22008, 4, 22009, 9, 11, "Interfaces/BANK/BANK", 35, 25, 115, 1, "Toggle Note/Un-note", 22010, 10, 12,
 				"Interfaces/BANK/BANK", 22011, "Switch to note withdrawal \nmode", "Switch to item withdrawal \nmode",
 				12, 20, 723, 722);
 		setBounds(22008, 285, 285, 10, rsinterface);
@@ -2541,7 +2541,7 @@ public class CustomInterfaces extends RSInterface {
 		// "Deposit carried tems", 22014, 18, "Interfaces/BANK/BANK", 22015,
 		// "Empty your backpack into\nyour bank", 0, 20);
 
-		addHoverButtonWSpriteLoader(22012, 724, 35, 25, "Deposit carried items", -1, 22013, 1);
+		addHoverButtonWSpriteLoader(22012, 724, 35, 25, "Deposit Inventory", -1, 22013, 1);
 		addHoveredImageWSpriteLoader(22013, 725, 35, 25, 22014);
 
 		setBounds(22012, 375, 285, 12, rsinterface);
@@ -2550,7 +2550,7 @@ public class CustomInterfaces extends RSInterface {
 		// "Deposit worn items", 22018, 20, "Interfaces/BANK/BANK", 22019,
 		// "Empty the items your are\nwearing into your bank", 0, 20);
 
-		addHoverButtonWSpriteLoader(27005, 726, 35, 25, "Deposit worn items", -1, 27006, 1);
+		addHoverButtonWSpriteLoader(27005, 726, 35, 25, "Deposit Equipment", -1, 27006, 1);
 		addHoveredImageWSpriteLoader(27006, 727, 35, 25, 27007);
 
 		setBounds(27005, 415, 285, 14, rsinterface);
@@ -2566,7 +2566,7 @@ public class CustomInterfaces extends RSInterface {
 		setBounds(27023, 455, 285, 16, rsinterface);
 		setBounds(27024, 455, 285, 17, rsinterface);
 
-		addButtonWSpriteLoader(27014, 730, "Click here to view the full contents of your bank");
+		addButtonWSpriteLoader(27014, 730, "View main tab");
 		setBounds(27014, 22, 36, 18, rsinterface);
 		addButtonWSpriteLoader(27015, 731, "Drag an item here to create a new tab");
 		setBounds(27015, 70, 36, 19, rsinterface);
@@ -2589,23 +2589,23 @@ public class CustomInterfaces extends RSInterface {
 		setBounds(22033, 473, 42, 27, rsinterface);
 		addText(22034, "496", tda, 0, 0xb4965a, true, false);
 		setBounds(22034, 473, 57, 28, rsinterface);
-		addBankItem(22035, Boolean.valueOf(false));
+		addBankItem(22035, Boolean.valueOf(true));
 		setBounds(22035, 77, 39, 29, rsinterface);
-		addBankItem(22036, Boolean.valueOf(false));
+		addBankItem(22036, Boolean.valueOf(true));
 		setBounds(22036, 125, 39, 30, rsinterface);
-		addBankItem(22037, Boolean.valueOf(false));
+		addBankItem(22037, Boolean.valueOf(true));
 		setBounds(22037, 173, 39, 31, rsinterface);
-		addBankItem(22038, Boolean.valueOf(false));
+		addBankItem(22038, Boolean.valueOf(true));
 		setBounds(22038, 221, 39, 32, rsinterface);
-		addBankItem(22039, Boolean.valueOf(false));
+		addBankItem(22039, Boolean.valueOf(true));
 		setBounds(22039, 269, 39, 33, rsinterface);
-		addBankItem(22040, Boolean.valueOf(false));
+		addBankItem(22040, Boolean.valueOf(true));
 		setBounds(22040, 317, 39, 34, rsinterface);
-		addBankItem(22041, Boolean.valueOf(false));
+		addBankItem(22041, Boolean.valueOf(true));
 		setBounds(22041, 365, 39, 35, rsinterface);
-		addBankItem(22042, Boolean.valueOf(false));
+		addBankItem(22042, Boolean.valueOf(true));
 		setBounds(22042, 413, 39, 36, rsinterface);
-		addBankHover(21000, 4, 21001, 431, 432, 35, 25, 304, 1, "Swap Withdraw Mode", 21002, 174, 173, 21003,
+		addBankHover(21000, 4, 21001, 431, 432, 35, 25, 304, 1, "Toggle Insert/Swap", 21002, 174, 173, 21003,
 				"Switch to insert items \nmode", "Switch to swap items \nmode.", 12, 20);
 		setBounds(21000, 240, 285, 37, rsinterface);
 		addText(27000, "0", 0xff981f, false, true, 52, tda, 1);

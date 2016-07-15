@@ -158,6 +158,16 @@ public final class ObjectDefinition {
 			}
 		}
 		switch (id) {
+			case 2986:
+			case 2983:
+			case 2984:
+			case 2985:
+			case 2982:
+			case 2981:
+			case 2988:
+			case 2987:
+				definition.description = "A posy of beautiful flowers".getBytes();
+				break;
 		case 398:
 			definition.name = "Wilderness coffin";
 			break;
@@ -1553,7 +1563,7 @@ public final class ObjectDefinition {
 		 * totalObjects; j++) { streamIndices667[j] = i; i +=
 		 * idxBuffer667.getUnsignedShort(); }
 		 *
-		 * 
+		 *
 		 * cache = new ObjectDefinition[20]; for (int k = 0; k < 20; k++) {
 		 * cache[k] = new ObjectDefinition(); }
 		 */
@@ -1662,14 +1672,14 @@ public final class ObjectDefinition {
 			}
 			boolean flag1 = true;
 			for (int objectModelID : objectModelIDs) {
-				flag1 &= Model.method463(objectModelID & 0xffff);
+				flag1 &= Model.isModelLoaded(objectModelID & 0xffff);
 			}
 
 			return flag1;
 		}
 		for (int j = 0; j < anIntArray776.length; j++) {
 			if (anIntArray776[j] == i) {
-				return Model.method463(objectModelIDs[j] & 0xffff);
+				return Model.isModelLoaded(objectModelIDs[j] & 0xffff);
 			}
 		}
 
@@ -1686,13 +1696,13 @@ public final class ObjectDefinition {
 		}
 		if (adjustToTerrain) {
 			int l1 = (k + l + i1 + j1) / 4;
-			for (int i2 = 0; i2 < model.vertexCount; i2++) {
-				int j2 = model.vertexX[i2];
-				int k2 = model.vertexZ[i2];
+			for (int i2 = 0; i2 < model.anInt1626; i2++) {
+				int j2 = model.anIntArray1627[i2];
+				int k2 = model.anIntArray1629[i2];
 				int l2 = k + (l - k) * (j2 + 64) / 128;
 				int i3 = j1 + (i1 - j1) * (j2 + 64) / 128;
 				int j3 = l2 + (i3 - l2) * (k2 + 64) / 128;
-				model.vertexY[i2] += j3 - l1;
+				model.anIntArray1628[i2] += j3 - l1;
 			}
 
 			model.method467();
@@ -1706,7 +1716,7 @@ public final class ObjectDefinition {
 		}
 		boolean flag1 = true;
 		for (int objectModelID : objectModelIDs) {
-			flag1 &= Model.method463(objectModelID & 0xffff);
+			flag1 &= Model.isModelLoaded(objectModelID & 0xffff);
 		}
 		return flag1;
 	}
@@ -1755,7 +1765,7 @@ public final class ObjectDefinition {
 				}
 				model = (Model) mruNodes1.insertFromCache(l2);
 				if (model == null) {
-					model = Model.method462(l2 & 0xffff);
+					model = Model.fetchModel(l2 & 0xffff);
 					if (model == null) {
 						return null;
 					}
@@ -1800,7 +1810,7 @@ public final class ObjectDefinition {
 			}
 			model = (Model) mruNodes1.insertFromCache(j2);
 			if (model == null) {
-				model = Model.method462(j2 & 0xffff);
+				model = Model.fetchModel(j2 & 0xffff);
 				if (model == null) {
 					return null;
 				}
@@ -1817,10 +1827,10 @@ public final class ObjectDefinition {
 		Model model_3 = new Model(modifiedModelColors == null, FrameReader.isNullFrame(k),
 				l == 0 && k == -1 && !flag && !flag2, model);
 		if (k != -1) {
-			model_3.createBones();
+			model_3.method469();
 			model_3.applyTransform(k);
-			model_3.triangleSkin = null;
-			model_3.vertexSkin = null;
+			model_3.anIntArrayArray1658 = null;
+			model_3.anIntArrayArray1657 = null;
 		}
 		while (l-- > 0) {
 			model_3.method473();
@@ -1832,12 +1842,12 @@ public final class ObjectDefinition {
 
 		}
 		if (flag) {
-			model_3.scaleT(modelSizeX, modelSizeY, modelSizeH);
+			model_3.method478(modelSizeX, modelSizeY, modelSizeH);
 		}
 		if (flag2) {
-			model_3.translate(offsetX, offsetH, offsetY);
+			model_3.method475(offsetX, offsetH, offsetY);
 		}
-		model_3.light(64 + brightness, 768 + contrast * 5, -50, -10, -50, !nonFlatShading);
+		model_3.method479(64 + brightness, 768 + contrast * 5, -50, -10, -50, !nonFlatShading);
 		if (anInt760 == 1) {
 			model_3.anInt1654 = model_3.modelHeight;
 		}

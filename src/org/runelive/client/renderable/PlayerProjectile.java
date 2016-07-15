@@ -44,15 +44,15 @@ public final class PlayerProjectile extends Animable {
 			j = spotAnim.animation.frameIDs[animFrameId];
 		Model model_1 = new Model(true, FrameReader.isNullFrame(j), false, model);
 		if (j != -1) {
-			model_1.createBones();
+			model_1.method469();
 			model_1.applyTransform(j);
-			model_1.triangleSkin = null;
-			model_1.vertexSkin = null;
+			model_1.anIntArrayArray1658 = null;
+			model_1.anIntArrayArray1657 = null;
 		}
 		if (spotAnim.sizeXY != 128 || spotAnim.sizeZ != 128)
-			model_1.scaleT(spotAnim.sizeXY, spotAnim.sizeXY, spotAnim.sizeZ);
-		model_1.rotateX(rotationX);
-		model_1.light(64 + spotAnim.shadow, 5050 + spotAnim.lightness, -90, -580, -90, true);
+			model_1.method478(spotAnim.sizeXY, spotAnim.sizeXY, spotAnim.sizeZ);
+		model_1.method474(rotationX);
+		model_1.method479(64 + spotAnim.shadow, 5050 + spotAnim.lightness, -90, -580, -90, true);
 		return model_1;
 		/*
 		 * Model model = spotAnim.getModel(); if (model == null) {

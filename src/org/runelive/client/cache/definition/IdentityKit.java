@@ -54,7 +54,7 @@ public final class IdentityKit {
 		boolean flag = true;
 
 		for (int j = 0; j < bodyModelIds.length; j++) {
-			if (!Model.method463(bodyModelIds[j])) {
+			if (!Model.isModelLoaded(bodyModelIds[j])) {
 				flag = false;
 			}
 		}
@@ -70,7 +70,7 @@ public final class IdentityKit {
 		Model models[] = new Model[bodyModelIds.length];
 
 		for (int i = 0; i < bodyModelIds.length; i++) {
-			models[i] = Model.method462(bodyModelIds[i]);
+			models[i] = Model.fetchModel(bodyModelIds[i]);
 		}
 
 		Model model;
@@ -95,7 +95,7 @@ public final class IdentityKit {
 		boolean flag1 = true;
 
 		for (int i = 0; i < 5; i++) {
-			if (headModelIds[i] != -1 && !Model.method463(headModelIds[i])) {
+			if (headModelIds[i] != -1 && !Model.isModelLoaded(headModelIds[i])) {
 				flag1 = false;
 			}
 		}
@@ -109,7 +109,7 @@ public final class IdentityKit {
 
 		for (int k = 0; k < 5; k++) {
 			if (headModelIds[k] != -1) {
-				models[j++] = Model.method462(headModelIds[k]);
+				models[j++] = Model.fetchModel(headModelIds[k]);
 			}
 		}
 

@@ -126,6 +126,10 @@ public final class ItemDefinition {
 		}
 		ItemDefinition itemDef2;
 		switch (customId) {
+			case 10008:
+			case 10009:
+				itemDef.modelOffsetY = -28;
+				break;
 			case 11907:
 				itemDef.name = "Gold-trimmed wizard set";
 				break;
@@ -330,7 +334,7 @@ public final class ItemDefinition {
 				break;
 			case 21115:
 				itemDef.immitate(get(15459));
-				itemDef.originalModelColors = new int[] { 6020, 6020 };
+				itemDef.originalModelColors = new int[] { 1, 1 };
 				itemDef.modifiedModelColors = new int[] { 43955, 22439 };
 				itemDef.name = "Defender lvl 6";
 				break;
@@ -355,7 +359,7 @@ public final class ItemDefinition {
 				itemDef.actions = new String[5];
 				itemDef.actions[1] = "Wield";
 				itemDef.actions[3] = "Check";
-				itemDef.originalModelColors = new int[] { 6020 };
+				itemDef.originalModelColors = new int[] { 1 };
 				itemDef.modifiedModelColors = new int[] { 43963 };
 				break;
 			case 21119:
@@ -2595,7 +2599,7 @@ public final class ItemDefinition {
 			case 21042:
 				itemDef.setDefaults();
 				itemDef.immitate(get(11732));
-				itemDef.originalModelColors = new int[] { 6020 };
+				itemDef.originalModelColors = new int[] { 1 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				break;
 			case 21016:
@@ -2735,7 +2739,7 @@ public final class ItemDefinition {
 			case 21034:
 				itemDef.setDefaults();
 				itemDef.immitate(get(1053));
-				itemDef.originalModelColors = new int[] { 6020 };
+				itemDef.originalModelColors = new int[] { 1 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				itemDef.name = "Black halloween mask";
 				break;
@@ -2791,14 +2795,14 @@ public final class ItemDefinition {
 			case 21048:
 				itemDef.setDefaults();
 				itemDef.immitate(get(1050));
-				itemDef.originalModelColors = new int[] { 6020 };
+				itemDef.originalModelColors = new int[] { 1 };
 				itemDef.modifiedModelColors = new int[] { 933 };
 				itemDef.name = "Black santa hat";
 				break;
 			case 21049:
 				itemDef.setDefaults();
 				itemDef.immitate(get(1038));
-				itemDef.originalModelColors = new int[] { 6020 };
+				itemDef.originalModelColors = new int[] { 1 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				itemDef.name = "Black partyhat";
 				break;
@@ -5944,7 +5948,7 @@ public final class ItemDefinition {
 				itemDef.immitate(get(6666));
 				itemDef.name = "Black flippers";
 				itemDef.modifiedModelColors = new int[] { 11171, 11175 };
-				itemDef.originalModelColors = new int[] { 6020, 6020 + 4 };
+				itemDef.originalModelColors = new int[] { 1, 1 + 4 };
 				break;
 
 			case 21123:
@@ -6194,7 +6198,7 @@ public final class ItemDefinition {
 
 		int l3 = Canvas3D.SINE[definition.modelRotation1] * k3 >> 16;
 		int i4 = Canvas3D.COSINE[definition.modelRotation1] * k3 >> 16;
-		model.renderSingle(definition.modelRotation2, definition.modelOffsetX, definition.modelRotation1,
+		model.method482(definition.modelRotation2, definition.modelOffsetX, definition.modelRotation1,
 				definition.modelOffset1, l3 + model.modelHeight / 2 + definition.modelOffsetY,
 				i4 + definition.modelOffsetY);
 
@@ -6369,7 +6373,7 @@ public final class ItemDefinition {
 
 		int l3 = Canvas3D.SINE[definition.modelRotation1] * k3 >> 16;
 		int i4 = Canvas3D.COSINE[definition.modelRotation1] * k3 >> 16;
-		model.renderSingle(definition.modelRotation2, definition.modelOffsetX, definition.modelRotation1,
+		model.method482(definition.modelRotation2, definition.modelOffsetX, definition.modelRotation1,
 				definition.modelOffset1, l3 + model.modelHeight / 2 + definition.modelOffsetY,
 				i4 + definition.modelOffsetY);
 
@@ -6576,14 +6580,14 @@ public final class ItemDefinition {
 			return model;
 		}
 
-		model = Model.method462(modelID);
+		model = Model.fetchModel(modelID);
 
 		if (model == null) {
 			return null;
 		}
 
 		if (anInt167 != 128 || anInt192 != 128 || anInt191 != 128) {
-			model.scaleT(anInt167, anInt191, anInt192);
+			model.method478(anInt167, anInt191, anInt192);
 		}
 
 		if (modifiedModelColors != null) {
@@ -6592,7 +6596,7 @@ public final class ItemDefinition {
 			}
 		}
 
-		model.light(64 + anInt196, 768 + anInt184, -50, -10, -50, true);
+		model.method479(64 + anInt196, 768 + anInt184, -50, -10, -50, true);
 		model.aBoolean1659 = true;
 		if (this.id != 21088) {
 			mruNodes2.removeFromCache(model, id);
@@ -6615,11 +6619,11 @@ public final class ItemDefinition {
 
 		boolean flag = true;
 
-		if (!Model.method463(k)) {
+		if (!Model.isModelLoaded(k)) {
 			flag = false;
 		}
 
-		if (l != -1 && !Model.method463(l)) {
+		if (l != -1 && !Model.isModelLoaded(l)) {
 			flag = false;
 		}
 
@@ -6639,10 +6643,10 @@ public final class ItemDefinition {
 			return null;
 		}
 
-		Model model = Model.method462(k);
+		Model model = Model.fetchModel(k);
 
 		if (l != -1) {
-			Model model_1 = Model.method462(l);
+			Model model_1 = Model.fetchModel(l);
 			Model models[] = { model, model_1 };
 			model = new Model(2, models);
 		}
@@ -6673,15 +6677,15 @@ public final class ItemDefinition {
 
 		boolean flag = true;
 
-		if (!Model.method463(k)) {
+		if (!Model.isModelLoaded(k)) {
 			flag = false;
 		}
 
-		if (l != -1 && !Model.method463(l)) {
+		if (l != -1 && !Model.isModelLoaded(l)) {
 			flag = false;
 		}
 
-		if (i1 != -1 && !Model.method463(i1)) {
+		if (i1 != -1 && !Model.isModelLoaded(i1)) {
 			flag = false;
 		}
 
@@ -6703,27 +6707,27 @@ public final class ItemDefinition {
 			return null;
 		}
 
-		Model model = Model.method462(j);
+		Model model = Model.fetchModel(j);
 
 		if (k != -1) {
 			if (l != -1) {
-				Model model_1 = Model.method462(k);
-				Model model_3 = Model.method462(l);
+				Model model_1 = Model.fetchModel(k);
+				Model model_3 = Model.fetchModel(l);
 				Model model_1s[] = { model, model_1, model_3 };
 				model = new Model(3, model_1s);
 			} else {
-				Model model_2 = Model.method462(k);
+				Model model_2 = Model.fetchModel(k);
 				Model models[] = { model, model_2 };
 				model = new Model(2, models);
 			}
 		}
 
 		if (i == 0 && (maleWieldX != 0 || maleWieldY != 0 || maleWieldZ != 0)) {
-			model.translate(maleWieldX, maleWieldY, maleWieldZ);
+			model.method475(maleWieldX, maleWieldY, maleWieldZ);
 		}
 
 		if (i == 1 && (femaleWieldX != 0 || femaleWieldY != 0 || femaleWieldZ != 0)) {
-			model.translate(femaleWieldX, femaleWieldY, femaleWieldZ);
+			model.method475(femaleWieldX, femaleWieldY, femaleWieldZ);
 		}
 
 		//Cheap fix for the offsets of female wield models
@@ -6765,7 +6769,7 @@ public final class ItemDefinition {
 			}
 		}
 
-		Model model = Model.method462(modelID);
+		Model model = Model.fetchModel(modelID);
 
 		if (model == null) {
 			return null;

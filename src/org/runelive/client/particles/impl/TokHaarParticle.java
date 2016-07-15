@@ -9,7 +9,7 @@ public final class TokHaarParticle extends Particle {
 		this.Z(new Position(0, -3, 0));
 		this.getImage(new Position(0, -3, 0));
 		this.getImage(19);
-		this.setRGB(16174437);
+		this.setRGB(0xF6CD65);
 		this.I(1);
 		this.Z(1.5F);
 		this.getImage(0.0F);

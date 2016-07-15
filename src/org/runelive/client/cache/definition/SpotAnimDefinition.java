@@ -149,7 +149,7 @@ public final class SpotAnimDefinition {
 			return model;
 		}
 
-		model = Model.method462(modelId);
+		model = Model.fetchModel(modelId);
 
 		if (model == null) {
 			return null;
