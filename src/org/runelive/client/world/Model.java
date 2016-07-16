@@ -408,11 +408,19 @@ public class Model extends Animable {
 			read622Model(is, modelId);
 		else
 			readOldModel(modelId);
-		if (newmodel[modelId]) {
+		/*if (newmodel[modelId]) {
 			if (anIntArray1638 != null) {
 				for (int index = 0; index < anIntArray1638.length; index++) {
 					anIntArray1638[index] = 10;
 				}
+			}
+		}*/
+
+		if ((modelId >= 53347 && modelId <= 53370) || (modelId >= 76001 && modelId <= 76047)) {
+			// recolour(0, 255);
+			if (anIntArray1638 != null) { // rofl
+				for (int j = 0; j < anIntArray1638.length; j++)
+					anIntArray1638[j] = 10;
 			}
 		}
 
@@ -997,6 +1005,11 @@ public class Model extends Animable {
 		anIntArray1633 = facePoint3;
 		upscale(1);
 		downscale();
+		if (anIntArray1638 != null) {
+			for (int j = 0; j < anIntArray1638.length; j++) {
+				anIntArray1638[j] = 10;
+			}
+		}
 	}
 
 	private void readOldModel(int i) {

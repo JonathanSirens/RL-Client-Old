@@ -16205,12 +16205,12 @@ public class Client extends GameRenderer {
 		}
 		getToolTipText[0] = (Skills.SKILL_NAMES[skillLevel] + ": " + currentLevel + "/" + maxLevel + "\\n");
 		getToolTipText[1] = ("Current XP: " + (maxLevel < 99 ? "" : "") + String.format("%, d", currentExp[getSkillIds[skillLevel]]) + "\\n");
-		getToolTipText[2] = "Remainder: " + NumberFormat.getIntegerInstance().format(PlayerHandler.getXPForLevel(maxStats[getSkillIds[skillLevel]] + 1) - currentExp[getSkillIds[skillLevel]]) + "\\n";
-		getToolTipText[3] = ("Next level: " + String.format("%, d", PlayerHandler.getXPForLevel(maxLevel + 1) - currentExp[getSkillIds[skillLevel]]));
+		//getToolTipText[2] = "Remainder: " + NumberFormat.getIntegerInstance().format(PlayerHandler.getXPForLevel(maxStats[getSkillIds[skillLevel]] + 1) - currentExp[getSkillIds[skillLevel]]) + "\\n";
+		getToolTipText[2] = ("Next level: " + String.format("%, d", PlayerHandler.getXPForLevel(maxLevel + 1) - currentExp[getSkillIds[skillLevel]]));
 		toolTiptext = getToolTipText[0] + getToolTipText[1];
 		boolean onNewLine = false;
 		if (maxLevel < 99) {
-			toolTiptext += getToolTipText[2] + getToolTipText[3];
+			toolTiptext += getToolTipText[2];
 			onNewLine = true;
 		}
 		if ((currentExp[getSkillIds[skillLevel]] < 1000000000) && init > -1 && goal > -1) {

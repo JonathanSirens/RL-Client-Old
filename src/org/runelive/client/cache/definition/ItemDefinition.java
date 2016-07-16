@@ -67,17 +67,6 @@ public final class ItemDefinition {
 		buffer.position = streamIndices[id];
 		itemDef.id = id;
 		itemDef.setDefaults();
-		/*
-		 * if (Hardcode.readOSRSItem(itemDef)) { if
-		 * (!itemDef.name.contains("hat") && !itemDef.name.contains("boot") &&
-		 * !itemDef.name.contains("cape")) { itemDef.maleWieldY += 8;
-		 * itemDef.femaleWieldY += 8; }
-		 *
-		 * if (itemDef.name.contains("hat")) { itemDef.maleWieldZ = 5;
-		 * itemDef.femaleWieldZ = 5; }
-		 *
-		 * } else { itemDef.readValues(buffer); }
-		 */
 		itemDef.readValues(buffer);
 
 		if (itemDef.modifiedModelColors != null) {
@@ -104,22 +93,6 @@ public final class ItemDefinition {
 		int customId = itemDef.id;
 
 		if (customId >= 13700 && customId <= 13709) {
-			/*
-			 * final ItemDefinition stat = get(14876); definition.name = "Tier "
-			 * + (1 + (customId - 13700)) + " Emblem"; definition.actions =
-			 * stat.actions.clone(); //definition.modifiedModelColors =
-			 * stat.modifiedModelColors.clone();
-			 * //definition.originalModelColors =
-			 * stat.originalModelColors.clone(); definition.modelID =
-			 * stat.modelID; definition.modelOffset1 = stat.modelOffset1;
-			 * definition.modelOffsetY = stat.modelOffsetY;
-			 * definition.modelRotation1 = stat.modelRotation1;
-			 * definition.modelRotation2 = stat.modelRotation2;
-			 * definition.groundActions = stat.groundActions; definition.value =
-			 * stat.value; definition.modelZoom = stat.modelZoom;
-			 * definition.certID = -1; definition.certTemplateID = -1;
-			 * definition.stackable = false;
-			 */
 			itemDef.certID = -1;
 			itemDef.certTemplateID = -1;
 			itemDef.stackable = false;
