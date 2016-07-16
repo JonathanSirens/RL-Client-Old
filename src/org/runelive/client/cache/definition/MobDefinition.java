@@ -1026,6 +1026,14 @@ public final class MobDefinition {
 			definition.adjustVertextPointsXOrY = 128;
 			definition.adjustVertextPointZ = 128;
 			break;
+		case 3062:
+			definition.name = "Crazy archaeologist";
+			definition.npcModels = new int[] { 6364, 203, 250, 292, 3707, 173, 176, 254, 185, 556 };
+			definition.actions = new String[] {null, "Attack", null, null, null};
+			definition.standAnimation = 3846;
+			definition.walkAnimation = 819;
+			definition.combatLevel = 204;
+			break;
 		case 3053:
 			definition.npcModels = new int[] { 46058, 46057 };
 			definition.name = "Bandos avatar";
