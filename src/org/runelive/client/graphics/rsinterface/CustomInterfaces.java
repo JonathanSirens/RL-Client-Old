@@ -1778,13 +1778,18 @@ public class CustomInterfaces extends RSInterface {
 		addText(19151, "Absorb Ranged: +0%", tda, 1, 0xFF9200, false, true);// 19151
 		addText(19152, "Ranged Strength: +0", tda, 1, 0xFF9200, false, true);// 19152
 		addText(19153, "Magic Damage: +0%", tda, 1, 0xFF9200, false, true);// 19153
+		addText(19500, "Max Hits", tda, 2, 0xFF8900, true, true);
+		addText(19501, "Melee: 81", tda, 1, 0xFF8900, true, true);
+		addText(19502, "Magic: 31", tda, 1, 0xFF8900, true, true);
+		addText(19503, "Range: 41", tda, 1, 0xFF8900, true, true);
+
 		for (int i = 1675; i <= 1684; i++) {
 			addText(i, "", tda, 1, 0xFF9200, false, true);
 		}
 		textSize(1686, tda, 1);
 		textSize(1687, tda, 1);
 		addChar(15125);
-		tab.totalChildren(51);
+		tab.totalChildren(55);
 		tab.child(0, 21173, 15, 5);
 		tab.child(1, 15210, 478, 9);
 		tab.child(2, 15111, 14, 30);
@@ -1853,6 +1858,10 @@ public class CustomInterfaces extends RSInterface {
 			rsi.centerText = false;
 		}
 		tab.child(50, 15215, 478, 9);
+		tab.child(51, 19500, 417, 260);
+		tab.child(52, 19501, 417, 275);
+		tab.child(53, 19502, 417, 290);
+		tab.child(54, 19503, 417, 305);
 	}
 
 	public static void constructionWaiting() {
