@@ -1778,10 +1778,10 @@ public class CustomInterfaces extends RSInterface {
 		addText(19151, "Absorb Ranged: +0%", tda, 1, 0xFF9200, false, true);// 19151
 		addText(19152, "Ranged Strength: +0", tda, 1, 0xFF9200, false, true);// 19152
 		addText(19153, "Magic Damage: +0%", tda, 1, 0xFF9200, false, true);// 19153
-		addText(19500, "Max Hits", tda, 2, 0xFF8900, true, true);
-		addText(19501, "Melee: 81", tda, 1, 0xFF8900, true, true);
-		addText(19502, "Magic: 31", tda, 1, 0xFF8900, true, true);
-		addText(19503, "Range: 41", tda, 1, 0xFF8900, true, true);
+		addText(19500, "Combat Max Hits", tda, 2, 0xFF8900, true, true);
+		addText(19501, "Melee: 0", tda, 1, 0xFF8900, true, true);
+		addText(19502, "Magic: 0", tda, 1, 0xFF8900, true, true);
+		addText(19503, "Range: 0", tda, 1, 0xFF8900, true, true);
 
 		for (int i = 1675; i <= 1684; i++) {
 			addText(i, "", tda, 1, 0xFF9200, false, true);
