@@ -17254,7 +17254,58 @@ public class Client extends GameRenderer {
 												.append((int) maxHitpoints).toString(),
 										spriteDrawX, spriteDrawY - 22, color, 0x000000);
 							}
+
+							//Custom health interface
+
+							int spriteWidth = 30;
+
+							if (((Entity) (obj)).maxHealth >= 300000) {
+								spriteWidth = 30;
+							}
+
+							int width = (((Entity) (obj)).currentHealth * spriteWidth) / ((Entity) (obj)).maxHealth;
+
+							if (width > spriteWidth) {
+								width = spriteWidth;
+							}
+							String name = "";
+
+							if (((Entity) (obj)) != null && ((Entity) (obj)).currentHealth > 0) {
+								spriteWidth = 105;
+
+								int den = ((Entity) (obj)).maxHealth == 0 ? 1 : ((Entity) (obj)).maxHealth;
+
+								width = (((Entity) (obj)).currentHealth * spriteWidth) / den;
+
+								if (width > spriteWidth) {
+									width = spriteWidth;
+								}
+
+								Canvas2D.fillPixels(1, 115, 65, 0, 20);
+								Canvas2D.drawPixels(13, 45, 6, 0x009933, width);
+								Canvas2D.drawPixels(13, 45, 6 + width, 0xCC0000, (spriteWidth - width));
+
+								if (obj instanceof NPC) {
+									name = ((NPC) obj).definitionOverride.name;
+								} else if (obj instanceof Player) {
+									name = ((Player) obj).name;
+								}
+
+								if (CacheSpriteLoader.getCacheSprite(1191) != null) {
+									CacheSpriteLoader.getCacheSprite(1191).drawTransparentSprite(5, 62, 255);
+								}
+								if (CacheSpriteLoader.getCacheSprite(1190) != null) {
+									CacheSpriteLoader.getCacheSprite(1190).drawTransparentSprite(0, 20, 50);
+								}
+
+								smallText.drawRegularText(true, 32, 0xFFFFFD, ((Entity) (obj)).currentHealth + " / " + ((Entity) (obj)).maxHealth, 56);
+								smallText.drawCenteredText(0xFFFFFD, 57, name, 35, true);
+
+							}
+
 						}
+
+
 					} catch (Exception e) {
 					}
 				}
