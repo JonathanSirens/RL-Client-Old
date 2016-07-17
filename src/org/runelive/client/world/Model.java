@@ -2641,12 +2641,36 @@ public class Model extends Animable {
 				Position point = new Position(x, -y, z);
 
 				for (var21 = 0; var21 < var27.D(); ++var21) {
-					ParticleDisplay var29 = new ParticleDisplay(var27, point, depth);
-					Client.instance.I(var29);
+					boolean rainbowColor = false;
+					ParticleDisplay display = new ParticleDisplay(var27, point, depth);
+					if (rainbowColor) {
+						int mspercolor = 1000;
+						int ms = (int)(System.currentTimeMillis() % (mspercolor * rainbow.length));
+						int currentcolor = ms / mspercolor;
+						int timepassed = ms % mspercolor;
+						int[] colora = rainbow[currentcolor % rainbow.length];
+						int[] colorb = rainbow[(currentcolor+1) % rainbow.length];
+						int[] colorc = new int[] { 
+							colora[0] + ((colorb[0] - colora[0]) * timepassed / mspercolor),
+							colora[1] + ((colorb[1] - colora[1]) * timepassed / mspercolor),
+							colora[2] + ((colorb[2] - colora[2]) * timepassed / mspercolor),
+						};
+						display.setRgb(getRGBInt(colorc[0], colorc[1], colorc[2]));
+					}
+					Client.instance.I(display);
 				}
 			}
 		}
 	}
+
+	private static int[][] rainbow = new int[][] {
+		{255, 0, 0}, // red
+		{255, 200, 0 }, // orange
+		{255, 255, 0}, // yellow
+		{0, 255, 0}, // green
+		{0, 0, 255}, // blue
+		{255, 0, 255}, // purple
+	};
 
 	public static int getRGBInt(int r, int g, int b) {
 		int color = 0;

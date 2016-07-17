@@ -307,6 +307,7 @@ public class ChatArea extends GameFrame {
 						byte playerRights = 0;
 						int ironman = 0;
 
+
 						if (name != null && name.indexOf("@") == 0) {
 							int substringLength = Client.getClient().getPrefixSubstringLength(name);
 							name = name.substring(substringLength);

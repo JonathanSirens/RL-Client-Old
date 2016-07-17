@@ -209,7 +209,6 @@ public abstract class Class5_Sub2 extends Class5 implements Runnable {
 					break;
 				}
 			}
-			Client.sleep(50L);
 		}
 	}
 

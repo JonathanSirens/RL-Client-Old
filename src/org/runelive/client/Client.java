@@ -8141,7 +8141,7 @@ public class Client extends GameRenderer {
 		if (menuActionRow > 2) {
 			tooltip = tooltip + "@whi@ / " + (menuActionRow - 2) + " more options";
 		}
-		newBoldFont.drawBasicString(tooltip, 4, 15, 0xFFFFFF, 0, true);
+		newRegularFont.drawBasicString(tooltip, 4, 15, 0xFFFFFF, 0, true);
 		// boldText.method390(4, 0xffffff, tooltip, loopCycle / 1000,
 		// 15);
 		if (Configuration.NEW_CURSORS) {
