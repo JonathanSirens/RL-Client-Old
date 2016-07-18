@@ -382,6 +382,7 @@ public class Client extends GameRenderer {
 		updateSetting(26058, Configuration.HIGH_DETAIL);
 		updateSetting(26035, Configuration.FOG_ENABLED);
 		updateSetting(26037, Configuration.TOGGLE_ROOF_OFF);
+		updateSetting(26039, Configuration.PARTICLES);
 	}
 
 	private boolean hovered(RSInterface rsi) {
@@ -5151,6 +5152,12 @@ public class Client extends GameRenderer {
 				pushMessage("New hitmarks turned " + (Configuration.NEW_HITMARKS ? "on" : "off") + ".", 0, "");
 				Settings.save();
 				updateSetting(interfaceId, !Configuration.NEW_HITMARKS);
+				break;
+			case 26039:
+				Configuration.PARTICLES = !Configuration.PARTICLES;
+				pushMessage("Particles turned " + (Configuration.PARTICLES ? "on" : "off") + ".", 0, "");
+				Settings.save();
+				updateSetting(interfaceId, !Configuration.PARTICLES);
 				break;
 			case 26007:
 				Configuration.NEW_FUNCTION_KEYS = !Configuration.NEW_FUNCTION_KEYS;
@@ -10780,104 +10787,104 @@ public class Client extends GameRenderer {
 		if (Configuration.FOG_ENABLED && !underground) {
 			fog.render(2200, 3000, 0xc8c0a8);
 		}
-		
-		Iterator<ParticleDisplay> iterator;
-		ParticleDisplay display;
-		if (displayParticles) {
-			iterator = displayedParticles.iterator();
-			while (iterator.hasNext()) {
-				display = iterator.next();
-				if (display != null) {
-					display.C();
-					if (display.Z()) {
-						particlesToBeRemoved.add(display);
-					} else {
-						Particle particle = display.B();
-						int displayX = display.D().I();
-						int displayY = display.D().Z();
-						int displayZ = display.D().C();
-						int width;
-						int height;
-						if (particle.getImage() == null) {
-							width = 8;
-							height = 8;
+		if(Configuration.PARTICLES) {
+			Iterator<ParticleDisplay> iterator;
+			ParticleDisplay display;
+			if (displayParticles) {
+				iterator = displayedParticles.iterator();
+				while (iterator.hasNext()) {
+					display = iterator.next();
+					if (display != null) {
+						display.C();
+						if (display.Z()) {
+							particlesToBeRemoved.add(display);
 						} else {
-							width = particle.getImage().myWidth / 4;
-							height = particle.getImage().myHeight / 4;
-						}
-						width = (int) (width * display.S());
-						height = (int) (height * display.S());
-						int[] y = write(displayX, displayY, displayZ, width, height);
-						width = y[5] - y[3];
-						height = y[6] - y[4];
-						int alpha = (int) (display.getAlpha() * 255.0F);
-						int radius = (int) (4.0F * display.S());
-						int srcAlpha = 256 - alpha;
-						int srcR = (display.getRgb() >> 16 & 255) * alpha;
-						int srcG = (display.getRgb() >> 8 & 255) * alpha;
-						int srcB = (display.getRgb() & 255) * alpha;
-						int y1 = y[1] - radius;
-						if (y1 < 0) {
-							y1 = 0;
-						}
-						int y2 = y[1] + radius;
-						if (y2 >= Canvas3D.height) {
-							y2 = Canvas3D.height - 1;
-						}
-						for (int iy = y1; iy <= y2; ++iy) {
-							int dy = iy - y[1];
-							int dist = (int) Math.sqrt(radius * radius - dy * dy);
-							int x1 = y[0] - dist;
-							if (x1 < 0) {
-								x1 = 0;
-							}
-							int x2 = y[0] + dist;
-							if (x2 >= Canvas3D.width) {
-								x2 = Canvas3D.width - 1;
-							}
-							int pixel = x1 + iy * Canvas3D.width;
-							if (particle.getImage() != null) {
-								if (Canvas2D.depthBuffer != null) {
-									if (Canvas2D.depthBuffer[pixel++] >= display.F()) {
-										particle.getImage().drawTransparentSprite(y[0], y[1], alpha);
-									}
-								}
+							Particle particle = display.B();
+							int displayX = display.D().I();
+							int displayY = display.D().Z();
+							int displayZ = display.D().C();
+							int width;
+							int height;
+							if (particle.getImage() == null) {
+								width = 8;
+								height = 8;
 							} else {
-								try {
-									if (Canvas2D.depthBuffer[pixel++] >= display.F()) {
-										for (int ix = x1; ix <= x2; ++ix) {
-											int dstR = (gameScreenIP.anIntArray315[pixel] >> 16 & 255) * srcAlpha;
-											int dstG = (gameScreenIP.anIntArray315[pixel] >> 8 & 255) * srcAlpha;
-											int dstB = (gameScreenIP.anIntArray315[pixel] & 255) * srcAlpha;
-											int rgb = (srcR + dstR >> 8 << 16) + (srcG + dstG >> 8 << 8) + (srcB + dstB >> 8);
-											gameScreenIP.anIntArray315[pixel++] = rgb;
+								width = particle.getImage().myWidth / 4;
+								height = particle.getImage().myHeight / 4;
+							}
+							width = (int) (width * display.S());
+							height = (int) (height * display.S());
+							int[] y = write(displayX, displayY, displayZ, width, height);
+							width = y[5] - y[3];
+							height = y[6] - y[4];
+							int alpha = (int) (display.getAlpha() * 255.0F);
+							int radius = (int) (4.0F * display.S());
+							int srcAlpha = 256 - alpha;
+							int srcR = (display.getRgb() >> 16 & 255) * alpha;
+							int srcG = (display.getRgb() >> 8 & 255) * alpha;
+							int srcB = (display.getRgb() & 255) * alpha;
+							int y1 = y[1] - radius;
+							if (y1 < 0) {
+								y1 = 0;
+							}
+							int y2 = y[1] + radius;
+							if (y2 >= Canvas3D.height) {
+								y2 = Canvas3D.height - 1;
+							}
+							for (int iy = y1; iy <= y2; ++iy) {
+								int dy = iy - y[1];
+								int dist = (int) Math.sqrt(radius * radius - dy * dy);
+								int x1 = y[0] - dist;
+								if (x1 < 0) {
+									x1 = 0;
+								}
+								int x2 = y[0] + dist;
+								if (x2 >= Canvas3D.width) {
+									x2 = Canvas3D.width - 1;
+								}
+								int pixel = x1 + iy * Canvas3D.width;
+								if (particle.getImage() != null) {
+									if (Canvas2D.depthBuffer != null) {
+										if (Canvas2D.depthBuffer[pixel++] >= display.F()) {
+											particle.getImage().drawTransparentSprite(y[0], y[1], alpha);
 										}
 									}
-								} catch (Exception exception) {
+								} else {
+									try {
+										if (Canvas2D.depthBuffer[pixel++] >= display.F()) {
+											for (int ix = x1; ix <= x2; ++ix) {
+												int dstR = (gameScreenIP.anIntArray315[pixel] >> 16 & 255) * srcAlpha;
+												int dstG = (gameScreenIP.anIntArray315[pixel] >> 8 & 255) * srcAlpha;
+												int dstB = (gameScreenIP.anIntArray315[pixel] & 255) * srcAlpha;
+												int rgb = (srcR + dstR >> 8 << 16) + (srcG + dstG >> 8 << 8) + (srcB + dstB >> 8);
+												gameScreenIP.anIntArray315[pixel++] = rgb;
+											}
+										}
+									} catch (Exception exception) {
 
+									}
 								}
 							}
 						}
 					}
 				}
-			}
-		} else {
-			iterator = displayedParticles.iterator();
-			while (iterator.hasNext()) {
-				display = iterator.next();
-				if (display != null) {
-					display.C();
-					if (display.Z()) {
-						particlesToBeRemoved.add(display);
+			} else {
+				iterator = displayedParticles.iterator();
+				while (iterator.hasNext()) {
+					display = iterator.next();
+					if (display != null) {
+						display.C();
+						if (display.Z()) {
+							particlesToBeRemoved.add(display);
+						}
 					}
 				}
+				displayedParticles.removeAll(particlesToBeRemoved);
+				particlesToBeRemoved.clear();
 			}
 			displayedParticles.removeAll(particlesToBeRemoved);
 			particlesToBeRemoved.clear();
 		}
-		displayedParticles.removeAll(particlesToBeRemoved);
-		particlesToBeRemoved.clear();
-
 		updateEntities();
 		drawHeadIcon();
 		method37(k2);

@@ -46,6 +46,7 @@ public class Configuration {
 	public static boolean TWEENING_ENABLED = true;
 
 	public static boolean NEW_HITMARKS = false;
+	public static boolean PARTICLES = true;
 	public static boolean CONSTITUTION_ENABLED = true;
 	public static boolean NEW_HEALTH_BARS = true;
 

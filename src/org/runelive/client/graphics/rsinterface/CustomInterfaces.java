@@ -4018,6 +4018,7 @@ public class CustomInterfaces extends RSInterface {
 		addText(26034, "PM Notifications", 0xe4a146, false, true, 52, 0);
 		addText(26036, "HD Fog", 0xe4a146, false, true, 52, 0);
 		addText(26038, "Show Roofs", 0xe4a146, false, true, 52, 0);
+		addText(26040, "Particles", 0xe4a146, false, true, 52, 0);
 		addButton(26007, 4, -1, 484, 485, 15, 15, "Toggle function keys", 650, 1);
 		addButton(26008, 4, -1, 484, 485, 15, 15, "Toggle health bars", 651, 1);
 		addButton(26010, 4, -1, 484, 485, 15, 15, "Toggle cursors", 652, 1);
@@ -4029,6 +4030,7 @@ public class CustomInterfaces extends RSInterface {
 		addButton(26033, 4, -1, 484, 485, 15, 15, "Toggle pm notifications", 659, 1);
 		addButton(26035, 4, -1, 484, 485, 15, 15, "Toggle fog", 660, 1);
 		addButton(26037, 4, -1, 484, 485, 15, 15, "Toggle roofs", 661, 1);
+		addButton(26039, 4, -1, 484, 485, 15, 15, "Toggle particles", 662, 1);
 
 		addCheckmarkHover(26054, 4, 26055, 576, 577, 57, 35, SETTING_CONFIGS[15], 1, "Low Detail", 26056, 577, 577,
 				26057, "", "", 12, 20);
@@ -4060,7 +4062,7 @@ public class CustomInterfaces extends RSInterface {
 		addHoverButton(26022, 490, 54, 46, "Fullscreen Mode", -1, 26023, 1);
 		addHoveredButton(26023, 491, 54, 46, 26024);
 
-		setChildren(66, rsinterface);
+		setChildren(68, rsinterface);
 		int i = 0;
 		// background
 		setBounds(26001, x + 0, y + 0, i, rsinterface);
@@ -4101,6 +4103,8 @@ public class CustomInterfaces extends RSInterface {
 		i++;
 		setBounds(26038, x + 336, y + 154, i, rsinterface);
 		i++;
+		setBounds(26040, x + 336, y + 177, i, rsinterface);
+		i++;
 		setBounds(26034, x + 175, y + 177, i, rsinterface);
 		i++;
 		// gameframe button
@@ -4112,6 +4116,10 @@ public class CustomInterfaces extends RSInterface {
 		// gameframe button
 		setBounds(26037, x + 426, y + 152, i, rsinterface);
 		i++;
+		// gameframe button
+		setBounds(26039, x + 426, y + 175, i, rsinterface);
+		i++;
+
 		// toggle pm notifications
 		setBounds(26033, x + 315, y + 175, i, rsinterface);
 		i++;

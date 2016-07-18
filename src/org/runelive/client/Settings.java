@@ -76,6 +76,9 @@ public final class Settings {
 				if (stream.available() >= 1) {
 					Configuration.TOGGLE_ROOF_OFF = stream.readBoolean();
 				}
+				if (stream.available() >= 1) {
+					Configuration.PARTICLES = stream.readBoolean();
+				}
 			} catch (IOException e) {
 				file.delete();
 				Configuration.SAVE_ACCOUNTS = true;
@@ -175,7 +178,7 @@ public final class Settings {
 
 				stream.writeBoolean(Configuration.FOG_ENABLED);
 				stream.writeBoolean(Configuration.TOGGLE_ROOF_OFF);
-
+				stream.writeBoolean(Configuration.PARTICLES);
 				stream.close();
 			}
 		} catch (IOException e) {
