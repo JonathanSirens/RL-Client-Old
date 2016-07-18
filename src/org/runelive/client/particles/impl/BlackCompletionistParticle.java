@@ -3,9 +3,9 @@ package org.runelive.client.particles.impl;
 import org.runelive.client.particles.Particle;
 import org.runelive.client.particles.Position;
 
-public final class AttackParticle extends Particle {
+public final class BlackCompletionistParticle extends Particle {
 
-    public AttackParticle() {
+    public BlackCompletionistParticle() {
         this.Z(new Position(0, -1, 0));
         this.getImage(new Position(0, -1, 0));
         this.getImage(29);

@@ -904,8 +904,8 @@ public final class ItemDefinition {
 				itemDef.modelOffsetY = 24;
 				itemDef.modelRotation1 = 279;
 				itemDef.modelRotation2 = 948;
-				itemDef.maleWearId = 65297;
-				itemDef.femaleWearId = 65297;
+				itemDef.maleWearId = 77000;
+				itemDef.femaleWearId = 77000;
 				itemDef.groundActions = new String[5];
 				itemDef.groundActions[2] = "Take";
 				itemDef.actions = new String[5];
@@ -923,8 +923,8 @@ public final class ItemDefinition {
 				itemDef.modelOffsetY = 24;
 				itemDef.modelRotation1 = 279;
 				itemDef.modelRotation2 = 948;
-				itemDef.maleWearId = 65297;
-				itemDef.femaleWearId = 65297;
+				itemDef.maleWearId = 77001;
+				itemDef.femaleWearId = 77001;
 				itemDef.groundActions = new String[5];
 				itemDef.groundActions[2] = "Take";
 				itemDef.actions = new String[5];
@@ -943,8 +943,8 @@ public final class ItemDefinition {
 				itemDef.modelOffsetY = 24;
 				itemDef.modelRotation1 = 279;
 				itemDef.modelRotation2 = 948;
-				itemDef.maleWearId = 65297;
-				itemDef.femaleWearId = 65297;
+				itemDef.maleWearId = 77002;
+				itemDef.femaleWearId = 77002;
 				itemDef.groundActions = new String[5];
 				itemDef.groundActions[2] = "Take";
 				itemDef.actions = new String[5];
@@ -962,8 +962,8 @@ public final class ItemDefinition {
 				itemDef.modelOffsetY = 24;
 				itemDef.modelRotation1 = 279;
 				itemDef.modelRotation2 = 948;
-				itemDef.maleWearId = 65297;
-				itemDef.femaleWearId = 65297;
+				itemDef.maleWearId = 77003;
+				itemDef.femaleWearId = 77003;
 				itemDef.groundActions = new String[5];
 				itemDef.groundActions[2] = "Take";
 				itemDef.actions = new String[5];
@@ -981,8 +981,8 @@ public final class ItemDefinition {
 				itemDef.modelOffsetY = 24;
 				itemDef.modelRotation1 = 279;
 				itemDef.modelRotation2 = 948;
-				itemDef.maleWearId = 65297;
-				itemDef.femaleWearId = 65297;
+				itemDef.maleWearId = 77004;
+				itemDef.femaleWearId = 77004;
 				itemDef.groundActions = new String[5];
 				itemDef.groundActions[2] = "Take";
 				itemDef.actions = new String[5];
@@ -1000,8 +1000,8 @@ public final class ItemDefinition {
 				itemDef.modelOffsetY = 24;
 				itemDef.modelRotation1 = 279;
 				itemDef.modelRotation2 = 948;
-				itemDef.maleWearId = 65297;
-				itemDef.femaleWearId = 65297;
+				itemDef.maleWearId = 77005;
+				itemDef.femaleWearId = 77005;
 				itemDef.groundActions = new String[5];
 				itemDef.groundActions[2] = "Take";
 				itemDef.actions = new String[5];
@@ -1019,8 +1019,8 @@ public final class ItemDefinition {
 				itemDef.modelOffsetY = 24;
 				itemDef.modelRotation1 = 279;
 				itemDef.modelRotation2 = 948;
-				itemDef.maleWearId = 65297;
-				itemDef.femaleWearId = 65297;
+				itemDef.maleWearId = 77006;
+				itemDef.femaleWearId = 77006;
 				itemDef.groundActions = new String[5];
 				itemDef.groundActions[2] = "Take";
 				itemDef.actions = new String[5];
@@ -1029,7 +1029,7 @@ public final class ItemDefinition {
 				itemDef.originalModelColors = new int[] { 43848, 43848, 43848, 43848 };
 				itemDef.modifiedModelColors = new int[] { 65214, 65200, 65186, 62995 };
 				break;
-			case 21096:
+			case 21096: //White
 				itemDef.modelID = 65270;
 				itemDef.name = "Completionist cape";
 				itemDef.description2 = "We'd pat you on the back, but this cape would get in the way.";
@@ -1038,8 +1038,8 @@ public final class ItemDefinition {
 				itemDef.modelOffsetY = 24;
 				itemDef.modelRotation1 = 279;
 				itemDef.modelRotation2 = 948;
-				itemDef.maleWearId = 65297;
-				itemDef.femaleWearId = 65297;
+				itemDef.maleWearId = 77007;
+				itemDef.femaleWearId = 77007;
 				itemDef.groundActions = new String[5];
 				itemDef.groundActions[2] = "Take";
 				itemDef.actions = new String[5];
@@ -1057,8 +1057,8 @@ public final class ItemDefinition {
 				itemDef.modelOffsetY = 24;
 				itemDef.modelRotation1 = 279;
 				itemDef.modelRotation2 = 948;
-				itemDef.maleWearId = 65297;
-				itemDef.femaleWearId = 65297;
+				itemDef.maleWearId = 77008;
+				itemDef.femaleWearId = 77008;
 				itemDef.groundActions = new String[5];
 				itemDef.groundActions[2] = "Take";
 				itemDef.actions = new String[5];
@@ -1076,8 +1076,8 @@ public final class ItemDefinition {
 				itemDef.modelOffsetY = 24;
 				itemDef.modelRotation1 = 279;
 				itemDef.modelRotation2 = 948;
-				itemDef.maleWearId = 65297;
-				itemDef.femaleWearId = 65297;
+				itemDef.maleWearId = 77009;
+				itemDef.femaleWearId = 77009;
 				itemDef.groundActions = new String[5];
 				itemDef.groundActions[2] = "Take";
 				itemDef.actions = new String[5];
