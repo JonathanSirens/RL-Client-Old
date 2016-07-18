@@ -8682,6 +8682,7 @@ public class Client extends GameRenderer {
 	}
 
 	public byte getPrefixRights(String prefix, boolean highRights) {
+
 		byte rights = 0;
 		int start = 3;
 		int end = highRights ? 5 : 4;
@@ -14251,10 +14252,12 @@ public class Client extends GameRenderer {
 
 			case 200:
 				int l8 = getInputBuffer().getUnsignedShort();
-				int animId = getInputBuffer().getSignedShort();
+				int animId = getInputBuffer().getUnsignedShort();
 				RSInterface class9_4 = RSInterface.interfaceCache[l8];
 				class9_4.disabledAnimationId = animId;
-				class9_4.modelZoom = 2000;
+				if (l8 == 4883 || l8 == 4888 || l8 == 4894 || l8 == 4901) {
+					class9_4.modelZoom = 2000;
+				}
 
 				if (animId == -1) {
 					class9_4.anInt246 = 0;
@@ -16712,6 +16715,8 @@ public class Client extends GameRenderer {
 		modIcons[15] = CacheSpriteLoader.getCacheSprite2(66); // Wiki Editor
 		modIcons[16] = CacheSpriteLoader.getCacheSprite2(65); // Wiki Manager
 		modIcons[17] = CacheSpriteLoader.getCacheSprite2(90); // Staff Manager
+		modIcons[18] = CacheSpriteLoader.getCacheSprite2(19); //Developer
+
 	}
 
 	public final String loyaltyRank(int i) {

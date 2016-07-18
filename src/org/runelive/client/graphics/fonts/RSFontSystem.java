@@ -375,7 +375,7 @@ public class RSFontSystem extends Canvas2D {
 									imageId = 838 + imageId - 88;
 									offsetY += 3;
 								}
-								if (imageId <= 17) {
+								if (imageId <= 19) {
 									spriteVersion = 2;
 								}
 								Sprite icon = CacheSpriteLoader.getCacheSprite(imageId);
