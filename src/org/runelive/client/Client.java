@@ -7411,12 +7411,25 @@ public class Client extends GameRenderer {
 	boolean homeHover, forumHover, profileclose3hover, profileclose2hover, profileclose1hover, ahover, bhover, chover,
 			dhover, profile1hover, profile2hover, profile3hover, profile4hover, worldButtonHover, voteHover, storeHover,
 			hiscoresHover, recoveryHover, loginButtonHover, input1Hover, input2Hover, rememberMeButtonHover,
-			backButtonHover;
+			backButtonHover, hoveringWorldSwitcher;
+
+	boolean inWorldSwitcher = false;
+	boolean loadingWorldSwitcher = false;
 
 	public void setLoadingAndLoginHovers() {
-		homeHover = ahover = bhover = chover = dhover = profileclose3hover = profileclose2hover = profileclose1hover = profile1hover = profile2hover = profile3hover = profile4hover = forumHover = voteHover = storeHover = worldButtonHover = hiscoresHover = recoveryHover = loginButtonHover = input1Hover = rememberMeButtonHover = backButtonHover = input2Hover = false;
+		homeHover = ahover = bhover = hoveringWorldSwitcher = chover = dhover = profileclose3hover = profileclose2hover = profileclose1hover = profile1hover = profile2hover = profile3hover = profile4hover = forumHover = voteHover = storeHover = worldButtonHover = hiscoresHover = recoveryHover = loginButtonHover = input1Hover = rememberMeButtonHover = backButtonHover = input2Hover = false;
 
 		boolean handCursor = false, textCursor = false;
+
+		if(inWorldSwitcher) {
+			hoveringWorldSwitcher = false;
+		} else {
+			if (super.mouseX >= 6 && super.mouseX <= 104 && super.mouseY >= 464 && super.mouseY <= 496) {
+				hoveringWorldSwitcher = true;
+			} else {
+				hoveringWorldSwitcher = false;
+			}
+		}
 		if (!isLoading && !(loginMessage1.length() > 0)) {
 			if (super.mouseX >= 300 && super.mouseX <= 300 + 167 && super.mouseY >= 328 && super.mouseY <= 328 + 34) {
 				loginButtonHover = handCursor = true;
@@ -7501,209 +7514,221 @@ public class Client extends GameRenderer {
 
 		titleScreenIP.initDrawingArea();
 		setLoadingAndLoginHovers();
-
-		if (onDemandFetcher.getPriorityHandler().isRunning()) {
-			CacheSpriteLoader.getCacheSprite2(0).drawAdvancedSprite(0, 0);
-			int y = 217;
-			boldText.drawCenteredText(0xffbb18, 765 / 2, "Welcome to RuneLive", y, true);
-			normalText.drawCenteredText(0xefefef, 765 / 2, "Please wait while we download the required", y + 25, true);
-			normalText.drawCenteredText(0xefefef, 765 / 2, "files to play.", y + 40, true);
-			String status = onDemandFetcher.getRemaining() + " files remaining - please wait...";
-			boldText.drawCenteredText(0xefefef, 765 / 2, status, y + 65, true);
-			titleScreenIP.drawGraphics(0, super.graphics, 0);
-			return;
-		}
-
-		if (loginMessage1.length() > 0) {
-
-			CacheSpriteLoader.getCacheSprite2(0).drawAdvancedSprite(0, 0);
-			// CacheSpriteLoader.getCacheSprite2(20).drawAdvancedSprite(240,
-			// 124);
-
-			Canvas2D.drawAlphaBox(199, 137, 366, 234, 0, 100);
-
-			if (backButtonHover) {
-				CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(511 + 38, 125 + 15);
-			} else {
-				CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(511 + 38, 125 + 15);
-			}
-
-			if (loginMessage1 != null && loginMessage1.length() != 0) {
-				int y_1 = (clientHeight / 2) + 28;
-				boldText.drawCenteredText(0xefefef, 381, loginMessage1, y_1 - 30, true);
-			}
-			if (loginMessage2 != null && loginMessage2.length() != 0) {
-				int y_2 = (clientHeight / 2) + (1 * 20) + 28;
-				boldText.drawCenteredText(0xefefef, 381, loginMessage2, y_2 - 30, true);
-			}
-			if (ahover) {
-				CacheSpriteLoader.getCacheSprite2(28).drawAdvancedSprite(312, 458);
-			}
-
-			if (bhover) {
-				CacheSpriteLoader.getCacheSprite2(29).drawAdvancedSprite(347, 458);
-			}
-
-			if (chover) {
-				CacheSpriteLoader.getCacheSprite2(30).drawAdvancedSprite(382, 458);
-			}
-
-			if (dhover) {
-				CacheSpriteLoader.getCacheSprite2(31).drawAdvancedSprite(417, 458);
-			}
+		if(inWorldSwitcher) {
+			//CacheSpriteLoader.getCacheSprite(1194).drawAdvancedSprite(0, 0);
 		} else {
-			/*
-			 * CacheSpriteLoader.getCacheSprite2(0].drawAdvancedSprite(0, 0);
-			 * 
-			 * if(loginButtonHover) {
-			 * CacheSpriteLoader.getCacheSprite2(27].drawAdvancedSprite(259,
-			 * 309); } else {
-			 * 
-			 * }
-			 * 
-			 * if(worldButtonHover) {
-			 * 
-			 * } else {
-			 * 
-			 * }
-			 * 
-			 * if(input1Hover) {
-			 * CacheSpriteLoader.getCacheSprite2(23].drawAdvancedSprite(259,
-			 * 153); } else {
-			 * CacheSpriteLoader.getCacheSprite2(22].drawAdvancedSprite(259,
-			 * 153); }
-			 * 
-			 * if(input2Hover) {
-			 * CacheSpriteLoader.getCacheSprite2(23].drawAdvancedSprite(259,
-			 * 203); } else {
-			 * CacheSpriteLoader.getCacheSprite2(22].drawAdvancedSprite(259,
-			 * 203); }
-			 * 
-			 * if(ahover) {
-			 * CacheSpriteLoader.getCacheSprite2(28].drawAdvancedSprite(312,
-			 * 458); }
-			 * 
-			 * if(bhover) {
-			 * CacheSpriteLoader.getCacheSprite2(29].drawAdvancedSprite(347,
-			 * 458); }
-			 * 
-			 * if(chover) {
-			 * CacheSpriteLoader.getCacheSprite2(30].drawAdvancedSprite(382,
-			 * 458); }
-			 * 
-			 * if(dhover) {
-			 * CacheSpriteLoader.getCacheSprite2(31].drawAdvancedSprite(417,
-			 * 458); }
-			 * 
-			 * if(rememberMeButtonHover) { if(rememberMe) {
-			 * CacheSpriteLoader.getCacheSprite2(35].drawAdvancedSprite(258,
-			 * 234); } else {
-			 * CacheSpriteLoader.getCacheSprite2(34].drawAdvancedSprite(258,
-			 * 234); } } else { if(rememberMe) {
-			 * CacheSpriteLoader.getCacheSprite2(25].drawAdvancedSprite(256,
-			 * 231); } }
-			 * 
-			 * if(loginScreenCursorPos == 0 && loopCycle % 45 < 10) {
-			 * boldText.drawRegularText(true, 265, 14335390, myUsername + "|",
-			 * 169); } else { boldText.drawRegularText(true, 265, 14335390,
-			 * myUsername, 169); }
-			 * 
-			 * if(loginScreenCursorPos == 1 && loopCycle % 45 < 10) {
-			 * boldText.drawRegularText(true, 265, 14335390,
-			 * getStars(password)+"|", 221); } else {
-			 * boldText.drawRegularText(true, 265, 14335390, getStars(password),
-			 * 221); }
-			 */
 
-			CacheSpriteLoader.getCacheSprite2(0).drawAdvancedSprite(0, 0);
-			boldText.drawCenteredText(0xffbb18, 765 / 2, "Welcome to RuneLive", 155, true);
-
-			boldText.drawCenteredText(0xefefef, 765 / 2, "Please enter your username and password.", 178, true);
-
-			int y = 202;
-			boldText.drawText(0, "Username:", y + 1, 268);
-			boldText.drawText(0xffcb18, "Username:", y, 267);
-			CacheSpriteLoader.getCacheSprite2(input1Hover ? 96 : 94).drawCenteredARGBImage(765 / 2, y + 19);
-			if (loginScreenCursorPos == 0 && loopCycle % 45 < 10) {
-				boldText.drawRegularText(true, 243, 0xefefef, myUsername + "|", y + 24);
-			} else {
-				boldText.drawRegularText(true, 243, 0xefefef, myUsername, y + 24);
+			if (onDemandFetcher.getPriorityHandler().isRunning()) {
+				CacheSpriteLoader.getCacheSprite2(0).drawAdvancedSprite(0, 0);
+				int y = 217;
+				boldText.drawCenteredText(0xffbb18, 765 / 2, "Welcome to RuneLive", y, true);
+				normalText.drawCenteredText(0xefefef, 765 / 2, "Please wait while we download the required", y + 25, true);
+				normalText.drawCenteredText(0xefefef, 765 / 2, "files to play.", y + 40, true);
+				String status = onDemandFetcher.getRemaining() + " files remaining - please wait...";
+				boldText.drawCenteredText(0xefefef, 765 / 2, status, y + 65, true);
+				titleScreenIP.drawGraphics(0, super.graphics, 0);
+				return;
 			}
 
-			y += 52;
-			boldText.drawText(0, "Password:", y + 1, 268);
-			boldText.drawText(0xffcb18, "Password:", y, 267);
-			CacheSpriteLoader.getCacheSprite2(input2Hover ? 96 : 94).drawCenteredARGBImage(765 / 2, y + 19);
+			if (loginMessage1.length() > 0) {
 
-			if (loginScreenCursorPos == 1 && loopCycle % 45 < 10) {
-				boldText.drawRegularText(true, 243, 0xefefef, getStars(password) + "|", y + 24);
+				CacheSpriteLoader.getCacheSprite2(0).drawAdvancedSprite(0, 0);
+				// CacheSpriteLoader.getCacheSprite2(20).drawAdvancedSprite(240,
+				// 124);
+
+				Canvas2D.drawAlphaBox(199, 137, 366, 234, 0, 100);
+
+				if (backButtonHover) {
+					CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(511 + 38, 125 + 15);
+				} else {
+					CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(511 + 38, 125 + 15);
+				}
+
+				if (loginMessage1 != null && loginMessage1.length() != 0) {
+					int y_1 = (clientHeight / 2) + 28;
+					boldText.drawCenteredText(0xefefef, 381, loginMessage1, y_1 - 30, true);
+				}
+				if (loginMessage2 != null && loginMessage2.length() != 0) {
+					int y_2 = (clientHeight / 2) + (1 * 20) + 28;
+					boldText.drawCenteredText(0xefefef, 381, loginMessage2, y_2 - 30, true);
+				}
+				if (ahover) {
+					CacheSpriteLoader.getCacheSprite2(28).drawAdvancedSprite(312, 458);
+				}
+
+				if (bhover) {
+					CacheSpriteLoader.getCacheSprite2(29).drawAdvancedSprite(347, 458);
+				}
+
+				if (chover) {
+					CacheSpriteLoader.getCacheSprite2(30).drawAdvancedSprite(382, 458);
+				}
+
+				if (dhover) {
+					CacheSpriteLoader.getCacheSprite2(31).drawAdvancedSprite(417, 458);
+				}
 			} else {
-				boldText.drawRegularText(true, 243, 0xefefef, getStars(password), y + 24);
+				/*
+				 * CacheSpriteLoader.getCacheSprite2(0].drawAdvancedSprite(0, 0);
+				 *
+				 * if(loginButtonHover) {
+				 * CacheSpriteLoader.getCacheSprite2(27].drawAdvancedSprite(259,
+				 * 309); } else {
+				 *
+				 * }
+				 *
+				 * if(worldButtonHover) {
+				 *
+				 * } else {
+				 *
+				 * }
+				 *
+				 * if(input1Hover) {
+				 * CacheSpriteLoader.getCacheSprite2(23].drawAdvancedSprite(259,
+				 * 153); } else {
+				 * CacheSpriteLoader.getCacheSprite2(22].drawAdvancedSprite(259,
+				 * 153); }
+				 *
+				 * if(input2Hover) {
+				 * CacheSpriteLoader.getCacheSprite2(23].drawAdvancedSprite(259,
+				 * 203); } else {
+				 * CacheSpriteLoader.getCacheSprite2(22].drawAdvancedSprite(259,
+				 * 203); }
+				 *
+				 * if(ahover) {
+				 * CacheSpriteLoader.getCacheSprite2(28].drawAdvancedSprite(312,
+				 * 458); }
+				 *
+				 * if(bhover) {
+				 * CacheSpriteLoader.getCacheSprite2(29].drawAdvancedSprite(347,
+				 * 458); }
+				 *
+				 * if(chover) {
+				 * CacheSpriteLoader.getCacheSprite2(30].drawAdvancedSprite(382,
+				 * 458); }
+				 *
+				 * if(dhover) {
+				 * CacheSpriteLoader.getCacheSprite2(31].drawAdvancedSprite(417,
+				 * 458); }
+				 *
+				 * if(rememberMeButtonHover) { if(rememberMe) {
+				 * CacheSpriteLoader.getCacheSprite2(35].drawAdvancedSprite(258,
+				 * 234); } else {
+				 * CacheSpriteLoader.getCacheSprite2(34].drawAdvancedSprite(258,
+				 * 234); } } else { if(rememberMe) {
+				 * CacheSpriteLoader.getCacheSprite2(25].drawAdvancedSprite(256,
+				 * 231); } }
+				 *
+				 * if(loginScreenCursorPos == 0 && loopCycle % 45 < 10) {
+				 * boldText.drawRegularText(true, 265, 14335390, myUsername + "|",
+				 * 169); } else { boldText.drawRegularText(true, 265, 14335390,
+				 * myUsername, 169); }
+				 *
+				 * if(loginScreenCursorPos == 1 && loopCycle % 45 < 10) {
+				 * boldText.drawRegularText(true, 265, 14335390,
+				 * getStars(password)+"|", 221); } else {
+				 * boldText.drawRegularText(true, 265, 14335390, getStars(password),
+				 * 221); }
+				 */
+
+				CacheSpriteLoader.getCacheSprite2(0).drawAdvancedSprite(0, 0);
+				boldText.drawCenteredText(0xffbb18, 765 / 2, "Welcome to RuneLive", 155, true);
+
+				boldText.drawCenteredText(0xefefef, 765 / 2, "Please enter your username and password.", 178, true);
+
+				int y = 202;
+				boldText.drawText(0, "Username:", y + 1, 268);
+				boldText.drawText(0xffcb18, "Username:", y, 267);
+				CacheSpriteLoader.getCacheSprite2(input1Hover ? 96 : 94).drawCenteredARGBImage(765 / 2, y + 19);
+				if (loginScreenCursorPos == 0 && loopCycle % 45 < 10) {
+					boldText.drawRegularText(true, 243, 0xefefef, myUsername + "|", y + 24);
+				} else {
+					boldText.drawRegularText(true, 243, 0xefefef, myUsername, y + 24);
+				}
+
+				y += 52;
+				boldText.drawText(0, "Password:", y + 1, 268);
+				boldText.drawText(0xffcb18, "Password:", y, 267);
+				CacheSpriteLoader.getCacheSprite2(input2Hover ? 96 : 94).drawCenteredARGBImage(765 / 2, y + 19);
+
+				if (loginScreenCursorPos == 1 && loopCycle % 45 < 10) {
+					boldText.drawRegularText(true, 243, 0xefefef, getStars(password) + "|", y + 24);
+				} else {
+					boldText.drawRegularText(true, 243, 0xefefef, getStars(password), y + 24);
+				}
+
+				CacheSpriteLoader.getCacheSprite2(rememberMeButtonHover ? (rememberMe ? 102 : 98) : (rememberMe ? 101 : 97))
+						.drawARGBImage(234, y + 40);
+				normalText.drawRegularText(true, 261, 0xefefef, "Remember me", y + 56);
+
+				y += 90;
+				CacheSpriteLoader.getCacheSprite2(loginButtonHover ? 95 : 93).drawCenteredARGBImage(765 / 2, y);
+				boldText.drawCenteredText(0xffbb18, 765 / 2, "Login", y + 5, true);
+
 			}
 
-			CacheSpriteLoader.getCacheSprite2(rememberMeButtonHover ? (rememberMe ? 102 : 98) : (rememberMe ? 101 : 97))
-					.drawARGBImage(234, y + 40);
-			normalText.drawRegularText(true, 261, 0xefefef, "Remember me", y + 56);
+			//World switcher display login screen
+			CacheSpriteLoader.getCacheSprite(1193).drawAdvancedSprite(6, 463);
+			boldText.drawCenteredText(0xffffff, 56, "World "+world, 480, true);
+			if(world == 1) {
+				smallText.drawCenteredText(0xffffff, 56, Configuration.WORLD_1[0], 493, true);
+			} else if(world == 2) {
+				smallText.drawCenteredText(0xffffff, 56, Configuration.WORLD_2[0], 493, true);
+			}
+			CacheSpriteLoader.getCacheSprite2(99).drawAdvancedSprite(264, 373);
+			if (profile1hover) {
+				if (!saved_characters_usernames[0].equals("Empty")) {
+					CacheSpriteLoader.getCacheSprite2(100).drawAdvancedSprite(264, 373);
+					if (profileclose1hover) {
+						CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(326, 374);
+					} else {
+						CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(326, 374);
+					}
+				}
+			}
+			CacheSpriteLoader.getCacheSprite2(33).drawAdvancedSprite(264 + 22, 373 + 5);
 
-			y += 90;
-			CacheSpriteLoader.getCacheSprite2(loginButtonHover ? 95 : 93).drawCenteredARGBImage(765 / 2, y);
-			boldText.drawCenteredText(0xffbb18, 765 / 2, "Login", y + 5, true);
-
-		}
-		CacheSpriteLoader.getCacheSprite2(99).drawAdvancedSprite(264, 373);
-		if (profile1hover) {
 			if (!saved_characters_usernames[0].equals("Empty")) {
-				CacheSpriteLoader.getCacheSprite2(100).drawAdvancedSprite(264, 373);
 				if (profileclose1hover) {
 					CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(326, 374);
 				} else {
 					CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(326, 374);
 				}
 			}
-		}
-		CacheSpriteLoader.getCacheSprite2(33).drawAdvancedSprite(264 + 22, 373 + 5);
+			smallText.drawCenteredText(0xefefef, 301, saved_characters_usernames[0], 442, true);
 
-		if (!saved_characters_usernames[0].equals("Empty")) {
-			if (profileclose1hover) {
-				CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(326, 374);
-			} else {
-				CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(326, 374);
+			CacheSpriteLoader.getCacheSprite2(99).drawAdvancedSprite(343, 373);
+			if (profile2hover) {
+				if (!saved_characters_usernames[1].equals("Empty")) {
+					CacheSpriteLoader.getCacheSprite2(100).drawAdvancedSprite(343, 373);
+				}
 			}
-		}
-		smallText.drawCenteredText(0xefefef, 301, saved_characters_usernames[0], 442, true);
-
-		CacheSpriteLoader.getCacheSprite2(99).drawAdvancedSprite(343, 373);
-		if (profile2hover) {
 			if (!saved_characters_usernames[1].equals("Empty")) {
-				CacheSpriteLoader.getCacheSprite2(100).drawAdvancedSprite(343, 373);
+				if (profileclose2hover) {
+					CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(405, 374);
+				} else {
+					CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(405, 374);
+				}
 			}
-		}
-		if (!saved_characters_usernames[1].equals("Empty")) {
-			if (profileclose2hover) {
-				CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(405, 374);
-			} else {
-				CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(405, 374);
-			}
-		}
-		CacheSpriteLoader.getCacheSprite2(33).drawAdvancedSprite(343 + 22, 373 + 5);
-		smallText.drawCenteredText(0xefefef, 380, saved_characters_usernames[1], 442, true);
+			CacheSpriteLoader.getCacheSprite2(33).drawAdvancedSprite(343 + 22, 373 + 5);
+			smallText.drawCenteredText(0xefefef, 380, saved_characters_usernames[1], 442, true);
 
-		CacheSpriteLoader.getCacheSprite2(99).drawAdvancedSprite(422, 373);
-		if (profile3hover) {
+			CacheSpriteLoader.getCacheSprite2(99).drawAdvancedSprite(422, 373);
+			if (profile3hover) {
+				if (!saved_characters_usernames[2].equals("Empty")) {
+					CacheSpriteLoader.getCacheSprite2(100).drawAdvancedSprite(422, 373);
+				}
+			}
 			if (!saved_characters_usernames[2].equals("Empty")) {
-				CacheSpriteLoader.getCacheSprite2(100).drawAdvancedSprite(422, 373);
+				if (profileclose3hover) {
+					CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(485, 374);
+				} else {
+					CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(485, 374);
+				}
 			}
+			CacheSpriteLoader.getCacheSprite2(33).drawAdvancedSprite(422 + 22, 373 + 5);
+			smallText.drawCenteredText(0xefefef, 459, saved_characters_usernames[2], 442, true);
 		}
-		if (!saved_characters_usernames[2].equals("Empty")) {
-			if (profileclose3hover) {
-				CacheSpriteLoader.getCacheSprite2(26).drawAdvancedSprite(485, 374);
-			} else {
-				CacheSpriteLoader.getCacheSprite2(21).drawAdvancedSprite(485, 374);
-			}
-		}
-		CacheSpriteLoader.getCacheSprite2(33).drawAdvancedSprite(422 + 22, 373 + 5);
-		smallText.drawCenteredText(0xefefef, 459, saved_characters_usernames[2], 442, true);
-
 		titleScreenIP.drawGraphics(0, super.graphics, 0);
 
 	}
@@ -14494,13 +14519,73 @@ public class Client extends GameRenderer {
 	}
 
 	private void processLoginScreenInput() {
-		if (super.clickMode3 == 1) {
+		if(inWorldSwitcher) {
+			//System.out.println("Test");
+		} else {
+			if (super.clickMode3 == 1) {
+				if (loginMessage1.length() > 0) {
+					if (backButtonHover) {
+						loginMessage1 = "";
+						loginMessage2 = "";
+						backButtonHover = false;
+					} else if (ahover) {
+						launchURL("http://rune.live");
+					} else if (bhover) {
+						launchURL("");
+					} else if (chover) {
+						launchURL("https://www.youtube.com/channel/UCaZsgSlOltAIGJNPnAD8h1Q/videos");
+					} else if (dhover) {
+						launchURL("http://google.com");
+					} else if (profile1hover) {
+						if (profileclose1hover) {
+							saved_characters_usernames[0] = "Empty";
+							saved_characters_passwords[0] = "none";
+							Settings.save();
+						} else {
+							if (rememberMe) {
+								myUsername = saved_characters_usernames[0];
+								password = saved_characters_passwords[0];
+							}
+							login(saved_characters_passwords[0], saved_characters_usernames[0], false, this);
+						}
+					} else if (profile2hover) {
+						if (profileclose2hover) {
+							saved_characters_usernames[1] = "Empty";
+							saved_characters_passwords[1] = "none";
+							Settings.save();
+						} else {
+							if (rememberMe) {
+								myUsername = saved_characters_usernames[1];
+								password = saved_characters_passwords[1];
+							}
+							login(saved_characters_passwords[1], saved_characters_usernames[1], false, this);
+						}
+					} else if (profile3hover) {
+						if (profileclose3hover) {
+							saved_characters_usernames[2] = "Empty";
+							saved_characters_passwords[2] = "none";
+							Settings.save();
+						} else {
+							if (rememberMe) {
+								myUsername = saved_characters_usernames[2];
+								password = saved_characters_passwords[2];
+							}
+							login(saved_characters_passwords[2], saved_characters_usernames[2], false, this);
+						}
+					}
+					return;
+				}
 
-			if (loginMessage1.length() > 0) {
-				if (backButtonHover) {
-					loginMessage1 = "";
-					loginMessage2 = "";
-					backButtonHover = false;
+				if (input1Hover) {
+					loginScreenCursorPos = 0;
+				} else if (input2Hover) {
+					loginScreenCursorPos = 1;
+				} else if (loginButtonHover) {
+					login(password, myUsername, false, this);
+				} else if (hoveringWorldSwitcher) {
+					switchWorld();
+				} else if (worldButtonHover) {
+					// World interface display
 				} else if (ahover) {
 					launchURL("http://rune.live");
 				} else if (bhover) {
@@ -14545,165 +14630,124 @@ public class Client extends GameRenderer {
 						}
 						login(saved_characters_passwords[2], saved_characters_usernames[2], false, this);
 					}
+				} else if (rememberMeButtonHover) {
+					rememberMe = !rememberMe;
+					Settings.save();
 				}
-				return;
 			}
 
-			if (input1Hover) {
-				loginScreenCursorPos = 0;
-			} else if (input2Hover) {
-				loginScreenCursorPos = 1;
-			} else if (loginButtonHover) {
-				login(password, myUsername, false, this);
-			} else if (worldButtonHover) {
-				// World interface display
-			} else if (ahover) {
-				launchURL("http://rune.live");
-			} else if (bhover) {
-				launchURL("");
-			} else if (chover) {
-				launchURL("https://www.youtube.com/channel/UCaZsgSlOltAIGJNPnAD8h1Q/videos");
-			} else if (dhover) {
-				launchURL("http://google.com");
-			} else if (profile1hover) {
-				if (profileclose1hover) {
-					saved_characters_usernames[0] = "Empty";
-					saved_characters_passwords[0] = "none";
-					Settings.save();
-				} else {
-					if (rememberMe) {
-						myUsername = saved_characters_usernames[0];
-						password = saved_characters_passwords[0];
+			if (getLoginScreenState() == 0) {
+
+				do {
+					int keyChar = readChar(-796);
+
+					if (keyChar == -1) {
+						return;
 					}
-					login(saved_characters_passwords[0], saved_characters_usernames[0], false, this);
-				}
-			} else if (profile2hover) {
-				if (profileclose2hover) {
-					saved_characters_usernames[1] = "Empty";
-					saved_characters_passwords[1] = "none";
-					Settings.save();
-				} else {
-					if (rememberMe) {
-						myUsername = saved_characters_usernames[1];
-						password = saved_characters_passwords[1];
+
+					if (keyChar == 96) {
+						return;
 					}
-					login(saved_characters_passwords[1], saved_characters_usernames[1], false, this);
-				}
-			} else if (profile3hover) {
-				if (profileclose3hover) {
-					saved_characters_usernames[2] = "Empty";
-					saved_characters_passwords[2] = "none";
-					Settings.save();
-				} else {
-					if (rememberMe) {
-						myUsername = saved_characters_usernames[2];
-						password = saved_characters_passwords[2];
+
+					if (loggedIn || loggingIn) {
+						return;
 					}
-					login(saved_characters_passwords[2], saved_characters_usernames[2], false, this);
-				}
-			} else if (rememberMeButtonHover) {
-				rememberMe = !rememberMe;
-				Settings.save();
+
+					if (!loginMessage1.isEmpty() || !loginMessage2.isEmpty()) {
+						if (keyChar == 32 || keyChar == 10 || keyChar == 8) {
+							loginMessage1 = loginMessage2 = "";
+							loggingIn = false;
+						}
+						return;
+					}
+
+					if (consoleOpen) {
+						if (keyChar == 8 && consoleInput.length() > 0) {
+							consoleInput = consoleInput.substring(0, consoleInput.length() - 1);
+						}
+						if (keyChar >= 32 && keyChar <= 122 && consoleInput.length() < 80) {
+							consoleInput += (char) keyChar;
+						}
+
+						if ((keyChar == 13 || keyChar == 10) && consoleInput.length() > 0) {
+							printConsoleMessage(consoleInput, 0);
+							sendCommandPacket(consoleInput);
+							consoleInput = "";
+							inputTaken = true;
+						}
+						return;
+					}
+
+					boolean flag1 = false;
+
+					for (int i2 = 0; i2 < validUserPassChars.length(); i2++) {
+						if (keyChar != validUserPassChars.charAt(i2)) {
+							continue;
+						}
+
+						flag1 = true;
+						break;
+					}
+
+					if (getLoginScreenCursorPos() == 0) {
+						if (keyChar == 8 && myUsername.length() > 0) {
+							myUsername = myUsername.substring(0, myUsername.length() - 1);
+						}
+
+						if (keyChar == 9 || keyChar == 10 || keyChar == 13) {
+							setLoginScreenCursorPos(1);
+						}
+
+						if (myUsername.length() >= 24) {
+							letterArray.add((char) keyChar);
+						}
+
+						if (flag1) {
+							myUsername += (char) keyChar;
+							myUsername = optimizeText(myUsername);
+						}
+						if (myUsername.length() > 12) {
+							myUsername = myUsername.substring(0, 12);
+						}
+					} else if (getLoginScreenCursorPos() == 1) {
+						if (keyChar == 8 && getPassword().length() > 0) {
+							setPassword(getPassword().substring(0, getPassword().length() - 1));
+						}
+
+						if (keyChar == 9 || keyChar == 10 || keyChar == 13) {
+							login(getPassword(), myUsername, false, this);
+							if (loggedIn || loggingIn)
+								return;
+						}
+
+						if (flag1) {
+							setPassword(getPassword() + (char) keyChar);
+						}
+
+						if (getPassword().length() > 20) {
+							setPassword(getPassword().substring(0, 20));
+						}
+					}
+				} while (true);
+
 			}
-		}
-
-		if (getLoginScreenState() == 0) {
-
-			do {
-				int keyChar = readChar(-796);
-
-				if (keyChar == -1) {
-					return;
-				}
-
-				if (keyChar == 96) {
-					return;
-				}
-
-				if (loggedIn || loggingIn) {
-					return;
-				}
-
-				if (!loginMessage1.isEmpty() || !loginMessage2.isEmpty()) {
-					if (keyChar == 32 || keyChar == 10 || keyChar == 8) {
-						loginMessage1 = loginMessage2 = "";
-						loggingIn = false;
-					}
-					return;
-				}
-
-				if (consoleOpen) {
-					if (keyChar == 8 && consoleInput.length() > 0) {
-						consoleInput = consoleInput.substring(0, consoleInput.length() - 1);
-					}
-					if (keyChar >= 32 && keyChar <= 122 && consoleInput.length() < 80) {
-						consoleInput += (char) keyChar;
-					}
-
-					if ((keyChar == 13 || keyChar == 10) && consoleInput.length() > 0) {
-						printConsoleMessage(consoleInput, 0);
-						sendCommandPacket(consoleInput);
-						consoleInput = "";
-						inputTaken = true;
-					}
-					return;
-				}
-
-				boolean flag1 = false;
-
-				for (int i2 = 0; i2 < validUserPassChars.length(); i2++) {
-					if (keyChar != validUserPassChars.charAt(i2)) {
-						continue;
-					}
-
-					flag1 = true;
-					break;
-				}
-
-				if (getLoginScreenCursorPos() == 0) {
-					if (keyChar == 8 && myUsername.length() > 0) {
-						myUsername = myUsername.substring(0, myUsername.length() - 1);
-					}
-
-					if (keyChar == 9 || keyChar == 10 || keyChar == 13) {
-						setLoginScreenCursorPos(1);
-					}
-
-					if (myUsername.length() >= 24) {
-						letterArray.add((char) keyChar);
-					}
-
-					if (flag1) {
-						myUsername += (char) keyChar;
-						myUsername = optimizeText(myUsername);
-					}
-					if (myUsername.length() > 12) {
-						myUsername = myUsername.substring(0, 12);
-					}
-				} else if (getLoginScreenCursorPos() == 1) {
-					if (keyChar == 8 && getPassword().length() > 0) {
-						setPassword(getPassword().substring(0, getPassword().length() - 1));
-					}
-
-					if (keyChar == 9 || keyChar == 10 || keyChar == 13) {
-						login(getPassword(), myUsername, false, this);
-						if (loggedIn || loggingIn)
-							return;
-					}
-
-					if (flag1) {
-						setPassword(getPassword() + (char) keyChar);
-					}
-
-					if (getPassword().length() > 20) {
-						setPassword(getPassword().substring(0, 20));
-					}
-				}
-			} while (true);
-
 		}
 	}
 
+	private void switchWorld() {
+		switch(world) {
+			case 1:
+				world = 2;
+				Configuration.SERVER_HOST = Configuration.WORLD_2[1];
+				break;
+			case 2:
+				world = 1;
+				Configuration.SERVER_HOST = Configuration.WORLD_1[1];
+				break;
+		}
+	}
+
+	int world = 1;
 	private boolean loggingIn = false;
 
 	/**
