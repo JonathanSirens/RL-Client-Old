@@ -880,6 +880,21 @@ public final class ItemDefinition {
 				itemDef.modifiedModelColors = new int[] { 17467 };
 				itemDef.stackable = true;
 				break;
+			/*
+			case 12540:
+				itemDef.name = "3rd age longsword";
+				itemDef.description2 = "It's a longsword from the 3rd age!";
+				itemDef.modelZoom = 1726;
+				itemDef.modelRotation1 = 1576;
+				itemDef.modelRotation2 = 242;
+				itemDef.modelOffset1 = 5;
+				itemDef.modelOffsetY = 4;
+				itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
+				itemDef.modelID = 28633;
+				itemDef.maleWearId = 28618;
+				itemDef.femaleWearId = 28618;
+				break;
+				*/
 			case 21085:
 				itemDef.modelID = 65270;
 				itemDef.name = "Completionist cape";
