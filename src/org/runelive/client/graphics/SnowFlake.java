@@ -5,20 +5,20 @@ import org.runelive.client.Client;
 /**
  * Created by Evan2 on 17/07/2016.
  */
-public class Snowflake {
+public class SnowFlake {
 
-    public Snowflake(int x, int y) {
+    public SnowFlake(int x, int y) {
         this(0, x, y);
         this.alpha = 256;
     }
 
-    public Snowflake(int type, int x, int y, int radius) {
+    public SnowFlake(int type, int x, int y, int radius) {
         this(type, x, y);
         this.radius = radius;
         this.alpha = 100 + random(100);
     }
 
-    private Snowflake(int type, int x, int y) {
+    private SnowFlake(int type, int x, int y) {
         this.type = type;
         this.x = x;
         this.y = y;
