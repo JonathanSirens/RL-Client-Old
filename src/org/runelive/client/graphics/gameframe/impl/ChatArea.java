@@ -647,12 +647,14 @@ public class ChatArea extends GameFrame {
 								getOffSetY() + 133 - 11, 255);
 						drawOffsetX += 10;
 					}
+					Canvas2D.setDrawingArea(140 + getOffSetY(), 8, 509, 120 + getOffSetY());
 					drawOffsetX += 2;
 					textDrawingArea.drawBasicString(Client.myPlayer.name + ":", drawOffsetX, drawOffsetY,
 							screenMode == ScreenMode.FIXED ? 0 : 0xffffff, screenMode == ScreenMode.FIXED ? -1 : 0, true);
 					drawOffsetX += textDrawingArea.getTextWidth(Client.myPlayer.name) + 2;
 					textDrawingArea.drawBasicString(" " + RSFontSystem.handleOldSyntax(client.inputString) + "*",
 							drawOffsetX, drawOffsetY, getScreenMode() == ScreenMode.FIXED ? 255 : 0x7fa9ff, screenMode == ScreenMode.FIXED ? -1 : 0, false);
+					Canvas2D.defaultDrawingAreaSize();
 				}
 
 				// drawSplitChatSelectionBox(client);

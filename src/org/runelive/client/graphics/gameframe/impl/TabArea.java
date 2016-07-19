@@ -112,25 +112,36 @@ public class TabArea extends GameFrame {
 		if (isVisible()) {
 			if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
 				for (int i = 0; i < 14; i++) {
-					if (client.invOverlayInterfaceID == -1) {
-						// client.sideIcons[i].drawSprite(getOffSetX() +
-						// (screenMode == ScreenMode.FIXED ? 13 : 8) + (i > 6 ?
-						// i - 7 : screenMode != ScreenMode.FIXED &&
-						// Client.clientWidth > GameFrameConstants.smallTabs ? i
-						// - 7 : i) *
-						// CacheSpriteLoader.getCacheSprite(12].myWidth,
-						// getOffSetY() + (i > 6 || screenMode !=
-						// ScreenMode.FIXED ? getHeight() - client.sideIcons[i <
-						// 7 ? 0 : i].myHeight - (screenMode != ScreenMode.FIXED
-						// && Client.clientWidth <= GameFrameConstants.smallTabs
-						// && i < 7 ? 53 : screenMode != ScreenMode.FIXED &&
-						// Client.clientWidth > GameFrameConstants.smallTabs &&
-						// i < 7 ? 17 : 9) : 0) + 2);
-						Sprite sideIcon = getSideIconForOldFrame(i);
-						if (sideIcon != null) {
-							int[] xx = getSideIconPosForOldFrame(screenMode, sideIcon, i);
-							sideIcon.drawSprite(xx[0], xx[1]);
-						}
+					if (client.invOverlayInterfaceID == -1 && i == 13) {
+						client.sideIcons[13] = CacheSpriteLoader.getCacheSprite(782);
+						CacheSpriteLoader.getCacheSprite(782).drawSprite(getOffSetX() + (screenMode == ScreenMode.FIXED ? 18 : 12) + (i > 6 ? i - 7 : screenMode != ScreenMode.FIXED &&
+								Client.clientWidth > GameFrameConstants.smallTabs ? i -
+								7 : i) *
+								CacheSpriteLoader.getCacheSprite(12).myWidth, getOffSetY() + (i > 6 || screenMode !=
+								ScreenMode.FIXED ? getHeight() - client.sideIcons[i <
+								7 ? 0 : i].myHeight - 2 - (screenMode != ScreenMode.FIXED &&
+								Client.clientWidth <= GameFrameConstants.smallTabs &&
+								i < 7 ? 53 : screenMode != ScreenMode.FIXED &&
+								Client.clientWidth > GameFrameConstants.smallTabs &&
+								i < 7 ? 17 : 9) : 0) + 2);
+					}
+					if (client.invOverlayInterfaceID == -1 && i != 13) {
+						client.sideIcons[i].drawSprite(getOffSetX() + (screenMode == ScreenMode.FIXED ? 13 : 8) + (i > 6 ? i - 7 : screenMode != ScreenMode.FIXED &&
+										Client.clientWidth > GameFrameConstants.smallTabs ? i -
+										7 : i) *
+										CacheSpriteLoader.getCacheSprite(12).myWidth,
+								getOffSetY() + (i > 6 || screenMode !=
+										ScreenMode.FIXED ? getHeight() - client.sideIcons[i <
+										7 ? 0 : i].myHeight - (screenMode != ScreenMode.FIXED &&
+										Client.clientWidth <= GameFrameConstants.smallTabs &&
+										i < 7 ? 53 : screenMode != ScreenMode.FIXED &&
+										Client.clientWidth > GameFrameConstants.smallTabs &&
+										i < 7 ? 17 : 9) : 0) + 2);
+        /*Sprite sideIcon = Client.sideIcons[i];
+        if (sideIcon != null) {
+        	int[] xx = getSideIconPosForOldFrame(screenMode, sideIcon, i);
+        	sideIcon.drawSprite(xx[0], xx[1]);
+        }*/
 					}
 				}
 			} else if (GameFrameConstants.gameframeType == GameFrameType.FRAME_554) {

@@ -2417,7 +2417,7 @@ public final class ItemDefinition {
 				itemDef.maleDialogue = 39372;
 				itemDef.femaleDialogue = 39372;
 				itemDef.name = "Disco Hat";
-				itemDef.description = "A colorfull hat.".getBytes();
+				itemDef.description = "A colorful hat.".getBytes();
 				break;
 			case 21001:
 				itemDef.setDefaults();

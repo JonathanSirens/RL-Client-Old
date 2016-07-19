@@ -158,6 +158,39 @@ public class Canvas2D extends NodeSub {
 
 	}
 
+	public static void drawAlphaPixels(int x, int y, int w, int h, int color, int alpha) {
+		if (x < topX) {
+			w -= topX - x;
+			x = topX;
+		}
+		if (y < topY) {
+			h -= topY - y;
+			y = topY;
+		}
+		if (x + w > bottomX)
+			w = bottomX - x;
+		if (y + h > bottomY)
+			h = bottomY - y;
+		int l1 = 256 - alpha;
+		int i2 = (color >> 16 & 0xff) * alpha;
+		int j2 = (color >> 8 & 0xff) * alpha;
+		int k2 = (color & 0xff) * alpha;
+		int k3 = width - w;
+		int l3 = x + y * width;
+		for (int i4 = 0; i4 < h; i4++) {
+			for (int j4 = -w; j4 < 0; j4++) {
+				int l2 = (pixels[l3] >> 16 & 0xff) * l1;
+				int i3 = (pixels[l3] >> 8 & 0xff) * l1;
+				int j3 = (pixels[l3] & 0xff) * l1;
+				int k4 = ((i2 + l2 >> 8) << 16) + ((j2 + i3 >> 8) << 8)
+						+ (k2 + j3 >> 8);
+				pixels[l3++] = k4;
+			}
+
+			l3 += k3;
+		}
+	}
+
 	public static void setDrawingArea(int yBottom, int xTop, int xBottom, int yTop) {
 		if (xTop < 0)
 			xTop = 0;
@@ -174,6 +207,40 @@ public class Canvas2D extends NodeSub {
 		// viewportRX = bottomX - 0;
 		// viewport_centerX = bottomX / 2;
 		// viewport_centerY = bottomY / 2;
+	}
+
+	public static void fillCircle(int x, int y, int radius, int color, int alpha) {
+		int a2 = 256 - alpha;
+		int r1 = (color >> 16 & 0xff) * alpha;
+		int g1 = (color >> 8 & 0xff) * alpha;
+		int b1 = (color & 0xff) * alpha;
+		int y1 = y - radius;
+		if (y1 < 0) {
+			y1 = 0;
+		}
+		int y2 = y + radius;
+		if (y2 >= height) {
+			y2 = height - 1;
+		}
+		for (int iy = y1; iy <= y2; iy++) {
+			int dy = iy - y;
+			int dist = (int) Math.sqrt(radius * radius - dy * dy);
+			int x1 = x - dist;
+			if (x1 < 0) {
+				x1 = 0;
+			}
+			int x2 = x + dist;
+			if (x2 >= width) {
+				x2 = width - 1;
+			}
+			int pos = x1 + iy * width;
+			for (int ix = x1; ix <= x2; ix++) {
+				int r2 = (pixels[pos] >> 16 & 0xff) * a2;
+				int g2 = (pixels[pos] >> 8 & 0xff) * a2;
+				int b2 = (pixels[pos] & 0xff) * a2;
+				pixels[pos++] = ((r1 + r2 >> 8) << 16) + ((g1 + g2 >> 8) << 8) + (b1 + b2 >> 8);
+			}
+		}
 	}
 
 	public static void transparentBox(int i, int j, int k, int l, int i1, int j1, int opac) {

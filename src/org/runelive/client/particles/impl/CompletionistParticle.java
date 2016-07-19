@@ -9,7 +9,7 @@ public final class CompletionistParticle extends Particle {
 		this.Z(new Position(0, -3, 0));
 		this.getImage(new Position(0, -3, 0));
 		this.getImage(19);
-		this.setRGB(0xFFFFFF);
+		this.setRGB(0xDBDBDB);
 		this.I(1);
 		this.Z(1.5F);
 		this.getImage(0.0F);

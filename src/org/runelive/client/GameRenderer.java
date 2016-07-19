@@ -531,7 +531,7 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 		// System.out.println(keyCode + " : " + keyChar);
 		if (!Configuration.NEW_FUNCTION_KEYS) {
 			if (keyCode == KeyEvent.VK_ESCAPE) {
-				Client.setTab(3);
+				Client.setTab(14);
 			} else if (keyCode == KeyEvent.VK_F1) {
 				Client.setTab(0);
 			} else if (keyCode == KeyEvent.VK_F2) {
@@ -559,7 +559,7 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 			}
 		} else {
 			if (keyCode == KeyEvent.VK_ESCAPE) {
-				Client.setTab(10);
+				Client.setTab(14);
 			} else if (keyCode == KeyEvent.VK_F1) {
 				Client.setTab(3);
 			} else if (keyCode == KeyEvent.VK_F2) {

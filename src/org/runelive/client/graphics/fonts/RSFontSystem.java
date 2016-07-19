@@ -8,6 +8,7 @@ import org.runelive.client.cache.Archive;
 import org.runelive.client.graphics.CacheSpriteLoader;
 import org.runelive.client.graphics.Canvas2D;
 import org.runelive.client.graphics.Sprite;
+import org.runelive.client.graphics.gameframe.GameFrame;
 import org.runelive.client.io.ByteBuffer;
 
 public class RSFontSystem extends Canvas2D {
@@ -150,6 +151,17 @@ public class RSFontSystem extends Canvas2D {
 	}
 
 	public static String handleOldSyntax(String text) {
+		if (GameFrame.isFixed())
+		{
+			text = text.replaceAll("@bla@", "<col=0>");
+		}
+		else
+		{
+			text = text.replaceAll("@bla@", "<col=ffffff>");
+			text = text.replaceAll("<col=0>", "<col=ffffff>");
+			text = text.replaceAll("<col=255>", "<col=7FA9FF>");
+			text = text.replaceAll("<col=800000>", "<col=FF5256>");
+		}
 		text = text.replaceAll("@glb@", "<col=4AA02C>");
 		text = text.replaceAll("@369@", "<col=336699>");
 		text = text.replaceAll("@325@", "<col=31A4FF>");

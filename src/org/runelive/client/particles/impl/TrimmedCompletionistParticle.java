@@ -6,8 +6,8 @@ import org.runelive.client.particles.Position;
 public final class TrimmedCompletionistParticle extends Particle {
 
 	public TrimmedCompletionistParticle() {
-		this.Z(new Position(0, -3, 0));
-		this.getImage(new Position(0, -3, 0));
+		this.Z(new Position(0, -1, 0));
+		this.getImage(new Position(0, -1, 0));
 		this.getImage(19);
 		this.setRGB(16767232);
 		this.I(1);

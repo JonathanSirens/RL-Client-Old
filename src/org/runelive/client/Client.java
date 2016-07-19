@@ -1,17 +1,7 @@
 package org.runelive.client;
 
 import java.applet.AppletContext;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Desktop;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
@@ -35,12 +25,7 @@ import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.zip.CRC32;
 import java.util.zip.GZIPOutputStream;
@@ -144,6 +129,25 @@ import org.runelive.task.Task;
 import org.runelive.task.TaskManager;
 
 public class Client extends GameRenderer {
+
+	private void displayEntityFeed(String name, int currentHP, int maxHP) {
+		if (name == null) {
+			return;
+		}
+		int alpha = 255;
+		int currentHP2 = currentHP <= 0 ? maxHP : currentHP;
+		double percentage =  currentHP / (double) maxHP;
+		double percentage2 =  (currentHP2 - currentHP) / (double) maxHP;
+		int width = (int) (135 * percentage);
+		int xOff = 3;
+		int yOff = 25;
+		Canvas2D.drawAlphaPixels(xOff, yOff, 145, 41, 0x000000, 115);
+		newBoldFont.drawCenteredString(name, xOff + 72, yOff + 13, 0xFDFDFD, 0);
+		Canvas2D.drawAlphaPixels(xOff + 6 + width, yOff + 18, 135 - width, 15, 0xFF0000, 130);
+		Canvas2D.drawAlphaPixels(xOff + 6, yOff + 18, width, 15, 0x00DB00, 130);
+		Canvas2D.drawAlphaPixels(xOff + 6, yOff + 18, width, 15, 0x00DB00, 130);
+		newBoldFont.drawCenteredString(NumberFormat.getInstance(Locale.US).format(currentHP) + " / " + NumberFormat.getInstance(Locale.US).format(maxHP), xOff + 72, yOff + 31, 0xFDFDFD, 0);
+	}
 
 	public static FogProcessor fog = new FogProcessor();
 	public static ResourceLoader resourceLoader;
@@ -1154,6 +1158,7 @@ public class Client extends GameRenderer {
 	public final int[] mapImagePixelCutLeft;
 	public final int[] mapImagePixelCutRight;
 	public Sprite mapMarker;
+	public Sprite[] sideIcons;
 	private Background[] mapScenes;
 	private final int maxPlayers;
 	public final int[] maxStats;
@@ -1367,6 +1372,7 @@ public class Client extends GameRenderer {
 		setaClass19_1056(new Deque());
 		compassArray2 = new int[33];
 		aClass9_1059 = new RSInterface();
+		sideIcons = new Sprite[15];
 		mapScenes = new Background[100];
 		myAppearance = new int[7];
 		anIntArray1072 = new int[1000];
@@ -2911,7 +2917,7 @@ public class Client extends GameRenderer {
 													}
 
 													if (j4 == 2) {
-														menuActionID[menuActionRow] = 867;
+														menuActionID[menuActionRow] = 53;
 													}
 
 													if (j4 == 3) {
@@ -2919,7 +2925,7 @@ public class Client extends GameRenderer {
 													}
 
 													if (j4 == 4) {
-														menuActionID[menuActionRow] = 53;
+														menuActionID[menuActionRow] = 867;
 													}
 													menuActionCmd1[menuActionRow] = definition.id;
 													menuActionCmd2[menuActionRow] = k2;
@@ -3341,6 +3347,7 @@ public class Client extends GameRenderer {
 		mapDotFriend = null;
 		mapDotTeam = null;
 		mapDotClan = null;
+		sideIcons = null;
 		mapScenes = null;
 		mapFunctions = null;
 		anIntArrayArray929 = null;
@@ -7339,6 +7346,12 @@ public class Client extends GameRenderer {
 		}
 	}
 
+	public void drawCenteredString(Graphics g, String text, int x, int y) {
+		Font font = new Font("Verdana", 0, 10);
+		int width = g.getFontMetrics().stringWidth(text);
+		g.drawString(text, x - (width / 2), y);
+	}
+
 	public static String loadingText = "Initiating game..";
 	public static int loadingPercentage;
 	private BufferedImage[] loadingImages;
@@ -7361,12 +7374,15 @@ public class Client extends GameRenderer {
 		Font font = new Font("Verdana", 0, 10);
 		graphics2D.setFont(font);
 		boolean dont_show_last_percentage = false;
-		int n5 = 317; // X Position
+		int n5 = 385; // X Position
+		if (text.toLowerCase().contains("connecting to web server")) {
+			n5 = 380;
+		}
 		if (text.toLowerCase().contains("downloading")) {
-			n5 = 285;
-			super.graphics.drawString(String.valueOf(text) + "", n5, 177);
+			n5 = 353;
+			drawCenteredString(graphics2D, String.valueOf(text) + "", n5, 177);
 		} else {
-			super.graphics.drawString(String.valueOf(text) + " " + percent + "%", n5, 177);
+			drawCenteredString(graphics2D, String.valueOf(text) + " " + percent + "%", n5, 177);
 		}
 		if (percent > 0) {
 			int n6 = percent = (int) ((double) percent * 1.93);
@@ -7824,97 +7840,102 @@ public class Client extends GameRenderer {
 	private boolean menuToggle = true;
 
 	public void drawMenu() {
-		int i = menuOffsetX;
-		int j = menuOffsetY;
-		int k = menuWidth;
-		int j1 = super.mouseX;
-		int k1 = super.mouseY;
-		int l = menuHeight + 1;
-		int i1 = 0x5d5447;
-		if (menuScreenArea == 1 && (GameFrame.getScreenMode().ordinal() > 0)) {
-			i += 519;// +extraWidth;
-			j += 168;// +extraHeight;
-		}
-		if (menuScreenArea == 2 && (GameFrame.getScreenMode().ordinal() > 0)) {
-			j += 338;
-		}
-		if (menuScreenArea == 3 && (GameFrame.getScreenMode().ordinal() > 0)) {
-			i += 515;
-			j += 0;
-		}
-		if (menuScreenArea == 0) {
-			j1 -= 4;
-			k1 -= 4;
-		}
-		if (menuScreenArea == 1) {
-			if (!(GameFrame.getScreenMode().ordinal() > 0)) {
-				j1 -= 519;
-				k1 -= 168;
+		try {
+			int i = menuOffsetX;
+			int j = menuOffsetY;
+			int k = menuWidth;
+			int j1 = super.mouseX;
+			int k1 = super.mouseY;
+			int l = menuHeight + 1;
+			int i1 = 0x5d5447;
+			if (menuScreenArea == 1 && (GameFrame.getScreenMode().ordinal() > 0)) {
+				i += 519;// +extraWidth;
+				j += 168;// +extraHeight;
 			}
-		}
-		if (menuScreenArea == 2) {
-			if (!(GameFrame.getScreenMode().ordinal() > 0)) {
-				j1 -= 17;
-				k1 -= 338;
+			if (menuScreenArea == 2 && (GameFrame.getScreenMode().ordinal() > 0)) {
+				j += 338;
 			}
-		}
-		if (menuScreenArea == 3 && !(GameFrame.getScreenMode().ordinal() > 0)) {
-			j1 -= 515;
-			k1 -= 0;
-		}
-		if (menuToggle == false) {
-			Canvas2D.fillRectangle(i1, j, k, l, 150, i);
-			Canvas2D.fillRectangle(0, j + 1, k - 2, 16, 150, i + 1);
-			Canvas2D.fillPixels(i + 1, k - 2, l - 19, 0, j + 18);
-			Canvas2D.drawRectangle(j + 18, l - 19, 150, 0, k - 2, i + 1);
-			boldText.method385(0xc6b895, "Choose Option", j + 14, i + 3);
-			boldText.method385(0xc6b895, "Choose Option", j + 14, i + 3);
-			for (int l1 = 0; l1 < menuActionRow; l1++) {
-				int i2 = j + 31 + (menuActionRow - 1 - l1) * 15;
-				int j2 = 0xffffff;
-				if (j1 > i && j1 < i + k && k1 > i2 - 13 && k1 < i2 + 3)
-					j2 = 0xffff00;
-				boldText.drawRegularText(true, i + 3, j2, menuActionName[l1], i2);
+			if (menuScreenArea == 3 && (GameFrame.getScreenMode().ordinal() > 0)) {
+				i += 515;
+				j += 0;
 			}
-		} else if (menuToggle == true) {
-			Canvas2D.drawPixels(l - 4, j + 2, i, 0x706a5e, k);
-			Canvas2D.drawPixels(l - 2, j + 1, i + 1, 0x706a5e, k - 2);
-			Canvas2D.drawPixels(l, j, i + 2, 0x706a5e, k - 4);
-			Canvas2D.drawPixels(l - 2, j + 1, i + 3, 0x2d2822, k - 6);
-			Canvas2D.drawPixels(l - 4, j + 2, i + 2, 0x2d2822, k - 4);
-			Canvas2D.drawPixels(l - 6, j + 3, i + 1, 0x2d2822, k - 2);
-			Canvas2D.drawPixels(l - 22, j + 19, i + 2, 0x524a3d, k - 4);
-			Canvas2D.drawPixels(l - 22, j + 20, i + 3, 0x524a3d, k - 6);
-			Canvas2D.drawPixels(l - 23, j + 20, i + 3, 0x2b271c, k - 6);
-			Canvas2D.fillPixels(i + 3, k - 6, 1, 0x2a291b, j + 2);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 0x2a261b, j + 3);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 0x252116, j + 4);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 0x211e15, j + 5);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 0x1e1b12, j + 6);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 0x1a170e, j + 7);
-			Canvas2D.fillPixels(i + 2, k - 4, 2, 0x15120b, j + 8);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 0x100d08, j + 10);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 0x090a04, j + 11);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 0x080703, j + 12);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 0x090a04, j + 13);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 0x070802, j + 14);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 0x090a04, j + 15);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 0x070802, j + 16);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 0x090a04, j + 17);
-			Canvas2D.fillPixels(i + 2, k - 4, 1, 0x2a291b, j + 18);
-			Canvas2D.fillPixels(i + 3, k - 6, 1, 0x564943, j + 19);
-			normalText.method385(0xc6b895, "Choose Option", j + 14, i + 3);
-			for (int l1 = 0; l1 < menuActionRow; l1++) {
-				int i2 = j + 31 + (menuActionRow - 1 - l1) * 15;
-				int j2 = 0xc6b895;
-				if (j1 > i && j1 < i + k && k1 > i2 - 13 && k1 < i2 + 3) {
-					Canvas2D.drawPixels(15, i2 - 11, i + 3, 0x6f695d, menuWidth - 6);
-					j2 = 0xeee5c6;
-					currentActionMenu = l1;
+			if (menuScreenArea == 0) {
+				j1 -= 4;
+				k1 -= 4;
+			}
+			if (menuScreenArea == 1) {
+				if (!(GameFrame.getScreenMode().ordinal() > 0)) {
+					j1 -= 519;
+					k1 -= 168;
 				}
-				normalText.drawRegularText(true, i + 4, j2, menuActionName[l1], i2 + 1);
 			}
+			if (menuScreenArea == 2) {
+				if (!(GameFrame.getScreenMode().ordinal() > 0)) {
+					j1 -= 17;
+					k1 -= 338;
+				}
+			}
+			if (menuScreenArea == 3 && !(GameFrame.getScreenMode().ordinal() > 0)) {
+				j1 -= 515;
+				k1 -= 0;
+			}
+			if (menuToggle == false) {
+				Canvas2D.fillRectangle(i1, j, k, l, 150, i);
+				Canvas2D.fillRectangle(0, j + 1, k - 2, 16, 150, i + 1);
+				Canvas2D.fillPixels(i + 1, k - 2, l - 19, 0, j + 18);
+				Canvas2D.drawRectangle(j + 18, l - 19, 150, 0, k - 2, i + 1);
+				boldText.method385(0xc6b895, "Choose Option", j + 14, i + 3);
+				boldText.method385(0xc6b895, "Choose Option", j + 14, i + 3);
+				for (int l1 = 0; l1 < menuActionRow; l1++) {
+					int i2 = j + 31 + (menuActionRow - 1 - l1) * 15;
+					int j2 = 0xffffff;
+					if (j1 > i && j1 < i + k && k1 > i2 - 13 && k1 < i2 + 3)
+						j2 = 0xffff00;
+					boldText.drawRegularText(true, i + 3, j2, menuActionName[l1], i2);
+				}
+			} else if (menuToggle == true) {
+				Canvas2D.drawPixels(l - 4, j + 2, i, 0x706a5e, k);
+				Canvas2D.drawPixels(l - 2, j + 1, i + 1, 0x706a5e, k - 2);
+				Canvas2D.drawPixels(l, j, i + 2, 0x706a5e, k - 4);
+				Canvas2D.drawPixels(l - 2, j + 1, i + 3, 0x2d2822, k - 6);
+				Canvas2D.drawPixels(l - 4, j + 2, i + 2, 0x2d2822, k - 4);
+				Canvas2D.drawPixels(l - 6, j + 3, i + 1, 0x2d2822, k - 2);
+				Canvas2D.drawPixels(l - 22, j + 19, i + 2, 0x524a3d, k - 4);
+				Canvas2D.drawPixels(l - 22, j + 20, i + 3, 0x524a3d, k - 6);
+				Canvas2D.drawPixels(l - 23, j + 20, i + 3, 0x2b271c, k - 6);
+				Canvas2D.fillPixels(i + 3, k - 6, 1, 0x2a291b, j + 2);
+				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x2a261b, j + 3);
+				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x252116, j + 4);
+				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x211e15, j + 5);
+				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x1e1b12, j + 6);
+				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x1a170e, j + 7);
+				Canvas2D.fillPixels(i + 2, k - 4, 2, 0x15120b, j + 8);
+				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x100d08, j + 10);
+				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x090a04, j + 11);
+				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x080703, j + 12);
+				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x090a04, j + 13);
+				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x070802, j + 14);
+				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x090a04, j + 15);
+				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x070802, j + 16);
+				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x090a04, j + 17);
+				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x2a291b, j + 18);
+				Canvas2D.fillPixels(i + 3, k - 6, 1, 0x564943, j + 19);
+				normalText.method385(0xc6b895, "Choose Option", j + 14, i + 3);
+				for (int l1 = 0; l1 < menuActionRow; l1++) {
+					int i2 = j + 31 + (menuActionRow - 1 - l1) * 15;
+					int j2 = 0xc6b895;
+					if (j1 > i && j1 < i + k && k1 > i2 - 13 && k1 < i2 + 3) {
+						Canvas2D.drawPixels(15, i2 - 11, i + 3, 0x6f695d, menuWidth - 6);
+						j2 = 0xeee5c6;
+						currentActionMenu = l1;
+					}
+					normalText.drawRegularText(true, i + 4, j2, menuActionName[l1], i2 + 1);
+				}
+			}
+		} catch(Exception e) {
+
 		}
+
 	}
 	
 	public void detectCursor(String tooltip) {
@@ -8737,7 +8758,7 @@ public class Client extends GameRenderer {
 		this.cameraRotationRight += (j << 1);
 	}
 
-	private boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
+	public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
 		return Math.pow(circleX + radius - clickX, 2) + Math.pow(circleY + radius - clickY, 2) < Math.pow(radius, 2);
 	}
 
@@ -11596,123 +11617,153 @@ public class Client extends GameRenderer {
 		}
 	}
 
-	private void method50(int y, int primaryColor, int x, int secondaryColor, int z) {
+	public void method50(int y, int primaryColor, int x, int secondaryColor, int z) {
 		int uid = worldController.method300(z, x, y);
-		if ((uid ^ 0xffffffffffffffffL) != -1L) {
-			int resourceTag = worldController.fetchObjectIDTagForPosition(z, x, y, uid);
-			int direction = resourceTag >> 6 & 3;// direction
-			int type = resourceTag & 0x1f;// type
-			int color = primaryColor;// color
-			if (uid > 0) {
+		if(((uid ^ 0xffffffffffffffffL) != -1L) || uid != 0)
+		{
+			int resource_tag = worldController.fetchObjectIDTagForPosition(z, x, y, uid);
+			int direction = resource_tag >> 6 & 3;
+			int type = resource_tag & 0x1f;
+			int color = primaryColor;
+			if(uid > 0)
 				color = secondaryColor;
-			}
-			int mapPixels[] = miniMapRegions.myPixels;
+
+			int scene_pixels[] = miniMapRegions.myPixels;
 			int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
-			int objectId = worldController.fetchWallDecorationNewUID(z, x, y);
-			ObjectDefinition objDef = ObjectDefinition.forID(objectId);
-			if ((objDef.mapSceneID ^ 0xffffffff) == 0) {
-				if (type == 0 || type == 2) {
-					if (direction == 0) {
-						mapPixels[pixel] = color;
-						mapPixels[pixel + 512] = color;
-						mapPixels[1024 + pixel] = color;
-						mapPixels[1536 + pixel] = color;
-					} else if ((direction ^ 0xffffffff) == -2) {
-						mapPixels[pixel] = color;
-						mapPixels[pixel + 1] = color;
-						mapPixels[pixel + 2] = color;
-						mapPixels[3 + pixel] = color;
-					} else if (direction == 2) {
-						mapPixels[pixel - -3] = color;
-						mapPixels[3 + pixel + 512] = color;
-						mapPixels[3 + pixel + 1024] = color;
-						mapPixels[1536 + pixel - -3] = color;
-					} else if (direction == 3) {
-						mapPixels[pixel + 1536] = color;
-						mapPixels[pixel + 1536 + 1] = color;
-						mapPixels[2 + pixel + 1536] = color;
-						mapPixels[pixel + 1539] = color;
-					}
+			int object_id = worldController.fetchWallObjectNewUID(z, x, y);
+			ObjectDefinition def = ObjectDefinition.forID(object_id);
+			if(def.mapSceneID != -1) {
+				Background scene = mapScenes[def.mapSceneID];
+				if(scene != null)
+				{
+					int scene_x = (def.sizeX * 4 - scene.imgWidth) / 2;
+					int scene_y = (def.sizeY * 4 - scene.imgHeight) / 2;
+					scene.method361(48 + x * 4 + scene_x, 48 + (104 - y - def.sizeY) * 4 + scene_y);
 				}
-				if (type == 3) {
-					if (direction == 0) {
-						mapPixels[pixel] = color;
-					} else if (direction == 1) {
-						mapPixels[pixel + 3] = color;
-					} else if (direction == 2) {
-						mapPixels[pixel + 3 + 1536] = color;
-					} else if (direction == 3) {
-						mapPixels[pixel + 1536] = color;
-					}
-				}
-				if (type == 2) {
-					if (direction == 3) {
-						mapPixels[pixel] = color;
-						mapPixels[pixel + 512] = color;
-						mapPixels[pixel + 1024] = color;
-						mapPixels[pixel + 1536] = color;
-					} else if (direction == 0) {
-						mapPixels[pixel] = color;
-						mapPixels[pixel + 1] = color;
-						mapPixels[pixel + 2] = color;
-						mapPixels[pixel + 3] = color;
-					} else if (direction == 1) {
-						mapPixels[pixel + 3] = color;
-						mapPixels[pixel + 3 + 512] = color;
-						mapPixels[pixel + 3 + 1024] = color;
-						mapPixels[pixel + 3 + 1536] = color;
-					} else if (direction == 2) {
-						mapPixels[pixel + 1536] = color;
-						mapPixels[pixel + 1536 + 1] = color;
-						mapPixels[pixel + 1536 + 2] = color;
-						mapPixels[pixel + 1536 + 3] = color;
-					}
+			} else
+			{
+				if ((def.mapSceneID ^ 0xffffffff) == 0)
+				{
+					if (type == 0 || type == 2)
+						if (direction == 0)
+						{
+							scene_pixels[pixel] = color;
+							scene_pixels[pixel + 512] = color;
+							scene_pixels[pixel + 1024] = color;
+							scene_pixels[pixel + 1536] = color;
+						} else if ((((direction ^ 0xffffffff) == -2) || direction == 1))
+						{
+							scene_pixels[pixel] = color;
+							scene_pixels[pixel + 1] = color;
+							scene_pixels[pixel + 2] = color;
+							scene_pixels[pixel + 3] = color;
+						} else if (direction == 2)
+						{
+							scene_pixels[pixel + 3] = color;
+							scene_pixels[pixel + 3 + 512] = color;
+							scene_pixels[pixel + 3 + 1024] = color;
+							scene_pixels[pixel + 3 + 1536] = color;
+						} else if (direction == 3)
+						{
+							scene_pixels[pixel + 1536] = color;
+							scene_pixels[pixel + 1536 + 1] = color;
+							scene_pixels[pixel + 1536 + 2] = color;
+							scene_pixels[pixel + 1536 + 3] = color;
+						}
+					if(type == 3)
+						if(direction == 0)
+							scene_pixels[pixel] = color;
+
+						else if(direction == 1)
+							scene_pixels[pixel + 3] = color;
+
+						else if(direction == 2)
+							scene_pixels[pixel + 3 + 1536] = color;
+
+						else if(direction == 3)
+							scene_pixels[pixel + 1536] = color;
+
+					if(type == 2)
+						if(direction == 3)
+						{
+							scene_pixels[pixel] = color;
+							scene_pixels[pixel + 512] = color;
+							scene_pixels[pixel + 1024] = color;
+							scene_pixels[pixel + 1536] = color;
+						} else if(direction == 0)
+						{
+							scene_pixels[pixel] = color;
+							scene_pixels[pixel + 1] = color;
+							scene_pixels[pixel + 2] = color;
+							scene_pixels[pixel + 3] = color;
+						} else if(direction == 1)
+						{
+							scene_pixels[pixel + 3] = color;
+							scene_pixels[pixel + 3 + 512] = color;
+							scene_pixels[pixel + 3 + 1024] = color;
+							scene_pixels[pixel + 3 + 1536] = color;
+						} else if(direction == 2)
+						{
+							scene_pixels[pixel + 1536] = color;
+							scene_pixels[pixel + 1536 + 1] = color;
+							scene_pixels[pixel + 1536 + 2] = color;
+							scene_pixels[pixel + 1536 + 3] = color;
+						}
 				}
 			}
 		}
 		uid = worldController.method302(z, x, y);
-		if (uid != 0) {
-			int resourceTag = worldController.fetchObjectIDTagForPosition(z, x, y, uid);
-			int direction = resourceTag >> 6 & 3;
-			int type = resourceTag & 0x1f;
-			int objectId = worldController.fetchObjectMeshNewUID(z, x, y);
-			ObjectDefinition objDef = ObjectDefinition.forID(objectId);
-			if (objDef.mapSceneID != -1) {
-				Background scene = mapScenes[objDef.mapSceneID];
-				if (scene != null) {
-					int sceneX = (objDef.sizeX * 4 - scene.imgWidth) / 2;
-					int sceneY = (objDef.sizeY * 4 - scene.imgHeight) / 2;
-					scene.method361(48 + x * 4 + sceneX, 48 + (104 - y - objDef.sizeY) * 4 + sceneY);
+		if(uid != 0)
+		{
+			int resource_tag = worldController.fetchObjectIDTagForPosition(z, x, y, uid);
+			int direction = resource_tag >> 6 & 3;
+			int type = resource_tag & 0x1f;
+			int object_id = worldController.fetchObjectMeshNewUID(z, x, y);
+			ObjectDefinition def = ObjectDefinition.forID(object_id);
+			if(def.mapSceneID != -1)
+			{
+				Background scene = mapScenes[def.mapSceneID];
+				if(scene != null)
+				{
+					int scene_x = (def.sizeX * 4 - scene.imgWidth) / 2;
+					int scene_y = (def.sizeY * 4 - scene.imgHeight) / 2;
+					scene.method361(48 + x * 4 + scene_x, 48 + (104 - y - def.sizeY) * 4 + scene_y);
 				}
-			} else if (type == 9) {
+			} else if(type == 9)
+			{
 				int color = 0xeeeeee;
-				if (uid > 0) {
+				if(uid > 0)
 					color = 0xee0000;
-				}
-				int mapPixels[] = miniMapRegions.myPixels;
+
+				int scene_pixels[] = miniMapRegions.myPixels;
 				int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
-				if (direction == 0 || direction == 2) {
-					mapPixels[pixel + 1536] = color;
-					mapPixels[pixel + 1024 + 1] = color;
-					mapPixels[pixel + 512 + 2] = color;
-					mapPixels[pixel + 3] = color;
-				} else {
-					mapPixels[pixel] = color;
-					mapPixels[pixel + 512 + 1] = color;
-					mapPixels[pixel + 1024 + 2] = color;
-					mapPixels[pixel + 1536 + 3] = color;
+				if(direction == 0 || direction == 2)
+				{
+					scene_pixels[pixel + 1536] = color;
+					scene_pixels[pixel + 1024 + 1] = color;
+					scene_pixels[pixel + 512 + 2] = color;
+					scene_pixels[pixel + 3] = color;
+				} else
+				{
+					scene_pixels[pixel] = color;
+					scene_pixels[pixel + 512 + 1] = color;
+					scene_pixels[pixel + 1024 + 2] = color;
+					scene_pixels[pixel + 1536 + 3] = color;
 				}
 			}
 		}
 		uid = worldController.fetchGroundDecorationNewUID(z, x, y);
-		if (uid > 0) {
-			ObjectDefinition objDef = ObjectDefinition.forID(uid);
-			if (objDef.mapSceneID != -1) {
-				Background scene = mapScenes[objDef.mapSceneID];
-				if (scene != null) {
-					int sceneX = (objDef.sizeX * 4 - scene.imgWidth) / 2;
-					int sceneY = (objDef.sizeY * 4 - scene.imgHeight) / 2;
-					scene.method361(48 + x * 4 + sceneX, 48 + (104 - y - objDef.sizeY) * 4 + sceneY);
+		if(uid > 0 || uid != 0)
+		{
+			ObjectDefinition def = ObjectDefinition.forID(uid);
+			if(def.mapSceneID != -1)
+			{
+				Background scene = mapScenes[def.mapSceneID];
+				if(scene != null)
+				{
+					int scene_x = (def.sizeX * 4 - scene.imgWidth) / 2;
+					int scene_y = (def.sizeY * 4 - scene.imgHeight) / 2;
+					scene.method361(48 + x * 4 + scene_x, 48 + (104 - y - def.sizeY) * 4 + scene_y);
 				}
 			}
 		}
@@ -16512,6 +16563,13 @@ public class Client extends GameRenderer {
 			mapEdge.method345();
 
 			try {
+			for (int index = 0; index <= 14; index++) {
+				sideIcons[index] = new Sprite(mediaArchive, "sideicons", index);
+			}
+			} catch (Exception _ex) {
+			}
+
+			try {
 				for (int k3 = 0; k3 < 100; k3++) {
 					mapScenes[k3] = new Background(mediaArchive, "mapscene", k3);
 				}
@@ -17311,6 +17369,7 @@ public class Client extends GameRenderer {
 										spriteDrawX, spriteDrawY - 22, color, 0x000000);
 							}
 
+/*
 							//Custom health interface
 
 							int spriteWidth = 30;
@@ -17358,7 +17417,7 @@ public class Client extends GameRenderer {
 								newRegularFont.drawCenteredString(name, 57, 35, 0xFFFFFD, 0x000000);
 
 							}
-							
+							*/
 						}
 
 

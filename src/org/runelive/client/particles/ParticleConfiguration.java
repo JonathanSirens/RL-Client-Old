@@ -3,7 +3,7 @@ package org.runelive.client.particles;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ParticleConfiguration {
+public class ParticleConfiguration {//65297
 
 	private static final Map<Integer, int[][]> models = new HashMap<>();
 
@@ -17,6 +17,9 @@ public class ParticleConfiguration {
 				new int[][] { { 0, 1 }, { 1, 1 }, { 3, 1 }, { 131, 1 }, { 132, 1 }, { 133, 1 }, { 134, 1 }, { 135, 1 },
 						{ 136, 1 }, { 137, 1 }, { 138, 1 }, { 139, 1 }, { 140, 1 }, { 141, 1 }, { 142, 1 },
 						{ 145, 1 } });*/
+
+		//Default completionist cape
+		models.put(65297, new int[][] { { 494, 3 }, { 488, 3 }, { 485, 3 }, { 476, 3 }, { 482, 3}, { 479, 3 }, { 491, 3 } });
 
 		//Black completionist cape
 		models.put(77009, new int[][] { { 494, 5 }, { 488, 5 }, { 485, 5 }, { 476, 5 }, { 482, 5 }, { 479, 5 }, { 491, 5 } });
