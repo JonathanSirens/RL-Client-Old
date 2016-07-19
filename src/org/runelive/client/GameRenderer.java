@@ -730,8 +730,8 @@ public class GameRenderer extends Applet implements Runnable, MouseListener, Mou
 		x -= offsetX;
 		y -= offsetY;
 		idleTime = 0;
-		System.out.println("Mouse x: "+x);
-		System.out.println("Mouse y: "+y);
+		//System.out.println("Mouse x: "+x);
+		//System.out.println("Mouse y: "+y);
 		clickX = x;
 		clickY = y;
 	}
