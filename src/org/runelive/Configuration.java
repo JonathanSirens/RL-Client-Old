@@ -12,7 +12,7 @@ public class Configuration {
 	public static String SERVER_HOST = LOCAL ? "127.0.0.1" : "158.69.125.71"; // 158.69.125.71
 	public final static int SERVER_PORT = 59018;
 
-	public final static String[] WORLD_1 = {"Economy", "158.69.125.71"};
+	public final static String[] WORLD_1 = {"Economy", LOCAL ? "127.0.0.1" : "158.69.125.71"};
 	public final static String[] WORLD_2 = {"Beta", "149.56.100.16"};
 
 	/** FILE SERVER **/
