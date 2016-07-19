@@ -17310,7 +17310,7 @@ public class Client extends GameRenderer {
 												.append((int) maxHitpoints).toString(),
 										spriteDrawX, spriteDrawY - 22, color, 0x000000);
 							}
-/*
+
 							//Custom health interface
 
 							int spriteWidth = 30;
@@ -17358,7 +17358,7 @@ public class Client extends GameRenderer {
 								newRegularFont.drawCenteredString(name, 57, 35, 0xFFFFFD, 0x000000);
 
 							}
-							*/
+							
 						}
 
 
