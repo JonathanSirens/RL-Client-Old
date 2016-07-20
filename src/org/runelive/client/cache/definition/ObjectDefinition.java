@@ -111,7 +111,7 @@ public final class ObjectDefinition {
 		}
 
 		//this was the code to remove all doors and shit
-		/*boolean removeObject = definition.id == 1442 || definition.id == 1433 || definition.id == 1443
+		boolean removeObject = definition.id == 1442 || definition.id == 1433 || definition.id == 1443
 				|| definition.id == 1441 || definition.id == 26916 || definition.id == 26917 || definition.id == 5244
 				|| definition.id == 2623 || definition.id == 2956 || definition.id == 463 || definition.id == 462
 				|| definition.id == 10527 || definition.id == 10529 || definition.id == 40257 || definition.id == 296
@@ -138,7 +138,7 @@ public final class ObjectDefinition {
 			definition.hasActions = false;
 			definition.isUnwalkable = false;
 			return definition;
-		}*/
+		}
 		for (int ids = 0; ids < removeObjects.length; ids++) {
 			if (id == removeObjects[ids]) {
 				definition.objectModelIDs = null;
