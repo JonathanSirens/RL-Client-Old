@@ -2908,24 +2908,24 @@ public class Client extends GameRenderer {
 													}
 
 													menuActionName[menuActionRow] = s;
-													if (j4 == 0) {
+													if (j4 == 0) {//Withdraw 1
 														menuActionID[menuActionRow] = 632;
 													}
 
-													if (j4 == 1) {
+													if (j4 == 1) {//Withdraw 5
 														menuActionID[menuActionRow] = 78;
 													}
 
-													if (j4 == 2) {
-														menuActionID[menuActionRow] = 53;
+													if (j4 == 2) {//Withdraw 10
+														menuActionID[menuActionRow] = 867;
 													}
 
-													if (j4 == 3) {
+													if (j4 == 3) {//Withdraw All
 														menuActionID[menuActionRow] = 431;
 													}
 
-													if (j4 == 4) {
-														menuActionID[menuActionRow] = 867;
+													if (j4 == 4) {//Withdraw All but one
+														menuActionID[menuActionRow] = 53;
 													}
 													menuActionCmd1[menuActionRow] = definition.id;
 													menuActionCmd2[menuActionRow] = k2;
@@ -4501,6 +4501,7 @@ public class Client extends GameRenderer {
 					slot = 1;
 				}
 			}
+			System.out.println("632");
 			getOut().putOpcode(145);
 			getOut().writeUnsignedWordA(interfaceId);
 			getOut().writeUnsignedWordA(slot);
@@ -5598,9 +5599,13 @@ public class Client extends GameRenderer {
 						0 - 255 + 10 + 4);
 				
 			} else if ((getWalkableInterfaceId() == 25347) && GameFrame.getScreenMode() != ScreenMode.FIXED) {
-				drawInterface(0, getScreenWidth() - 750, RSInterface.interfaceCache[getWalkableInterfaceId()], 0);	
-			} else {
+				drawInterface(0, getScreenWidth() - 750, RSInterface.interfaceCache[getWalkableInterfaceId()], 0);
+			} else if (getWalkableInterfaceId() == 37200 && GameFrame.getScreenMode() != ScreenMode.FIXED) {
+				drawInterface(0, getScreenWidth() - 765, RSInterface.interfaceCache[getWalkableInterfaceId()], -200);
+			} else if (getWalkableInterfaceId() == 21005 && GameFrame.getScreenMode() != ScreenMode.FIXED) {
 				drawInterface(0, 0, RSInterface.interfaceCache[getWalkableInterfaceId()], 0);
+			} else {
+				drawInterface(0, GameFrame.getScreenMode() != ScreenMode.FIXED ? getScreenWidth() - 765 : 0, RSInterface.interfaceCache[getWalkableInterfaceId()], 0);
 			}
 			if (getWalkableInterfaceId() == 197) {
 				drawInterface(0, getScreenWidth() - 765 - (GameFrame.getScreenMode() != ScreenMode.FIXED ? 30 : 0), RSInterface.interfaceCache[42020], 10);
@@ -13535,9 +13540,7 @@ public class Client extends GameRenderer {
 				return true;
 			case 253:
 				String s = getInputBuffer().getString();
-				if (consoleOpen) {
-					printConsoleMessage(s, 0);
-				} else if (s.endsWith(":tradereq:")) {
+				if (s.endsWith(":tradereq:")) {
 					String s3 = s.substring(0, s.indexOf(":"));
 					long l17 = TextClass.longForName(s3);
 					boolean flag2 = false;
@@ -13564,8 +13567,7 @@ public class Client extends GameRenderer {
 						if (ignoreListAsLongs[k27] != l18) {
 							continue;
 						}
-						flag3 = true;
-
+							flag3 = true;
 					}
 					if (!flag3 && anInt1251 == 0) {
 						pushMessage("wishes to duel with you.", 8, s4);
@@ -15374,8 +15376,8 @@ public class Client extends GameRenderer {
 				int clickY = super.mouseY;
 
 				if (menuScreenArea == 0) {
-					clickX -= GameFrame.getScreenMode() == ScreenMode.FIXED ? 4 : 0;
-					clickY -= GameFrame.getScreenMode() == ScreenMode.FIXED ? 4 : 0;
+					clickX -= 4;
+					clickY -= 4;
 				}
 
 				if (menuScreenArea == 1) {
@@ -15414,8 +15416,8 @@ public class Client extends GameRenderer {
 				int clickY = super.saveClickY;
 
 				if (menuScreenArea == 0) {
-					clickX -= GameFrame.getScreenMode() == ScreenMode.FIXED ? 4 : 0;
-					clickY -= GameFrame.getScreenMode() == ScreenMode.FIXED ? 4 : 0;
+					clickX -= 4;
+					clickY -= 4;
 				}
 
 				if (menuScreenArea == 1) {
@@ -15839,7 +15841,7 @@ public class Client extends GameRenderer {
 			messagePromptRaised = true;
 			promptInput = "";
 			friendsListAction = 12;
-			promptMessage = "Enter your " + Skills.SKILL_NAMES[index] + " level goal below.";
+			promptMessage = "Enter your level goal below.";
 		}
 		if (id == 1322) {
 			inputTaken = true;
@@ -15850,10 +15852,6 @@ public class Client extends GameRenderer {
 			promptMessage = "Enter your experience goal below.";
 		}
 		if (id == 1323) {
-			if (Skills.goalData[Skills.selectedSkillId][0] == -1 && Skills.goalData[Skills.selectedSkillId][1] == -1
-					&& Skills.goalData[Skills.selectedSkillId][2] == -1) {
-				pushMessage("You do not have a goal to clear for that level.", 0, "");
-			}
 			if (Skills.selectedSkillId > -1) {
 				Skills.goalData[Skills.selectedSkillId][0] = -1;
 				Skills.goalData[Skills.selectedSkillId][1] = -1;
@@ -16354,7 +16352,7 @@ public class Client extends GameRenderer {
 		g.fillRect(0, 0, 765, 503);
 		g.setFont(new Font("Verdana", 1, 18));
 		g.setColor(titleTextColor);
-		g.drawString("Sorry, an error has occured whilst starting up RuneLive client", 30, 35);
+		g.drawString("Sorry, an error has occurred whilst starting up RuneLive client", 30, 35);
 		g.drawLine(30, 40, 645, 40);
 		g.setFont(new Font("Arial", 1, 90));
 		g.setColor(textColor);
@@ -18531,10 +18529,10 @@ public class Client extends GameRenderer {
 					opacity = 255 - opacity;
 				}
 				if (percentile > -1 && percentile <= 100) {
-					Canvas2D.setDrawingArea(334, 0, 512, 0);
-					Canvas2D.drawAlphaBox(0, 0, 512, 334, 0x000000, opacity);
+					Canvas2D.setDrawingArea((GameFrame.isFixed() ? 334 : clientHeight), 0, (GameFrame.isFixed() ? 512 : clientWidth), 0);
+					Canvas2D.drawAlphaBox(0, 0, (GameFrame.isFixed() ? 512 : clientWidth), (GameFrame.isFixed() ? 334 : clientHeight), 0x000000, opacity);
 					if (percentile > 85 && state == 1 || percentile < 50 && state == -1) {
-						newRegularFont.drawCenteredString(text, 512 / 2, 334 / 2, 0xFFFFFF, 0);
+						newRegularFont.drawCenteredString(text, (GameFrame.isFixed() ? 512 : clientWidth) / 2, (GameFrame.isFixed() ? 334 : clientHeight) / 2, 0xFFFFFF, 0);
 					} else if (percentile == 100) {
 						watch.stop();
 						state = 0;

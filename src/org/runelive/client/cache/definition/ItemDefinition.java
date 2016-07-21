@@ -138,19 +138,19 @@ public final class ItemDefinition {
 				itemDef.modifiedModelColors = new int[] { 5194, 5186, 5198 };
 				break;
 			case 9725:
-				itemDef.immitate(get(9722));
+				itemDef.imitate(get(9722));
 				itemDef.name = "Key of fear";
 				itemDef.originalModelColors = new int[] { 933, 933 - 8, 933 + 12 };
 				itemDef.modifiedModelColors = new int[] { 5194, 5186, 5198 };
 				break;
 			case 9724:
-				itemDef.immitate(get(9722));
+				itemDef.imitate(get(9722));
 				itemDef.name = "Key of cobra";
 				itemDef.modifiedModelColors = new int[] { 226770, 226764, 226774 };
 				itemDef.originalModelColors = new int[] { 5194, 5186, 5198 };
 				break;
 			case 9723:
-				itemDef.immitate(get(9722));
+				itemDef.imitate(get(9722));
 				itemDef.name = "Key of blitz";
 				itemDef.modifiedModelColors = new int[] { 2866, 2858, 2870 };
 				itemDef.originalModelColors = new int[] { 5194, 5186, 5198 };
@@ -306,13 +306,13 @@ public final class ItemDefinition {
 				itemDef.modelOffsetY = 8;
 				break;
 			case 21115:
-				itemDef.immitate(get(15459));
+				itemDef.imitate(get(15459));
 				itemDef.originalModelColors = new int[] { 1, 1 };
 				itemDef.modifiedModelColors = new int[] { 43955, 22439 };
 				itemDef.name = "Defender lvl 6";
 				break;
 			case 21116:
-				itemDef.immitate(get(15459));
+				itemDef.imitate(get(15459));
 				itemDef.originalModelColors = new int[] { 123770, 123770 };
 				itemDef.modifiedModelColors = new int[] { 43955, 22439 };
 				itemDef.name = "Defender lvl 7";
@@ -389,7 +389,7 @@ public final class ItemDefinition {
 				itemDef.actions[4] = "Drop";
 				break;
 			case 21102:
-				itemDef.immitate(get(6570));
+				itemDef.imitate(get(6570));
 				itemDef.name = "Water cape";
 				itemDef.originalModelColors = new int[] { 1 };
 				itemDef.modifiedModelColors = new int[] { 40 };
@@ -400,13 +400,13 @@ public final class ItemDefinition {
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 21252:
-				itemDef.immitate(get(12021));
+				itemDef.imitate(get(12021));
 				itemDef.name = "Pet Beaver";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 21251:
-				itemDef.immitate(get(9976));
+				itemDef.imitate(get(9976));
 				itemDef.name = "Pet Chinchompa";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
@@ -417,14 +417,14 @@ public final class ItemDefinition {
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 21117:
-				itemDef.immitate(get(6199));
+				itemDef.imitate(get(6199));
 				itemDef.name = "Achievement box";
 				itemDef.groundActions[2] = "Take";
 				itemDef.actions = new String[] { "Open", null, null, null, null, "Drop" };
 				break;
 			case 21106:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1450));
+				itemDef.imitate(get(1450));
 				itemDef.name = "Astral talisman";
 				itemDef.originalModelColors = new int[] { 54503 };
 				itemDef.modifiedModelColors = new int[] { 926 };
@@ -555,7 +555,7 @@ public final class ItemDefinition {
 				break;
 			case 6500:
 				itemDef.setDefaults();
-				itemDef.immitate(get(9952));
+				itemDef.imitate(get(9952));
 				itemDef.name = "Charming imp";
 				itemDef.stackable = false;
 				// itemDef.modelRotation1 = 85;
@@ -1146,7 +1146,7 @@ public final class ItemDefinition {
 				break;
 			case 11996:
 				MobDefinition kbd = MobDefinition.get(50);
-				itemDef.immitate(ItemDefinition.get(17488));
+				itemDef.imitate(ItemDefinition.get(17488));
 				itemDef.name = "Pet King black dragon";
 				itemDef.modelID = kbd.npcModels[0];
 				itemDef.anInt167 = 40;
@@ -1160,7 +1160,7 @@ public final class ItemDefinition {
 			case 13000:
 				itemDef.setDefaults();
 				MobDefinition kbd2 = MobDefinition.get(50);
-				itemDef.immitate(ItemDefinition.get(17488));
+				itemDef.imitate(ItemDefinition.get(17488));
 				itemDef.name = "Pet Queen white dragon";
 				itemDef.modelID = kbd2.npcModels[0];
 				itemDef.anInt167 = 40;
@@ -1310,7 +1310,7 @@ public final class ItemDefinition {
 				break;
 			case 21110:
 				itemDef.setDefaults();
-				itemDef.immitate(get(2572));
+				itemDef.imitate(get(2572));
 				itemDef.name = "Ring of wealth (i)";
 				itemDef.anInt184 = 200;
 				itemDef.anInt196 = 40;
@@ -1599,7 +1599,7 @@ public final class ItemDefinition {
 				break;
 			case 13001:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Rock crab";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
@@ -1620,7 +1620,7 @@ public final class ItemDefinition {
 				break;
 			case 13002:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Rock crab";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
@@ -1628,7 +1628,7 @@ public final class ItemDefinition {
 				break;
 			case 13003:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Rock crab";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
@@ -1636,7 +1636,7 @@ public final class ItemDefinition {
 				break;
 			case 13004:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Rock crab";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
@@ -1644,7 +1644,7 @@ public final class ItemDefinition {
 				break;
 			case 13005:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Rock crab";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
@@ -1652,7 +1652,7 @@ public final class ItemDefinition {
 				break;
 			case 13006:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Rock crab";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
@@ -1660,7 +1660,7 @@ public final class ItemDefinition {
 				break;
 			case 13007:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Rock crab";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
@@ -1668,7 +1668,7 @@ public final class ItemDefinition {
 				break;
 			case 13008:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Rock crab";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
@@ -1676,42 +1676,42 @@ public final class ItemDefinition {
 				break;
 			case 11997:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet General graardor";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11978:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet TzTok-Jad";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 12001:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Corporeal beast";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 12002:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Kree'arra";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 12003:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet K'ril tsutsaroth";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 12004:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Commander zilyana";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
@@ -1733,126 +1733,126 @@ public final class ItemDefinition {
 				break;
 			case 10944:
 				itemDef.setDefaults();
-				itemDef.immitate(get(20935));
+				itemDef.imitate(get(20935));
 				itemDef.name = "Vote Reward Book";
 				itemDef.actions = new String[] { "Claim", null, null, null, "Drop" };
 				itemDef.stackable = true;
 				break;
 			case 12005:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Dagannoth supreme";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 12006:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Dagannoth prime";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11990:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Dagannoth rex";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11991:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Frost dragon";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11992:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Tormented demon";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11993:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Kalphite queen";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11994:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Slash bash";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11989:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Phoenix";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11988:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Bandos avatar";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11987:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Nex";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11986:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Jungle strykewyrm";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11985:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Desert strykewyrm";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11984:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Ice strykewyrm";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11983:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Green dragon";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11982:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Baby blue dragon";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11981:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Blue dragon";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11979:
 				itemDef.setDefaults();
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.name = "Pet Black dragon";
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
@@ -2229,7 +2229,7 @@ public final class ItemDefinition {
 				break;
 			case 21043:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1747));
+				itemDef.imitate(get(1747));
 				itemDef.modifiedModelColors = new int[] { 22416, 22424 };
 				itemDef.originalModelColors = new int[] { 100, 226770 };
 				itemDef.name = "White dragonhide";
@@ -2263,14 +2263,14 @@ public final class ItemDefinition {
 				break;
 			case 21044:
 				itemDef.setDefaults();
-				itemDef.immitate(get(2503));
+				itemDef.imitate(get(2503));
 				itemDef.modifiedModelColors = new int[] { 22416, 22424 };
 				itemDef.originalModelColors = new int[] { 100, 226770 };
 				itemDef.name = "White d'hide body";
 				break;
 			case 21045:
 				itemDef.setDefaults();
-				itemDef.immitate(get(2497));
+				itemDef.imitate(get(2497));
 				itemDef.modifiedModelColors = new int[] { 22416, 22424, 7566, 57, 61, 1821, 5907, 21898, 20884, 926, 5012 };
 				itemDef.originalModelColors = new int[] { 100, 226770, 100, 100, 100, 100, 226770, 226770, 226770, 226770,
 						100 };
@@ -2278,7 +2278,7 @@ public final class ItemDefinition {
 				break;
 			case 21046:
 				itemDef.setDefaults();
-				itemDef.immitate(get(2491));
+				itemDef.imitate(get(2491));
 				itemDef.modifiedModelColors = new int[] { 8472, 8720, 22416 };
 				itemDef.originalModelColors = new int[] { 100, 226770, 100 };
 				itemDef.name = "White d'hide vamb";
@@ -2539,60 +2539,60 @@ public final class ItemDefinition {
 				break;
 			case 21008:
 				itemDef.setDefaults();
-				itemDef.immitate(get(11732));
+				itemDef.imitate(get(11732));
 				itemDef.originalModelColors = new int[] { 17350 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				break;
 			case 21009:
 				itemDef.setDefaults();
-				itemDef.immitate(get(11732));
+				itemDef.imitate(get(11732));
 				itemDef.originalModelColors = new int[] { 226770 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				break;
 			case 21010:
 				itemDef.setDefaults();
-				itemDef.immitate(get(11732));
+				itemDef.imitate(get(11732));
 				itemDef.originalModelColors = new int[] { 123770 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				break;
 			case 11732:
-				itemDef.immitate(get(11732));
+				itemDef.imitate(get(11732));
 				itemDef.originalModelColors = new int[] { 933 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				break;
 			case 21012:
 				itemDef.setDefaults();
-				itemDef.immitate(get(11732));
+				itemDef.imitate(get(11732));
 				itemDef.originalModelColors = new int[] { 100 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				break;
 			case 21013:
 				itemDef.setDefaults();
-				itemDef.immitate(get(11732));
+				itemDef.imitate(get(11732));
 				itemDef.originalModelColors = new int[] { 76770 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				break;
 			case 21014:
 				itemDef.setDefaults();
-				itemDef.immitate(get(11732));
+				itemDef.imitate(get(11732));
 				itemDef.originalModelColors = new int[] { 461770 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				break;
 			case 21015:
 				itemDef.setDefaults();
-				itemDef.immitate(get(11732));
+				itemDef.imitate(get(11732));
 				itemDef.originalModelColors = new int[] { 49950 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				break;
 			case 21042:
 				itemDef.setDefaults();
-				itemDef.immitate(get(11732));
+				itemDef.imitate(get(11732));
 				itemDef.originalModelColors = new int[] { 1 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				break;
 			case 21016:
 				itemDef.setDefaults();
-				itemDef.immitate(get(15702));
+				itemDef.imitate(get(15702));
 				itemDef.originalModelColors = new int[] { 17350, 17350, 17350, 17350, 17350, 17350, 17350, 17350, 17350,
 						17350, 17350, 17350, 17350, 17350 };
 				itemDef.modifiedModelColors = new int[] { 36613, 3974, 36616, 36621, 36626, 36638, 36652, 6808, 8067, 8072,
@@ -2600,7 +2600,7 @@ public final class ItemDefinition {
 				break;
 			case 21017:
 				itemDef.setDefaults();
-				itemDef.immitate(get(15702));
+				itemDef.imitate(get(15702));
 				itemDef.originalModelColors = new int[] { 226770, 226770, 226770, 226770, 226770, 226770, 226770, 226770,
 						226770, 226770, 226770, 226770, 226770, 226770 };
 				itemDef.modifiedModelColors = new int[] { 36613, 3974, 36616, 36621, 36626, 36638, 36652, 6808, 8067, 8072,
@@ -2608,7 +2608,7 @@ public final class ItemDefinition {
 				break;
 			case 21018:
 				itemDef.setDefaults();
-				itemDef.immitate(get(15702));
+				itemDef.imitate(get(15702));
 				itemDef.originalModelColors = new int[] { 123770, 123770, 123770, 123770, 123770, 123770, 123770, 123770,
 						123770, 123770, 123770, 123770, 123770, 123770 };
 				itemDef.modifiedModelColors = new int[] { 36613, 3974, 36616, 36621, 36626, 36638, 36652, 6808, 8067, 8072,
@@ -2616,7 +2616,7 @@ public final class ItemDefinition {
 				break;
 			case 21019:
 				itemDef.setDefaults();
-				itemDef.immitate(get(15702));
+				itemDef.imitate(get(15702));
 				itemDef.originalModelColors = new int[] { 933, 933, 933, 933, 933, 933, 933, 933, 933, 933, 933, 933, 933,
 						933 };
 				itemDef.modifiedModelColors = new int[] { 36613, 3974, 36616, 36621, 36626, 36638, 36652, 6808, 8067, 8072,
@@ -2624,7 +2624,7 @@ public final class ItemDefinition {
 				break;
 			case 21020:
 				itemDef.setDefaults();
-				itemDef.immitate(get(15702));
+				itemDef.imitate(get(15702));
 				itemDef.originalModelColors = new int[] { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
 						100 };
 				itemDef.modifiedModelColors = new int[] { 36613, 3974, 36616, 36621, 36626, 36638, 36652, 6808, 8067, 8072,
@@ -2632,7 +2632,7 @@ public final class ItemDefinition {
 				break;
 			case 21021:
 				itemDef.setDefaults();
-				itemDef.immitate(get(15702));
+				itemDef.imitate(get(15702));
 				itemDef.originalModelColors = new int[] { 76770, 76770, 76770, 76770, 76770, 76770, 76770, 76770, 76770,
 						76770, 76770, 76770, 76770, 76770 };
 				itemDef.modifiedModelColors = new int[] { 36613, 3974, 36616, 36621, 36626, 36638, 36652, 6808, 8067, 8072,
@@ -2640,7 +2640,7 @@ public final class ItemDefinition {
 				break;
 			case 21022:
 				itemDef.setDefaults();
-				itemDef.immitate(get(15702));
+				itemDef.imitate(get(15702));
 				itemDef.originalModelColors = new int[] { 461770, 461770, 461770, 461770, 461770, 461770, 461770, 461770,
 						461770, 461770, 461770, 461770, 461770, 461770 };
 				itemDef.modifiedModelColors = new int[] { 36613, 3974, 36616, 36621, 36626, 36638, 36652, 6808, 8067, 8072,
@@ -2648,7 +2648,7 @@ public final class ItemDefinition {
 				break;
 			case 21023:
 				itemDef.setDefaults();
-				itemDef.immitate(get(15702));
+				itemDef.imitate(get(15702));
 				itemDef.originalModelColors = new int[] { 49950, 49950, 49950, 49950, 49950, 49950, 49950, 49950, 49950,
 						49950, 49950, 49950, 49950, 49950 };
 				itemDef.modifiedModelColors = new int[] { 36613, 3974, 36616, 36621, 36626, 36638, 36652, 6808, 8067, 8072,
@@ -2656,140 +2656,140 @@ public final class ItemDefinition {
 				break;
 			case 21024:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1038));
+				itemDef.imitate(get(1038));
 				itemDef.originalModelColors = new int[] { 226770 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				itemDef.name = "Aqua partyhat";
 				break;
 			case 21025:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1038));
+				itemDef.imitate(get(1038));
 				itemDef.originalModelColors = new int[] { 123770 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				itemDef.name = "Pink partyhat";
 				break;
 			case 21026:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1038));
+				itemDef.imitate(get(1038));
 				itemDef.originalModelColors = new int[] { 461770 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				itemDef.name = "Lava partyhat";
 				break;
 			case 21027:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1053));
+				itemDef.imitate(get(1053));
 				itemDef.originalModelColors = new int[] { 17350 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				itemDef.name = "Lime halloween mask";
 				break;
 			case 21028:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1053));
+				itemDef.imitate(get(1053));
 				itemDef.originalModelColors = new int[] { 226770 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				itemDef.name = "Aqua halloween mask";
 				break;
 			case 21029:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1053));
+				itemDef.imitate(get(1053));
 				itemDef.originalModelColors = new int[] { 123770 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				itemDef.name = "Pink halloween mask";
 				break;
 			case 21030:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1053));
+				itemDef.imitate(get(1053));
 				itemDef.originalModelColors = new int[] { 100 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				itemDef.name = "White halloween mask";
 				break;
 			case 21031:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1053));
+				itemDef.imitate(get(1053));
 				itemDef.originalModelColors = new int[] { 11200 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				itemDef.name = "Yellow halloween mask";
 				break;
 			case 21032:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1053));
+				itemDef.imitate(get(1053));
 				itemDef.originalModelColors = new int[] { 461770 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				itemDef.name = "Lava halloween mask";
 				break;
 			case 21033:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1053));
+				itemDef.imitate(get(1053));
 				itemDef.originalModelColors = new int[] { 49950 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				itemDef.name = "Purple halloween mask";
 				break;
 			case 21034:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1053));
+				itemDef.imitate(get(1053));
 				itemDef.originalModelColors = new int[] { 1 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				itemDef.name = "Black halloween mask";
 				break;
 			case 21035:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1050));
+				itemDef.imitate(get(1050));
 				itemDef.originalModelColors = new int[] { 17350 };
 				itemDef.modifiedModelColors = new int[] { 933 };
 				itemDef.name = "Lime santa hat";
 				break;
 			case 21036:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1050));
+				itemDef.imitate(get(1050));
 				itemDef.originalModelColors = new int[] { 226770 };
 				itemDef.modifiedModelColors = new int[] { 933 };
 				itemDef.name = "Aqua santa hat";
 				break;
 			case 21037:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1050));
+				itemDef.imitate(get(1050));
 				itemDef.originalModelColors = new int[] { 123770 };
 				itemDef.modifiedModelColors = new int[] { 933 };
 				itemDef.name = "Pink santa hat";
 				break;
 			case 21038:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1050));
+				itemDef.imitate(get(1050));
 				itemDef.originalModelColors = new int[] { 100 };
 				itemDef.modifiedModelColors = new int[] { 933 };
 				itemDef.name = "White santa hat";
 				break;
 			case 21039:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1050));
+				itemDef.imitate(get(1050));
 				itemDef.originalModelColors = new int[] { 11200 };
 				itemDef.modifiedModelColors = new int[] { 933 };
 				itemDef.name = "Yellow santa hat";
 				break;
 			case 21040:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1050));
+				itemDef.imitate(get(1050));
 				itemDef.originalModelColors = new int[] { 461770 };
 				itemDef.modifiedModelColors = new int[] { 933 };
 				itemDef.name = "Lava santa hat";
 				break;
 			case 21041:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1050));
+				itemDef.imitate(get(1050));
 				itemDef.originalModelColors = new int[] { 49950 };
 				itemDef.modifiedModelColors = new int[] { 933 };
 				itemDef.name = "Purple santa hat";
 				break;
 			case 21048:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1050));
+				itemDef.imitate(get(1050));
 				itemDef.originalModelColors = new int[] { 1 };
 				itemDef.modifiedModelColors = new int[] { 933 };
 				itemDef.name = "Black santa hat";
 				break;
 			case 21049:
 				itemDef.setDefaults();
-				itemDef.immitate(get(1038));
+				itemDef.imitate(get(1038));
 				itemDef.originalModelColors = new int[] { 1 };
 				itemDef.modifiedModelColors = new int[] { 926 };
 				itemDef.name = "Black partyhat";
@@ -2815,13 +2815,13 @@ public final class ItemDefinition {
 				break;
 			case 11975:
 				itemDef.name = "Chinchompa";
-				itemDef.immitate(get(9976));
+				itemDef.imitate(get(9976));
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
 			case 11976:
 				itemDef.name = "Seagull";
-				itemDef.immitate(get(12458));
+				itemDef.imitate(get(12458));
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, null, "Summon", null, "Drop" };
 				break;
@@ -3580,7 +3580,7 @@ public final class ItemDefinition {
 				break;
 			case 7629:
 				itemDef.setDefaults();
-				itemDef.immitate(get(761));
+				itemDef.imitate(get(761));
 				itemDef.actions = new String[5];
 				itemDef.actions[0] = "Redeem";
 				itemDef.actions[4] = "Drop";
@@ -5191,7 +5191,7 @@ public final class ItemDefinition {
 				break;
 			case 13262:
 				itemDef.setDefaults();
-				itemDef.immitate(get(20072));
+				itemDef.imitate(get(20072));
 				itemDef.actions = new String[5];
 				itemDef.actions[1] = "Wear";
 				itemDef.modifiedModelColors = new int[1];
@@ -5218,21 +5218,21 @@ public final class ItemDefinition {
 				itemDef.description2 = "A pointy off-hand knife.";
 				break;
 			case 10934:
-				itemDef.immitate(get(607));
+				itemDef.imitate(get(607));
 				itemDef.name = "$25 Payment Scroll";
 				itemDef.description = "This scroll can be redeemed for a $25 RuneLive payment. [27,875 credits]".getBytes();
 				itemDef.actions = new String[5];
 				itemDef.actions[0] = "Redeem";
 				break;
 			case 10935:
-				itemDef.immitate(get(608));
+				itemDef.imitate(get(608));
 				itemDef.name = "$50 Payment Scroll";
 				itemDef.description = "This scroll can be redeemed for a $50 RuneLive payment. [55,750 credits]".getBytes();
 				itemDef.actions = new String[5];
 				itemDef.actions[0] = "Redeem";
 				break;
 			case 10943:
-				itemDef.immitate(get(607));
+				itemDef.imitate(get(607));
 				itemDef.name = "$10 Payment Scroll";
 				itemDef.description = "This scroll can be redeemed for a $10 RuneLive payment. [10,000 credits]".getBytes();
 				itemDef.actions = new String[5];
@@ -5454,7 +5454,7 @@ public final class ItemDefinition {
 
 			case 14004:
 				itemDef.setDefaults();
-				itemDef.immitate(get(15486));
+				itemDef.imitate(get(15486));
 				itemDef.modifiedModelColors = new int[11];
 				itemDef.originalModelColors = new int[11];
 				itemDef.modifiedModelColors[0] = 7860;
@@ -5482,7 +5482,7 @@ public final class ItemDefinition {
 				break;
 			case 14005:
 				itemDef.setDefaults();
-				itemDef.immitate(get(15486));
+				itemDef.imitate(get(15486));
 				itemDef.modifiedModelColors = new int[11];
 				itemDef.originalModelColors = new int[11];
 				itemDef.modifiedModelColors[0] = 7860;
@@ -5511,7 +5511,7 @@ public final class ItemDefinition {
 
 			case 14006:
 				itemDef.setDefaults();
-				itemDef.immitate(get(15486));
+				itemDef.imitate(get(15486));
 				itemDef.modifiedModelColors = new int[11];
 				itemDef.originalModelColors = new int[11];
 				itemDef.modifiedModelColors[0] = 7860;
@@ -5539,7 +5539,7 @@ public final class ItemDefinition {
 				break;
 			case 14007:
 				itemDef.setDefaults();
-				itemDef.immitate(get(15486));
+				itemDef.imitate(get(15486));
 				itemDef.modifiedModelColors = new int[11];
 				itemDef.originalModelColors = new int[11];
 				itemDef.modifiedModelColors[0] = 7860;
@@ -5721,7 +5721,7 @@ public final class ItemDefinition {
 				itemDef.femaleWearId = 53651;
 				break;
 			case 14018:
-				itemDef.immitate(get(20929));
+				itemDef.imitate(get(20929));
 				break;
 			case 14008:
 				itemDef.modelID = 62714;
@@ -5925,7 +5925,7 @@ public final class ItemDefinition {
 
 			case 21121:
 				itemDef.setDefaults();
-				itemDef.immitate(get(6666));
+				itemDef.imitate(get(6666));
 				itemDef.name = "Pink flippers";
 				itemDef.modifiedModelColors = new int[] { 11171, 11175 };
 				itemDef.originalModelColors = new int[] { 123770, 123770 + 4 };
@@ -5933,7 +5933,7 @@ public final class ItemDefinition {
 
 			case 21122:
 				itemDef.setDefaults();
-				itemDef.immitate(get(6666));
+				itemDef.imitate(get(6666));
 				itemDef.name = "Black flippers";
 				itemDef.modifiedModelColors = new int[] { 11171, 11175 };
 				itemDef.originalModelColors = new int[] { 1, 1 + 4 };
@@ -5941,7 +5941,7 @@ public final class ItemDefinition {
 
 			case 21123:
 				itemDef.setDefaults();
-				itemDef.immitate(get(6666));
+				itemDef.imitate(get(6666));
 				itemDef.name = "Aqua flippers";
 				itemDef.modifiedModelColors = new int[] { 11171, 11175 };
 				itemDef.originalModelColors = new int[] { 226770, 226770 + 4 };
@@ -5949,7 +5949,7 @@ public final class ItemDefinition {
 
 			case 21124:
 				itemDef.setDefaults();
-				itemDef.immitate(get(6666));
+				itemDef.imitate(get(6666));
 				itemDef.name = "Red flippers";
 				itemDef.modifiedModelColors = new int[] { 11171, 11175 };
 				itemDef.originalModelColors = new int[] { 933, 933 + 4 };
@@ -5957,7 +5957,7 @@ public final class ItemDefinition {
 
 			case 21125:
 				itemDef.setDefaults();
-				itemDef.immitate(get(6666));
+				itemDef.imitate(get(6666));
 				itemDef.name = "Lime flippers";
 				itemDef.modifiedModelColors = new int[] { 11171, 11175 };
 				itemDef.originalModelColors = new int[] { 17350, 17350 + 4 };
@@ -5965,7 +5965,7 @@ public final class ItemDefinition {
 
 			case 21126:
 				itemDef.setDefaults();
-				itemDef.immitate(get(6666));
+				itemDef.imitate(get(6666));
 				itemDef.name = "White flippers";
 				itemDef.modifiedModelColors = new int[] { 11171, 11175 };
 				itemDef.originalModelColors = new int[] { 100, 100 + 4 };
@@ -5973,7 +5973,7 @@ public final class ItemDefinition {
 
 			case 21127:
 				itemDef.setDefaults();
-				itemDef.immitate(get(6666));
+				itemDef.imitate(get(6666));
 				itemDef.name = "Purple flippers";
 				itemDef.modifiedModelColors = new int[] { 11171, 11175 };
 				itemDef.originalModelColors = new int[] { 49950, 49950 + 4 };
@@ -5981,7 +5981,7 @@ public final class ItemDefinition {
 
 			case 21128:
 				itemDef.setDefaults();
-				itemDef.immitate(get(13101));
+				itemDef.imitate(get(13101));
 				itemDef.name = "White top hat";
 				itemDef.modifiedModelColors = new int[] { 0, 4, 8, 12, 16, 20, 24 };
 				itemDef.originalModelColors = new int[] { 100, 100 + 4, 100 + 8, 100 + 12, 100 + 16, 100 + 20, 100 + 24 };
@@ -5989,7 +5989,7 @@ public final class ItemDefinition {
 
 			case 21129:
 				itemDef.setDefaults();
-				itemDef.immitate(get(13101));
+				itemDef.imitate(get(13101));
 				itemDef.name = "Pink top hat";
 				itemDef.modifiedModelColors = new int[] { 0, 4, 8, 12, 16, 20, 24 };
 				itemDef.originalModelColors = new int[] { 123770, 123770, 123770, 123770, 123770, 123770, 123770 };
@@ -5997,7 +5997,7 @@ public final class ItemDefinition {
 
 			case 21130:
 				itemDef.setDefaults();
-				itemDef.immitate(get(13101));
+				itemDef.imitate(get(13101));
 				itemDef.name = "Purple top hat";
 				itemDef.modifiedModelColors = new int[] { 0, 4, 8, 12, 16, 20, 24 };
 				itemDef.originalModelColors = new int[] { 49950, 49950 + 4, 49950 + 8, 49950 + 12, 49950 + 16, 49950 + 20,
@@ -6006,7 +6006,7 @@ public final class ItemDefinition {
 
 			case 21131:
 				itemDef.setDefaults();
-				itemDef.immitate(get(13101));
+				itemDef.imitate(get(13101));
 				itemDef.name = "Lime top hat";
 				itemDef.modifiedModelColors = new int[] { 0, 4, 8, 12, 16, 20, 24 };
 				itemDef.originalModelColors = new int[] { 17350, 17350 + 4, 17350 + 8, 17350 + 12, 17350 + 16, 17350 + 20,
@@ -6015,7 +6015,7 @@ public final class ItemDefinition {
 
 			case 21132:
 				itemDef.setDefaults();
-				itemDef.immitate(get(13101));
+				itemDef.imitate(get(13101));
 				itemDef.name = "Aqua top hat";
 				itemDef.modifiedModelColors = new int[] { 0, 4, 8, 12, 16, 20, 24 };
 				itemDef.originalModelColors = new int[] { 226770, 226770 + 4, 226770 + 8, 226770 + 12, 226770 + 16,
@@ -6024,7 +6024,7 @@ public final class ItemDefinition {
 
 			case 21133:
 				itemDef.setDefaults();
-				itemDef.immitate(get(13101));
+				itemDef.imitate(get(13101));
 				itemDef.name = "Premium top hat";
 				itemDef.modifiedModelColors = new int[] { 0, 4, 8, 12, 16, 20, 24, 549, 553, 673, 668 };
 				itemDef.originalModelColors = new int[] { 933, 933 + 4, 933 + 8, 933 + 12, 933 + 16, 933 + 20, 933 + 24,
@@ -6772,7 +6772,7 @@ public final class ItemDefinition {
 		return model;
 	}
 
-	public void immitate(ItemDefinition other) {
+	public void imitate(ItemDefinition other) {
 		name = other.name;
 		description = other.description;
 		modifiedModelColors = other.modifiedModelColors;

@@ -74,6 +74,12 @@ public final class ObjectDefinition {
 
 		}
 
+		/*if (id == 6189) {
+			System.out.println("X: "+definition.modelSizeX);
+			System.out.println("Y: "+definition.modelSizeY);
+			System.out.println("H: "+definition.modelSizeH);
+		}*/
+
 		int[][] shootingStars = { { 38661, 42165 }, { 38662, 42166 }, { 38663, 42163 }, { 38664, 42164 },
 				{ 38665, 42160 }, { 38666, 42159 }, { 38667, 42168 }, { 38668, 42169 }, };
 
@@ -159,9 +165,12 @@ public final class ObjectDefinition {
 			}
 		}
 		switch (id) {
-			case 6189:
+			case 6189://cheap fix for black furnace, unsure on the real problem. oh well
 				definition.setDefaults();
-				definition.immitate(forID(11666));
+				definition.imitate(forID(11666));
+				definition.modelSizeX = 80;
+				definition.modelSizeY = 80;
+				definition.modelSizeH = 80;
 				break;
 			case 2986:
 			case 2983:
@@ -2021,7 +2030,7 @@ public final class ObjectDefinition {
 			anInt760 = isUnwalkable ? 1 : 0;
 	}
 
-	public void immitate(ObjectDefinition definition2) {
+	public void imitate(ObjectDefinition definition2) {
 		objectModelIDs = definition2.objectModelIDs;
 		anIntArray776 = definition2.anIntArray776;
 
