@@ -32,8 +32,6 @@ import org.runelive.client.world.Canvas3D;
 
 public class ChatArea extends GameFrame {
 
-	private static final ExecutorService SERVICE = Executors.newSingleThreadExecutor();
-
 	// private int resizeY = getOffSetY();
 	// private boolean isDragging = false;
 
@@ -157,34 +155,16 @@ public class ChatArea extends GameFrame {
 				/*
 				 * if (clickSplitChatSelectionBox(client)) { return; }
 				 */
-				if (client.inSprite(true, CacheSpriteLoader.getCacheSprite(17), getxPos() + 404, getyPos() + 143)) {
-					SERVICE.execute(new Runnable() {
-						@Override
-						public void run() {
-							try {
-								Window window = KeyboardFocusManager.getCurrentKeyboardFocusManager()
-										.getFocusedWindow();
-								Point point = window.getLocationOnScreen();
-								Robot robot = new Robot(window.getGraphicsConfiguration().getDevice());
-								Rectangle rectangle = new Rectangle((int) point.getX(), (int) point.getY(),
-										window.getWidth(), window.getHeight());
-								BufferedImage img = robot.createScreenCapture(rectangle);
-								Path path = Paths.get(Signlink.getCacheDirectory().toString(), "screenshots");
-								if (!Files.exists(path)) {
-									Files.createDirectories(path);
-								}
-								DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh-mm-ss a");
-								File file = new File(path.toFile(), format.format(new Date()) + ".png");
-								ImageIO.write(img, "png", file);
-								client.pushMessage("A screenshot has been taken and placed in your data folder.", 0,
-										"");
-							} catch (AWTException | IOException reason) {
-								client.pushMessage("An error occured whilst capturing your screenshot.", 0, "");
-								throw new RuntimeException("Fatal error whilst capturing screenshot", reason);
-							}
-						}
-					});
+				if (client.clickMode3 == 1 && client.clickInRegion(404, Client.clientHeight - 23, 515, Client.clientHeight)) {
+					client.takeScreenShot();
 				}
+				
+				if (client.mouseInRegion(404, 515, Client.clientHeight - 23, Client.clientHeight)) {
+					client.menuActionName[client.menuActionRow] = "Take a screenshot";
+					client.menuActionID[client.menuActionRow] = 1414;
+					client.menuActionRow++;
+				}
+				
 
 				for (int i = 0; i < chatMenuText.length; i++) {
 					if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(0), getxPos() + channelXCoords[i],

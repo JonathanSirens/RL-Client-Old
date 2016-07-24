@@ -6,26 +6,18 @@ import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.UnknownHostException;
+import java.io.*;
+import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 import java.util.zip.CRC32;
 import java.util.zip.GZIPOutputStream;
@@ -176,6 +168,10 @@ public class Client extends GameRenderer {
 			return true;
 		}
 		return false;
+	}
+	
+	public boolean clickInRegion(int x1, int y1, int x2, int y2) {
+		return super.saveClickX >= x1 && super.saveClickX <= x2 && super.saveClickY >= y1 && super.saveClickY <= y2;
 	}
 
 	public static int clientZoom = 600;
@@ -852,7 +848,7 @@ public class Client extends GameRenderer {
 		setLowDetail(true);
 		WorldController.lowDetail = true;
 		Canvas3D.lowDetail = false;
-		ObjectManager.lowDetail = true;
+		ObjectManager.lowDetail = false;
 		ObjectDefinition.lowDetail = true;
 		Configuration.HIGH_DETAIL = false;
 		Configuration.hdTexturing = false;
@@ -3246,7 +3242,26 @@ public class Client extends GameRenderer {
 	}
 
 	private void checkSize() {
-		int width = getScreenWidth();
+		if (GameFrame.getScreenMode() != ScreenMode.FIXED) {
+			if (clientWidth != (isApplet ? getGameComponent().getWidth() : getScreenWidth())) {
+				clientWidth = (isApplet ? getGameComponent().getWidth() : getScreenWidth());
+				clientWidth = getScreenWidth();
+				super.myWidth = clientWidth;
+				updateScreen();
+				setResizing(false);
+				updateGameArea();
+			}
+			if (clientHeight != (isApplet ? getGameComponent().getHeight() : getScreenHeight())) {
+				clientHeight = (isApplet ? getGameComponent().getHeight() : getScreenHeight());
+				clientHeight = getScreenHeight();
+				super.myHeight = clientHeight;
+				updateScreen();
+				setResizing(false);
+				updateGameArea();
+			}
+		}
+		
+		/*int width = getScreenWidth();
 		int height = getScreenHeight();
 		if (GameFrame.getScreenMode() != ScreenMode.FIXED) {
 			if (!isApplet) {
@@ -3280,7 +3295,7 @@ public class Client extends GameRenderer {
 					setResizing(false);
 				}
 			}
-		}
+		}*/
 	}
 
 	@Override
@@ -3683,14 +3698,14 @@ public class Client extends GameRenderer {
 	}
 
 	private void determineMenuSize() {
-		int width = newRegularFont.getTextWidth("Choose Option");
+		int width = (changeMenuText ? newBoldFont : newRegularFont).getTextWidth("Choose Option");
 		for (int index = 0; index < menuActionRow; index++) {
-			int menuWidth = newRegularFont.getTextWidth(menuActionName[index]);
+			int menuWidth = (changeMenuText ? newBoldFont : newRegularFont).getTextWidth(menuActionName[index]);
 			if (menuPlayerName[index] != null) {
 				menuWidth += newBoldFont.getTextWidth(menuPlayerName[index]);
 			}
 			if (menuActionTitle[index] != null) {
-				menuWidth += newRegularFont.getTextWidth(menuActionTitle[index]);
+				menuWidth += (changeMenuText ? newBoldFont : newRegularFont).getTextWidth(menuActionTitle[index]);
 			}
 			if (menuWidth > width) {
 				width = menuWidth;
@@ -3879,6 +3894,10 @@ public class Client extends GameRenderer {
 			action -= 2000;
 		}
 
+		if (action == 1414) {
+			
+		}
+		
 		if (interfaceId == 24630 || interfaceId == 24632) {
 			if (inputDialogState == 3) {
 				getGrandExchange().searching = false;
@@ -4501,7 +4520,6 @@ public class Client extends GameRenderer {
 					slot = 1;
 				}
 			}
-			System.out.println("632");
 			getOut().putOpcode(145);
 			getOut().writeUnsignedWordA(interfaceId);
 			getOut().writeUnsignedWordA(slot);
@@ -5162,10 +5180,10 @@ public class Client extends GameRenderer {
 				updateSetting(interfaceId, !Configuration.NEW_HITMARKS);
 				break;
 			case 26039:
-				Configuration.PARTICLES = !Configuration.PARTICLES;
-				pushMessage("Particles turned " + (Configuration.PARTICLES ? "on" : "off") + ".", 0, "");
+				changeMenuText = !changeMenuText;
+				pushMessage("Toggled menu text", 0, "");
 				Settings.save();
-				updateSetting(interfaceId, !Configuration.PARTICLES);
+				updateSetting(interfaceId, !changeMenuText);
 				break;
 			case 26007:
 				Configuration.NEW_FUNCTION_KEYS = !Configuration.NEW_FUNCTION_KEYS;
@@ -5686,33 +5704,14 @@ public class Client extends GameRenderer {
 
 		if (drawMultiwayIcon == 1) {
 			multiOverlay.drawSprite(
-					GameFrame.getScreenMode() == ScreenMode.FIXED ? 472 : 516 + getScreenWidth() - 765 + 52 + 157,
-					GameFrame.getScreenMode() == ScreenMode.FIXED ? 296 : 175);
+					GameFrame.getScreenMode() == ScreenMode.FIXED ? 472 : clientWidth - 30,
+					GameFrame.getScreenMode() == ScreenMode.FIXED ? 290 : 170);
 		}
 
 		if (Objects.nonNull(currentTarget)) {
 			showCombatBox();
 		}
 
-		int x = baseX + (myPlayer.x - 6 >> 7);
-		int y = baseY + (myPlayer.y - 6 >> 7);
-		/*
-		 * if (isDebugMode()) { int minus = 45; normalText.method385(0xffff00,
-		 * "Fps: " + super.fps, 285 - minus, 5); Runtime runtime =
-		 * Runtime.getRuntime(); int textColor = 0xFFFF00; int memory = (int)
-		 * ((runtime.totalMemory() - runtime.freeMemory()) / 1024L); if (memory
-		 * > 0x2000000 && lowDetail) { textColor = 0xff0000; }
-		 * 
-		 * normalText.method385(textColor, "Mem: " + memory + "k", 299 - minus,
-		 * 5); normalText.method385(0xffff00, "Mouse X: " + super.mouseX +
-		 * " , Mouse Y: " + super.mouseY, 314 - minus, 5);
-		 * normalText.method385(0xffff00, "Coords: " + x + ", " + y, 329 -
-		 * minus, 5); normalText.method385(0xffff00, "Client resolution: " +
-		 * getScreenWidth() + "x" + getScreenHeight(), 344 - minus, 5);
-		 * normalText.method385(0xffff00, "Object Maps: " + objectMaps + ";",
-		 * 359 - minus, 5); normalText.method385(0xffff00, "Floor Maps: " +
-		 * floorMaps + ";", 374 - minus, 5); }
-		 */
 		if (dataOn) {
 			int textX = mapArea.getxPos() - 90;
 			int textY = 20;
@@ -7352,7 +7351,6 @@ public class Client extends GameRenderer {
 	}
 
 	public void drawCenteredString(Graphics g, String text, int x, int y) {
-		Font font = new Font("Verdana", 0, 10);
 		int width = g.getFontMetrics().stringWidth(text);
 		g.drawString(text, x - (width / 2), y);
 	}
@@ -7844,6 +7842,8 @@ public class Client extends GameRenderer {
 
 	private boolean menuToggle = true;
 
+	public boolean changeMenuText;
+
 	public void drawMenu() {
 		try {
 			int i = menuOffsetX;
@@ -7925,7 +7925,7 @@ public class Client extends GameRenderer {
 				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x090a04, j + 17);
 				Canvas2D.fillPixels(i + 2, k - 4, 1, 0x2a291b, j + 18);
 				Canvas2D.fillPixels(i + 3, k - 6, 1, 0x564943, j + 19);
-				normalText.method385(0xc6b895, "Choose Option", j + 14, i + 3);
+				(changeMenuText ? boldText : normalText).method385(0xc6b895, "Choose Option", j + 14, i + 3);
 				for (int l1 = 0; l1 < menuActionRow; l1++) {
 					int i2 = j + 31 + (menuActionRow - 1 - l1) * 15;
 					int j2 = 0xc6b895;
@@ -7934,7 +7934,7 @@ public class Client extends GameRenderer {
 						j2 = 0xeee5c6;
 						currentActionMenu = l1;
 					}
-					normalText.drawRegularText(true, i + 4, j2, menuActionName[l1], i2 + 1);
+					(changeMenuText ? boldText : normalText).drawRegularText(true, i + 4, j2, menuActionName[l1], i2 + 1);
 				}
 			}
 		} catch(Exception e) {
@@ -8199,7 +8199,7 @@ public class Client extends GameRenderer {
 		if (menuActionRow > 2) {
 			tooltip = tooltip + "@whi@ / " + (menuActionRow - 2) + " more options";
 		}
-		newRegularFont.drawBasicString(tooltip, 4, 15, 0xFFFFFF, 0, true);
+		(changeMenuText ? newBoldFont : newRegularFont).drawBasicString(tooltip, 4, 15, 0xFFFFFF, 0, true);
 		// boldText.method390(4, 0xffffff, tooltip, loopCycle / 1000,
 		// 15);
 		if (Configuration.NEW_CURSORS) {
@@ -10781,6 +10781,18 @@ public class Client extends GameRenderer {
 	}
 	
 	public static boolean displayParticles = true;
+	
+	public static int fadeStep = 1;
+	public static int fadingToColor;
+	public static boolean switchColor = false;
+
+	public int fadeColors(Color color1, Color color2, float step) {
+		float ratio = step / 100;
+		int r = (int) (color2.getRed() * ratio + color1.getRed() * (1 - ratio));
+		int g = (int) (color2.getGreen() * ratio + color1.getGreen() * (1 - ratio));
+		int b = (int) (color2.getBlue() * ratio + color1.getBlue() * (1 - ratio));
+		return new Color(r, g, b).getRGB();
+	}
 
 	private void method146() {
 		anInt1265++;
@@ -10834,11 +10846,25 @@ public class Client extends GameRenderer {
 			worldController.clearObj5Cache();
 		}
 
-		boolean underground = (!(getPlayerX() >= 270 && getPlayerX() <= 465 && getPlayerY() >= 335 && getPlayerY() <= 495));
-		if (Configuration.FOG_ENABLED && !underground) {
-			fog.render(2200, 3000, 0xc8c0a8);
+		if (Configuration.FOG_ENABLED) {
+			if (!switchColor) {
+				if (fog.rgb != fadeColors(new Color(fog.rgb), new Color(fadingToColor), fadeStep)) {
+					switchColor = true;
+				}
+			}
+			if (switchColor) {
+				fadeStep++;
+				if (fadeStep >= 100) {
+					fadeStep = 1;
+					switchColor = false;
+					fog.rgb = fadeColors(new Color(fog.rgb), new Color(fadingToColor), fadeStep);
+				} else {
+					fog.rgb = fadeColors(new Color(fog.rgb), new Color(fadingToColor), fadeStep);
+				}
+			}
+			fog.render(2250, 3000);
 		}
-		if(Configuration.PARTICLES) {
+		//if(Configuration.PARTICLES) {
 			Iterator<ParticleDisplay> iterator;
 			ParticleDisplay display;
 			if (displayParticles) {
@@ -10935,7 +10961,7 @@ public class Client extends GameRenderer {
 			}
 			displayedParticles.removeAll(particlesToBeRemoved);
 			particlesToBeRemoved.clear();
-		}
+		//}
 		updateEntities();
 		drawHeadIcon();
 		method37(k2);
@@ -10956,25 +10982,21 @@ public class Client extends GameRenderer {
 
 		if (loggedIn) {
 			if (this.moneyPouchEarningTimer != 0) {
-				int color = this.moneyPouchEarning >= 0L ? 65280 : 16711680;
+				int color = this.moneyPouchEarning >= 0L ? 0x00FF80 : 0xFF0000;
 				String s = "+" + formatAmount(Math.abs(this.moneyPouchEarning));
 				if (earnOrLoss) {
 					s = "-" + formatAmount(Math.abs(this.moneyPouchEarning));
-					color = 16711680;
+					color = 0xFF0000;
 				}
 				int txtWidth = this.normalText.getTextWidth(s);
 				int x = 0;
 				int y = 0;
 				if (GameFrame.getScreenMode().ordinal() == 0) {
-					x = 510 - txtWidth;
-					if (Configuration.MONEY_POUCH_ENABLED) {
-						y = 121;
-					} else {
-						y = 103;
-					}
+					x = 505 - txtWidth;
+					y = Configuration.MONEY_POUCH_ENABLED ? 121 : 103;
 				} else {
-					x = clientWidth - 5 - txtWidth;
-					y = 206;
+					x = clientWidth - 75 - txtWidth;
+					y = Configuration.MONEY_POUCH_ENABLED? 195 : 180;
 				}
 				this.normalText.drawChatInput(color, x, s, y, true);
 				this.moneyPouchEarningTimer -= 1;
@@ -10997,6 +11019,51 @@ public class Client extends GameRenderer {
 			yCameraCurve = k1;
 			xCameraCurve = l1;
 		}
+	}
+	
+	public static AbstractMap.SimpleEntry<Integer, Integer> getNextInteger(ArrayList<Integer> values) {
+		ArrayList<AbstractMap.SimpleEntry<Integer, Integer>> frequencies = new ArrayList<>();
+		int maxIndex = 0;
+		main: for (int i = 0; i < values.size(); i++) {
+			int value = values.get(i);
+			for (int j = 0; j < frequencies.size(); j++) {
+				if (frequencies.get(j).getKey() == value) {
+					frequencies.get(j).setValue(frequencies.get(j).getValue() + 1);
+					if (frequencies.get(maxIndex).getValue() < frequencies.get(j).getValue()) {
+						maxIndex = j;
+					}
+					continue main;
+				}
+			}
+			frequencies.add(new AbstractMap.SimpleEntry<Integer, Integer>(value, 1));
+		}
+		return frequencies.get(maxIndex);
+	}
+
+	public static String getExamine(int id) {
+		String examine = new String(ObjectDefinition.forID(id).description);
+		try {
+			String name = ObjectDefinition.forID(id).name;
+			URL url = new URL("http://runescape.wikia.com/wiki/" + name.replaceAll(" ", "_"));
+			URLConnection con = url.openConnection();
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String line;
+			int next = 0;
+			while ((line = in.readLine()) != null) {
+				if (line.contains("<th nowrap=\"nowrap\"><a href=\"/wiki/Examine\" title=\"Examine\">Examine</a>")) {
+					next++;
+				}
+				if (line.contains("</th><td> ") && next == 1) {
+					examine = line.replace("</th><td> ", "");
+					return examine;
+				}
+			}
+			in.close();
+			return examine;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return examine;
 	}
 	
 	public final int[] write(int var1, int var2, int var3, int var4, int var5) {
@@ -11176,9 +11243,9 @@ public class Client extends GameRenderer {
 			if (loggedIn) {
 				getOut().putOpcode(0);
 			}
-
+			
 			objectManager.method171(clippingPlanes, worldController);
-
+			fadingToColor = getNextInteger(objectManager.colors).getKey();
 			if (loggedIn) {
 
 				gameScreenIP.initDrawingArea();
@@ -12247,10 +12314,10 @@ public class Client extends GameRenderer {
 						} else if (amountOrNameInput.toLowerCase().contains("b")) {
 							amountOrNameInput = amountOrNameInput.replaceAll("b", "000000000");
 						}
-						long l = Long.valueOf(amountOrNameInput);
 
 						long amount = 0;
 						amount = Long.parseLong(amountOrNameInput);
+						
 						if (interfaceButtonAction == 557 && withdrawingMoneyFromPouch) {
 							if (amount > Integer.MAX_VALUE) {
 								amount = Integer.MAX_VALUE;
@@ -15376,8 +15443,8 @@ public class Client extends GameRenderer {
 				int clickY = super.mouseY;
 
 				if (menuScreenArea == 0) {
-					clickX -= 4;
-					clickY -= 4;
+					clickX -= GameFrame.getScreenMode() == ScreenMode.FIXED ? 4 : 0;
+					clickY -= GameFrame.getScreenMode() == ScreenMode.FIXED ? 4 : 0;
 				}
 
 				if (menuScreenArea == 1) {
@@ -15416,8 +15483,8 @@ public class Client extends GameRenderer {
 				int clickY = super.saveClickY;
 
 				if (menuScreenArea == 0) {
-					clickX -= 4;
-					clickY -= 4;
+					clickX -= GameFrame.getScreenMode() == ScreenMode.FIXED ? 4 : 0;
+					clickY -= GameFrame.getScreenMode() == ScreenMode.FIXED ? 4 : 0;
 				}
 
 				if (menuScreenArea == 1) {
@@ -16502,7 +16569,7 @@ public class Client extends GameRenderer {
 			connectToFileServer();
 		}
 
-		setLoadingText(10, "Getting archives...");
+		setLoadingText(10, "Getting archives");
 
 		try {
 			ComputerAddress.setUniqueIdentification();
@@ -16537,7 +16604,7 @@ public class Client extends GameRenderer {
 
 			miniMapRegions = new Sprite(512, 512);
 			Archive streamLoader_6 = getArchive(5, "update list", "versionlist", expectedCRCs[5], 60);
-			setLoadingText(10, "Unpacking archives..");
+			setLoadingText(10, "Unpacking archives");
 			onDemandFetcher = new CacheFileRequester();
 			onDemandFetcher.start(streamLoader_6, this);
 			Model.initialize(onDemandFetcher.getFileCount(0), onDemandFetcher);
@@ -16624,7 +16691,7 @@ public class Client extends GameRenderer {
 
 			loadModIcons();
 
-			multiOverlay = CacheSpriteLoader.getCacheSprite(1025);
+			multiOverlay = new Sprite(mediaArchive, "overlay_multiway", 0);
 
 			Sprite sprite = new Sprite(mediaArchive, "screenframe", 0);
 			leftFrame = new RSImageProducer(sprite.myWidth, sprite.myHeight, getGameComponent());
@@ -16640,14 +16707,14 @@ public class Client extends GameRenderer {
 			sprite.method346(0, 0);
 			compass = new Sprite(mediaArchive, "compass", 0);
 			clientId = Signlink.uid;
-			setLoadingText(50, "Unpacking textures..");
+			setLoadingText(50, "Unpacking textures");
 			Canvas3D.method368(streamLoader_3);
 			Canvas3D.method372(0.59999999999999998D);
 			Canvas3D.method367();
 			setLoadingText(60, "Unpacked textures");
 			FrameReader.initialise(onDemandFetcher.getAnimCount());
 			Animation.unpackConfig(streamLoader);
-			setLoadingText(70, "Unpacking config..");
+			setLoadingText(70, "Unpacking config");
 			ObjectDefinition.unpackConfig(streamLoader);
 			FloorUnderlay.unpackConfig(streamLoader);
 			FloorOverlay.load(streamLoader);
@@ -16665,7 +16732,7 @@ public class Client extends GameRenderer {
 			// ItemDefinition.printModelIds();
 
 			if (!isLowDetail()) {
-				setLoadingText(85, "Unpacking sounds..");
+				setLoadingText(85, "Unpacking sounds");
 				byte[] data = soundArchive.get("sounds.dat");
 				ByteBuffer buffer = new ByteBuffer(data);
 				Sound.unpack(buffer);
@@ -17632,10 +17699,10 @@ public class Client extends GameRenderer {
 			
 			if (GameFrame.getScreenMode() == ScreenMode.RESIZABLE && (clientWidth >= 756) && (clientWidth <= 1025) && (clientHeight >= 494) && (clientHeight <= 850)) {
 				log_view_dist = 9;
-				clientZoom = 675;
+				clientZoom = 550;
 			} else if (GameFrame.getScreenMode() == ScreenMode.FIXED) {
 				clientZoom = 600;
-			} else if (GameFrame.getScreenMode() == ScreenMode.RESIZABLE || GameFrame.getScreenMode() == ScreenMode.FULLSCREEN) {
+			} else if (GameFrame.getScreenMode() != ScreenMode.FIXED) {
 				log_view_dist = 10;
 				clientZoom = 600;
 			}
@@ -18540,5 +18607,37 @@ public class Client extends GameRenderer {
 				}
 			}
 		}
+	}
+
+	private static final ExecutorService SERVICE = Executors.newSingleThreadExecutor();
+	
+	public void takeScreenShot() {
+		SERVICE.execute(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Window window = KeyboardFocusManager.getCurrentKeyboardFocusManager()
+							.getFocusedWindow();
+					Point point = window.getLocationOnScreen();
+					Robot robot = new Robot(window.getGraphicsConfiguration().getDevice());
+					Rectangle rectangle = new Rectangle((int) point.getX(), (int) point.getY(),
+							window.getWidth(), window.getHeight());
+					BufferedImage img = robot.createScreenCapture(rectangle);
+					Path path = Paths.get(Signlink.getCacheDirectory().toString(), "screenshots");
+					if (!Files.exists(path)) {
+						Files.createDirectories(path);
+					}
+					DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh-mm-ss a");
+					File file = new File(path.toFile(), format.format(new Date()) + ".png");
+					ImageIO.write(img, "png", file);
+					pushMessage("A screenshot has been taken and placed in your data folder.", 0,
+							"");
+				} catch (AWTException | IOException reason) {
+					pushMessage("An error occured whilst capturing your screenshot.", 0, "");
+					throw new RuntimeException("Fatal error whilst capturing screenshot", reason);
+				}
+			}
+		});
+		
 	}
 }

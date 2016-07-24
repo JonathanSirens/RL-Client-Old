@@ -80,22 +80,18 @@ final class GameWindow extends JFrame {
 	}
 
 	public static void setFixed() {
-		if (instance.isUndecorated()) {
-			instance.dispose();
-			instance = new GameWindow(applet, 765, 503, false, false);
-		} else {
-			instance.setSize(minimumSize);
-			instance.setResizable(false);
-		}
+		instance.dispose();
+		instance = new GameWindow(applet, 765, 503, false, false);
 		instance.setLocationRelativeTo(null);
 	}
 
 	public static void setResizable() {
 		if (instance.isUndecorated()) {
 			instance.dispose();
-			instance = new GameWindow(applet, minimumSize.width + 40, minimumSize.height + 100, false, true);
+			instance = new GameWindow(applet, minimumSize.width + 20, minimumSize.height + 47, false, true);
 		} else {
-			instance.setSize(new Dimension(minimumSize.width + 40, minimumSize.height + 100));
+			instance.setMinimumSize(new Dimension(minimumSize.width + 20, minimumSize.height + 47));
+			instance.setSize(new Dimension(minimumSize.width + 20, minimumSize.height + 47));
 			instance.setResizable(true);
 		}
 		instance.setLocationRelativeTo(null);
@@ -155,15 +151,15 @@ final class GameWindow extends JFrame {
 		} else {
 			if (!this.isResizable()) {
 				Insets insets = getInsets();
-				this.setSize(width + insets.left + insets.right, height + insets.top + insets.bottom + 41);
+				this.setSize(width + insets.left + insets.right, height + insets.top + insets.bottom + 44);
 				if (minimumSize == null) {
 					this.setMinimumSize(this.getSize());
 				} else {
-					this.setMinimumSize(minimumSize);
+					this.setMinimumSize(new Dimension(minimumSize.width, minimumSize.height));
 				}
 			} else {
-				this.setSize(new Dimension(minimumSize.width + 40, minimumSize.height + 100));
-				this.setMinimumSize(minimumSize);
+				this.setSize(new Dimension(minimumSize.width + 20, minimumSize.height + 47));
+				this.setMinimumSize(new Dimension(minimumSize.width + 20, minimumSize.height + 47));
 			}
 			setLocationRelativeTo(null);
 		}

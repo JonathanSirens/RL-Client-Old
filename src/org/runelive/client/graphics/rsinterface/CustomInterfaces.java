@@ -4018,7 +4018,7 @@ public class CustomInterfaces extends RSInterface {
 		addText(26034, "PM Notifications", 0xe4a146, false, true, 52, 0);
 		addText(26036, "HD Fog", 0xe4a146, false, true, 52, 0);
 		addText(26038, "Show Roofs", 0xe4a146, false, true, 52, 0);
-		addText(26040, "Particles", 0xe4a146, false, true, 52, 0);
+		addText(26040, "Menu text", 0xe4a146, false, true, 52, 0);
 		addButton(26007, 4, -1, 484, 485, 15, 15, "Toggle function keys", 650, 1);
 		addButton(26008, 4, -1, 484, 485, 15, 15, "Toggle health bars", 651, 1);
 		addButton(26010, 4, -1, 484, 485, 15, 15, "Toggle cursors", 652, 1);
@@ -4030,7 +4030,7 @@ public class CustomInterfaces extends RSInterface {
 		addButton(26033, 4, -1, 484, 485, 15, 15, "Toggle pm notifications", 659, 1);
 		addButton(26035, 4, -1, 484, 485, 15, 15, "Toggle fog", 660, 1);
 		addButton(26037, 4, -1, 484, 485, 15, 15, "Toggle roofs", 661, 1);
-		addButton(26039, 4, -1, 484, 485, 15, 15, "Toggle particles", 662, 1);
+		addButton(26039, 4, -1, 484, 485, 15, 15, "Toggle menu text", 662, 1);
 
 		addCheckmarkHover(26054, 4, 26055, 576, 577, 57, 35, SETTING_CONFIGS[15], 1, "Low Detail", 26056, 577, 577,
 				26057, "", "", 12, 20);

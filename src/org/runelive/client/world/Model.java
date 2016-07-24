@@ -2709,12 +2709,24 @@ public class Model extends Animable {
 			Canvas3D.method374(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l], anIntArray1665[j],
 					anIntArray1665[k], anIntArray1665[l], anIntArray1634[i], anIntArray1635[i], anIntArray1636[i], anIntArray1670[j], anIntArray1670[k],
 					anIntArray1670[l]);
+			if (fog) {
+				Canvas3D.drawFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
+						anIntArray1665[j], anIntArray1665[k], anIntArray1665[l], anIntArray1670[j],
+						anIntArray1670[k], anIntArray1670[l]);
+				return;
+			}
 			return;
 		}
 		if (i1 == 1) {
 			Canvas3D.method376(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l], anIntArray1665[j],
 					anIntArray1665[k], anIntArray1665[l], modelIntArray3[anIntArray1634[i]], anIntArray1670[j], anIntArray1670[k],
 					anIntArray1670[l]);
+			if (fog) {
+				Canvas3D.drawFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
+						anIntArray1665[j], anIntArray1665[k], anIntArray1665[l], anIntArray1670[j],
+						anIntArray1670[k], anIntArray1670[l]);
+				return;
+			}
 			return;
 		}
 		if (i1 == 2) {
@@ -2727,6 +2739,14 @@ public class Model extends Animable {
 					anIntArray1668[j2], anIntArray1668[l2], anIntArray1669[l1], anIntArray1669[j2], anIntArray1669[l2],
 					anIntArray1670[l1], anIntArray1670[j2], anIntArray1670[l2], anIntArray1640[i], anIntArray1670[j], anIntArray1670[k],
 					anIntArray1670[l]);
+			if (fog) {
+				Canvas3D.drawTexturedFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
+						anIntArray1665[j], anIntArray1665[k], anIntArray1665[l], anIntArray1670[j],
+						anIntArray1670[k], anIntArray1670[l], anIntArray1668[l1], anIntArray1668[j2],
+						anIntArray1668[l2], anIntArray1669[l1], anIntArray1669[j2], anIntArray1669[l2],
+						anIntArray1670[l1], anIntArray1670[j2], anIntArray1670[l2], anIntArray1640[i]);
+				return;
+			}
 			return;
 		}
 		if (i1 == 3) {
@@ -2739,6 +2759,14 @@ public class Model extends Animable {
 					anIntArray1668[k2], anIntArray1668[i3], anIntArray1669[i2], anIntArray1669[k2], anIntArray1669[i3],
 					anIntArray1670[i2], anIntArray1670[k2], anIntArray1670[i3], anIntArray1640[i], anIntArray1670[j], anIntArray1670[k],
 					anIntArray1670[l]);
+			if (fog) {
+				Canvas3D.drawTexturedFogTriangle(anIntArray1666[j], anIntArray1666[k], anIntArray1666[l],
+						anIntArray1665[j], anIntArray1665[k], anIntArray1665[l], anIntArray1670[j],
+						anIntArray1670[k], anIntArray1670[l], anIntArray1668[i2], anIntArray1668[k2],
+						anIntArray1668[i3], anIntArray1669[i2], anIntArray1669[k2], anIntArray1669[i3],
+						anIntArray1670[i2], anIntArray1670[k2], anIntArray1670[i3], anIntArray1640[i]);
+				return;
+			}
 		}
 	}
 
@@ -2926,14 +2954,17 @@ public class Model extends Animable {
 		return i <= j1 || i <= k1 || i <= l1;
 	}
 
-	private static final int MAX_POLYGON = 15000;
-	private boolean aBoolean1618;
-	public static int anInt1620;
+	public static boolean aBoolean1684;
+	private static boolean aBooleanArray1663[] = new boolean[8000];
+	private static boolean aBooleanArray1664[] = new boolean[8000];
+	private static ModelHeader aClass21Array1661[];
 	public static Model aModel_1621 = new Model(true);
-	private static int anIntArray1622[] = new int[MAX_POLYGON];
-	private static int anIntArray1623[] = new int[MAX_POLYGON];
-	private static int anIntArray1624[] = new int[MAX_POLYGON];
-	private static int anIntArray1625[] = new int[MAX_POLYGON];
+	private static int anInt1681;
+	private static int anInt1682;
+	private static int anInt1683;
+	public static int anInt1685;
+	public static int anInt1686;
+	public static int anInt1687;
 	public int anInt1626;
 	public int anIntArray1627[];
 	public int anIntArray1628[];
@@ -2969,39 +3000,36 @@ public class Model extends Animable {
 	public int anIntArrayArray1658[][];
 	public boolean aBoolean1659;
 	public Class33 aClass33Array1660[];
-	static ModelHeader aClass21Array1661[];
-	static CacheFileRequester aOnDemandFetcherParent_1662;
-	static boolean aBooleanArray1663[] = new boolean[MAX_POLYGON];
-	static boolean aBooleanArray1664[] = new boolean[MAX_POLYGON];
-	static int anIntArray1665[] = new int[MAX_POLYGON];
-	static int anIntArray1666[] = new int[MAX_POLYGON];
-	static int anIntArray1667[] = new int[MAX_POLYGON];
-	static int anIntArray1668[] = new int[MAX_POLYGON];
-	static int anIntArray1669[] = new int[MAX_POLYGON];
-	static int anIntArray1670[] = new int[MAX_POLYGON];
-	static int anIntArray1671[] = new int[MAX_POLYGON];
-	static int anIntArrayArray1672[][] = new int[MAX_POLYGON][512];
-	static int anIntArray1673[] = new int[12];
-	static int anIntArrayArray1674[][] = new int[12][MAX_POLYGON];
-	static int anIntArray1675[] = new int[MAX_POLYGON];
-	static int anIntArray1676[] = new int[MAX_POLYGON];
-	static int anIntArray1677[] = new int[12];
-	static int anIntArray1678[] = new int[10];
-	static int anIntArray1679[] = new int[10];
-	static int anIntArray1680[] = new int[10];
-	static int anInt1681;
-	static int anInt1682;
-	static int anInt1683;
-	public static boolean aBoolean1684;
-	public static int anInt1685;
-	public static int anInt1686;
-	public static int anInt1687;
+	private boolean aBoolean1618;
+	public static int anInt1620;
+	private static int anIntArray1622[] = new int[2000];
+	private static int anIntArray1623[] = new int[2000];
+	private static int anIntArray1624[] = new int[2000];
+	private static int anIntArray1625[] = new int[2000];
+	private static int anIntArray1665[] = new int[8000];
+	private static int anIntArray1666[] = new int[8000];
+	private static int anIntArray1667[] = new int[8000];
+	private static int anIntArray1668[] = new int[8000];
+	private static int anIntArray1669[] = new int[8000];
+	private static int anIntArray1670[] = new int[8000];
+	private static int anIntArray1671[] = new int[1500];
+	private static int anIntArray1673[] = new int[12];
+	private static int anIntArray1675[] = new int[2000];
+	private static int anIntArray1676[] = new int[2000];
+	private static int anIntArray1677[] = new int[12];
+	private static int anIntArray1678[] = new int[10];
+	private static int anIntArray1679[] = new int[10];
+	private static int anIntArray1680[] = new int[10];
 	public static int mapObjIds[] = new int[1000];
-	public static int anIntArray1688[] = new int[MAX_POLYGON];
+	public static int anIntArray1688[] = new int[1000];
+	private static int anIntArrayArray1672[][] = new int[1500][512];
+	private static int anIntArrayArray1674[][] = new int[12][2000];
+	private static CacheFileRequester aOnDemandFetcherParent_1662;
 	public static int modelIntArray1[];
 	public static int modelIntArray2[];
-	static int modelIntArray3[];
-	static int modelIntArray4[];
+	private static int[] modelIntArray3;
+	private static int[] modelIntArray4;
+	public static boolean fog;
 
 	static {
 		modelIntArray1 = Canvas3D.SINE;

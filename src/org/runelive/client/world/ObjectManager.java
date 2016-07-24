@@ -10,6 +10,8 @@ import org.runelive.client.io.ByteBuffer;
 import org.runelive.client.renderable.Animable;
 import org.runelive.client.renderable.Animable_Sub5;
 
+import java.util.ArrayList;
+
 public final class ObjectManager {
 
 	public static int anInt131;
@@ -19,6 +21,8 @@ public final class ObjectManager {
 	private static final int anIntArray144[] = { 0, -1, 0, 1 };
 	private static final int anIntArray152[] = { 1, 2, 4, 8 };
 	public static boolean lowDetail = true;
+	
+	public final ArrayList<Integer> colors = new ArrayList<Integer>();
 
 	private static int method170(int i, int j) {
 		int k = i + j * 57;
@@ -647,8 +651,8 @@ public final class ObjectManager {
 									} else if (j23 == 135) { // Water at duel
 										// arena
 										mapTexture = Canvas3D.method369(1);
-										j23 = -2;
-										floorTexture = -1;
+										j23 = -1;
+										floorTexture = 1;
 									} else if (j23 == 6041) { // Al kharid
 										// floors
 										mapTexture = flo_2.rgb = 0xAA9166;
@@ -700,6 +704,7 @@ public final class ObjectManager {
 										floorTexture = 25;
 										j23 = -1;
 									}
+									colors.add(mapTexture);
 									worldController.method279(l, l6, k17, k22, byte4, floorTexture, 154, j19, k19, l19,
 											i20, method187(j21, j20), method187(j21, k20), method187(j21, l20),
 											method187(j21, i21), method185(j23, j20), method185(j23, k20),

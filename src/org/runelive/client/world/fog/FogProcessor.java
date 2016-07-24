@@ -1,14 +1,15 @@
 package org.runelive.client.world.fog;
 
-import org.runelive.client.Client;
 import org.runelive.client.graphics.Canvas2D;
 
 /**
  * Created by Evan2 on 15/07/2016.
  */
 public class FogProcessor {
+	
+	public int rgb = 0xc8c0a8;
 
-    public static void render(int begin, int end, int rgb) {
+    public void render(int begin, int end) {
         for (int depth = Canvas2D.depthBuffer.length - 1; depth >= 0; depth--) {
             if (Canvas2D.depthBuffer == null) {
                 continue;

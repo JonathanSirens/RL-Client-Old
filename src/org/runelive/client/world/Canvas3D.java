@@ -361,49 +361,50 @@ public final class Canvas3D extends Canvas2D {
 		}
 	}
 	
-	public static void drawMaterializedTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int hsl1, int hsl2, int hsl3, int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int tex, float z1, float z2, float z3) {
-		if (z1 < 0.0F || z2 < 0.0F || z3 < 0.0F) {
-			return;
+	public static final void drawMaterializedTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int c1, int c2, int c3, int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int tex, float z1, float z2, float z3) {
+		if(!saveDepth) {
+			z1 = z2 = z3 = 0.0F;
 		}
+		
 		if (!Configuration.hdTexturing || Texture.get(tex) == null) {
-			method374(y1, y2, y3, x1, x2, x3, hsl1, hsl2, hsl3, tz1, tz2 , tz3);
+			method374(y1, y2, y3, x1, x2, x3, c1, c2, c3, tz1, tz2 , tz3);
 			return;
 		}
+		
 		setMipmapLevel(y1, y2, y3, x1, x2, x3, tex);
-		int[] ai = Texture.get(tex).mipmaps[mipMapLevel];
-		tx2 = tx1 - tx2;
-		ty2 = ty1 - ty2;
-		tz2 = tz1 - tz2;
-		tx3 -= tx1;
-		ty3 -= ty1;
-		tz3 -= tz1;
-		int l4 = tx3 * ty1 - ty3 * tx1 << (Client.log_view_dist == 9 ? 14 : 15);
-		int i5 = ty3 * tz1 - tz3 * ty1 << 8;
-		int j5 = tz3 * tx1 - tx3 * tz1 << 5;
-		int k5 = tx2 * ty1 - ty2 * tx1 << (Client.log_view_dist == 9 ? 14 : 15);
-		int l5 = ty2 * tz1 - tz2 * ty1 << 8;
-		int i6 = tz2 * tx1 - tx2 * tz1 << 5;
-		int j6 = ty2 * tx3 - tx2 * ty3 << (Client.log_view_dist == 9 ? 14 : 15);
-		int k6 = tz2 * ty3 - ty2 * tz3 << 8;
-		int l6 = tx2 * tz3 - tz2 * tx3 << 5;
-		int i7 = 0;
-		int j7 = 0;
-		if (y2 != y1) {
-			i7 = (x2 - x1 << 16) / (y2 - y1);
-			j7 = (hsl2 - hsl1 << 15) / (y2 - y1);
+		
+		int mat1 = c1 & 0x7f;
+		int mat2 = c2 & 0x7f;
+		int mat3 = c3 & 0x7f;
+		int[] mat = Texture.get(tex).mipmaps[mipMapLevel];
+		int x21 = x2 - x1;
+		int y21 = y2 - y1;
+		int x31 = x3 - x1;
+		int y31 = y3 - y1;
+		int mat21 = mat2 - mat1;
+		int mat31 = mat3 - mat1;
+		int dx1 = 0;
+		int dc1 = 0;
+		if(y2 != y1) {
+			final int d = (y2 - y1);
+			dx1 = (x2 - x1 << 16) / d;
+			dc1 = (c2 - c1 << 15) / d;
 		}
-		int k7 = 0;
-		int l7 = 0;
-		if (y3 != y2) {
-			k7 = (x3 - x2 << 16) / (y3 - y2);
-			l7 = (hsl3 - hsl2 << 15) / (y3 - y2);
+		int dx2 = 0;
+		int dc2 = 0;
+		if(y3 != y2) {
+			final int d = (y3 - y2);
+			dx2 = (x3 - x2 << 16) / d;
+			dc2 = (c3 - c2 << 15) / d;
 		}
-		int i8 = 0;
-		int j8 = 0;
-		if (y3 != y1) {
-			i8 = (x1 - x3 << 16) / (y1 - y3);
-			j8 = (hsl1 - hsl3 << 15) / (y1 - y3);
+		int dx3 = 0;
+		int dc3 = 0;
+		if(y3 != y1) {
+			final int d = (y1 - y3);
+			dx3 = (x1 - x3 << 16) / d;
+			dc3 = (c1 - c3 << 15) / d;
 		}
+		
 		float b_aX = x2 - x1;
 		float b_aY = y2 - y1;
 		float b_aZ = z2 - z1;
@@ -414,700 +415,769 @@ public final class Canvas3D extends Canvas2D {
 		float div = b_aX * c_aY - c_aX * b_aY;
 		float depth_slope = (b_aZ * c_aY - c_aZ * b_aY) / div;
 		float depth_increment = (c_aZ * b_aX - b_aZ * c_aX) / div;
-		if (y1 <= y2 && y1 <= y3) {
-			if (y1 >= Canvas2D.bottomY) {
-				return;
-			}
-			if (y2 > Canvas2D.bottomY) {
-				y2 = Canvas2D.bottomY;
-			}
-			if (y3 > Canvas2D.bottomY) {
-				y3 = Canvas2D.bottomY;
-			}
-			z1 = z1 - depth_slope * x1 + depth_slope;
-			if (y2 < y3) {
-				x3 = x1 <<= 16;
-				hsl3 = hsl1 <<= 15;
-				if (y1 < 0) {
-					x3 -= i8 * y1;
-					x1 -= i7 * y1;
-					z1 -= depth_increment * y1;
-					hsl3 -= j8 * y1;
-					hsl1 -= j7 * y1;
-					y1 = 0;
-				}
-				x2 <<= 16;
-				hsl2 <<= 15;
-				if (y2 < 0) {
-					x2 -= k7 * y2;
-					hsl2 -= l7 * y2;
-					y2 = 0;
-				}
-				int k8 = y1 - centerY;
-				l4 += j5 * k8;
-				k5 += i6 * k8;
-				j6 += l6 * k8;
-				if (y1 != y2 && i8 < i7 || y1 == y2 && i8 > k7) {
-					y3 -= y2;
-					y2 -= y1;
-					y1 = lineOffsets[y1];
-					while (--y2 >= 0) {
-						drawMaterializedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6, z1, depth_slope);
-						x3 += i8;
-						x1 += i7;
-						z1 += depth_increment;
-						hsl3 += j8;
-						hsl1 += j7;
-						y1 += Canvas2D.width;
-						l4 += j5;
-						k5 += i6;
-						j6 += l6;
+		
+		int i_92_ = x21 * y31 - x31 * y21;
+		if(i_92_ != 0) {
+			int i_93_ = (mat21 * y31 - mat31 * y21 << 9) / i_92_;
+			int i_94_ = (mat31 * x21 - mat21 * x31 << 9) / i_92_;
+			tx2 = tx1 - tx2;
+			ty2 = ty1 - ty2;
+			tz2 = tz1 - tz2;
+			tx3 -= tx1;
+			ty3 -= ty1;
+			tz3 -= tz1;
+			int i_95_ = tx3 * ty1 - ty3 * tx1 << (Client.log_view_dist == 9 ? 14 : 15);
+			int i_96_ = ty3 * tz1 - tz3 * ty1 << 8;
+			int i_97_ = tz3 * tx1 - tx3 * tz1 << 5;
+			int i_98_ = tx2 * ty1 - ty2 * tx1 << (Client.log_view_dist == 9 ? 14 : 15);
+			int i_99_ = ty2 * tz1 - tz2 * ty1 << 8;
+			int i_100_ = tz2 * tx1 - tx2 * tz1 << 5;
+			int i_101_ = ty2 * tx3 - tx2 * ty3 << (Client.log_view_dist == 9 ? 14 : 15);
+			int i_102_ = tz2 * ty3 - ty2 * tz3 << 8;
+			int i_103_ = tx2 * tz3 - tz2 * tx3 << 5;
+			if(y1 <= y2 && y1 <= y3) {
+				if(y1 < Canvas2D.bottomY) {
+					if(y2 > Canvas2D.bottomY) {
+						y2 = Canvas2D.bottomY;
 					}
-					while (--y3 >= 0) {
-						drawMaterializedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6, z1, depth_slope);
-						x3 += i8;
-						x2 += k7;
-						z1 += depth_increment;
-						hsl3 += j8;
-						hsl2 += l7;
-						y1 += Canvas2D.width;
-						l4 += j5;
-						k5 += i6;
-						j6 += l6;
+					if(y3 > Canvas2D.bottomY) {
+						y3 = Canvas2D.bottomY;
 					}
-					return;
-				}
-				y3 -= y2;
-				y2 -= y1;
-				y1 = lineOffsets[y1];
-				while (--y2 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6, z1, depth_slope);
-					x3 += i8;
-					x1 += i7;
-					z1 += depth_increment;
-					hsl3 += j8;
-					hsl1 += j7;
-					y1 += Canvas2D.width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				while (--y3 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6, z1, depth_slope);
-					x3 += i8;
-					x2 += k7;
-					z1 += depth_increment;
-					hsl3 += j8;
-					hsl2 += l7;
-					y1 += Canvas2D.width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				return;
-			}
-			x2 = x1 <<= 16;
-			hsl2 = hsl1 <<= 15;
-			if (y1 < 0) {
-				x2 -= i8 * y1;
-				x1 -= i7 * y1;
-				z1 -= depth_increment * y1;
-				hsl2 -= j8 * y1;
-				hsl1 -= j7 * y1;
-				y1 = 0;
-			}
-			x3 <<= 16;
-			hsl3 <<= 15;
-			if (y3 < 0) {
-				x3 -= k7 * y3;
-				hsl3 -= l7 * y3;
-				y3 = 0;
-			}
-			int l8 = y1 - centerY;
-			l4 += j5 * l8;
-			k5 += i6 * l8;
-			j6 += l6 * l8;
-			if (y1 != y3 && i8 < i7 || y1 == y3 && k7 > i7) {
-				y2 -= y3;
-				y3 -= y1;
-				y1 = lineOffsets[y1];
-				while (--y3 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6, z1, depth_slope);
-					x2 += i8;
-					x1 += i7;
-					z1 += depth_increment;
-					hsl2 += j8;
-					hsl1 += j7;
-					y1 += Canvas2D.width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				while (--y2 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y1, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6, z1, depth_slope);
-					x3 += k7;
-					x1 += i7;
-					z1 += depth_increment;
-					hsl3 += l7;
-					hsl1 += j7;
-					y1 += Canvas2D.width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				return;
-			}
-			y2 -= y3;
-			y3 -= y1;
-			y1 = lineOffsets[y1];
-			while (--y3 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6, z1, depth_slope);
-				x2 += i8;
-				x1 += i7;
-				z1 += depth_increment;
-				hsl2 += j8;
-				hsl1 += j7;
-				y1 += Canvas2D.width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			while (--y2 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y1, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6, z1, depth_slope);
-				x3 += k7;
-				x1 += i7;
-				z1 += depth_increment;
-				hsl3 += l7;
-				hsl1 += j7;
-				y1 += Canvas2D.width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			return;
-		}
-		if (y2 <= y3) {
-			if (y2 >= Canvas2D.bottomY) {
-				return;
-			}
-			if (y3 > Canvas2D.bottomY) {
-				y3 = Canvas2D.bottomY;
-			}
-			if (y1 > Canvas2D.bottomY) {
-				y1 = Canvas2D.bottomY;
-			}
-			z2 = z2 - depth_slope * x2 + depth_slope;
-			if (y3 < y1) {
-				x1 = x2 <<= 16;
-				hsl1 = hsl2 <<= 15;
-				if (y2 < 0) {
-					x1 -= i7 * y2;
-					x2 -= k7 * y2;
-					z2 -= depth_increment * y2;
-					hsl1 -= j7 * y2;
-					hsl2 -= l7 * y2;
-					y2 = 0;
-				}
-				x3 <<= 16;
-				hsl3 <<= 15;
-				if (y3 < 0) {
-					x3 -= i8 * y3;
-					hsl3 -= j8 * y3;
-					y3 = 0;
-				}
-				int i9 = y2 - centerY;
-				l4 += j5 * i9;
-				k5 += i6 * i9;
-				j6 += l6 * i9;
-				if (y2 != y3 && i7 < k7 || y2 == y3 && i7 > i8) {
-					y1 -= y3;
-					y3 -= y2;
-					y2 = lineOffsets[y2];
-					while (--y3 >= 0) {
-						drawMaterializedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6, z2, depth_slope);
-						x1 += i7;
-						x2 += k7;
-						z2 += depth_increment;
-						hsl1 += j7;
-						hsl2 += l7;
-						y2 += Canvas2D.width;
-						l4 += j5;
-						k5 += i6;
-						j6 += l6;
+					
+					mat1 = (mat1 << 9) - i_93_ * x1 + i_93_;
+					z1 = z1 - depth_slope * x1 + depth_slope;
+					if(y2 < y3) {
+						x3 = x1 <<= 16;
+						c3 = c1 <<= 15;
+						if(y1 < 0) {
+							x3 -= dx3 * y1;
+							x1 -= dx1 * y1;
+							z1 -= depth_increment * y1;
+							c3 -= dc3 * y1;
+							c1 -= dc1 * y1;
+							mat1 -= i_94_ * y1;
+							y1 = 0;
+						}
+						x2 <<= 16;
+						c2 <<= 15;
+						if(y2 < 0) {
+							x2 -= dx2 * y2;
+							c2 -= dc2 * y2;
+							y2 = 0;
+						}
+						int i_104_ = y1 - centerY;
+						i_95_ += i_97_ * i_104_;
+						i_98_ += i_100_ * i_104_;
+						i_101_ += i_103_ * i_104_;
+						if(y1 != y2 && dx3 < dx1 || y1 == y2 && dx3 > dx2) {
+							y3 -= y2;
+							y2 -= y1;
+							y1 = lineOffsets[y1];
+							while(--y2 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y1, x3 >> 16, x1 >> 16, c3 >> 7, c1 >> 7, mat1, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z3, z1);
+								x3 += dx3;
+								x1 += dx1;
+								z1 += depth_increment;
+								c3 += dc3;
+								c1 += dc1;
+								mat1 += i_94_;
+								y1 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+							while(--y3 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y1, x3 >> 16, x2 >> 16, c3 >> 7, c2 >> 7, mat1, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z3, z2);
+								x3 += dx3;
+								x2 += dx2;
+								z1 += depth_increment;
+								c3 += dc3;
+								c2 += dc2;
+								mat1 += i_94_;
+								y1 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+						} else {
+							y3 -= y2;
+							y2 -= y1;
+							y1 = lineOffsets[y1];
+							while(--y2 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y1, x1 >> 16, x3 >> 16, c1 >> 7, c3 >> 7, mat1, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z1, z3);
+								x3 += dx3;
+								x1 += dx1;
+								z1 += depth_increment;
+								c3 += dc3;
+								c1 += dc1;
+								mat1 += i_94_;
+								y1 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+							while(--y3 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y1, x2 >> 16, x3 >> 16, c2 >> 7, c3 >> 7, mat1, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z2, z3);
+								x3 += dx3;
+								x2 += dx2;
+								z1 += depth_increment;
+								c3 += dc3;
+								c2 += dc2;
+								mat1 += i_94_;
+								y1 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+						}
+					} else {
+						x2 = x1 <<= 16;
+						c2 = c1 <<= 15;
+						if(y1 < 0) {
+							x2 -= dx3 * y1;
+							x1 -= dx1 * y1;
+							z1 -= depth_increment * y1;
+							c2 -= dc3 * y1;
+							c1 -= dc1 * y1;
+							mat1 -= i_94_ * y1;
+							y1 = 0;
+						}
+						x3 <<= 16;
+						c3 <<= 15;
+						if(y3 < 0) {
+							x3 -= dx2 * y3;
+							c3 -= dc2 * y3;
+							y3 = 0;
+						}
+						int i_105_ = y1 - centerY;
+						i_95_ += i_97_ * i_105_;
+						i_98_ += i_100_ * i_105_;
+						i_101_ += i_103_ * i_105_;
+						if(y1 != y3 && dx3 < dx1 || y1 == y3 && dx2 > dx1) {
+							y2 -= y3;
+							y3 -= y1;
+							y1 = lineOffsets[y1];
+							while(--y3 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y1, x2 >> 16, x1 >> 16, c2 >> 7, c1 >> 7, mat1, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z2, z1);
+								x2 += dx3;
+								x1 += dx1;
+								z1 += depth_increment;
+								c2 += dc3;
+								c1 += dc1;
+								mat1 += i_94_;
+								y1 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+							while(--y2 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y1, x3 >> 16, x1 >> 16, c3 >> 7, c1 >> 7, mat1, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z3, z1);
+								x3 += dx2;
+								x1 += dx1;
+								z1 += depth_increment;
+								c3 += dc2;
+								c1 += dc1;
+								mat1 += i_94_;
+								y1 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+						} else {
+							y2 -= y3;
+							y3 -= y1;
+							y1 = lineOffsets[y1];
+							while(--y3 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y1, x1 >> 16, x2 >> 16, c1 >> 7, c2 >> 7, mat1, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z1, z2);
+								x2 += dx3;
+								x1 += dx1;
+								z1 += depth_increment;
+								c2 += dc3;
+								c1 += dc1;
+								mat1 += i_94_;
+								y1 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+							while(--y2 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y1, x1 >> 16, x3 >> 16, c1 >> 7, c3 >> 7, mat1, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z1, z3);
+								x3 += dx2;
+								x1 += dx1;
+								z1 += depth_increment;
+								c3 += dc2;
+								c1 += dc1;
+								mat1 += i_94_;
+								y1 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+						}
 					}
-					while (--y1 >= 0) {
-						drawMaterializedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6, z2, depth_slope);
-						x1 += i7;
-						x3 += i8;
-						z2 += depth_increment;
-						hsl1 += j7;
-						hsl3 += j8;
-						y2 += Canvas2D.width;
-						l4 += j5;
-						k5 += i6;
-						j6 += l6;
+				}
+			} else if(y2 <= y3) {
+				if(y2 < Canvas2D.bottomY) {
+					if(y3 > Canvas2D.bottomY) {
+						y3 = Canvas2D.bottomY;
 					}
-					return;
+					if(y1 > Canvas2D.bottomY) {
+						y1 = Canvas2D.bottomY;
+					}
+					
+					mat2 = (mat2 << 9) - i_93_ * x2 + i_93_;
+					z2 = z2 - depth_slope * x2 + depth_slope;
+					if(y3 < y1) {
+						x1 = x2 <<= 16;
+						c1 = c2 <<= 15;
+						if(y2 < 0) {
+							x1 -= dx1 * y2;
+							x2 -= dx2 * y2;
+							z2 -= depth_increment * y2;
+							c1 -= dc1 * y2;
+							c2 -= dc2 * y2;
+							mat2 -= i_94_ * y2;
+							y2 = 0;
+						}
+						x3 <<= 16;
+						c3 <<= 15;
+						if(y3 < 0) {
+							x3 -= dx3 * y3;
+							c3 -= dc3 * y3;
+							y3 = 0;
+						}
+						int i_106_ = y2 - centerY;
+						i_95_ += i_97_ * i_106_;
+						i_98_ += i_100_ * i_106_;
+						i_101_ += i_103_ * i_106_;
+						if(y2 != y3 && dx1 < dx2 || y2 == y3 && dx1 > dx3) {
+							y1 -= y3;
+							y3 -= y2;
+							y2 = lineOffsets[y2];
+							while(--y3 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y2, x1 >> 16, x2 >> 16, c1 >> 7, c2 >> 7, mat2, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z1, z2);
+								x1 += dx1;
+								x2 += dx2;
+								z2 += depth_increment;
+								c1 += dc1;
+								c2 += dc2;
+								mat2 += i_94_;
+								y2 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+							while(--y1 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y2, x1 >> 16, x3 >> 16, c1 >> 7, c3 >> 7, mat2, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z1, z3);
+								x1 += dx1;
+								x3 += dx3;
+								z2 += depth_increment;
+								c1 += dc1;
+								c3 += dc3;
+								mat2 += i_94_;
+								y2 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+						} else {
+							y1 -= y3;
+							y3 -= y2;
+							y2 = lineOffsets[y2];
+							while(--y3 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y2, x2 >> 16, x1 >> 16, c2 >> 7, c1 >> 7, mat2, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z2, z1);
+								x1 += dx1;
+								x2 += dx2;
+								z2 += depth_increment;
+								c1 += dc1;
+								c2 += dc2;
+								mat2 += i_94_;
+								y2 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+							while(--y1 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y2, x3 >> 16, x1 >> 16, c3 >> 7, c1 >> 7, mat2, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z3, z1);
+								x1 += dx1;
+								x3 += dx3;
+								z2 += depth_increment;
+								c1 += dc1;
+								c3 += dc3;
+								mat2 += i_94_;
+								y2 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+						}
+					} else {
+						x3 = x2 <<= 16;
+						c3 = c2 <<= 15;
+						if(y2 < 0) {
+							x3 -= dx1 * y2;
+							x2 -= dx2 * y2;
+							z2 -= depth_increment * y2;
+							c3 -= dc1 * y2;
+							c2 -= dc2 * y2;
+							mat2 -= i_94_ * y2;
+							y2 = 0;
+						}
+						x1 <<= 16;
+						c1 <<= 15;
+						if(y1 < 0) {
+							x1 -= dx3 * y1;
+							c1 -= dc3 * y1;
+							y1 = 0;
+						}
+						int i_107_ = y2 - centerY;
+						i_95_ += i_97_ * i_107_;
+						i_98_ += i_100_ * i_107_;
+						i_101_ += i_103_ * i_107_;
+						if(dx1 < dx2) {
+							y3 -= y1;
+							y1 -= y2;
+							y2 = lineOffsets[y2];
+							while(--y1 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y2, x3 >> 16, x2 >> 16, c3 >> 7, c2 >> 7, mat2, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z3, z2);
+								x3 += dx1;
+								x2 += dx2;
+								z2 += depth_increment;
+								c3 += dc1;
+								c2 += dc2;
+								mat2 += i_94_;
+								y2 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+							while(--y3 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y2, x1 >> 16, x2 >> 16, c1 >> 7, c2 >> 7, mat2, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z1, z2);
+								x1 += dx3;
+								x2 += dx2;
+								z2 += depth_increment;
+								c1 += dc3;
+								c2 += dc2;
+								mat2 += i_94_;
+								y2 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+						} else {
+							y3 -= y1;
+							y1 -= y2;
+							y2 = lineOffsets[y2];
+							while(--y1 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y2, x2 >> 16, x3 >> 16, c2 >> 7, c3 >> 7, mat2, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z2, z3);
+								x3 += dx1;
+								x2 += dx2;
+								z2 += depth_increment;
+								c3 += dc1;
+								c2 += dc2;
+								mat2 += i_94_;
+								y2 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+							while(--y3 >= 0) {
+								drawMaterializedScanline(Canvas2D.pixels, mat, y2, x2 >> 16, x1 >> 16, c2 >> 7, c1 >> 7, mat2, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z2, z1);
+								x1 += dx3;
+								x2 += dx2;
+								z2 += depth_increment;
+								c1 += dc3;
+								c2 += dc2;
+								mat2 += i_94_;
+								y2 += Canvas2D.width;
+								i_95_ += i_97_;
+								i_98_ += i_100_;
+								i_101_ += i_103_;
+							}
+						}
+					}
 				}
-				y1 -= y3;
-				y3 -= y2;
-				y2 = lineOffsets[y2];
-				while (--y3 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6, z2, depth_slope);
-					x1 += i7;
-					x2 += k7;
-					z2 += depth_increment;
-					hsl1 += j7;
-					hsl2 += l7;
-					y2 += Canvas2D.width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
+			} else if(y3 < Canvas2D.bottomY) {
+				if(y1 > Canvas2D.bottomY) {
+					y1 = Canvas2D.bottomY;
 				}
-				while (--y1 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6, z2, depth_slope);
-					x1 += i7;
-					x3 += i8;
-					z2 += depth_increment;
-					hsl1 += j7;
-					hsl3 += j8;
-					y2 += Canvas2D.width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
+				if(y2 > Canvas2D.bottomY) {
+					y2 = Canvas2D.bottomY;
 				}
-				return;
-			}
-			x3 = x2 <<= 16;
-			hsl3 = hsl2 <<= 15;
-			if (y2 < 0) {
-				x3 -= i7 * y2;
-				x2 -= k7 * y2;
-				z2 -= depth_increment * y2;
-				hsl3 -= j7 * y2;
-				hsl2 -= l7 * y2;
-				y2 = 0;
-			}
-			x1 <<= 16;
-			hsl1 <<= 15;
-			if (y1 < 0) {
-				x1 -= i8 * y1;
-				hsl1 -= j8 * y1;
-				y1 = 0;
-			}
-			int j9 = y2 - centerY;
-			l4 += j5 * j9;
-			k5 += i6 * j9;
-			j6 += l6 * j9;
-			if (i7 < k7) {
-				y3 -= y1;
-				y1 -= y2;
-				y2 = lineOffsets[y2];
-				while (--y1 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6, z2, depth_slope);
-					x3 += i7;
-					x2 += k7;
-					z2 += depth_increment;
-					hsl3 += j7;
-					hsl2 += l7;
-					y2 += Canvas2D.width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
+				
+				mat3 = (mat3 << 9) - i_93_ * x3 + i_93_;
+				z3 = z3 - depth_slope * x3 + depth_slope;
+				if(y1 < y2) {
+					x2 = x3 <<= 16;
+					c2 = c3 <<= 15;
+					if(y3 < 0) {
+						x2 -= dx2 * y3;
+						x3 -= dx3 * y3;
+						z3 -= depth_increment * y3;
+						c2 -= dc2 * y3;
+						c3 -= dc3 * y3;
+						mat3 -= i_94_ * y3;
+						y3 = 0;
+					}
+					x1 <<= 16;
+					c1 <<= 15;
+					if(y1 < 0) {
+						x1 -= dx1 * y1;
+						c1 -= dc1 * y1;
+						y1 = 0;
+					}
+					int i_108_ = y3 - centerY;
+					i_95_ += i_97_ * i_108_;
+					i_98_ += i_100_ * i_108_;
+					i_101_ += i_103_ * i_108_;
+					if(dx2 < dx3) {
+						y2 -= y1;
+						y1 -= y3;
+						y3 = lineOffsets[y3];
+						while(--y1 >= 0) {
+							drawMaterializedScanline(Canvas2D.pixels, mat, y3, x2 >> 16, x3 >> 16, c2 >> 7, c3 >> 7, mat3, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z2, z3);
+							x2 += dx2;
+							x3 += dx3;
+							z3 += depth_increment;
+							c2 += dc2;
+							c3 += dc3;
+							mat3 += i_94_;
+							y3 += Canvas2D.width;
+							i_95_ += i_97_;
+							i_98_ += i_100_;
+							i_101_ += i_103_;
+						}
+						while(--y2 >= 0) {
+							drawMaterializedScanline(Canvas2D.pixels, mat, y3, x2 >> 16, x1 >> 16, c2 >> 7, c1 >> 7, mat3, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z2, z1);
+							x2 += dx2;
+							x1 += dx1;
+							z3 += depth_increment;
+							c2 += dc2;
+							c1 += dc1;
+							mat3 += i_94_;
+							y3 += Canvas2D.width;
+							i_95_ += i_97_;
+							i_98_ += i_100_;
+							i_101_ += i_103_;
+						}
+					} else {
+						y2 -= y1;
+						y1 -= y3;
+						y3 = lineOffsets[y3];
+						while(--y1 >= 0) {
+							drawMaterializedScanline(Canvas2D.pixels, mat, y3, x3 >> 16, x2 >> 16, c3 >> 7, c2 >> 7, mat3, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z3, z2);
+							x2 += dx2;
+							x3 += dx3;
+							z3 += depth_increment;
+							c2 += dc2;
+							c3 += dc3;
+							mat3 += i_94_;
+							y3 += Canvas2D.width;
+							i_95_ += i_97_;
+							i_98_ += i_100_;
+							i_101_ += i_103_;
+						}
+						while(--y2 >= 0) {
+							drawMaterializedScanline(Canvas2D.pixels, mat, y3, x1 >> 16, x2 >> 16, c1 >> 7, c2 >> 7, mat3, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z1, z2);
+							x2 += dx2;
+							x1 += dx1;
+							z3 += depth_increment;
+							c2 += dc2;
+							c1 += dc1;
+							mat3 += i_94_;
+							y3 += Canvas2D.width;
+							i_95_ += i_97_;
+							i_98_ += i_100_;
+							i_101_ += i_103_;
+						}
+					}
+				} else {
+					x1 = x3 <<= 16;
+					c1 = c3 <<= 15;
+					if(y3 < 0) {
+						x1 -= dx2 * y3;
+						x3 -= dx3 * y3;
+						z3 -= depth_increment * y3;
+						c1 -= dc2 * y3;
+						c3 -= dc3 * y3;
+						mat3 -= i_94_ * y3;
+						y3 = 0;
+					}
+					x2 <<= 16;
+					c2 <<= 15;
+					if(y2 < 0) {
+						x2 -= dx1 * y2;
+						c2 -= dc1 * y2;
+						y2 = 0;
+					}
+					int i_109_ = y3 - centerY;
+					i_95_ += i_97_ * i_109_;
+					i_98_ += i_100_ * i_109_;
+					i_101_ += i_103_ * i_109_;
+					if(dx2 < dx3) {
+						y1 -= y2;
+						y2 -= y3;
+						y3 = lineOffsets[y3];
+						while(--y2 >= 0) {
+							drawMaterializedScanline(Canvas2D.pixels, mat, y3, x1 >> 16, x3 >> 16, c1 >> 7, c3 >> 7, mat3, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z1, z3);
+							x1 += dx2;
+							x3 += dx3;
+							z3 += depth_increment;
+							c1 += dc2;
+							c3 += dc3;
+							mat3 += i_94_;
+							y3 += Canvas2D.width;
+							i_95_ += i_97_;
+							i_98_ += i_100_;
+							i_101_ += i_103_;
+						}
+						while(--y1 >= 0) {
+							drawMaterializedScanline(Canvas2D.pixels, mat, y3, x2 >> 16, x3 >> 16, c2 >> 7, c3 >> 7, mat3, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z2, z3);
+							x2 += dx1;
+							x3 += dx3;
+							z3 += depth_increment;
+							c2 += dc1;
+							c3 += dc3;
+							mat3 += i_94_;
+							y3 += Canvas2D.width;
+							i_95_ += i_97_;
+							i_98_ += i_100_;
+							i_101_ += i_103_;
+						}
+					} else {
+						y1 -= y2;
+						y2 -= y3;
+						y3 = lineOffsets[y3];
+						while(--y2 >= 0) {
+							drawMaterializedScanline(Canvas2D.pixels, mat, y3, x3 >> 16, x1 >> 16, c3 >> 7, c1 >> 7, mat3, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z3, z1);
+							x1 += dx2;
+							x3 += dx3;
+							z3 += depth_increment;
+							c1 += dc2;
+							c3 += dc3;
+							mat3 += i_94_;
+							y3 += Canvas2D.width;
+							i_95_ += i_97_;
+							i_98_ += i_100_;
+							i_101_ += i_103_;
+						}
+						while(--y1 >= 0) {
+							drawMaterializedScanline(Canvas2D.pixels, mat, y3, x3 >> 16, x2 >> 16, c3 >> 7, c2 >> 7, mat3, i_93_, i_95_, i_98_, i_101_, i_96_, i_99_, i_102_, z3, z2);
+							x2 += dx1;
+							x3 += dx3;
+							z3 += depth_increment;
+							c2 += dc1;
+							c3 += dc3;
+							mat3 += i_94_;
+							y3 += Canvas2D.width;
+							i_95_ += i_97_;
+							i_98_ += i_100_;
+							i_101_ += i_103_;
+						}
+					}
 				}
-				while (--y3 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y2, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6, z2, depth_slope);
-					x1 += i8;
-					x2 += k7;
-					z2 += depth_increment;
-					hsl1 += j8;
-					hsl2 += l7;
-					y2 += Canvas2D.width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				return;
 			}
-			y3 -= y1;
-			y1 -= y2;
-			y2 = lineOffsets[y2];
-			while (--y1 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6, z2, depth_slope);
-				x3 += i7;
-				x2 += k7;
-				z2 += depth_increment;
-				hsl3 += j7;
-				hsl2 += l7;
-				y2 += Canvas2D.width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			while (--y3 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y2, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6, z2, depth_slope);
-				x1 += i8;
-				x2 += k7;
-				z2 += depth_increment;
-				hsl1 += j8;
-				hsl2 += l7;
-				y2 += Canvas2D.width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			return;
-		}
-		if (y3 >= Canvas2D.bottomY) {
-			return;
-		}
-		if (y1 > Canvas2D.bottomY) {
-			y1 = Canvas2D.bottomY;
-		}
-		if (y2 > Canvas2D.bottomY) {
-			y2 = Canvas2D.bottomY;
-		}
-		z3 = z3 - depth_slope * x3 + depth_slope;
-		if (y1 < y2) {
-			x2 = x3 <<= 16;
-			hsl2 = hsl3 <<= 15;
-			if (y3 < 0) {
-				x2 -= k7 * y3;
-				x3 -= i8 * y3;
-				z3 -= depth_increment * y3;
-				hsl2 -= l7 * y3;
-				hsl3 -= j8 * y3;
-				y3 = 0;
-			}
-			x1 <<= 16;
-			hsl1 <<= 15;
-			if (y1 < 0) {
-				x1 -= i7 * y1;
-				hsl1 -= j7 * y1;
-				y1 = 0;
-			}
-			int k9 = y3 - centerY;
-			l4 += j5 * k9;
-			k5 += i6 * k9;
-			j6 += l6 * k9;
-			if (k7 < i8) {
-				y2 -= y1;
-				y1 -= y3;
-				y3 = lineOffsets[y3];
-				while (--y1 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6, z3, depth_slope);
-					x2 += k7;
-					x3 += i8;
-					z3 += depth_increment;
-					hsl2 += l7;
-					hsl3 += j8;
-					y3 += Canvas2D.width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				while (--y2 >= 0) {
-					drawMaterializedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x1 >> 16, hsl2 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6, z3, depth_slope);
-					x2 += k7;
-					x1 += i7;
-					z3 += depth_increment;
-					hsl2 += l7;
-					hsl1 += j7;
-					y3 += Canvas2D.width;
-					l4 += j5;
-					k5 += i6;
-					j6 += l6;
-				}
-				return;
-			}
-			y2 -= y1;
-			y1 -= y3;
-			y3 = lineOffsets[y3];
-			while (--y1 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6, z3, depth_slope);
-				x2 += k7;
-				x3 += i8;
-				z3 += depth_increment;
-				hsl2 += l7;
-				hsl3 += j8;
-				y3 += Canvas2D.width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			while (--y2 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x1 >> 16, x2 >> 16, hsl1 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6, z3, depth_slope);
-				x2 += k7;
-				x1 += i7;
-				z3 += depth_increment;
-				hsl2 += l7;
-				hsl1 += j7;
-				y3 += Canvas2D.width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			return;
-		}
-		x1 = x3 <<= 16;
-		hsl1 = hsl3 <<= 15;
-		if (y3 < 0) {
-			x1 -= k7 * y3;
-			x3 -= i8 * y3;
-			z3 -= depth_increment * y3;
-			hsl1 -= l7 * y3;
-			hsl3 -= j8 * y3;
-			y3 = 0;
-		}
-		x2 <<= 16;
-		hsl2 <<= 15;
-		if (y2 < 0) {
-			x2 -= i7 * y2;
-			hsl2 -= j7 * y2;
-			y2 = 0;
-		}
-		int l9 = y3 - centerY;
-		l4 += j5 * l9;
-		k5 += i6 * l9;
-		j6 += l6 * l9;
-		if (k7 < i8) {
-			y1 -= y2;
-			y2 -= y3;
-			y3 = lineOffsets[y3];
-			while (--y2 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x1 >> 16, x3 >> 16, hsl1 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6, z3, depth_slope);
-				x1 += k7;
-				x3 += i8;
-				z3 += depth_increment;
-				hsl1 += l7;
-				hsl3 += j8;
-				y3 += Canvas2D.width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			while (--y1 >= 0) {
-				drawMaterializedScanline(Canvas2D.pixels, ai, y3, x2 >> 16, x3 >> 16, hsl2 >> 7, hsl3 >> 7, l4, k5, j6, i5, l5, k6, z3, depth_slope);
-				x2 += i7;
-				x3 += i8;
-				z3 += depth_increment;
-				hsl2 += j7;
-				hsl3 += j8;
-				y3 += Canvas2D.width;
-				l4 += j5;
-				k5 += i6;
-				j6 += l6;
-			}
-			return;
-		}
-		y1 -= y2;
-		y2 -= y3;
-		y3 = lineOffsets[y3];
-		while (--y2 >= 0) {
-			drawMaterializedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x1 >> 16, hsl3 >> 7, hsl1 >> 7, l4, k5, j6, i5, l5, k6, z3, depth_slope);
-			x1 += k7;
-			x3 += i8;
-			z3 += depth_increment;
-			hsl1 += l7;
-			hsl3 += j8;
-			y3 += Canvas2D.width;
-			l4 += j5;
-			k5 += i6;
-			j6 += l6;
-		}
-		while (--y1 >= 0) {
-			drawMaterializedScanline(Canvas2D.pixels, ai, y3, x3 >> 16, x2 >> 16, hsl3 >> 7, hsl2 >> 7, l4, k5, j6, i5, l5, k6, z3, depth_slope);
-			x2 += i7;
-			x3 += i8;
-			z3 += depth_increment;
-			hsl2 += j7;
-			hsl3 += j8;
-			y3 += Canvas2D.width;
-			l4 += j5;
-			k5 += i6;
-			j6 += l6;
 		}
 	}
 
-	private static void drawMaterializedScanline(int dst[], int src[], int off, int x1, int x2, int hsl1, int hsl2, int l1, int i2, int j2, int k2, int l2, int i3, float depth, float depth_slope) {
-		int i = 0;
-		int j = 0;
-		if (x1 >= x2) {
+	private static final void drawMaterializedScanline(int[] dest, int[] texels, int offset, int x1, int x2, int hsl1, int hsl2, int tex1, int tex2, int t1, int t2, int t3, int t4, int t5, int t6, float z1, float z2) {
+		if(x2 <= x1) {
 			return;
 		}
-		int k3;
-		hsl2 = (hsl2 - hsl1) / (x2 - x1);
+		int texPos = 0;
+		int rgb = 0;
+		z2 = (z2 - z1) / (x2 - x1);
 		if (restrict_edges) {
 			if (x2 > Canvas2D.centerX) {
 				x2 = Canvas2D.centerX;
 			}
 			if (x1 < 0) {
-				hsl1 -= x1 * hsl2;
+				z1 -= x1 * z2;
 				x1 = 0;
 			}
 			if (x1 >= x2) {
 				return;
 			}
-			k3 = x2 - x1 >> 3;
-		} else {
-			if (x2 - x1 > 7) {
-				k3 = x2 - x1 >> 3;
+		}
+		if(x1 < x2) {
+			offset += x1;
+			tex1 += tex2 * x1;
+			int n = x2 - x1 >> 2;
+			int dhsl = 0;
+			if(n > 0) {
+				dhsl = (hsl2 - hsl1) * anIntArray1468[n] >> 15;
+			}
+			int dist = x1 - centerX;
+			t1 += (t4 >> 3) * dist;
+			t2 += (t5 >> 3) * dist;
+			t3 += (t6 >> 3) * dist;
+			int i_57_ = t3 >> 14;
+			int i_58_;
+			int i_59_;
+			if(i_57_ != 0) {
+				i_58_ = t1 / i_57_;
+				i_59_ = t2 / i_57_;
 			} else {
-				k3 = 0;
+				i_58_ = 0;
+				i_59_ = 0;
+			}
+			t1 += t4;
+			t2 += t5;
+			t3 += t6;
+			i_57_ = t3 >> 14;
+			int i_60_;
+			int i_61_;
+			if(i_57_ != 0) {
+				i_60_ = t1 / i_57_;
+				i_61_ = t2 / i_57_;
+			} else {
+				i_60_ = 0;
+				i_61_ = 0;
+			}
+			texPos = (i_58_ << 18) + i_59_;
+			int dtexPos = (i_60_ - i_58_ >> 3 << 18) + (i_61_ - i_59_ >> 3);
+			n >>= 1;
+			tex2 <<= 3;
+			int light;
+			if(n > 0) {
+				do {
+					hsl1 += dhsl;
+					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
+					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
+					if (light > 127) {
+						light = 127;
+					}
+					texPos += dtexPos;
+					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
+					if(!saveDepth) {
+						depthBuffer[offset] = z1;
+					}
+					z1 += z2;
+					offset++;
+					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
+					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
+					if (light > 127) {
+						light = 127;
+					}
+					texPos += dtexPos;
+					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
+					if(!saveDepth) {
+						depthBuffer[offset] = z1;
+					}
+					z1 += z2;
+					offset++;
+					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
+					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
+					if (light > 127) {
+						light = 127;
+					}
+					texPos += dtexPos;
+					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
+					if(!saveDepth) {
+						depthBuffer[offset] = z1;
+					}
+					z1 += z2;
+					offset++;
+					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
+					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
+					if (light > 127) {
+						light = 127;
+					}
+					texPos += dtexPos;
+					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
+					if(!saveDepth) {
+						depthBuffer[offset] = z1;
+					}
+					z1 += z2;
+					offset++;
+					hsl1 += dhsl;
+					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
+					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
+					if (light > 127) {
+						light = 127;
+					}
+					texPos += dtexPos;
+					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
+					if(!saveDepth) {
+						depthBuffer[offset] = z1;
+					}
+					z1 += z2;
+					offset++;
+					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
+					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
+					if (light > 127) {
+						light = 127;
+					}
+					texPos += dtexPos;
+					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
+					if(!saveDepth) {
+						depthBuffer[offset] = z1;
+					}
+					z1 += z2;
+					offset++;
+					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
+					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
+					if (light > 127) {
+						light = 127;
+					}
+					texPos += dtexPos;
+					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
+					if(!saveDepth) {
+						depthBuffer[offset] = z1;
+					}
+					z1 += z2;
+					offset++;
+					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
+					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
+					if (light > 127) {
+						light = 127;
+					}
+					texPos += dtexPos;
+					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
+					if(!saveDepth) {
+						depthBuffer[offset] = z1;
+					}
+					z1 += z2;
+					offset++;
+					i_58_ = i_60_;
+					i_59_ = i_61_;
+					t1 += t4;
+					t2 += t5;
+					t3 += t6;
+					i_57_ = t3 >> 14;
+					if(i_57_ != 0) {
+						i_60_ = t1 / i_57_;
+						i_61_ = t2 / i_57_;
+					} else {
+						i_60_ = 0;
+						i_61_ = 0;
+					}
+					texPos = (i_58_ << 18) + i_59_;
+					dtexPos = (i_60_ - i_58_ >> 3 << 18) + (i_61_ - i_59_ >> 3);
+					tex1 += tex2;
+				} while(--n > 0);
+			}
+			n = x2 - x1 & 7;
+			if(n > 0) {
+				do {
+					if((n & 3) == 0) {
+						hsl1 += dhsl;
+					}
+					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
+					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
+					if (light > 127) {
+						light = 127;
+					}
+					texPos += dtexPos;
+					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
+					if(!saveDepth) {
+						depthBuffer[offset] = z1;
+					}
+					z1 += z2;
+					offset++;
+				} while(--n > 0);
 			}
 		}
-		off += x1;
-		depth += depth_slope * (float) x1;
-		int j4 = 0;
-		int l4 = 0;
-		int l6 = x1 - centerX;
-		l1 += (k2 >> 3) * l6;
-		i2 += (l2 >> 3) * l6;
-		j2 += (i3 >> 3) * l6;
-		int l5 = j2 >> 14;
-		if (l5 != 0) {
-			i = l1 / l5;
-			j = i2 / l5;
-			if (i < 0) {
-				i = 0;
-			} else if (i > 16256) {
-				i = 16256;
-			}
-		}
-		l1 += k2;
-		i2 += l2;
-		j2 += i3;
-		l5 = j2 >> 14;
-		if (l5 != 0) {
-			j4 = l1 / l5;
-			l4 = i2 / l5;
-			if (j4 < 7) {
-				j4 = 7;
-			} else if (j4 > 16256) {
-				j4 = 16256;
-			}
-		}
-		int j7 = j4 - i >> 3;
-		int l7 = l4 - j >> 3;
-		int rgb1, rgb2;
-		while (k3-- > 0) {
-			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			if (true) {
-				dst[off] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
-				Canvas2D.depthBuffer[off] = depth;
-			}
-			off++;
-			depth += depth_slope;
-			i += j7;
-			j += l7;
-			hsl1 += hsl2;
-			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			if (true) {
-				dst[off] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
-				Canvas2D.depthBuffer[off] = depth;
-			}
-			off++;
-			depth += depth_slope;
-			i += j7;
-			j += l7;
-			hsl1 += hsl2;
-			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			if (true) {
-				dst[off] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
-				Canvas2D.depthBuffer[off] = depth;
-			}
-			off++;
-			depth += depth_slope;
-			i += j7;
-			j += l7;
-			hsl1 += hsl2;
-			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			if (true) {
-				dst[off] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
-				Canvas2D.depthBuffer[off] = depth;
-			}
-			off++;
-			depth += depth_slope;
-			i += j7;
-			j += l7;
-			hsl1 += hsl2;
-			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			if (true) {
-				dst[off] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
-				Canvas2D.depthBuffer[off] = depth;
-			}
-			off++;
-			depth += depth_slope;
-			i += j7;
-			j += l7;
-			hsl1 += hsl2;
-			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			if (true) {
-				dst[off] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
-				Canvas2D.depthBuffer[off] = depth;
-			}
-			off++;
-			depth += depth_slope;
-			i += j7;
-			j += l7;
-			hsl1 += hsl2;
-			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			if (true) {
-				dst[off] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
-				Canvas2D.depthBuffer[off] = depth;
-			}
-			off++;
-			depth += depth_slope;
-			i += j7;
-			j += l7;
-			hsl1 += hsl2;
-			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			if (true) {
-				dst[off] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
-				Canvas2D.depthBuffer[off] = depth;
-			}
-			off++;
-			depth += depth_slope;
-			i = j4;
-			j = l4;
-			hsl1 += hsl2;
-			l1 += k2;
-			i2 += l2;
-			j2 += i3;
-			int i6 = j2 >> 14;
-			if (i6 != 0) {
-				j4 = l1 / i6;
-				l4 = i2 / i6;
-				if (j4 < 7) {
-					j4 = 7;
-				} else if (j4 > 16256) {
-					j4 = 16256;
-				}
-			}
-			j7 = j4 - i >> 3;
-			l7 = l4 - j >> 3;
-		}
-		for (k3 = x2 - x1 & 7; k3-- > 0;) {
-			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
-			if (true) {
-				dst[off] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
-				Canvas2D.depthBuffer[off] = depth;
-			}
-			off++;
-			depth += depth_slope;
-			i += j7;
-			j += l7;
-			hsl1 += hsl2;
-		}		
 	}
 
 	public static void method374(int y1, int y2, int y3, int x1, int x2, int x3, int hsl1, int hsl2, int hsl3, float z1, float z2, float z3) {
@@ -1126,32 +1196,32 @@ public final class Canvas3D extends Canvas2D {
 		int r3 = rgb3 >> 16 & 0xff;
 		int g3 = rgb3 >> 8 & 0xff;
 		int b3 = rgb3 & 0xff;
-		int a_to_b = 0;
+		int dx1 = 0;
 		int dr1 = 0;
 		int dg1 = 0;
 		int db1 = 0;
 		if (y2 != y1) {
-			a_to_b = (x2 - x1 << 16) / (y2 - y1);
+			dx1 = (x2 - x1 << 16) / (y2 - y1);
 			dr1 = (r2 - r1 << 16) / (y2 - y1);
 			dg1 = (g2 - g1 << 16) / (y2 - y1);
 			db1 = (b2 - b1 << 16) / (y2 - y1);
 		}
-		int b_to_c = 0;
+		int dx2 = 0;
 		int dr2 = 0;
 		int dg2 = 0;
 		int db2 = 0;
 		if (y3 != y2) {
-			b_to_c = (x3 - x2 << 16) / (y3 - y2);
+			dx2 = (x3 - x2 << 16) / (y3 - y2);
 			dr2 = (r3 - r2 << 16) / (y3 - y2);
 			dg2 = (g3 - g2 << 16) / (y3 - y2);
 			db2 = (b3 - b2 << 16) / (y3 - y2);
 		}
-		int c_to_a = 0;
+		int dx3 = 0;
 		int dr3 = 0;
 		int dg3 = 0;
 		int db3 = 0;
 		if (y3 != y1) {
-			c_to_a = (x1 - x3 << 16) / (y1 - y3);
+			dx3 = (x1 - x3 << 16) / (y1 - y3);
 			dr3 = (r1 - r3 << 16) / (y1 - y3);
 			dg3 = (g1 - g3 << 16) / (y1 - y3);
 			db3 = (b1 - b3 << 16) / (y1 - y3);
@@ -1183,8 +1253,8 @@ public final class Canvas3D extends Canvas2D {
 				g3 = g1 <<= 16;
 				b3 = b1 <<= 16;
 				if (y1 < 0) {
-					x3 -= c_to_a * y1;
-					x1 -= a_to_b * y1;
+					x3 -= dx3 * y1;
+					x1 -= dx1 * y1;
 					r3 -= dr3 * y1;
 					g3 -= dg3 * y1;
 					b3 -= db3 * y1;
@@ -1199,19 +1269,19 @@ public final class Canvas3D extends Canvas2D {
 				g2 <<= 16;
 				b2 <<= 16;
 				if (y2 < 0) {
-					x2 -= b_to_c * y2;
+					x2 -= dx2 * y2;
 					r2 -= dr2 * y2;
 					g2 -= dg2 * y2;
 					b2 -= db2 * y2;
 					y2 = 0;
 				}
-				if (y1 != y2 && c_to_a < a_to_b || y1 == y2 && c_to_a > b_to_c) {
+				if (y1 != y2 && dx3 < dx1 || y1 == y2 && dx3 > dx2) {
 					y3 -= y2;
 					y2 -= y1;
 					for (y1 = lineOffsets[y1]; --y2 >= 0; y1 += Canvas2D.width) {
 						method375(Canvas2D.pixels, y1, x3 >> 16, x1 >> 16, r3, g3, b3, r1, g1, b1, z1, depth_slope);
-						x3 += c_to_a;
-						x1 += a_to_b;
+						x3 += dx3;
+						x1 += dx1;
 						r3 += dr3;
 						g3 += dg3;
 						b3 += db3;
@@ -1222,8 +1292,8 @@ public final class Canvas3D extends Canvas2D {
 					}
 					while (--y3 >= 0) {
 						method375(Canvas2D.pixels, y1, x3 >> 16, x2 >> 16, r3, g3, b3, r2, g2, b2, z1, depth_slope);
-						x3 += c_to_a;
-						x2 += b_to_c;
+						x3 += dx3;
+						x2 += dx2;
 						r3 += dr3;
 						g3 += dg3;
 						b3 += db3;
@@ -1239,8 +1309,8 @@ public final class Canvas3D extends Canvas2D {
 				y2 -= y1;
 				for (y1 = lineOffsets[y1]; --y2 >= 0; y1 += Canvas2D.width) {
 					method375(Canvas2D.pixels, y1, x1 >> 16, x3 >> 16, r1, g1, b1, r3, g3, b3, z1, depth_slope);
-					x3 += c_to_a;
-					x1 += a_to_b;
+					x3 += dx3;
+					x1 += dx1;
 					r3 += dr3;
 					g3 += dg3;
 					b3 += db3;
@@ -1251,8 +1321,8 @@ public final class Canvas3D extends Canvas2D {
 				}
 				while (--y3 >= 0) {
 					method375(Canvas2D.pixels, y1, x2 >> 16, x3 >> 16, r2, g2, b2, r3, g3, b3, z1, depth_slope);
-					x3 += c_to_a;
-					x2 += b_to_c;
+					x3 += dx3;
+					x2 += dx2;
 					r3 += dr3;
 					g3 += dg3;
 					b3 += db3;
@@ -1269,8 +1339,8 @@ public final class Canvas3D extends Canvas2D {
 			g2 = g1 <<= 16;
 			b2 = b1 <<= 16;
 			if (y1 < 0) {
-				x2 -= c_to_a * y1;
-				x1 -= a_to_b * y1;
+				x2 -= dx3 * y1;
+				x1 -= dx1 * y1;
 				r2 -= dr3 * y1;
 				g2 -= dg3 * y1;
 				b2 -= db3 * y1;
@@ -1285,19 +1355,19 @@ public final class Canvas3D extends Canvas2D {
 			g3 <<= 16;
 			b3 <<= 16;
 			if (y3 < 0) {
-				x3 -= b_to_c * y3;
+				x3 -= dx2 * y3;
 				r3 -= dr2 * y3;
 				g3 -= dg2 * y3;
 				b3 -= db2 * y3;
 				y3 = 0;
 			}
-			if (y1 != y3 && c_to_a < a_to_b || y1 == y3 && b_to_c > a_to_b) {
+			if (y1 != y3 && dx3 < dx1 || y1 == y3 && dx2 > dx1) {
 				y2 -= y3;
 				y3 -= y1;
 				for (y1 = lineOffsets[y1]; --y3 >= 0; y1 += Canvas2D.width) {
 					method375(Canvas2D.pixels, y1, x2 >> 16, x1 >> 16, r2, g2, b2, r1, g1, b1, z1, depth_slope);
-					x2 += c_to_a;
-					x1 += a_to_b;
+					x2 += dx3;
+					x1 += dx1;
 					r2 += dr3;
 					g2 += dg3;
 					b2 += db3;
@@ -1308,8 +1378,8 @@ public final class Canvas3D extends Canvas2D {
 				}
 				while (--y2 >= 0) {
 					method375(Canvas2D.pixels, y1, x3 >> 16, x1 >> 16, r3, g3, b3, r1, g1, b1, z1, depth_slope);
-					x3 += b_to_c;
-					x1 += a_to_b;
+					x3 += dx2;
+					x1 += dx1;
 					r3 += dr2;
 					g3 += dg2;
 					b3 += db2;
@@ -1325,8 +1395,8 @@ public final class Canvas3D extends Canvas2D {
 			y3 -= y1;
 			for (y1 = lineOffsets[y1]; --y3 >= 0; y1 += Canvas2D.width) {
 				method375(Canvas2D.pixels, y1, x1 >> 16, x2 >> 16, r1, g1, b1, r2, g2, b2, z1, depth_slope);
-				x2 += c_to_a;
-				x1 += a_to_b;
+				x2 += dx3;
+				x1 += dx1;
 				r2 += dr3;
 				g2 += dg3;
 				b2 += db3;
@@ -1337,8 +1407,8 @@ public final class Canvas3D extends Canvas2D {
 			}
 			while (--y2 >= 0) {
 				method375(Canvas2D.pixels, y1, x1 >> 16, x3 >> 16, r1, g1, b1, r3, g3, b3, z1, depth_slope);
-				x3 += b_to_c;
-				x1 += a_to_b;
+				x3 += dx2;
+				x1 += dx1;
 				r3 += dr2;
 				g3 += dg2;
 				b3 += db2;
@@ -1367,8 +1437,8 @@ public final class Canvas3D extends Canvas2D {
 				g1 = g2 <<= 16;
 				b1 = b2 <<= 16;
 				if (y2 < 0) {
-					x1 -= a_to_b * y2;
-					x2 -= b_to_c * y2;
+					x1 -= dx1 * y2;
+					x2 -= dx2 * y2;
 					r1 -= dr1 * y2;
 					g1 -= dg1 * y2;
 					b1 -= db1 * y2;
@@ -1383,19 +1453,19 @@ public final class Canvas3D extends Canvas2D {
 				g3 <<= 16;
 				b3 <<= 16;
 				if (y3 < 0) {
-					x3 -= c_to_a * y3;
+					x3 -= dx3 * y3;
 					r3 -= dr3 * y3;
 					g3 -= dg3 * y3;
 					b3 -= db3 * y3;
 					y3 = 0;
 				}
-				if (y2 != y3 && a_to_b < b_to_c || y2 == y3 && a_to_b > c_to_a) {
+				if (y2 != y3 && dx1 < dx2 || y2 == y3 && dx1 > dx3) {
 					y1 -= y3;
 					y3 -= y2;
 					for (y2 = lineOffsets[y2]; --y3 >= 0; y2 += Canvas2D.width) {
 						method375(Canvas2D.pixels, y2, x1 >> 16, x2 >> 16, r1, g1, b1, r2, g2, b2, z2, depth_slope);
-						x1 += a_to_b;
-						x2 += b_to_c;
+						x1 += dx1;
+						x2 += dx2;
 						r1 += dr1;
 						g1 += dg1;
 						b1 += db1;
@@ -1406,8 +1476,8 @@ public final class Canvas3D extends Canvas2D {
 					}
 					while (--y1 >= 0) {
 						method375(Canvas2D.pixels, y2, x1 >> 16, x3 >> 16, r1, g1, b1, r3, g3, b3, z2, depth_slope);
-						x1 += a_to_b;
-						x3 += c_to_a;
+						x1 += dx1;
+						x3 += dx3;
 						r1 += dr1;
 						g1 += dg1;
 						b1 += db1;
@@ -1423,8 +1493,8 @@ public final class Canvas3D extends Canvas2D {
 				y3 -= y2;
 				for (y2 = lineOffsets[y2]; --y3 >= 0; y2 += Canvas2D.width) {
 					method375(Canvas2D.pixels, y2, x2 >> 16, x1 >> 16, r2, g2, b2, r1, g1, b1, z2, depth_slope);
-					x1 += a_to_b;
-					x2 += b_to_c;
+					x1 += dx1;
+					x2 += dx2;
 					r1 += dr1;
 					g1 += dg1;
 					b1 += db1;
@@ -1435,8 +1505,8 @@ public final class Canvas3D extends Canvas2D {
 				}
 				while (--y1 >= 0) {
 					method375(Canvas2D.pixels, y2, x3 >> 16, x1 >> 16, r3, g3, b3, r1, g1, b1, z2, depth_slope);
-					x1 += a_to_b;
-					x3 += c_to_a;
+					x1 += dx1;
+					x3 += dx3;
 					r1 += dr1;
 					g1 += dg1;
 					b1 += db1;
@@ -1453,8 +1523,8 @@ public final class Canvas3D extends Canvas2D {
 			g3 = g2 <<= 16;
 			b3 = b2 <<= 16;
 			if (y2 < 0) {
-				x3 -= a_to_b * y2;
-				x2 -= b_to_c * y2;
+				x3 -= dx1 * y2;
+				x2 -= dx2 * y2;
 				r3 -= dr1 * y2;
 				g3 -= dg1 * y2;
 				b3 -= db1 * y2;
@@ -1469,19 +1539,19 @@ public final class Canvas3D extends Canvas2D {
 			g1 <<= 16;
 			b1 <<= 16;
 			if (y1 < 0) {
-				x1 -= c_to_a * y1;
+				x1 -= dx3 * y1;
 				r1 -= dr3 * y1;
 				g1 -= dg3 * y1;
 				b1 -= db3 * y1;
 				y1 = 0;
 			}
-			if (a_to_b < b_to_c) {
+			if (dx1 < dx2) {
 				y3 -= y1;
 				y1 -= y2;
 				for (y2 = lineOffsets[y2]; --y1 >= 0; y2 += Canvas2D.width) {
 					method375(Canvas2D.pixels, y2, x3 >> 16, x2 >> 16, r3, g3, b3, r2, g2, b2, z2, depth_slope);
-					x3 += a_to_b;
-					x2 += b_to_c;
+					x3 += dx1;
+					x2 += dx2;
 					r3 += dr1;
 					g3 += dg1;
 					b3 += db1;
@@ -1492,8 +1562,8 @@ public final class Canvas3D extends Canvas2D {
 				}
 				while (--y3 >= 0) {
 					method375(Canvas2D.pixels, y2, x1 >> 16, x2 >> 16, r1, g1, b1, r2, g2, b2, z2, depth_slope);
-					x1 += c_to_a;
-					x2 += b_to_c;
+					x1 += dx3;
+					x2 += dx2;
 					r1 += dr3;
 					g1 += dg3;
 					b1 += db3;
@@ -1509,8 +1579,8 @@ public final class Canvas3D extends Canvas2D {
 			y1 -= y2;
 			for (y2 = lineOffsets[y2]; --y1 >= 0; y2 += Canvas2D.width) {
 				method375(Canvas2D.pixels, y2, x2 >> 16, x3 >> 16, r2, g2, b2, r3, g3, b3, z2, depth_slope);
-				x3 += a_to_b;
-				x2 += b_to_c;
+				x3 += dx1;
+				x2 += dx2;
 				r3 += dr1;
 				g3 += dg1;
 				b3 += db1;
@@ -1521,8 +1591,8 @@ public final class Canvas3D extends Canvas2D {
 			}
 			while (--y3 >= 0) {
 				method375(Canvas2D.pixels, y2, x2 >> 16, x1 >> 16, r2, g2, b2, r1, g1, b1, z2, depth_slope);
-				x1 += c_to_a;
-				x2 += b_to_c;
+				x1 += dx3;
+				x2 += dx2;
 				r1 += dr3;
 				g1 += dg3;
 				b1 += db3;
@@ -1550,8 +1620,8 @@ public final class Canvas3D extends Canvas2D {
 			g2 = g3 <<= 16;
 			b2 = b3 <<= 16;
 			if (y3 < 0) {
-				x2 -= b_to_c * y3;
-				x3 -= c_to_a * y3;
+				x2 -= dx2 * y3;
+				x3 -= dx3 * y3;
 				r2 -= dr2 * y3;
 				g2 -= dg2 * y3;
 				b2 -= db2 * y3;
@@ -1566,19 +1636,19 @@ public final class Canvas3D extends Canvas2D {
 			g1 <<= 16;
 			b1 <<= 16;
 			if (y1 < 0) {
-				x1 -= a_to_b * y1;
+				x1 -= dx1 * y1;
 				r1 -= dr1 * y1;
 				g1 -= dg1 * y1;
 				b1 -= db1 * y1;
 				y1 = 0;
 			}
-			if (b_to_c < c_to_a) {
+			if (dx2 < dx3) {
 				y2 -= y1;
 				y1 -= y3;
 				for (y3 = lineOffsets[y3]; --y1 >= 0; y3 += Canvas2D.width) {
 					method375(Canvas2D.pixels, y3, x2 >> 16, x3 >> 16, r2, g2, b2, r3, g3, b3, z3, depth_slope);
-					x2 += b_to_c;
-					x3 += c_to_a;
+					x2 += dx2;
+					x3 += dx3;
 					r2 += dr2;
 					g2 += dg2;
 					b2 += db2;
@@ -1589,8 +1659,8 @@ public final class Canvas3D extends Canvas2D {
 				}
 				while (--y2 >= 0) {
 					method375(Canvas2D.pixels, y3, x2 >> 16, x1 >> 16, r2, g2, b2, r1, g1, b1, z3, depth_slope);
-					x2 += b_to_c;
-					x1 += a_to_b;
+					x2 += dx2;
+					x1 += dx1;
 					r2 += dr2;
 					g2 += dg2;
 					b2 += db2;
@@ -1606,8 +1676,8 @@ public final class Canvas3D extends Canvas2D {
 			y1 -= y3;
 			for (y3 = lineOffsets[y3]; --y1 >= 0; y3 += Canvas2D.width) {
 				method375(Canvas2D.pixels, y3, x3 >> 16, x2 >> 16, r3, g3, b3, r2, g2, b2, z3, depth_slope);
-				x2 += b_to_c;
-				x3 += c_to_a;
+				x2 += dx2;
+				x3 += dx3;
 				r2 += dr2;
 				g2 += dg2;
 				b2 += db2;
@@ -1618,8 +1688,8 @@ public final class Canvas3D extends Canvas2D {
 			}
 			while (--y2 >= 0) {
 				method375(Canvas2D.pixels, y3, x1 >> 16, x2 >> 16, r1, g1, b1, r2, g2, b2, z3, depth_slope);
-				x2 += b_to_c;
-				x1 += a_to_b;
+				x2 += dx2;
+				x1 += dx1;
 				r2 += dr2;
 				g2 += dg2;
 				b2 += db2;
@@ -1636,8 +1706,8 @@ public final class Canvas3D extends Canvas2D {
 		g1 = g3 <<= 16;
 		b1 = b3 <<= 16;
 		if (y3 < 0) {
-			x1 -= b_to_c * y3;
-			x3 -= c_to_a * y3;
+			x1 -= dx2 * y3;
+			x3 -= dx3 * y3;
 			r1 -= dr2 * y3;
 			g1 -= dg2 * y3;
 			b1 -= db2 * y3;
@@ -1652,19 +1722,19 @@ public final class Canvas3D extends Canvas2D {
 		g2 <<= 16;
 		b2 <<= 16;
 		if (y2 < 0) {
-			x2 -= a_to_b * y2;
+			x2 -= dx1 * y2;
 			r2 -= dr1 * y2;
 			g2 -= dg1 * y2;
 			b2 -= db1 * y2;
 			y2 = 0;
 		}
-		if (b_to_c < c_to_a) {
+		if (dx2 < dx3) {
 			y1 -= y2;
 			y2 -= y3;
 			for (y3 = lineOffsets[y3]; --y2 >= 0; y3 += Canvas2D.width) {
 				method375(Canvas2D.pixels, y3, x1 >> 16, x3 >> 16, r1, g1, b1, r3, g3, b3, z3, depth_slope);
-				x1 += b_to_c;
-				x3 += c_to_a;
+				x1 += dx2;
+				x3 += dx3;
 				r1 += dr2;
 				g1 += dg2;
 				b1 += db2;
@@ -1675,8 +1745,8 @@ public final class Canvas3D extends Canvas2D {
 			}
 			while (--y1 >= 0) {
 				method375(Canvas2D.pixels, y3, x2 >> 16, x3 >> 16, r2, g2, b2, r3, g3, b3, z3, depth_slope);
-				x2 += a_to_b;
-				x3 += c_to_a;
+				x2 += dx1;
+				x3 += dx3;
 				r2 += dr1;
 				g2 += dg1;
 				b2 += db1;
@@ -1692,8 +1762,8 @@ public final class Canvas3D extends Canvas2D {
 		y2 -= y3;
 		for (y3 = lineOffsets[y3]; --y2 >= 0; y3 += Canvas2D.width) {
 			method375(Canvas2D.pixels, y3, x3 >> 16, x1 >> 16, r3, g3, b3, r1, g1, b1, z3, depth_slope);
-			x1 += b_to_c;
-			x3 += c_to_a;
+			x1 += dx2;
+			x3 += dx3;
 			r1 += dr2;
 			g1 += dg2;
 			b1 += db2;
@@ -1704,8 +1774,8 @@ public final class Canvas3D extends Canvas2D {
 		}
 		while (--y1 >= 0) {
 			method375(Canvas2D.pixels, y3, x3 >> 16, x2 >> 16, r3, g3, b3, r2, g2, b2, z3, depth_slope);
-			x2 += a_to_b;
-			x3 += c_to_a;
+			x2 += dx1;
+			x3 += dx3;
 			r2 += dr1;
 			g2 += dg1;
 			b2 += db1;
@@ -5088,6 +5158,7 @@ public final class Canvas3D extends Canvas2D {
 	public static int anIntArray1482[] = new int[0x10000];
 	private static int[][] anIntArrayArray1483 = new int[textureAmount][];
 	public static boolean mipmapping = true;
+	public static boolean saveDepth = false;
 
 	public static final int FOREGROUND = 0xc8c0a8;
 	public static final int FOG_COLOR_A = 0xc800a8;

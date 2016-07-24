@@ -180,6 +180,7 @@ public final class ObjectDefinition {
 			case 2981:
 			case 2988:
 			case 2987:
+			case 2980:
 				definition.description = "A posy of beautiful flowers".getBytes();
 				break;
 		case 398:

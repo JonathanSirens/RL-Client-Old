@@ -84,15 +84,21 @@ public class MapArea extends GameFrame {
 				CacheSpriteLoader.getCacheSprite(orbActive ? type.getSpriteIDs()[1] : type.getSpriteIDs()[0])
 						.drawSprite(xPos + (screenMode == ScreenMode.FIXED ? 3 : 27), yPos + 3);
 			}
-			double percent = level / 100D;
+			double percent = currentValue / 100D;
 			fillOrb = 27 * percent;
 			int depleteFill = 27 - (int) fillOrb;
 			CacheSpriteLoader.getCacheSprite(327).myHeight = depleteFill;
 			CacheSpriteLoader.getCacheSprite(327).drawSprite(xPos + (screenMode == ScreenMode.FIXED ? 3 : 27),
 					yPos + 3);
-			CacheSpriteLoader.getCacheSprite(type.getSpriteIDs()[type == OrbType.RUN ? orbActive ? 3 : 2 : 2])
-					.drawSprite(xPos + (screenMode == ScreenMode.FIXED ? 9 : 33) + type.getOffSets()[0],
-							yPos + 9 + type.getOffSets()[1]);
+			if (percent <= .25) {
+				CacheSpriteLoader.getCacheSprite(type.getSpriteIDs()[type == OrbType.RUN ? orbActive ? 3 : 2 : 2])
+						.drawSprite1(xPos + (screenMode == ScreenMode.FIXED ? 9 : 33) + type.getOffSets()[0],
+								yPos + 9 + type.getOffSets()[1], 200 + (int) (50 * Math.sin(Client.loopCycle / 7.0)));
+			} else {
+				CacheSpriteLoader.getCacheSprite(type.getSpriteIDs()[type == OrbType.RUN ? orbActive ? 3 : 2 : 2])
+						.drawSprite(xPos + (screenMode == ScreenMode.FIXED ? 9 : 33) + type.getOffSets()[0],
+								yPos + 9 + type.getOffSets()[1]);
+			}
 		}
 
 		public int getDrawX() {
@@ -253,10 +259,12 @@ public class MapArea extends GameFrame {
 			amount = Integer.MAX_VALUE;
 		}
 		value = "" + client.methodR((int) amount);
-		if (amount <= 999999) {
-			color = 0xffffff;
+		if (amount >= 0 && amount <= 99999) {
+			color = 0xFFFF00;
+		} else if (amount >= 100000 && amount <= 9999999) {
+			color = 0xFFFFFF;
 		} else {
-			color = 65280;
+			color = 0x00FF80;
 		}
 		if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(559), x, fixed ? 82 : 43 + y)
 				|| client.inSprite(false, CacheSpriteLoader.getCacheSprite(566),
@@ -268,8 +276,7 @@ public class MapArea extends GameFrame {
 		}
 		x -= 6;
 		value = "" + client.getMoneyInPouch() + "";
-		client.newRegularFont.drawBasicString("" + client.getMoneyInPouch(),
-				x + 55 - (value != null ? value.length() * 6 : 0), (fixed ? 100 : 60) + y, color, 0);
+		client.newRegularFont.drawCenteredString("" + client.getMoneyInPouch(), (fixed ? 484 : x + 45), (fixed ? 101 : 59) + y, color, 0);
 	}
 
 	public void displayXPCounter(Client client) {
@@ -283,7 +290,7 @@ public class MapArea extends GameFrame {
 		client.normalText.drawRegularText(true, x + 3, 0xffffff, "XP:", (fixed ? 63 : 61) + y);
 		String str = df.format(PlayerHandler.totalXP);
 		int width = client.normalText.getTextWidth(str);
-		if (PlayerHandler.totalXP >= 0 && PlayerHandler.totalXP < 1000000000) {
+		if (PlayerHandler.totalXP >= 0 && PlayerHandler.totalXP < 1_000_000_000) {
 			client.normalText.drawRegularText(true, x + 99 - width, 0xffffff, str, (fixed ? 63 : 61) + y);
 		} else {
 			client.normalText.drawRegularText(true, x + 99 - client.normalText.getTextWidth("Lots!"), 0xFF0000, "Lots!",

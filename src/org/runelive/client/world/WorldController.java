@@ -1201,6 +1201,7 @@ public final class WorldController {
 
 	public void method313(int i, int j, int k, int l, int i1, int j1, boolean fog) {
 		WorldController.fog = fog;
+		Model.fog = fog;
 		if (i < 0) {
 			i = 0;
 		} else if (i >= anInt438 * 128) {
@@ -1305,6 +1306,7 @@ public final class WorldController {
 						}
 						if (anInt446 == 0) {
 							aBoolean467 = false;
+							Canvas3D.saveDepth = false;
 							return;
 						}
 					}
@@ -1353,6 +1355,7 @@ public final class WorldController {
 						}
 						if (anInt446 == 0) {
 							aBoolean467 = false;
+							Canvas3D.saveDepth = false;
 							return;
 						}
 					}
@@ -1363,6 +1366,7 @@ public final class WorldController {
 		}
 
 		aBoolean467 = false;
+		Canvas3D.saveDepth = false;
 	}
 
 	private void method314(Ground class30_sub3, boolean flag) {
@@ -2046,8 +2050,7 @@ public final class WorldController {
 					Canvas3D.method374(l4, i5, j5, i4, j4, k4, method317(k5, class40.anIntArray676[j2]), method317(k5, class40.anIntArray677[j2]), method317(k5, class40.anIntArray678[j2]), Class40.depthPoint[l2], Class40.depthPoint[j3], Class40.depthPoint[l3]);
 				}
 				if (fog) {
-					Canvas3D.drawFogTriangle(l4, i5, j5, i4, j4, k4, Class40.anIntArray692[l2],
-							Class40.anIntArray692[j3], Class40.anIntArray692[l3]);
+					Canvas3D.drawFogTriangle(l4, i5, j5, i4, j4, k4, Class40.anIntArray692[l2], Class40.anIntArray692[j3], Class40.anIntArray692[l3]);
 				}
 			}
 		}
