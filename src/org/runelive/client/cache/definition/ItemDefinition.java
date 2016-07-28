@@ -52,6 +52,12 @@ public final class ItemDefinition {
 		}
 	}
 
+	private static final String[] GLOVE_NAME = {
+		"Bronze", "Iron", "Steel", "Black",
+		"Mithril", "Adamant", "Rune", "Dragon",
+		"Barrow"
+	};
+	
 	public static ItemDefinition get(int id) {
 		for (int i = 0; i < 10; i++) {
 			if (cache[i].id == id) {
@@ -68,6 +74,11 @@ public final class ItemDefinition {
 		itemDef.id = id;
 		itemDef.setDefaults();
 		itemDef.readValues(buffer);
+		
+		if (itemDef.id >= 7454 && itemDef.id <= 7462) {
+			itemDef.name = GLOVE_NAME[itemDef.id - 7454] + " gloves";
+			return itemDef;
+		}
 
 		if (itemDef.modifiedModelColors != null) {
 			int[] oldc = itemDef.modifiedModelColors;
@@ -180,9 +191,9 @@ public final class ItemDefinition {
 				itemDef.modelID = 66994;
 				itemDef.name = "Drygore longsword";
 				itemDef.description2 = "A powerful sword made from the chitlin of the Kalphite King.";
-				itemDef.modelZoom = 1493;
-				itemDef.modelRotation1 = 618;
-				itemDef.modelRotation2 = 1086;
+				itemDef.modelZoom = 1700;
+				itemDef.modelRotation1 = 444;
+				itemDef.modelRotation2 = 450;
 				itemDef.modelOffset1 = 0;
 				itemDef.modelOffsetY = -5;
 				itemDef.maleWearId = 66992;
@@ -214,11 +225,11 @@ public final class ItemDefinition {
 				itemDef.modelID = 67000;
 				itemDef.name = "Drygore rapier";
 				itemDef.description2 = "A powerful rapier made from the chitlin of the Kalphite King.";
-				itemDef.modelZoom = 1493;
-				itemDef.modelRotation1 = 618;
-				itemDef.modelRotation2 = 996;
-				itemDef.modelOffset1 = 0;
-				itemDef.modelOffsetY = -5;
+				itemDef.modelZoom = 1053;
+				itemDef.modelRotation2 = 458;
+				itemDef.modelRotation1 = 228;
+				itemDef.modelOffset1 = -1;
+				itemDef.modelOffsetY = -47;
 				itemDef.maleWearId = 67001;
 				itemDef.femaleWearId = 67002;
 				itemDef.groundActions = new String[5];
@@ -357,11 +368,11 @@ public final class ItemDefinition {
 				itemDef.modelID = 67007;
 				itemDef.name = "Drygore mace";
 				itemDef.description2 = "A powerful mace made from the chitlin of the Kalphite King.";
-				itemDef.modelZoom = 1493;
-				itemDef.modelRotation1 = 618;
-				itemDef.modelRotation2 = 996;
-				itemDef.modelOffset1 = 0;
-				itemDef.modelOffsetY = -5;
+                itemDef.modelZoom = 1118;
+                itemDef.modelRotation1 = 228;
+                itemDef.modelRotation2 = 485;
+                itemDef.modelOffset1 = -1;
+                itemDef.modelOffsetY = -47;
 				itemDef.maleWearId = 67008;
 				itemDef.femaleWearId = 67009;
 				itemDef.groundActions = new String[5];
@@ -1118,8 +1129,8 @@ public final class ItemDefinition {
 				itemDef.modelID = 76050;
 				itemDef.maleWearId = 76051;
 				itemDef.femaleWearId = 76051;
-				itemDef.modelRotation1 = 236;
-				itemDef.modelRotation2 = 236;
+				itemDef.modelRotation2 = 110;
+				itemDef.modelRotation1 = 240;
 				itemDef.modelZoom = 1330;
 				itemDef.modelOffset1 = -6;
 				itemDef.modelOffsetY = -36;
@@ -5172,7 +5183,6 @@ public final class ItemDefinition {
 				break;
 			case 19111:
 				itemDef.name = "TokHaar-Kal";
-				itemDef.value = 60000;
 				itemDef.maleWearId = 62575;
 				itemDef.femaleWearId = 62582;
 				itemDef.groundActions = new String[5];
@@ -5190,32 +5200,36 @@ public final class ItemDefinition {
 				itemDef.modelRotation2 = 192;
 				break;
 			case 13262:
-				itemDef.setDefaults();
-				itemDef.imitate(get(20072));
-				itemDef.actions = new String[5];
-				itemDef.actions[1] = "Wear";
-				itemDef.modifiedModelColors = new int[1];
-				itemDef.originalModelColors = new int[1];
-				itemDef.modifiedModelColors[0] = 28; // colors
-				itemDef.modifiedModelColors[0] = 74; // colors
-				itemDef.originalModelColors[0] = 38676; // colors
-				itemDef.originalModelColors[0] = 924; // colors
-				itemDef.maleWearId = 15413;
-				itemDef.femaleWearId = 15413;
+				itemDef.modelID = 62368;
 				itemDef.name = "Dragon defender";
-				itemDef.description2 = "A pointy off-hand knife.";
+				itemDef.modelZoom = 592;
+				itemDef.modelRotation1 = 323;
+				itemDef.modelRotation2 = 1845;
+				itemDef.modelOffset1 = -16;
+				itemDef.modelOffsetY = -3;
+				itemDef.maleWearId = 62367;
+				itemDef.femaleWearId = 62367;
+				itemDef.groundActions = new String[5];
+				itemDef.groundActions[2] = "Take";
+				itemDef.actions = new String[5];
+				itemDef.actions[1] = "Wield";
+				itemDef.actions[4] = "Drop";
 				break;
 			case 20072:
-				itemDef.modifiedModelColors = new int[1];
-				itemDef.originalModelColors = new int[1];
-				itemDef.modifiedModelColors[0] = 28; // colors
-				itemDef.modifiedModelColors[0] = 74; // colors
-				itemDef.originalModelColors[0] = 38676; // colors
-				itemDef.originalModelColors[0] = 924; // colors
-				itemDef.maleWearId = 15413;
-				itemDef.femaleWearId = 15413;
+				itemDef.modelID = 62368;
 				itemDef.name = "Dragon defender";
-				itemDef.description2 = "A pointy off-hand knife.";
+				itemDef.modelZoom = 592;
+				itemDef.modelRotation1 = 323;
+				itemDef.modelRotation2 = 1845;
+				itemDef.modelOffset1 = -16;
+				itemDef.modelOffsetY = -3;
+				itemDef.maleWearId = 62367;
+				itemDef.femaleWearId = 62367;
+				itemDef.groundActions = new String[5];
+				itemDef.groundActions[2] = "Take";
+				itemDef.actions = new String[5];
+				itemDef.actions[1] = "Wield";
+				itemDef.actions[4] = "Drop";
 				break;
 			case 10934:
 				itemDef.imitate(get(607));
@@ -5800,12 +5814,12 @@ public final class ItemDefinition {
 				itemDef.actions[4] = "Drop";
 				itemDef.maleDialogue = 62731;
 				itemDef.femaleDialogue = 62727;
-				itemDef.modifiedModelColors = new int[2];
+				/*itemDef.modifiedModelColors = new int[2];
 				itemDef.originalModelColors = new int[2];
 				itemDef.modifiedModelColors[0] = 4550;
 				itemDef.originalModelColors[0] = 0;
 				itemDef.modifiedModelColors[1] = 4540;
-				itemDef.originalModelColors[1] = 0;
+				itemDef.originalModelColors[1] = 0;*/
 				break;
 
 			case 14012:
@@ -6058,14 +6072,14 @@ public final class ItemDefinition {
 				itemDef.certID = 21136;
 				itemDef.certTemplateID = 799;
 				break;
-			case 20147:
+			/*case 20147:
 				itemDef.modifiedModelColors = new int[2];
 				itemDef.originalModelColors = new int[2];
 				itemDef.modifiedModelColors[0] = 4550;
 				itemDef.originalModelColors[0] = 1;
 				itemDef.modifiedModelColors[1] = 4540;
 				itemDef.originalModelColors[1] = 1;
-				break;
+				break;*/
 
 
 			case 11283:
@@ -6257,7 +6271,7 @@ public final class ItemDefinition {
 			mruNodes1.removeFromCache(sprite2, i);
 		}
 
-		Canvas2D.initDrawingArea(j2, i2, ai1, depth);
+		Canvas2D.initDrawingArea(j2, i2, ai1, null);
 		Canvas2D.setBounds(k2, i3, l2, j3);
 		Canvas3D.centerX = k1;
 		Canvas3D.centerY = l1;
@@ -6432,7 +6446,7 @@ public final class ItemDefinition {
 			mruNodes1.removeFromCache(sprite2, i);
 		}
 
-		Canvas2D.initDrawingArea(j2, i2, ai1, depth);
+		Canvas2D.initDrawingArea(j2, i2, ai1, null);
 		Canvas2D.setBounds(k2, i3, l2, j3);
 		Canvas3D.centerX = k1;
 		Canvas3D.centerY = l1;

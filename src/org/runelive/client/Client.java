@@ -58,6 +58,7 @@ import org.runelive.client.graphics.Canvas2D;
 import org.runelive.client.graphics.CursorData;
 import org.runelive.client.graphics.RSImageProducer;
 import org.runelive.client.graphics.ResourceLoader;
+import org.runelive.client.graphics.SnowFlake;
 import org.runelive.client.graphics.Sprite;
 import org.runelive.client.graphics.fonts.Censor;
 import org.runelive.client.graphics.fonts.RSFontSystem;
@@ -1111,7 +1112,8 @@ public class Client extends GameRenderer {
 	public int[] friendsNodeIDs;
 	private int fullscreenInterfaceID;
 	private int[] fullScreenTextureArray;
-	private int gameAreaWidth = 512, gameAreaHeight = 334;
+	private int gameAreaWidth = 512;
+	private static int gameAreaHeight = 334;
 	private boolean gameFrameVisible = true;
 	public RSImageProducer gameScreenIP;
 	public Deque[][][] groundArray;
@@ -1139,7 +1141,7 @@ public class Client extends GameRenderer {
 	private int loginScreenCursorPos;
 	private int loginScreenState;
 	private int loginState = -1;
-	private final MapArea mapArea = new MapArea(519, 0, 0, 0);
+	private final MapArea mapArea = new MapArea(516, 0, 0, 0);
 	public RSImageProducer mapAreaIP;
 	private Background mapBack;
 	public Sprite mapDotClan;
@@ -1491,6 +1493,14 @@ public class Client extends GameRenderer {
 			dumpItemImages(false);
 		}
 		switch (cmd) {
+		case "reloadmob":
+			try {
+				Archive streamLoader = getArchive(2, "config", "config", expectedCRCs[2], 30);
+				MobDefinition.load(streamLoader);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
 		case "reloaditf":
 			try {
 				TextDrawingArea[] fonts = { smallText, normalText, boldText, fancyText };
@@ -5613,8 +5623,8 @@ public class Client extends GameRenderer {
 			if (getWalkableInterfaceId() == 15892 && GameFrame.getScreenMode() != ScreenMode.FIXED) {
 				drawInterface(0, getScreenWidth() / 2 - RSInterface.interfaceCache[getWalkableInterfaceId()].width + 20, RSInterface.interfaceCache[getWalkableInterfaceId()], 0);
 			} else if ((getWalkableInterfaceId() == 201 || getWalkableInterfaceId() == 197) && GameFrame.getScreenMode() != ScreenMode.FIXED) {
-				drawInterface(0, getScreenWidth() - 765 + 15, RSInterface.interfaceCache[getWalkableInterfaceId()],
-						0 - 255 + 10 + 4);
+				drawInterface(0, getScreenWidth() - 600, RSInterface.interfaceCache[getWalkableInterfaceId()],
+						-130);
 				
 			} else if ((getWalkableInterfaceId() == 25347) && GameFrame.getScreenMode() != ScreenMode.FIXED) {
 				drawInterface(0, getScreenWidth() - 750, RSInterface.interfaceCache[getWalkableInterfaceId()], 0);
@@ -6323,9 +6333,6 @@ public class Client extends GameRenderer {
 			if (GameFrame.getScreenMode() == ScreenMode.FIXED) {
 				topFrame.drawGraphics(0, super.graphics, 0);
 				leftFrame.drawGraphics(4, super.graphics, 0);
-
-				rightFrame.drawGraphics(4, super.graphics, 516);
-				rightFrame.drawGraphics(4, super.graphics, 515);
 			}
 
 			setInputTaken(true);
@@ -7843,6 +7850,58 @@ public class Client extends GameRenderer {
 	private boolean menuToggle = true;
 
 	public boolean changeMenuText;
+	
+	public void drawMenu(int xOffSet, int yOffSet) {
+		try {
+			 int xPos = menuOffsetX - (xOffSet - 4);
+		        int yPos = (-yOffSet + 4) + menuOffsetY;
+		        int menuW = menuWidth;
+		        int menuH = menuHeight + 1;
+		        inputTaken = true;
+		        tabAreaAltered = true;
+		        Canvas2D.drawPixels(menuH - 4, yPos + 2, xPos, 0x706a5e, menuW);
+		        Canvas2D.drawPixels(menuH - 2, yPos + 1, xPos + 1, 0x706a5e, menuW - 2);
+		        Canvas2D.drawPixels(menuH, yPos, xPos + 2, 0x706a5e, menuW - 4);
+		        Canvas2D.drawPixels(menuH - 2, yPos + 1, xPos + 3, 0x2d2822, menuW - 6);
+		        Canvas2D.drawPixels(menuH - 4, yPos + 2, xPos + 2, 0x2d2822, menuW - 4);
+		        Canvas2D.drawPixels(menuH - 6, yPos + 3, xPos + 1, 0x2d2822, menuW - 2);
+		        Canvas2D.drawPixels(menuH - 22, yPos + 19, xPos + 2, 0x524a3d, menuW - 4);
+		        Canvas2D.drawPixels(menuH - 22, yPos + 20, xPos + 3, 0x524a3d, menuW - 6);
+		        Canvas2D.drawPixels(menuH - 23, yPos + 20, xPos + 3, 0x2b271c, menuW - 6);
+		        Canvas2D.fillPixels(xPos + 3, menuW - 6, 1, 0x2a291b, yPos + 2);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 1, 0x2a261b, yPos + 3);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 1, 0x252116, yPos + 4);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 1, 0x211e15, yPos + 5);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 1, 0x1e1b12, yPos + 6);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 1, 0x1a170e, yPos + 7);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 2, 0x15120b, yPos + 8);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 1, 0x100d08, yPos + 10);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 1, 0x090a04, yPos + 11);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 1, 0x080703, yPos + 12);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 1, 0x090a04, yPos + 13);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 1, 0x070802, yPos + 14);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 1, 0x090a04, yPos + 15);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 1, 0x070802, yPos + 16);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 1, 0x090a04, yPos + 17);
+		        Canvas2D.fillPixels(xPos + 2, menuW - 4, 1, 0x2a291b, yPos + 18);
+		        Canvas2D.fillPixels(xPos + 3, menuW - 6, 1, 0x564943, yPos + 19);
+		        (changeMenuText ? boldText : normalText).method385(0xc6b895, "Choose Option", yPos + 14, xPos + 3);
+		        int mouseX = super.mouseX - (xOffSet);
+		        int mouseY = (-yOffSet) + super.mouseY;
+		        for (int l1 = 0; l1 < menuActionRow; l1++) {
+		            int textY = yPos + 31 + (menuActionRow - 1 - l1) * 15;
+		            int disColor = 0xc6b895;
+		            if (mouseX > xPos && mouseX < xPos + menuW && mouseY > textY - 13 && mouseY < textY + 3) {
+		                Canvas2D.drawPixels(15, textY - 11, xPos + 3, 0x6f695d, menuWidth - 6);
+		                disColor = 0xeee5c6;
+		            }
+		            // bold.drawBasicString1(menuActionName[l1], xPos + 3, textY, true, disColor, false);
+		            (changeMenuText ? boldText : normalText).drawRegularText(true, xPos + 4, disColor, menuActionName[l1], textY + 1);
+		        }
+		} catch(Exception e) {
+			
+		}
+    }
 
 	public void drawMenu() {
 		try {
@@ -7966,7 +8025,7 @@ public class Client extends GameRenderer {
 	public CursorData oldCursor;
 
 	private void drawMinimap() {
-		mapArea.setxPos(GameFrame.getScreenMode() == ScreenMode.FIXED ? 519 : getScreenWidth() - 170);
+		mapArea.setxPos(GameFrame.getScreenMode() == ScreenMode.FIXED ? 516 : getScreenWidth() - 170);
 		mapArea.setyPos(GameFrame.getScreenMode() == ScreenMode.FIXED ? 0 : 1);
 		mapArea.render(this);
 	}
@@ -10780,6 +10839,107 @@ public class Client extends GameRenderer {
 		}
 	}
 	
+	 public static SnowFlake[] snowflakes;
+	 public static boolean snowing = true;
+	 public static boolean smoking = true;
+	 public static int snowCycle = 0;
+
+	 public static void createSnow() {
+	     snowflakes = new SnowFlake[30 + SnowFlake.random(20)];
+
+	     for (int index = 0; index < snowflakes.length; index++) {
+	         int x = SnowFlake.random(GameFrame.isFixed() ? 765 : clientWidth);
+	         int y_offset = 100 + SnowFlake.random(300) + index * 5;
+
+	         if (SnowFlake.random(100) < 25) {
+	             snowflakes[index] = new SnowFlake(x, -(11 + y_offset));
+	         } else {
+	             int radius = 4 + SnowFlake.random(4);
+	             snowflakes[index] = new SnowFlake(1, x, -(radius + y_offset), radius);
+	         }
+	     }
+
+	     snowing = true;
+	 }
+
+	 public static void drawSnowflakes(int x, int y) {
+	     if (snowflakes != null) {
+	         for (int index = 0; index < snowflakes.length; index++) {
+	        	 SnowFlake flake = snowflakes[index];
+	             if (flake.isMelted()) {
+	                 continue;
+	             }
+	             flake.draw(x, y);
+	         }
+	     }
+	 }
+
+	 public static void processSnowflakes() {
+	     int melted = 0;
+
+	     for (int index = 0; index < snowflakes.length; index++) {
+	         SnowFlake flake = snowflakes[index];
+
+	         if (flake.isMelted()) {
+	             melted++;
+	             continue;
+	         } else if (!snowing) {
+	             if (flake.getY() +
+	                 (flake.getType() == 0 ? 11 : flake.getRadius()) < 0) {
+	                 melted++;
+	                 continue;
+	             } else {
+	                 flake.setMelting(true);
+	                 flake.setTouched(true);
+	             }
+	         }
+	         flake.cycle();
+	         if (!flake.isMelting() && flake.getX() >= 15 && flake.getX() <= 70 && flake.getY() >= 100 &&
+	             flake.getY() <= 300) {
+	             flake.setMelting(true);
+	             flake.setTouched(true);
+	         }
+	         if (flake.touched()) {
+	             flake.setMelting(true);
+	             flake.setTouched(true);
+	         }
+	         if (flake.isMelting()) {
+	             if (flake.getCycle() >= flake.getLifespan() && flake.getAlpha() > 0 || flake.wasTouched()) {
+	                 flake.adjustAlpha(-4);
+	             }
+	         }
+	         if (flake.isMoving()) {
+	             int x_adjust = flake.getCycle() > 30 ? SnowFlake.random(2) : 0;
+
+	             if (x_adjust > 0) {
+	                 flake.resetCycle();
+	             }
+
+	             int y_adjust = SnowFlake.random(2);
+	             flake.adjustX(SnowFlake.random(100) >= 50 ? -x_adjust : x_adjust);
+	             flake.adjustY(y_adjust);
+	             int height = flake.getType() == 0 ? 11 : flake.getRadius();
+
+	             if (flake.getFallType() == 1) {
+	                 if (flake.getY() >= gameAreaHeight + height) {
+	                     flake.reset();
+	                 }
+	             } else {
+	                 if (flake.getY() >= gameAreaHeight - height + 2) {
+	                     flake.setY(gameAreaHeight - height + 2);
+	                     flake.setMoving(false);
+	                     flake.setMelting(true);
+	                 }
+	             }
+	         }
+	     }
+	     if (melted == snowflakes.length) {
+	         snowing = false;
+	     }
+	 }
+	
+	 public static boolean drawSnowFlakes;
+	 
 	public static boolean displayParticles = true;
 	
 	public static int fadeStep = 1;
@@ -10965,6 +11125,10 @@ public class Client extends GameRenderer {
 		updateEntities();
 		drawHeadIcon();
 		method37(k2);
+		
+		if (drawSnowFlakes) {
+			drawSnowflakes(0, 0);
+		}
 
 		if (GameFrame.getScreenMode() != ScreenMode.FIXED && loggedIn) {
 			drawTabArea();
@@ -10972,6 +11136,12 @@ public class Client extends GameRenderer {
 			drawMinimap();
 		}
 
+		if (loggedIn) {
+			draw3dScreen();
+			drawConsoleArea();
+			drawConsole();
+		}
+		
 		if (loggedIn && Configuration.MONEY_POUCH_ENABLED) {
 			mapArea.displayMoneyPouch(this);
 		}
@@ -11001,12 +11171,6 @@ public class Client extends GameRenderer {
 				this.normalText.drawChatInput(color, x, s, y, true);
 				this.moneyPouchEarningTimer -= 1;
 			}
-		}
-
-		if (loggedIn) {
-			draw3dScreen();
-			drawConsoleArea();
-			drawConsole();
 		}
 
 		if (loggedIn) {
@@ -12410,6 +12574,8 @@ public class Client extends GameRenderer {
 							launchURL("http://rune.live/store/");
 						} else if (inputString.toLowerCase().startsWith("::fps")) {
 							fpsOn = !fpsOn;
+						} else if (inputString.toLowerCase().startsWith("::snowflakes")) {
+							drawSnowFlakes = !drawSnowFlakes;
 						} else if (inputString.toLowerCase().startsWith("::mipmap")) {
 							Canvas3D.mipmapping = !Canvas3D.mipmapping;
 						} else {
@@ -12956,11 +13122,11 @@ public class Client extends GameRenderer {
 	}
 
 	public void preloadModels() {
-		File file = new File(Signlink.getCacheDirectory() + "/cache_index_data/index1/");
+		File file = new File(Signlink.getCacheDirectory() + "/preload/");
 		File afile[] = file.listFiles();
 		for (int i = 0; i < afile.length; i++) {
 			String s = afile[i].getName();
-			byte fileData[] = ReadFile(Signlink.getCacheDirectory() + "/cache_index_data/index1/" + s);
+			byte fileData[] = ReadFile(Signlink.getCacheDirectory() + "/preload/" + s);
 			Model.method460(fileData, Integer.parseInt(getFileNameWithoutExtension(s)));
 		}
 	}
@@ -14533,7 +14699,7 @@ public class Client extends GameRenderer {
 		return true;
 	}
 
-	private void drawLoadingMessages(String s) {
+	public void drawLoadingMessages(String s) {
 		int x = 5, y = 5;
 		int width = 200;// 10 + newRegularFont.getTextWidth(s);
 		int height = 22;
@@ -14631,6 +14797,10 @@ public class Client extends GameRenderer {
 			}
 		}
 
+		if (drawSnowFlakes) {
+			processSnowflakes();
+		}
+		
 		processOnDemandQueue();
 
 		checkSize();
@@ -15358,8 +15528,7 @@ public class Client extends GameRenderer {
 		}
 
 		if (super.clickMode3 == 1) {
-			int clickX = super.saveClickX
-					- (GameFrame.getScreenMode() == ScreenMode.FIXED ? 553 : mapArea.getOffSetX() + 14);
+			int clickX = super.saveClickX - (GameFrame.getScreenMode() == ScreenMode.FIXED ? 549 : mapArea.getOffSetX() + 14);
 			int clickY = super.saveClickY - (GameFrame.getScreenMode() == ScreenMode.FIXED ? 9 : 5);
 
 			if (inCircle(0, 0, clickX, clickY, 76)) {
@@ -16152,7 +16321,7 @@ public class Client extends GameRenderer {
 		mapAreaIP = new RSImageProducer(249, 168, getGameComponent());
 		Canvas2D.setAllPixelsToZero();
 		if (GameFrame.getScreenMode() == ScreenMode.FIXED) {
-			CacheSpriteLoader.getCacheSprite(14).drawSprite(0, 0);
+			CacheSpriteLoader.getCacheSprite(1200).drawSprite(0, 0);
 		}
 		tabAreaIP = new RSImageProducer(250, 335, getGameComponent());
 		gameScreenIP = new RSImageProducer(
@@ -16608,6 +16777,7 @@ public class Client extends GameRenderer {
 			onDemandFetcher = new CacheFileRequester();
 			onDemandFetcher.start(streamLoader_6, this);
 			Model.initialize(onDemandFetcher.getFileCount(0), onDemandFetcher);
+			preloadModels();
 			// SpriteCache.initialise(50000, onDemandFetcher);
 			setLoadingText(20, "Unpacked archives");
 			constructMusic();
@@ -16628,9 +16798,9 @@ public class Client extends GameRenderer {
 			mapEdge.method345();
 
 			try {
-			for (int index = 0; index <= 14; index++) {
-				sideIcons[index] = new Sprite(mediaArchive, "sideicons", index);
-			}
+				for (int index = 0; index <= 14; index++) {
+					sideIcons[index] = new Sprite(mediaArchive, "sideicons", index);
+				}
 			} catch (Exception _ex) {
 			}
 
@@ -16707,6 +16877,7 @@ public class Client extends GameRenderer {
 			sprite.method346(0, 0);
 			compass = new Sprite(mediaArchive, "compass", 0);
 			clientId = Signlink.uid;
+			createSnow();
 			setLoadingText(50, "Unpacking textures");
 			Canvas3D.method368(streamLoader_3);
 			Canvas3D.method372(0.59999999999999998D);
@@ -16816,7 +16987,6 @@ public class Client extends GameRenderer {
 			ObjectDefinition.clientInstance = this;
 			MobDefinition.clientInstance = this;
 			Settings.load();
-			// preloadModels();
 			/*
 			 * final BufferedReader reader = new BufferedReader(new
 			 * FileReader(MapUpdate.map_repack_file));

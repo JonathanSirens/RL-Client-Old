@@ -151,17 +151,16 @@ public class RSFontSystem extends Canvas2D {
 	}
 
 	public static String handleOldSyntax(String text) {
-		if (GameFrame.isFixed())
-		{
+		if (GameFrame.isFixed()) {
 			text = text.replaceAll("@bla@", "<col=0>");
-		}
-		else
-		{
+		} else {
 			text = text.replaceAll("@bla@", "<col=ffffff>");
 			text = text.replaceAll("<col=0>", "<col=ffffff>");
 			text = text.replaceAll("<col=255>", "<col=7FA9FF>");
 			text = text.replaceAll("<col=800000>", "<col=FF5256>");
 			text = text.replaceAll("<col=993D00>", "<col=FF5256>");
+			text = text.replaceAll("<col=3E0069>", "<col=ff00ff>");
+			text = text.replaceAll("<col=16777215>", "<col=ffffff>");
 		}
 		text = text.replaceAll("@glb@", "<col=4AA02C>");
 		text = text.replaceAll("@369@", "<col=336699>");

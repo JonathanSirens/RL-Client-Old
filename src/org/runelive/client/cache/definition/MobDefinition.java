@@ -30,9 +30,17 @@ public final class MobDefinition {
 		definition.id = id;
 		definition.readValues(buffer);
 		switch (id) {
-		case 83:
-			System.out.println("" + definition.npcModels[1]);
-			break;
+		
+		/*case 13727:
+			definition.npcModels = new int[] {8377};
+			definition.name = "Xuan";
+			definition.description = "The most loyal person you'll ever know.".getBytes();
+			definition.standAnimation = 808;
+			definition.walkAnimation = 819;
+			definition.actions = new String[] {"Talk-to", null, "Open-shop", "Clear-title", null};
+			definition.dialogueModels = new int[] {8324};
+			break;*/
+
 		case 5866:
 			definition.name = "Cerberus";
 			definition.npcModels = new int[] { 29270 };
@@ -444,21 +452,14 @@ public final class MobDefinition {
 			break;
 		case 2579:
 			definition.name = "Max";
-			definition.description = "One of RuneLive's completionists.".getBytes();
+			definition.description = "He's mastered the many skills on RuneLive.".getBytes();
 			definition.combatLevel = 1337;
 			definition.actions = new String[5];
 			definition.actions[0] = "Talk-to";
 			definition.actions[2] = "Trade";
-			definition.npcModels = new int[7];
-			definition.npcModels[0] = 65289; // Hat
-			definition.npcModels[1] = 62746;
-			definition.npcModels[2] = 62743;
-			definition.npcModels[3] = 65300; // Cape
-			definition.npcModels[4] = 13319;
-			definition.npcModels[5] = 27738; // Boots
-			definition.npcModels[6] = 20147;
 			definition.standAnimation = 808;
 			definition.walkAnimation = 819;
+			definition.npcModels = new int[]{ 65291, 65322, 506, 529, 252, 9642, 62746, 13307, 62743, 53327 };
 			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
 			break;
 		case 132:

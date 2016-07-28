@@ -936,10 +936,14 @@ public class RSInterface {
 		rsinterface.textColor = color;
 		rsinterface.tooltip = tooltip;
 	}
-
+	
 	public static void addHoverButton(int interfaceId, int spriteId, int width, int height, String text,
 			int contentType, int hoverOver, int actionType) {
-		// hoverable button
+		addHoverButton(interfaceId, spriteId, width, height, text, contentType, hoverOver, actionType, null);
+	}
+	
+	public static void addHoverButton(int interfaceId, int spriteId, int width, int height, String text, int contentType, int hoverOver, int actionType, 
+			String tooltip) {
 		RSInterface tab = addTabInterface(interfaceId);
 		tab.id = interfaceId;
 		tab.parentID = interfaceId;
@@ -948,7 +952,7 @@ public class RSInterface {
 		tab.contentType = contentType;
 		tab.opacity = 0;
 		tab.hoverType = hoverOver;
-
+		
 		if (spriteId >= 0) {
 			tab.sprite1 = CacheSpriteLoader.getCacheSprite(spriteId);
 			tab.sprite2 = CacheSpriteLoader.getCacheSprite(spriteId);
@@ -1784,7 +1788,7 @@ public class RSInterface {
 		rsi.tooltip = s;
 	}
 
-	public static void addTooltip(int id, String text) {
+	public void addTooltip(int id, String text) {
 		RSInterface rsi = addInterface(id);
 		rsi.id = id;
 		rsi.type = 0;
@@ -1818,7 +1822,7 @@ public class RSInterface {
 		rsi.hideExamine = hasOption;
 	}
 
-	private static void addTooltipBox(int id, String text) {
+	private void addTooltipBox(int id, String text) {
 		RSInterface rsi = addInterface(id);
 		rsi.id = id;
 		rsi.parentID = id;

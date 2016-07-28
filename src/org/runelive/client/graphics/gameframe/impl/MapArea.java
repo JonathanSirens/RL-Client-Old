@@ -84,7 +84,7 @@ public class MapArea extends GameFrame {
 				CacheSpriteLoader.getCacheSprite(orbActive ? type.getSpriteIDs()[1] : type.getSpriteIDs()[0])
 						.drawSprite(xPos + (screenMode == ScreenMode.FIXED ? 3 : 27), yPos + 3);
 			}
-			double percent = currentValue / 100D;
+			double percent = level / 100D;
 			fillOrb = 27 * percent;
 			int depleteFill = 27 - (int) fillOrb;
 			CacheSpriteLoader.getCacheSprite(327).myHeight = depleteFill;
@@ -276,27 +276,41 @@ public class MapArea extends GameFrame {
 		}
 		x -= 6;
 		value = "" + client.getMoneyInPouch() + "";
-		client.newRegularFont.drawCenteredString("" + client.getMoneyInPouch(), (fixed ? 484 : x + 45), (fixed ? 101 : 59) + y, color, 0);
+		client.newSmallFont.drawRightAlignedString("" + client.getMoneyInPouch(), (fixed ? 500 : x + 61), (fixed ? 101 : 59) + y, color, 0);
 	}
 
 	public void displayXPCounter(Client client) {
 		final boolean fixed = GameFrame.getScreenMode() == ScreenMode.FIXED;
 		int x = fixed ? 404 : Client.clientWidth - 318;
+		int x2 = (fixed ? 512 : Client.clientWidth - 209);
 		int y = fixed ? 0 : -36;
 		int currentIndex = 0;
 		int offsetY = 0;
 		int stop = 70;
-		CacheSpriteLoader.getCacheSprite(346).drawSprite(x, fixed ? 50 : 48 + y);
+		
+		//Extendible Experience Counter code
+		String str = "Total: " + df.format(PlayerHandler.totalXP);
+		if (PlayerHandler.totalXP >= 2_147_483_647) {
+			str = "Total: <col=ff0000>Lots!</col>";
+		}
+		int width = client.newRegularFont.getTextWidth(str);
+		CacheSpriteLoader.getCacheSprite(1195).drawSprite(x2 - (width + 15),  (fixed ? 52 : 12));
+		for (int index = 0; index < width; index++) {
+			CacheSpriteLoader.getCacheSprite(1196).drawSprite(x2 - (width + 11) + (index), (fixed ? 52 : 12));
+		}
+		CacheSpriteLoader.getCacheSprite(1197).drawSprite((fixed ? 504 : Client.clientWidth - 217), (fixed ? 52 : 12));
+		client.newRegularFont.drawBasicString(str, x + (fixed ? 99 : 100) - width, (fixed ? 65 : 61) + y, 0xFFFFFF, 0);
+		
+		/*CacheSpriteLoader.getCacheSprite(346).drawSprite(x, fixed ? 50 : 48 + y);
 		client.normalText.drawRegularText(true, x + 3, 0xffffff, "XP:", (fixed ? 63 : 61) + y);
 		String str = df.format(PlayerHandler.totalXP);
 		int width = client.normalText.getTextWidth(str);
 		if (PlayerHandler.totalXP >= 0 && PlayerHandler.totalXP < 1_000_000_000) {
 			client.normalText.drawRegularText(true, x + 99 - width, 0xffffff, str, (fixed ? 63 : 61) + y);
 		} else {
-			client.normalText.drawRegularText(true, x + 99 - client.normalText.getTextWidth("Lots!"), 0xFF0000, "Lots!",
-					(fixed ? 63 : 61) + y);
-		}
-
+			client.normalText.drawRegularText(true, x + 99 - client.normalText.getTextWidth("Lots!"), 0xFF0000, "Lots!", (fixed ? 63 : 61) + y);
+		}*/
+		
 		if (!PlayerHandler.gains.isEmpty()) {
 			Iterator<XPGain> it = PlayerHandler.gains.iterator();
 
@@ -389,11 +403,11 @@ public class MapArea extends GameFrame {
 					getxPos() - (GameFrame.getScreenMode() == ScreenMode.FIXED ? 2 : 40),
 					getyPos() + (GameFrame.getScreenMode() == ScreenMode.FIXED ? 46 : 2))) {
 				CacheSpriteLoader.getCacheSprite(344).drawSprite(
-						getOffSetX() - (GameFrame.getScreenMode() == ScreenMode.FIXED ? 2 : 40),
+						getOffSetX() - (GameFrame.getScreenMode() == ScreenMode.FIXED ? 0 : 40),
 						getOffSetY() + (GameFrame.getScreenMode() == ScreenMode.FIXED ? 46 : 2));
 			} else {
 				CacheSpriteLoader.getCacheSprite(345).drawSprite(
-						getOffSetX() - (GameFrame.getScreenMode() == ScreenMode.FIXED ? 2 : 40),
+						getOffSetX() - (GameFrame.getScreenMode() == ScreenMode.FIXED ? 0 : 40),
 						getOffSetY() + (GameFrame.getScreenMode() == ScreenMode.FIXED ? 46 : 2));
 			}
 		} catch (NumberFormatException e) {
@@ -521,10 +535,10 @@ public class MapArea extends GameFrame {
 			 */
 			client.miniMapRegions.rotate(152, i, client.mapImagePixelCutRight, 256 + client.minimapZoom,
 					client.mapImagePixelCutLeft, playerPosY, getOffSetY() + (screenMode == ScreenMode.FIXED ? 10 : 5),
-					getOffSetX() + (screenMode == ScreenMode.FIXED ? 31 : 11), 152, playerPosX);
+					getOffSetX() + (screenMode == ScreenMode.FIXED ? 34 : 11), 152, playerPosX);
 			client.compass.rotate(33, client.viewRotation, client.compassArray2, 256, client.compassArray1, 25,
 					getOffSetY() + (screenMode == ScreenMode.FIXED ? 8 : 5),
-					getOffSetX() + (screenMode == ScreenMode.FIXED ? 7 : 5), 33, 25);
+					getOffSetX() + (screenMode == ScreenMode.FIXED ? 10 : 5), 33, 25);
 
 			for (int j5 = 0; j5 < client.anInt1071; j5++) {
 				try {
@@ -631,8 +645,8 @@ public class MapArea extends GameFrame {
 
 			client.compass.rotate(33, client.viewRotation, client.compassArray2, 256, client.compassArray1, 25,
 					getOffSetY() + (screenMode == ScreenMode.FIXED ? 8 : 4),
-					getOffSetX() + (screenMode == ScreenMode.FIXED ? 7 : 5), 33, 25);
-			CacheSpriteLoader.getCacheSprite(screenMode == ScreenMode.FIXED ? 14 : 13).drawSprite(
+					getOffSetX() + (screenMode == ScreenMode.FIXED ? 10 : 5), 33, 25);
+			CacheSpriteLoader.getCacheSprite(screenMode == ScreenMode.FIXED ? 1200 : 13).drawSprite(
 					getOffSetX() - (screenMode == ScreenMode.FIXED ? 1 : 0),
 					getOffSetY() - (screenMode == ScreenMode.FIXED ? 0 : 1));
 
@@ -678,26 +692,26 @@ public class MapArea extends GameFrame {
 				int y = fixed ? 0 : 118;
 				if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(559), x, fixed ? 82 : 48 + y)
 						|| client.inSprite(false, CacheSpriteLoader.getCacheSprite(565),
-								getxPos() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : -2),
+								getxPos() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : 0),
 								GameFrame.getScreenMode() != ScreenMode.FIXED ? 155 : 82)) {
 					CacheSpriteLoader.getCacheSprite(564).drawSprite(
-							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : -2),
+							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : 0),
 							GameFrame.getScreenMode() != ScreenMode.FIXED ? 155 : 82);
 				} else {
 					CacheSpriteLoader.getCacheSprite(566).drawSprite(
-							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : -2),
+							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : 0),
 							GameFrame.getScreenMode() != ScreenMode.FIXED ? 155 : 82);
 				}
 			} else {
 				if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(566),
-						getxPos() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : -2),
+						getxPos() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : 0),
 						GameFrame.getScreenMode() != ScreenMode.FIXED ? 155 : 82)) {
 					CacheSpriteLoader.getCacheSprite(564).drawSprite(
-							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : -2),
+							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : 0),
 							GameFrame.getScreenMode() != ScreenMode.FIXED ? 155 : 82);
 				} else {
 					CacheSpriteLoader.getCacheSprite(566).drawSprite(
-							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : -2),
+							getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : 0),
 							GameFrame.getScreenMode() != ScreenMode.FIXED ? 155 : 82);
 				}
 			}
@@ -706,9 +720,9 @@ public class MapArea extends GameFrame {
 			}
 			if (GameFrame.getScreenMode() == ScreenMode.FIXED ? client.mouseX >= 522 && client.mouseX <= 559 && client.mouseY >= 121 && client.mouseY <= 157 :
 					client.mouseX >= Client.clientWidth - 44 && client.mouseX <= Client.clientWidth - 3 && client.mouseY >= 131 && client.mouseY <= 170) {
-				CacheSpriteLoader.getCacheSprite(457).drawSprite(GameFrame.getScreenMode() == ScreenMode.FIXED ? 6 : Client.clientWidth - 40, GameFrame.getScreenMode() == ScreenMode.FIXED ? 124 : 133);
+				CacheSpriteLoader.getCacheSprite(457).drawSprite(GameFrame.getScreenMode() == ScreenMode.FIXED ? 10 : Client.clientWidth - 40, GameFrame.getScreenMode() == ScreenMode.FIXED ? 124 : 133);
 			} else {
-				CacheSpriteLoader.getCacheSprite(456).drawSprite(GameFrame.getScreenMode() == ScreenMode.FIXED ? 6 : Client.clientWidth - 40, GameFrame.getScreenMode() == ScreenMode.FIXED ? 124 : 133);
+				CacheSpriteLoader.getCacheSprite(456).drawSprite(GameFrame.getScreenMode() == ScreenMode.FIXED ? 10 : Client.clientWidth - 40, GameFrame.getScreenMode() == ScreenMode.FIXED ? 124 : 133);
 			}
 			
 			if (Client.tabID == 14) {
@@ -726,7 +740,7 @@ public class MapArea extends GameFrame {
 			}
 
 			Canvas2D.drawPixels(3, 76 + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 4 : 8) + getOffSetY(),
-					76 + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 9 : 29) + getOffSetX(), 0xffffff, 3);
+					76 + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 9 : 31) + getOffSetX(), 0xffffff, 3);
 
 			if (client.menuOpen && client.menuScreenArea == 3) {
 				client.drawMenu();

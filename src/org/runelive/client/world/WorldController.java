@@ -1306,7 +1306,6 @@ public final class WorldController {
 						}
 						if (anInt446 == 0) {
 							aBoolean467 = false;
-							Canvas3D.saveDepth = false;
 							return;
 						}
 					}
@@ -1355,7 +1354,6 @@ public final class WorldController {
 						}
 						if (anInt446 == 0) {
 							aBoolean467 = false;
-							Canvas3D.saveDepth = false;
 							return;
 						}
 					}
@@ -1366,7 +1364,6 @@ public final class WorldController {
 		}
 
 		aBoolean467 = false;
-		Canvas3D.saveDepth = false;
 	}
 
 	private void method314(Ground class30_sub3, boolean flag) {

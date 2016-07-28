@@ -339,16 +339,24 @@ public class CustomInterfaces extends RSInterface {
 			removeSomething(i);
 		}
 		RSInterface newTab = addTabInterface(15000);
-		addButtonWSpriteLoader(15001, 618, "Show Equipment Stats", 41, 40);
-		addButtonWSpriteLoader(15002, 619, "Open Price Checker", 41, 40);
-		addButtonWSpriteLoader(15003, 620, "Open Items kept on Death", 41, 40);
-		addButtonWSpriteLoader(15004, 621, "Toggle Experience", 41, 40);
-		newTab.totalChildren(5);
+		addHoverButton(15001, 473, 40, 40, "Show Equipment Stats", 0, 15202, 1, "Test");
+		addHoveredButton(15202, 477, 40, 40, 15203);
+		addHoverButton(15002, 1198, 40, 40, "Show Price-checker", 0, 15204, 1);
+		addHoveredButton(15204, 1199, 40, 40, 15205);
+		addHoverButton(15003, 474, 40, 40, "Show Items Kept on Death", 0, 15206, 1);
+		addHoveredButton(15206, 476, 40, 40, 15207);
+		addHoverButton(15004, 475, 40, 40, "Toggle Experience", 0, 15208, 1);
+		addHoveredButton(15208, 478, 40, 40, 15209);
+		newTab.totalChildren(9);
 		setBounds(15001, 8, 205, 0, newTab);
-		setBounds(15002, 53, 205, 1, newTab);
-		setBounds(15003, 98, 205, 2, newTab);
-		setBounds(15004, 143, 205, 3, newTab);
-		setBounds(1644, 0, 0, 4, newTab);
+		setBounds(15202, 8, 205, 1, newTab);
+		setBounds(15002, 53, 205, 2, newTab);
+		setBounds(15204, 53, 205, 3, newTab);
+		setBounds(15003, 98, 205, 4, newTab);
+		setBounds(15206, 98, 205, 5, newTab);
+		setBounds(15004, 143, 205, 6, newTab);
+		setBounds(15208, 143, 205, 7, newTab);
+		setBounds(1644, 0, 0, 8, newTab);
 	}
 
 	private void skillTabInterface() {
@@ -1761,7 +1769,7 @@ public class CustomInterfaces extends RSInterface {
 
 	private void equipmentScreenInterface() {
 		RSInterface tab = addTabInterface(21172);
-		addSpriteLoader(21173, 696);
+		addSpriteLoader(21173, 1201);
 		// addCloseButton(15210, 15215, 15216);
 
 		addHoverButtonWSpriteLoader(15210, 714, 17, 17, "Close Window", 0, 15215, 1);
@@ -1791,7 +1799,7 @@ public class CustomInterfaces extends RSInterface {
 		addChar(15125);
 		tab.totalChildren(55);
 		tab.child(0, 21173, 15, 5);
-		tab.child(1, 15210, 478, 9);
+		tab.child(1, 15210, 476, 9);
 		tab.child(2, 15111, 14, 30);
 		tab.child(3, 15111, 14, 30);
 		int Child = 4;
@@ -1857,7 +1865,7 @@ public class CustomInterfaces extends RSInterface {
 			rsi.textColor = 0xFF9200;
 			rsi.centerText = false;
 		}
-		tab.child(50, 15215, 478, 9);
+		tab.child(50, 15215, 476, 9);
 		tab.child(51, 19500, 417, 260);
 		tab.child(52, 19501, 417, 275);
 		tab.child(53, 19502, 417, 290);

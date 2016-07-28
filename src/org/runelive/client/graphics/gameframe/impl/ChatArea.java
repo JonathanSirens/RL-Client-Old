@@ -234,16 +234,10 @@ public class ChatArea extends GameFrame {
 				if (!componentHidden()) {
 					if (!client.messagePromptRaised && client.aString844 == null && client.backDialogID == -1
 							&& client.dialogID == -1 && client.inputDialogState == 0) {
-						float rate = 50f / getHeight();
 
-						for (int i = 0; i < getHeight() - 35; i++) {
-							int opacity = (int) (i * rate);
-							Canvas2D.fillRect(getOffSetX() + 5, getOffSetY() + 121 - i, getWidth() - 10, 1, 0, opacity);
-
-						}
-
-						Canvas2D.drawAlphaGradient(getOffSetX() + 5, getOffSetY() + 5, getWidth() - 10, 1, 0xb4aea1, 0,
-								250);
+						Canvas2D.fillRect(getOffSetX() + 7, getOffSetY() + 5, getWidth() - 13, 1,
+								screenMode == ScreenMode.FIXED ? 0x807660 : 0xaea799, 150);
+						Canvas2D.drawAlphaGradient(7, 7 + getOffSetY(), 505, 130, 0, 0x4F4F4F, 70);
 					} else {
 						CacheSpriteLoader.getCacheSprite(3).drawTransparentSprite(getOffSetX(), getOffSetY(), 255);
 					}
@@ -276,7 +270,7 @@ public class ChatArea extends GameFrame {
 				RSFontSystem textDrawingArea = client.newRegularFont;
 				int messageY = -3;
 				int scrollPosition = 0;
-				Canvas2D.setBounds(getOffSetX() + 8, getOffSetY() + 7, getOffSetX() + getWidth() - 22, getOffSetY() + getHeight() - 28);
+				Canvas2D.setBounds(getOffSetX() + 8, getOffSetY() + 10, getOffSetX() + getWidth() - 22, getOffSetY() + getHeight() - 28);
 
 				for (int i = 0; i < 500; i++) {
 					if (client.chatMessages[i] != null) {

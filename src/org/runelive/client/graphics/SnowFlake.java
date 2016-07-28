@@ -1,6 +1,7 @@
 package org.runelive.client.graphics;
 
 import org.runelive.client.Client;
+import org.runelive.client.graphics.gameframe.GameFrame;
 
 /**
  * Created by Evan2 on 17/07/2016.
@@ -36,7 +37,7 @@ public class SnowFlake {
     }
 
     public void reset() {
-        this.x = random(765);
+        this.x = random(GameFrame.isFixed() ? 765 : Client.clientWidth);
         this.y = -10;
         this.cycle = 0;
         this.moving = true;

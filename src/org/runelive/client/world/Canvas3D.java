@@ -362,9 +362,6 @@ public final class Canvas3D extends Canvas2D {
 	}
 	
 	public static final void drawMaterializedTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int c1, int c2, int c3, int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int tex, float z1, float z2, float z3) {
-		if(!saveDepth) {
-			z1 = z2 = z3 = 0.0F;
-		}
 		
 		if (!Configuration.hdTexturing || Texture.get(tex) == null) {
 			method374(y1, y2, y3, x1, x2, x3, c1, c2, c3, tz1, tz2 , tz3);
@@ -986,17 +983,17 @@ public final class Canvas3D extends Canvas2D {
 		}
 		int texPos = 0;
 		int rgb = 0;
-		z2 = (z2 - z1) / (x2 - x1);
+		int dz = 0;
+		if (x1 != x2) {
+			dz = (int) ((z2 - z1) / (x2 - x1));
+		}
 		if (restrict_edges) {
 			if (x2 > Canvas2D.centerX) {
 				x2 = Canvas2D.centerX;
 			}
 			if (x1 < 0) {
-				z1 -= x1 * z2;
+				z1 -= x1 * dz;
 				x1 = 0;
-			}
-			if (x1 >= x2) {
-				return;
 			}
 		}
 		if(x1 < x2) {
@@ -1048,11 +1045,11 @@ public final class Canvas3D extends Canvas2D {
 						light = 127;
 					}
 					texPos += dtexPos;
-					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
-					if(!saveDepth) {
+					if (true) {
 						depthBuffer[offset] = z1;
+						dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
 					}
-					z1 += z2;
+					z1 += dz;
 					offset++;
 					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
 					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
@@ -1060,11 +1057,11 @@ public final class Canvas3D extends Canvas2D {
 						light = 127;
 					}
 					texPos += dtexPos;
-					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
-					if(!saveDepth) {
+					if (true) {
 						depthBuffer[offset] = z1;
+						dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
 					}
-					z1 += z2;
+					z1 += dz;
 					offset++;
 					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
 					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
@@ -1072,11 +1069,11 @@ public final class Canvas3D extends Canvas2D {
 						light = 127;
 					}
 					texPos += dtexPos;
-					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
-					if(!saveDepth) {
+					if (true) {
 						depthBuffer[offset] = z1;
+						dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
 					}
-					z1 += z2;
+					z1 += dz;
 					offset++;
 					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
 					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
@@ -1084,11 +1081,11 @@ public final class Canvas3D extends Canvas2D {
 						light = 127;
 					}
 					texPos += dtexPos;
-					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
-					if(!saveDepth) {
+					if (true) {
 						depthBuffer[offset] = z1;
+						dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
 					}
-					z1 += z2;
+					z1 += dz;
 					offset++;
 					hsl1 += dhsl;
 					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
@@ -1097,11 +1094,11 @@ public final class Canvas3D extends Canvas2D {
 						light = 127;
 					}
 					texPos += dtexPos;
-					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
-					if(!saveDepth) {
+					if (true) {
 						depthBuffer[offset] = z1;
+						dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
 					}
-					z1 += z2;
+					z1 += dz;
 					offset++;
 					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
 					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
@@ -1109,11 +1106,11 @@ public final class Canvas3D extends Canvas2D {
 						light = 127;
 					}
 					texPos += dtexPos;
-					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
-					if(!saveDepth) {
+					if (true) {
 						depthBuffer[offset] = z1;
+						dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
 					}
-					z1 += z2;
+					z1 += dz;
 					offset++;
 					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
 					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
@@ -1121,11 +1118,11 @@ public final class Canvas3D extends Canvas2D {
 						light = 127;
 					}
 					texPos += dtexPos;
-					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
-					if(!saveDepth) {
+					if (true) {
 						depthBuffer[offset] = z1;
+						dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
 					}
-					z1 += z2;
+					z1 += dz;
 					offset++;
 					rgb = texels[texelPos((texPos & 0x3f80) + (texPos >>> 25))];
 					light = ((hsl1 >> 8 & 0x7f) << 1) * (((rgb >> 16 & 0xff) + (rgb >> 8 & 0xff) + (rgb & 0xff)) / 3) / 384;
@@ -1133,11 +1130,11 @@ public final class Canvas3D extends Canvas2D {
 						light = 127;
 					}
 					texPos += dtexPos;
-					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
-					if(!saveDepth) {
+					if (true) {
 						depthBuffer[offset] = z1;
+						dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
 					}
-					z1 += z2;
+					z1 += dz;
 					offset++;
 					i_58_ = i_60_;
 					i_59_ = i_61_;
@@ -1169,11 +1166,11 @@ public final class Canvas3D extends Canvas2D {
 						light = 127;
 					}
 					texPos += dtexPos;
-					dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
-					if(!saveDepth) {
+					if (true) {
 						depthBuffer[offset] = z1;
+						dest[offset] = anIntArray1482[(hsl1 >> 8 & 0xff80) | light];
 					}
-					z1 += z2;
+					z1 += dz;
 					offset++;
 				} while(--n > 0);
 			}
@@ -5158,7 +5155,6 @@ public final class Canvas3D extends Canvas2D {
 	public static int anIntArray1482[] = new int[0x10000];
 	private static int[][] anIntArrayArray1483 = new int[textureAmount][];
 	public static boolean mipmapping = true;
-	public static boolean saveDepth = false;
 
 	public static final int FOREGROUND = 0xc8c0a8;
 	public static final int FOG_COLOR_A = 0xc800a8;

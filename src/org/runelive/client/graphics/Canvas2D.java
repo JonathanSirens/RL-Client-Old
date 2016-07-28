@@ -281,8 +281,7 @@ public class Canvas2D extends NodeSub {
 		centerY = bottomX / 2;
 	}
 
-	public static void drawAlphaGradient(int x, int y, int gradientWidth, int gradientHeight, int startColor,
-			int endColor, int alpha) {
+	public static void drawAlphaGradient(int x, int y, int gradientWidth, int gradientHeight, int startColor, int endColor, int alpha) {
 		int k1 = 0;
 		int l1 = 0x10000 / gradientHeight;
 		if (x < topX) {
