@@ -481,6 +481,8 @@ public final class ItemDefinition {
 				itemDef.modelID = 70010;
 				itemDef.modelRotation1 = 1510;
 				itemDef.modelRotation2 = 1785;
+				itemDef.modelOffset1 = 9;
+				itemDef.modelOffsetY = -4;
 				itemDef.modelZoom = 1600;
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
@@ -518,11 +520,11 @@ public final class ItemDefinition {
 			case 12708:
 				itemDef.name = "Pegasian boots";
 				itemDef.modelID = 29396;
-				itemDef.modelZoom = 900;
-				itemDef.modelRotation1 = 165;
-				itemDef.modelRotation2 = 99;
-				itemDef.modelOffset1 = 3;
-				itemDef.modelOffsetY = -7;
+				itemDef.modelZoom = 976;
+				itemDef.modelRotation1 = 147;
+				itemDef.modelRotation2 = 279;
+				itemDef.modelOffset1 = 5;
+				itemDef.modelOffsetY = -5;
 				itemDef.maleWearId = 29252;
 				itemDef.femaleWearId = 29253;
 				itemDef.actions = new String[5];
@@ -532,11 +534,11 @@ public final class ItemDefinition {
 			case 12710:
 				itemDef.name = "Primordial boots";
 				itemDef.modelID = 29397;
-				itemDef.modelZoom = 900;
-				itemDef.modelRotation1 = 165;
-				itemDef.modelRotation2 = 99;
-				itemDef.modelOffset1 = 3;
-				itemDef.modelOffsetY = -7;
+				itemDef.modelZoom = 976;
+				itemDef.modelRotation1 = 147;
+				itemDef.modelRotation2 = 279;
+				itemDef.modelOffset1 = 5;
+				itemDef.modelOffsetY = -5;
 				itemDef.maleWearId = 29250;
 				itemDef.femaleWearId = 29255;
 				itemDef.actions = new String[5];
@@ -594,11 +596,11 @@ public final class ItemDefinition {
 			case 12712:
 				itemDef.name = "Eternal boots";
 				itemDef.modelID = 29394;
-				itemDef.modelZoom = 900;
-				itemDef.modelRotation1 = 165;
-				itemDef.modelRotation2 = 99;
-				itemDef.modelOffset1 = 3;
-				itemDef.modelOffsetY = -7;
+				itemDef.modelZoom = 976;
+				itemDef.modelRotation1 = 147;
+				itemDef.modelRotation2 = 279;
+				itemDef.modelOffset1 = 5;
+				itemDef.modelOffsetY = -5;
 				itemDef.maleWearId = 29249;
 				itemDef.femaleWearId = 29254;
 				itemDef.actions = new String[5];
