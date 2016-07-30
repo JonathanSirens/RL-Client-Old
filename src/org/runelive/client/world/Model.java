@@ -408,13 +408,13 @@ public class Model extends Animable {
 			read622Model(is, modelId);
 		else
 			readOldModel(modelId);
-		/*if (newmodel[modelId]) {
-			if (anIntArray1638 != null) {
-				for (int index = 0; index < anIntArray1638.length; index++) {
-					anIntArray1638[index] = 10;
+		int[] newBoots = new int[] {29249, 29254, 29250, 29255, 29252, 29253};
+		for(int i : newBoots) {
+			if (modelId == i)
+				for (int j = 0; j < anIntArray1638.length; j++) {
+					anIntArray1638[j] = 10;
 				}
-			}
-		}*/
+		}
 
 		if ((modelId >= 53347 && modelId <= 53370) || (modelId >= 76001 && modelId <= 76047)) {
 			// recolour(0, 255);
