@@ -6160,6 +6160,115 @@ public final class ItemDefinition {
 				itemDef.certID = 21138;
 				itemDef.certTemplateID = 799;
 				break;
+			case 21140:
+				itemDef.setDefaults();
+				itemDef.modelID = 31524;
+				itemDef.maleWearId = 31227;
+				itemDef.femaleWearId = 31233;
+				itemDef.description2 = "A deep sense of torture burns within this powerful amulet.";
+				itemDef.name = "Amulet of torture";
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
+				itemDef.modelZoom = 620;
+				itemDef.modelRotation1 = 424;
+				itemDef.modelRotation2 = 68;
+				itemDef.modelOffset1 = 1;
+				itemDef.modelOffsetY = 16;
+				break;
+			case 21141:
+				itemDef.setDefaults();
+				itemDef.modelID = 31524;
+				itemDef.description2 = "A deep sense of torture burns within this powerful amulet.";
+				itemDef.name = "Amulet of torture";
+				itemDef.actions = new String[] { null, null, null, null, null, null };
+				itemDef.modelZoom = 620;
+				itemDef.modelRotation1 = 424;
+				itemDef.modelRotation2 = 68;
+				itemDef.modelOffset1 = 1;
+				itemDef.modelOffsetY = 16;
+				itemDef.stackable = true;
+				itemDef.certID = 21140;
+				itemDef.certTemplateID = 799;
+				break;
+			case 21142:
+				itemDef.setDefaults();
+				itemDef.modelID = 31522;
+				itemDef.maleWearId = 31237;
+				itemDef.femaleWearId = 31237;
+				itemDef.description2 = "A weapon forged from the wreckage of an airship.";
+				itemDef.name = "Light ballista";
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
+				itemDef.modelZoom = 1250;
+				itemDef.modelRotation1 = 189;
+				itemDef.modelRotation2 = 148;
+				itemDef.modelOffset1 = 8;
+				itemDef.modelOffsetY = -18;
+				break;
+			case 21143:
+				itemDef.setDefaults();
+				itemDef.modelID = 31522;
+				itemDef.description2 = "A weapon forged from the wreckage of an airship.";
+				itemDef.name = "Light ballista";
+				itemDef.actions = new String[] { null, null, null, null, null, null };
+				itemDef.modelZoom = 760;
+				itemDef.modelZoom = 1250;
+				itemDef.modelRotation1 = 189;
+				itemDef.modelRotation2 = 148;
+				itemDef.modelOffset1 = 8;
+				itemDef.modelOffsetY = -18;
+				itemDef.stackable = true;
+				itemDef.certID = 21142;
+				itemDef.certTemplateID = 799;
+				break;
+			case 21144:
+				itemDef.setDefaults();
+				itemDef.modelID = 31523;
+				itemDef.maleWearId = 31236;
+				itemDef.femaleWearId = 31236;
+				itemDef.description2 = "A weapon forged from the wreckage of an airship.";
+				itemDef.name = "Heavy ballista";
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
+				itemDef.modelZoom = 1284;
+				itemDef.modelRotation1 = 189;
+				itemDef.modelRotation2 = 148;
+				itemDef.modelOffset1 = 8;
+				itemDef.modelOffsetY = -18;
+				itemDef.maleWieldX = 55; //char north/south
+				itemDef.maleWieldY = 0; // char to left/right
+				itemDef.maleWieldZ = 26; // char up/down
+				break;
+			case 21145:
+				itemDef.setDefaults();
+				itemDef.modelID = 31523;
+				itemDef.description2 = "A weapon forged from the wreckage of an airship.";
+				itemDef.name = "Heavy ballista";
+				itemDef.actions = new String[] { null, null, null, null, null, null };
+				itemDef.modelZoom = 1284;
+				itemDef.modelRotation1 = 189;
+				itemDef.modelRotation2 = 148;
+				itemDef.modelOffset1 = 8;
+				itemDef.modelOffsetY = -18;
+				itemDef.stackable = true;
+				itemDef.certID = 21142;
+				itemDef.certTemplateID = 799;
+				break;
+			case 21146:
+				itemDef.setDefaults();
+				itemDef.modelID = 31511;
+				itemDef.description2 = "A dragon tipped javelin.";
+				itemDef.name = "Dragon javelin";
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
+				itemDef.modelZoom = 1470;
+				itemDef.modelRotation1 = 268;
+				itemDef.modelRotation2 = 1964;
+				itemDef.modelOffset1 = -2;
+				itemDef.modelOffsetY = 63;
+				itemDef.stackable = true;
+				break;
+
 			case 20147:
 				itemDef.modifiedModelColors = new int[2];
 				itemDef.originalModelColors = new int[2];
