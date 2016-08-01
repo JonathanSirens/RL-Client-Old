@@ -76,7 +76,6 @@ public final class FrameReader {
 					frameReader.yOffset[k3] = ai2[k3];
 					frameReader.zOffset[k3] = ai3[k3];
 				}
-
 			}
 		} catch (Exception exception) {
 			// exception.printStackTrace();
@@ -100,6 +99,27 @@ public final class FrameReader {
 				Client.instance.onDemandFetcher.pushRequest(1, file);
 				return null;
 			}
+			/*
+				switch(i) {
+					case 121110558:
+					case 121110528:
+					case 121110543:
+					case 121110584:
+					case 121110587:
+					case 121110534:
+					case 121110575:
+					case 121110533:
+					case 121110546:
+					case 121110620:
+					case 121110536:
+					case 121110624:
+					case 121110569:
+						animationlist[file][k].xOffset = 55; //char north/south
+						animationlist[file][k].yOffset = 0; // char to left/right
+						animationlist[file][k].zOffset = 26; // char up/down
+						break;
+				}
+				*/
 			return animationlist[file][k];
 		} catch (Exception e) {
 			e.printStackTrace();

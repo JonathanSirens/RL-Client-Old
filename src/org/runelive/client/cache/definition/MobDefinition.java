@@ -55,6 +55,19 @@ public final class MobDefinition {
 			definition.adjustVertextPointsXOrY = 128;
 			definition.adjustVertextPointZ = 128;
 			break;
+		case 5871:
+				definition.name = "Bork";
+				definition.npcModels = new int[] { 32351, 32352 };
+				definition.npcSizeInSquares = 3;
+				definition.actions = new String[] { null, "Attack", null, null, null };
+				definition.standAnimation = 8753;
+				definition.walkAnimation = 8752;
+				definition.drawYellowDotOnMap = true;
+				definition.combatLevel = 841;
+				definition.adjustVertextPointsXOrY = 128;
+				definition.adjustVertextPointZ = 128;
+				break;
+
 		case 2722:
 			MobDefinition spot1 = get(318);
 			definition.npcSizeInSquares = spot1.npcSizeInSquares;

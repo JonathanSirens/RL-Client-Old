@@ -1952,9 +1952,15 @@ public class Client extends GameRenderer {
 							}
 						}
 					}
-					menuActionName[menuActionRow] = myRights == 3 ? "Examine @cya@" + class46.name + " @gre@(@whi@"
-							+ class46.id + "@gre@) (@whi@" + (x + baseX) + "," + (y + baseY) + "@gre@)"
-							: "Examine @cya@" + class46.name;
+					if(class46.anIntArray776 != null && class46.anIntArray776.length >= 1) {
+						menuActionName[menuActionRow] = myRights == 3 ? "Examine @cya@" + class46.name + " @gre@(@whi@"
+								+ class46.id + " - " + class46.anIntArray776[0] + "@gre@) (@whi@" + (x + baseX) + "," + (y + baseY) + "@gre@)"
+								: "Examine @cya@" + class46.name;
+					} else {
+						menuActionName[menuActionRow] = myRights == 3 ? "Examine @cya@" + class46.name + " @gre@(@whi@"
+								+ class46.id + "@gre@) (@whi@" + (x + baseX) + "," + (y + baseY) + "@gre@)"
+								: "Examine @cya@" + class46.name;
+					}
 					menuActionID[menuActionRow] = 1226;
 					menuActionCmd1[menuActionRow] = class46 == null ? -1 : class46.id << 14;
 					menuActionCmd2[menuActionRow] = x;
@@ -13372,7 +13378,7 @@ public class Client extends GameRenderer {
 			case 9:
 				int state = getInputBuffer().getUnsignedShort();
 				int seconds = getInputBuffer().getUnsignedShort();
-				fadingScreen = new FadingScreen("Welcome to Zulrah's shrine", (byte) 1, (byte) 5);
+				fadingScreen = new FadingScreen("", (byte) 1, (byte) 5);
 				pktType = -1;
 				return true;
 
@@ -14250,7 +14256,7 @@ public class Client extends GameRenderer {
 					pktType = -1;
 					return true;
 				} else if (frame == 1 && text.equals("ZULRAHFADE")) {
-					fadingScreen = new FadingScreen("Welcome to Zulrah's shrine", (byte) 1, (byte) 5);
+					fadingScreen = new FadingScreen("", (byte) 1, (byte) 4);
 					pktType = -1;
 					return true;
 				} else if (text.equals("[CLOSEMENU]") && frame == 0) {
@@ -16857,7 +16863,7 @@ public class Client extends GameRenderer {
 			onDemandFetcher = new CacheFileRequester();
 			onDemandFetcher.start(streamLoader_6, this);
 			Model.initialize(onDemandFetcher.getFileCount(0), onDemandFetcher);
-			preloadModels();
+			//preloadModels();
 			// SpriteCache.initialise(50000, onDemandFetcher);
 			setLoadingText(20, "Unpacked archives");
 			constructMusic();

@@ -481,6 +481,8 @@ public final class ItemDefinition {
 				itemDef.modelID = 70010;
 				itemDef.modelRotation1 = 1510;
 				itemDef.modelRotation2 = 1785;
+				itemDef.modelOffset1 = 9;
+				itemDef.modelOffsetY = -4;
 				itemDef.modelZoom = 1600;
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
@@ -492,9 +494,11 @@ public final class ItemDefinition {
 				itemDef.modelID = 29393;
 				itemDef.maleWearId = 29260;
 				itemDef.femaleWearId = 29260;
-				itemDef.modelRotation1 = 224;
-				itemDef.modelRotation2 = 1056;
-				itemDef.modelZoom = 1070;
+				itemDef.modelRotation1 = 1683;
+				itemDef.modelRotation2 = 1885;
+				itemDef.modelOffset1 = -1;
+				itemDef.modelOffsetY = -9;
+				itemDef.modelZoom = 1221;
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
 				break;
@@ -504,9 +508,11 @@ public final class ItemDefinition {
 				itemDef.modelID = 29395;
 				itemDef.maleWearId = 29259;
 				itemDef.femaleWearId = 29259;
-				itemDef.modelRotation1 = 224;
-				itemDef.modelRotation2 = 1056;
-				itemDef.modelZoom = 1070;
+				itemDef.modelRotation1 = 512;
+				itemDef.modelRotation2 = 1212;
+				itemDef.modelOffset1 = 7;
+				itemDef.modelOffsetY = 16;
+				itemDef.modelZoom = 1663;
 				itemDef.groundActions = new String[] { null, null, "Take", null, null };
 				itemDef.actions = new String[] { null, "Wear", null, null, "Drop" };
 				break;
@@ -514,11 +520,11 @@ public final class ItemDefinition {
 			case 12708:
 				itemDef.name = "Pegasian boots";
 				itemDef.modelID = 29396;
-				itemDef.modelZoom = 900;
-				itemDef.modelRotation1 = 165;
-				itemDef.modelRotation2 = 99;
-				itemDef.modelOffset1 = 3;
-				itemDef.modelOffsetY = -7;
+				itemDef.modelZoom = 976;
+				itemDef.modelRotation1 = 147;
+				itemDef.modelRotation2 = 279;
+				itemDef.modelOffset1 = 5;
+				itemDef.modelOffsetY = -5;
 				itemDef.maleWearId = 29252;
 				itemDef.femaleWearId = 29253;
 				itemDef.actions = new String[5];
@@ -528,25 +534,73 @@ public final class ItemDefinition {
 			case 12710:
 				itemDef.name = "Primordial boots";
 				itemDef.modelID = 29397;
-				itemDef.modelZoom = 900;
-				itemDef.modelRotation1 = 165;
-				itemDef.modelRotation2 = 99;
-				itemDef.modelOffset1 = 3;
-				itemDef.modelOffsetY = -7;
+				itemDef.modelZoom = 976;
+				itemDef.modelRotation1 = 147;
+				itemDef.modelRotation2 = 279;
+				itemDef.modelOffset1 = 5;
+				itemDef.modelOffsetY = -5;
 				itemDef.maleWearId = 29250;
 				itemDef.femaleWearId = 29255;
 				itemDef.actions = new String[5];
 				itemDef.actions[1] = "Wear";
 				break;
 
+			case 6640:
+				itemDef.setDefaults();
+				itemDef.name = "Primordial crystal";
+				itemDef.description2 = "A pair of upgraded steadfast boots.";
+				itemDef.modelID = 29263;
+				itemDef.modelZoom = 740;
+				itemDef.modelRotation1 = 429;
+				itemDef.modelRotation2 = 225;
+				itemDef.modelOffset1 = 5;
+				itemDef.modelOffsetY = 5;
+				break;
+
+			case 6641:
+				itemDef.setDefaults();
+				itemDef.name = "Eternal crystal";
+				itemDef.description2 = "A pair of upgraded ragefire boots.";
+				itemDef.modelID = 29264;
+				itemDef.modelZoom = 740;
+				itemDef.modelRotation1 = 429;
+				itemDef.modelRotation2 = 225;
+				itemDef.modelOffset1 = 5;
+				itemDef.modelOffsetY = 5;
+				break;
+
+			case 6642:
+				itemDef.setDefaults();
+				itemDef.name = "Pegasian crystal";
+				itemDef.description2 = "A pair of upgraded glaiven boots.";
+				itemDef.modelID = 29261;
+				itemDef.modelZoom = 740;
+				itemDef.modelRotation1 = 429;
+				itemDef.modelRotation2 = 225;
+				itemDef.modelOffset1 = 5;
+				itemDef.modelOffsetY = 5;
+				break;
+
+			case 6643:
+				itemDef.setDefaults();
+				itemDef.name = "Smouldering stone";
+				itemDef.description2 = "A smouldering stone from the depths of Hell.";
+				itemDef.modelID = 29262;
+				itemDef.modelZoom = 653;
+				itemDef.modelRotation1 = 229;
+				itemDef.modelRotation2 = 1818;
+				itemDef.modelOffset1 = 0;
+				itemDef.modelOffsetY = -8;
+				break;
+
 			case 12712:
 				itemDef.name = "Eternal boots";
 				itemDef.modelID = 29394;
-				itemDef.modelZoom = 900;
-				itemDef.modelRotation1 = 165;
-				itemDef.modelRotation2 = 99;
-				itemDef.modelOffset1 = 3;
-				itemDef.modelOffsetY = -7;
+				itemDef.modelZoom = 976;
+				itemDef.modelRotation1 = 147;
+				itemDef.modelRotation2 = 279;
+				itemDef.modelOffset1 = 5;
+				itemDef.modelOffsetY = -5;
 				itemDef.maleWearId = 29249;
 				itemDef.femaleWearId = 29254;
 				itemDef.actions = new String[5];
@@ -2427,7 +2481,7 @@ public final class ItemDefinition {
 				itemDef.femaleWearId = 363;
 				itemDef.maleDialogue = 39372;
 				itemDef.femaleDialogue = 39372;
-				itemDef.name = "Disco Hat";
+				itemDef.name = "Disco hat";
 				itemDef.description = "A colorful hat.".getBytes();
 				break;
 			case 21001:
@@ -6064,22 +6118,174 @@ public final class ItemDefinition {
 				itemDef.modelID = 2429;
 				itemDef.name = "3rd age bow";
 				itemDef.actions = new String[] { null, null, null, null, null, null };
-				itemDef.modelZoom = 760;
-				itemDef.modelRotation2 = 28;
-				itemDef.modelRotation1 = 552;
-				itemDef.modelOffsetX = itemDef.modelOffset1 = 0;
+				itemDef.modelZoom = 1979;
+				itemDef.modelRotation1 = 1589;
+				itemDef.modelRotation2 = 768;
+				itemDef.modelOffset1 = -20;
+				itemDef.modelOffsetY = -14;
+				itemDef.modelOffsetX = 835;
 				itemDef.stackable = true;
 				itemDef.certID = 21136;
 				itemDef.certTemplateID = 799;
 				break;
-			/*case 20147:
+			case 21138:
+				itemDef.setDefaults();
+				itemDef.description2 = "A beautifully crafted wand infused by ancient wizards.";
+				itemDef.name = "3rd age wand";
+				itemDef.modelZoom = 1347;
+				itemDef.modelRotation1 = 1468;
+				itemDef.modelRotation2 = 1805;
+				itemDef.modelOffset1 = 0;
+				itemDef.modelOffsetY = 1;
+				itemDef.modelOffsetX = 835;
+				itemDef.modelID = 28654;
+				itemDef.maleWearId = 28619;
+				itemDef.femaleWearId = 28619;
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
+				break;
+			case 21139:
+				itemDef.setDefaults();
+				itemDef.modelID = 2429;
+				itemDef.description2 = "A beautifully crafted wand infused by ancient wizards.";
+				itemDef.name = "3rd age wand";
+				itemDef.actions = new String[] { null, null, null, null, null, null };
+				itemDef.modelZoom = 760;
+				itemDef.modelRotation2 = 28;
+				itemDef.modelRotation1 = 552;
+				itemDef.modelOffset1 = 0;
+				itemDef.modelOffsetY = 1;
+				itemDef.modelOffsetX = 835;
+				itemDef.stackable = true;
+				itemDef.certID = 21138;
+				itemDef.certTemplateID = 799;
+				break;
+			case 21140:
+				itemDef.setDefaults();
+				itemDef.modelID = 31524;
+				itemDef.maleWearId = 31227;
+				itemDef.femaleWearId = 31233;
+				itemDef.description2 = "A deep sense of torture burns within this powerful amulet.";
+				itemDef.name = "Amulet of torture";
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
+				itemDef.modelZoom = 620;
+				itemDef.modelRotation1 = 424;
+				itemDef.modelRotation2 = 68;
+				itemDef.modelOffset1 = 1;
+				itemDef.modelOffsetY = 16;
+				break;
+			case 21141:
+				itemDef.setDefaults();
+				itemDef.modelID = 31524;
+				itemDef.description2 = "A deep sense of torture burns within this powerful amulet.";
+				itemDef.name = "Amulet of torture";
+				itemDef.actions = new String[] { null, null, null, null, null, null };
+				itemDef.modelZoom = 620;
+				itemDef.modelRotation1 = 424;
+				itemDef.modelRotation2 = 68;
+				itemDef.modelOffset1 = 1;
+				itemDef.modelOffsetY = 16;
+				itemDef.stackable = true;
+				itemDef.certID = 21140;
+				itemDef.certTemplateID = 799;
+				break;
+			case 21142:
+				itemDef.setDefaults();
+				itemDef.modelID = 31522;
+				itemDef.maleWearId = 31237;
+				itemDef.femaleWearId = 31237;
+				itemDef.description2 = "A weapon forged from the wreckage of an airship.";
+				itemDef.name = "Light ballista";
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
+				itemDef.modelZoom = 1250;
+				itemDef.modelRotation1 = 189;
+				itemDef.modelRotation2 = 148;
+				itemDef.modelOffset1 = 8;
+				itemDef.modelOffsetY = -18;
+				break;
+			case 21143:
+				itemDef.setDefaults();
+				itemDef.modelID = 31522;
+				itemDef.description2 = "A weapon forged from the wreckage of an airship.";
+				itemDef.name = "Light ballista";
+				itemDef.actions = new String[] { null, null, null, null, null, null };
+				itemDef.modelZoom = 760;
+				itemDef.modelZoom = 1250;
+				itemDef.modelRotation1 = 189;
+				itemDef.modelRotation2 = 148;
+				itemDef.modelOffset1 = 8;
+				itemDef.modelOffsetY = -18;
+				itemDef.stackable = true;
+				itemDef.certID = 21142;
+				itemDef.certTemplateID = 799;
+				break;
+			case 21144:
+				itemDef.setDefaults();
+				itemDef.modelID = 31523;
+				itemDef.maleWearId = 31236;
+				itemDef.femaleWearId = 31236;
+				itemDef.description2 = "A weapon forged from the wreckage of an airship.";
+				itemDef.name = "Heavy ballista";
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
+				itemDef.modelZoom = 1284;
+				itemDef.modelRotation1 = 189;
+				itemDef.modelRotation2 = 148;
+				itemDef.modelOffset1 = 8;
+				itemDef.modelOffsetY = -18;
+				itemDef.maleWieldX = 55; //char north/south
+				itemDef.maleWieldY = 0; // char to left/right
+				itemDef.maleWieldZ = 26; // char up/down
+				break;
+			case 21145:
+				itemDef.setDefaults();
+				itemDef.modelID = 31523;
+				itemDef.description2 = "A weapon forged from the wreckage of an airship.";
+				itemDef.name = "Heavy ballista";
+				itemDef.actions = new String[] { null, null, null, null, null, null };
+				itemDef.modelZoom = 1284;
+				itemDef.modelRotation1 = 189;
+				itemDef.modelRotation2 = 148;
+				itemDef.modelOffset1 = 8;
+				itemDef.modelOffsetY = -18;
+				itemDef.stackable = true;
+				itemDef.certID = 21142;
+				itemDef.certTemplateID = 799;
+				break;
+			case 21146:
+				itemDef.setDefaults();
+				itemDef.modelID = 31511;
+				itemDef.description2 = "A dragon tipped javelin.";
+				itemDef.name = "Dragon javelin";
+				itemDef.groundActions = new String[] { null, null, "Take", null, null };
+				itemDef.actions = new String[] { null, "Wield", null, null, "Drop" };
+				itemDef.modelZoom = 1470;
+				itemDef.modelRotation1 = 268;
+				itemDef.modelRotation2 = 1964;
+				itemDef.modelOffset1 = -2;
+				itemDef.modelOffsetY = 63;
+				itemDef.stackable = true;
+				break;
+
+			case 20147:
 				itemDef.modifiedModelColors = new int[2];
 				itemDef.originalModelColors = new int[2];
 				itemDef.modifiedModelColors[0] = 4550;
 				itemDef.originalModelColors[0] = 1;
 				itemDef.modifiedModelColors[1] = 4540;
 				itemDef.originalModelColors[1] = 1;
-				break;*/
+				break;
+
+			case 21148:
+				itemDef.setDefaults();
+				itemDef.imitate(get(15434));
+				itemDef.name = "Cape of darkness";
+				itemDef.description2 = "A cape made from a dark realm.";
+				itemDef.originalModelColors = new int[] {0, 12, 12, 7, 5, 2};
+				itemDef.modifiedModelColors = new int[] {42, 32, 39577, 39572, 39570, 39567};
+				break;
 
 
 			case 11283:

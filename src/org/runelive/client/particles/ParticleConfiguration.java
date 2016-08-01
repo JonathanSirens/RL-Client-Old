@@ -24,6 +24,11 @@ public class ParticleConfiguration {//65297
 		//Black completionist cape
 		models.put(77009, new int[][] { { 494, 5 }, { 488, 5 }, { 485, 5 }, { 476, 5 }, { 482, 5 }, { 479, 5 }, { 491, 5 } });
 
+		/*
+		//Cape of darkness
+		models.put(45576, new int[][] { { 84, 5 }, { 60, 5 }, { 57, 5 }, { 15, 5 }, { 83, 5 }});
+*/
+
 		//Grey completionist cape
 		models.put(77008, new int[][] { { 494, 6 }, { 488, 6 }, { 485, 6 }, { 476, 6 }, { 482, 6 }, { 479, 6 }, { 491, 6 } });
 
