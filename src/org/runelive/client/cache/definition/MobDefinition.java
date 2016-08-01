@@ -1,5 +1,7 @@
 package org.runelive.client.cache.definition;
 
+import java.util.Arrays;
+
 import org.runelive.Configuration;
 import org.runelive.client.Client;
 import org.runelive.client.FrameReader;
@@ -31,7 +33,7 @@ public final class MobDefinition {
 		definition.readValues(buffer);
 		switch (id) {
 		
-		/*case 13727:
+		case 13727:
 			definition.npcModels = new int[] {8377};
 			definition.name = "Xuan";
 			definition.description = "The most loyal person you'll ever know.".getBytes();
@@ -39,7 +41,7 @@ public final class MobDefinition {
 			definition.walkAnimation = 819;
 			definition.actions = new String[] {"Talk-to", null, "Open-shop", "Clear-title", null};
 			definition.dialogueModels = new int[] {8324};
-			break;*/
+			break;
 
 		case 5866:
 			definition.name = "Cerberus";
@@ -460,7 +462,7 @@ public final class MobDefinition {
 			definition.standAnimation = 808;
 			definition.walkAnimation = 819;
 			definition.npcModels = new int[]{ 65291, 65322, 506, 529, 252, 9642, 62746, 13307, 62743, 53327 };
-			definition.dialogueModels = MobDefinition.get(517).dialogueModels;
+			definition.dialogueModels = new int[] { 39332, 39235 };
 			break;
 		case 132:
 			definition.name = "Blitz";

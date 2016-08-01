@@ -530,6 +530,26 @@ public class RSInterface {
 		tab.width = width;
 		tab.height = height;
 	}
+	
+	public static void addColorBox(int interfaceID, int width, int height) {
+		RSInterface rsi = addTabInterface(interfaceID);
+		rsi.type = 14;
+		rsi.height = height;
+		rsi.width = width;
+		rsi.anInt219 = 0xFF0000;
+	}
+	
+	public static void addItemModel(int interfaceID, int width, int height, int zoom) {
+		RSInterface rsi = addTabInterface(interfaceID);
+		rsi.type = 6;
+		rsi.mediaType = 1;
+		rsi.mediaID = 65300;//65297
+		rsi.modelZoom = zoom;
+		rsi.modelRotation1 = 0;
+		rsi.modelRotation2 = 1020;
+		rsi.height = height;
+		rsi.width = width;
+	}
 
 	public static void addRectangle(int id, int opacity, int color, boolean filled, int width, int height) {
 		RSInterface tab = interfaceCache[id] = new RSInterface();

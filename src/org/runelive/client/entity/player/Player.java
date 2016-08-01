@@ -16,6 +16,7 @@ import org.runelive.client.world.Model;
 
 public final class Player extends Entity {
 
+	public int[][] modifiedColors = new int[12][];
 	public static List mruNodes = new List(260);
 	public boolean aBoolean1699;
 	private long aLong1697;
@@ -167,18 +168,6 @@ public final class Player extends Entity {
 	}
 
 	public Model method452() {
-		/*
-		 * if (desc != null) { int j = -1;
-		 * 
-		 * if (super.anim >= 0 && super.anInt1529 == 0) { j =
-		 * Animation.cache[super.anim].frameIDs[super.anInt1527]; } else if
-		 * (super.anInt1517 >= 0) { j =
-		 * Animation.cache[super.anInt1517].frameIDs[super.
-		 * currentForcedAnimFrame]; }
-		 * 
-		 * Model model = desc.method164(-1, j, null, -1, -1, -1); return model;
-		 * }
-		 */
 		if (desc != null) {
 			int currentFrame = -1;
 			int nextFrame = -1;
@@ -236,85 +225,66 @@ public final class Player extends Entity {
 		}
 
 		Model model_1 = (Model) mruNodes.insertFromCache(l);
-
-		if (model_1 == null) {
+		if(model_1 == null)
+		{
 			boolean flag = false;
-
-			for (int i2 = 0; i2 < 12; i2++) {
+			for(int i2 = 0; i2 < 12; i2++)
+			{
 				int k2 = equipment[i2];
-
-				if (k1 >= 0 && i2 == 3) {
+				if(k1 >= 0 && i2 == 3)
 					k2 = k1;
-				}
-
-				if (j1 >= 0 && i2 == 5) {
+				if(j1 >= 0 && i2 == 5)
 					k2 = j1;
-				}
-
-				if (k2 >= 256 && k2 < 512 && !IdentityKit.cache[k2 - 256].isBodyModelLoaded()) {
+				if(k2 >= 256 && k2 < 512 && !IdentityKit.cache[k2 - 256].isBodyModelLoaded())
 					flag = true;
-				}
-
-				if (k2 >= 512 && !ItemDefinition.get(k2 - 512).method195(myGender)) {
+				if(k2 >= 512 && !ItemDefinition.get(k2 - 512).method195(myGender))
 					flag = true;
-				}
 			}
 
-			if (flag) {
-				if (aLong1697 != -1L) {
+			if(flag)
+			{
+				if(aLong1697 != -1L)
 					model_1 = (Model) mruNodes.insertFromCache(aLong1697);
-				}
-
-				if (model_1 == null) {
+				if(model_1 == null)
 					return null;
-				}
 			}
 		}
-
-		if (model_1 == null) {
+		if(model_1 == null)
+		{
 			Model aclass30_sub2_sub4_sub6s[] = new Model[12];
 			int j2 = 0;
-
-			for (int l2 = 0; l2 < 12; l2++) {
+			for(int l2 = 0; l2 < 12; l2++)
+			{
 				int i3 = equipment[l2];
-
-				if (k1 >= 0 && l2 == 3) {
+				if(k1 >= 0 && l2 == 3)
 					i3 = k1;
-				}
-
-				if (j1 >= 0 && l2 == 5) {
+				if(j1 >= 0 && l2 == 5)
 					i3 = j1;
-				}
-
-				if (i3 >= 256 && i3 < 512) {
+				if(i3 >= 256 && i3 < 512)
+				{
 					Model model_3 = IdentityKit.cache[i3 - 256].getBodyModel();
-
-					if (model_3 != null) {
+					if(model_3 != null)
 						aclass30_sub2_sub4_sub6s[j2++] = model_3;
-					}
 				}
-
-				if (i3 >= 512) {
-					Model model_4 = ItemDefinition.get(i3 - 512).method196(myGender);
-
-					if (model_4 != null) {
-						aclass30_sub2_sub4_sub6s[j2++] = model_4;
+				if(i3 >= 512) {
+					ItemDefinition def = ItemDefinition.get(i3 - 512);
+					Model model_4 = ItemDefinition.get(i3 - 512).getEquippedModel(myGender);
+					if(modifiedColors[l2] != null) {
+						for (int i11 = 0; i11 < def.modifiedModelColors.length; i11++)
+							model_4.method476(def.modifiedModelColors[i11], modifiedColors[l2][i11]);
 					}
+					if(model_4 != null)
+						aclass30_sub2_sub4_sub6s[j2++] = model_4;
 				}
 			}
 
 			model_1 = new Model(j2, aclass30_sub2_sub4_sub6s);
-
-			for (int j3 = 0; j3 < 5; j3++) {
-				if (anIntArray1700[j3] != 0) {
-					model_1.method476(Client.anIntArrayArray1003[j3][0],
-							Client.anIntArrayArray1003[j3][anIntArray1700[j3]]);
-
-					if (j3 == 1) {
+			for(int j3 = 0; j3 < 5; j3++)
+				if(anIntArray1700[j3] != 0) {
+					model_1.method476(Client.anIntArrayArray1003[j3][0], Client.anIntArrayArray1003[j3][anIntArray1700[j3]]);
+					if(j3 == 1)
 						model_1.method476(Client.anIntArray1204[0], Client.anIntArray1204[anIntArray1700[j3]]);
-					}
 				}
-			}
 
 			model_1.method469();
 			model_1.method478(132, 132, 132);
@@ -322,11 +292,8 @@ public final class Player extends Entity {
 			mruNodes.removeFromCache(model_1, l);
 			aLong1697 = l;
 		}
-
-		if (aBoolean1699) {
+		if(aBoolean1699)
 			return model_1;
-		}
-
 		Model model_2 = Model.aModel_1621;
 		model_2.method464(model_1, FrameReader.isNullFrame(currentFrame) & FrameReader.isNullFrame(i1));
 		if (currentFrame != -1 && i1 != -1) {
@@ -336,7 +303,6 @@ public final class Player extends Entity {
 		} else {
 			model_2.applyTransform(currentFrame);
 		}
-
 		model_2.method466();
 		model_2.anIntArrayArray1658 = null;
 		model_2.anIntArrayArray1657 = null;
@@ -397,7 +363,7 @@ public final class Player extends Entity {
 
 	public void updatePlayer(ByteBuffer stream) {
 		stream.position = 0;
-		myGender = stream.getUnsignedByte();
+		myGender = stream.getUnsignedByte();//0 = male, 1 = female
 		headIcon = stream.getUnsignedByte();
 		bountyHunterIcon = stream.getUnsignedByte();
 		skulled = stream.getUnsignedShort() == 1;
@@ -417,6 +383,22 @@ public final class Player extends Entity {
 				desc = MobDefinition.get(stream.getUnsignedShort());
 				break;
 			}
+			/*if(partId == 1) {
+				int length = stream.getUnsignedByte();
+				if(length > 0) {
+					int[] colors = new int[length];
+					for(int i = 0; i < length; i++) {
+						colors[i] = stream.getShort();
+					}
+					modifiedColors[partId] = colors;
+				} else {
+					modifiedColors[partId] = null;
+				}
+				mruNodes.unlinkAll();
+				if(this == Client.myPlayer) {
+					Client.getClient().updateMaxCapeColors(modifiedColors[partId]);
+				}
+			}*/
 			if (partId == 8)
 				Client.myHeadAndJaw[0] = equipment[partId] - 256;
 			if (partId == 11)

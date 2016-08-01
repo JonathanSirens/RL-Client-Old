@@ -86,7 +86,7 @@ public final class List {
 		throw new RuntimeException();
 	}
 
-	void unlinkAll() {
+	public void unlinkAll() {
 		do {
 			NodeSub nodeSub = nodeSubList.popTail();
 

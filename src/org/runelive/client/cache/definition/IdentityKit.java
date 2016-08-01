@@ -6,177 +6,133 @@ import org.runelive.client.world.Model;
 
 public final class IdentityKit {
 
-	private static int length;
-	public static IdentityKit[] cache;
-
 	public static void unpackConfig(Archive streamLoader) {
 		ByteBuffer stream = new ByteBuffer(streamLoader.get("idk.dat"));
-		setLength(stream.getUnsignedShort());
-
-		if (cache == null) {
-			cache = new IdentityKit[getLength()];
-		}
-
-		// List<Integer> modelIds = new ArrayList<>();
-		for (int j = 0; j < getLength(); j++) {
-			if (cache[j] == null) {
+		length = stream.getUnsignedShort();
+		if(cache == null)
+			cache = new IdentityKit[length];
+		for(int j = 0; j < length; j++)
+		{
+			if(cache[j] == null)
 				cache[j] = new IdentityKit();
-			}
-
 			cache[j].readValues(stream);
-
-			// for (int id : cache[j].bodyModelIds) {
-			// modelIds.add(id);
-			// }
 		}
-		// System.out.println("IDK models: " + modelIds.toString());
 	}
 
-	private int anInt657;
-	private int[] bodyModelIds;
-	private final int[] srcColors;
-	private final int[] destColors;
-	private final int[] headModelIds = { -1, -1, -1, -1, -1 };
-	private boolean aBoolean662;
+	private void readValues(ByteBuffer stream)
+	{
+		do
+		{
+			int i = stream.getUnsignedByte();
+			if(i == 0)
+				return;
+			if(i == 1)
+				anInt657 = stream.getUnsignedByte();
+			else
+			if(i == 2)
+			{
+				int j = stream.getUnsignedByte();
+				anIntArray658 = new int[j];
+				for(int k = 0; k < j; k++)
+					anIntArray658[k] = stream.getUnsignedShort();
 
-	public IdentityKit() {
-		setBodyPartId(-1);
-		srcColors = new int[6];
-		destColors = new int[6];
-		setNotSelectable(false);
+			} else
+			if(i == 3)
+				aBoolean662 = true;
+			else
+			if(i >= 40 && i < 50)
+				anIntArray659[i - 40] = stream.getUnsignedShort();
+			else
+			if(i >= 50 && i < 60)
+				anIntArray660[i - 50] = stream.getUnsignedShort();
+			else
+			if(i >= 60 && i < 70)
+				anIntArray661[i - 60] = stream.getUnsignedShort();
+			else
+				System.out.println("Error unrecognised config code: " + i);
+		} while(true);
 	}
 
-	public boolean isBodyModelLoaded() {
-		if (bodyModelIds == null) {
+	public boolean isBodyModelLoaded()
+	{
+		if(anIntArray658 == null)
 			return true;
-		}
-
 		boolean flag = true;
-
-		for (int j = 0; j < bodyModelIds.length; j++) {
-			if (!Model.isModelLoaded(bodyModelIds[j])) {
+		for(int j = 0; j < anIntArray658.length; j++)
+			if(!Model.isModelLoaded(anIntArray658[j]))
 				flag = false;
-			}
-		}
 
 		return flag;
 	}
 
-	public Model getBodyModel() {
-		if (bodyModelIds == null) {
+	public Model getBodyModel()
+	{
+		if(anIntArray658 == null)
 			return null;
-		}
-
-		Model models[] = new Model[bodyModelIds.length];
-
-		for (int i = 0; i < bodyModelIds.length; i++) {
-			models[i] = Model.fetchModel(bodyModelIds[i]);
-		}
+		Model aclass30_sub2_sub4_sub6s[] = new Model[anIntArray658.length];
+		for(int i = 0; i < anIntArray658.length; i++)
+			aclass30_sub2_sub4_sub6s[i] = Model.fetchModel(anIntArray658[i]);
 
 		Model model;
-
-		if (models.length == 1) {
-			model = models[0];
-		} else {
-			model = new Model(models.length, models);
-		}
-
-		for (int j = 0; j < 6; j++) {
-			if (srcColors[j] == 0) {
+		if(aclass30_sub2_sub4_sub6s.length == 1)
+			model = aclass30_sub2_sub4_sub6s[0];
+		else
+			model = new Model(aclass30_sub2_sub4_sub6s.length, aclass30_sub2_sub4_sub6s);
+		for(int j = 0; j < 6; j++)
+		{
+			if(anIntArray659[j] == 0)
 				break;
-			}
-			model.method476(srcColors[j], destColors[j]);
+			model.method476(anIntArray659[j], anIntArray660[j]);
 		}
 
 		return model;
 	}
 
-	public boolean isDialogModelsLoaded() {
+	public boolean isDialogModelsLoaded()
+	{
 		boolean flag1 = true;
-
-		for (int i = 0; i < 5; i++) {
-			if (headModelIds[i] != -1 && !Model.isModelLoaded(headModelIds[i])) {
+		for(int i = 0; i < 5; i++)
+			if(anIntArray661[i] != -1 && !Model.isModelLoaded(anIntArray661[i]))
 				flag1 = false;
-			}
-		}
 
 		return flag1;
 	}
 
-	public Model getDialogModel() {
-		Model models[] = new Model[5];
+	public Model getDialogModel()
+	{
+		Model aclass30_sub2_sub4_sub6s[] = new Model[5];
 		int j = 0;
+		for(int k = 0; k < 5; k++)
+			if(anIntArray661[k] != -1)
+				aclass30_sub2_sub4_sub6s[j++] = Model.fetchModel(anIntArray661[k]);
 
-		for (int k = 0; k < 5; k++) {
-			if (headModelIds[k] != -1) {
-				models[j++] = Model.fetchModel(headModelIds[k]);
-			}
-		}
-
-		Model model = new Model(j, models);
-
-		for (int l = 0; l < 6; l++) {
-			if (srcColors[l] == 0) {
+		Model model = new Model(j, aclass30_sub2_sub4_sub6s);
+		for(int l = 0; l < 6; l++)
+		{
+			if(anIntArray659[l] == 0)
 				break;
-			}
-			model.method476(srcColors[l], destColors[l]);
+			model.method476(anIntArray659[l], anIntArray660[l]);
 		}
 
 		return model;
 	}
 
-	private void readValues(ByteBuffer buffer) {
-		do {
-			int opcode = buffer.getUnsignedByte();
-
-			if (opcode == 0) {
-				return;
-			}
-			if (opcode == 1) {
-				setBodyPartId(buffer.getUnsignedByte());
-			} else if (opcode == 2) {
-				int total = buffer.getUnsignedByte();
-				bodyModelIds = new int[total];
-				for (int k = 0; k < total; k++) {
-					bodyModelIds[k] = buffer.getUnsignedShort();
-				}
-
-			} else if (opcode == 3) {
-				setNotSelectable(true);
-			} else if (opcode >= 40 && opcode < 50) {
-				srcColors[opcode - 40] = buffer.getUnsignedShort();
-			} else if (opcode >= 50 && opcode < 60) {
-				destColors[opcode - 50] = buffer.getUnsignedShort();
-			} else if (opcode >= 60 && opcode < 70) {
-				headModelIds[opcode - 60] = buffer.getUnsignedShort();
-			} else {
-				System.out.println("Error unrecognised config code: " + opcode);
-			}
-		} while (true);
+	private IdentityKit()
+	{
+		anInt657 = -1;
+		anIntArray659 = new int[6];
+		anIntArray660 = new int[6];
+		aBoolean662 = false;
 	}
 
-	public boolean isaBoolean662() {
-		return aBoolean662;
-	}
-
-	public void setNotSelectable(boolean aBoolean662) {
-		this.aBoolean662 = aBoolean662;
-	}
-
-	public static int getLength() {
-		return length;
-	}
-
-	public static void setLength(int length) {
-		IdentityKit.length = length;
-	}
-
-	public int getAnInt657() {
-		return anInt657;
-	}
-
-	public void setBodyPartId(int anInt657) {
-		this.anInt657 = anInt657;
-	}
-
+	public static int length;
+	public static IdentityKit cache[];
+	public int anInt657;
+	private int[] anIntArray658;
+	private final int[] anIntArray659;
+	private final int[] anIntArray660;
+	private final int[] anIntArray661 = {
+		-1, -1, -1, -1, -1
+	};
+	public boolean aBoolean662;
 }

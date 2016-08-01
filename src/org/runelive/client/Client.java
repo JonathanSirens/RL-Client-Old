@@ -7,6 +7,8 @@ import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
 import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,6 +25,13 @@ import java.util.zip.CRC32;
 import java.util.zip.GZIPOutputStream;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JColorChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.runelive.Configuration;
 import org.runelive.alertify.Alertify;
@@ -86,6 +95,7 @@ import org.runelive.client.renderable.Entity;
 import org.runelive.client.renderable.Item;
 import org.runelive.client.renderable.NPC;
 import org.runelive.client.renderable.PlayerProjectile;
+import org.runelive.client.util.ColorUtil;
 import org.runelive.client.util.ComputerAddress;
 import org.runelive.client.util.FileUtilities;
 import org.runelive.client.util.StopWatch;
@@ -1211,7 +1221,6 @@ public class Client extends GameRenderer {
 	public String promptMessage;
 	public int publicChatMode;
 	public int reportAbuseInterfaceID;
-	private RSImageProducer rightFrame;
 	private int rights;
 	private boolean running;
 	private ScriptManager scriptManager;
@@ -1959,25 +1968,27 @@ public class Client extends GameRenderer {
 			 * npcs
 			 */
 			if (face == 1) {
-				NPC npc = npcArray[index];
-				if (npc.definitionOverride.npcSizeInSquares == 1 && (npc.x & 0x7f) == 64 && (npc.y & 0x7f) == 64) {
-					for (int j2 = 0; j2 < npcCount; j2++) {
-						NPC npc2 = npcArray[npcIndices[j2]];
-						if (npc2 != null && npc2 != npc && npc2.definitionOverride.npcSizeInSquares == 1
-								&& npc2.x == npc.x && npc2.y == npc.y) {
-							buildAtNPCMenu(npc2.definitionOverride, npcIndices[j2], y, x);
+				try {
+					NPC npc = npcArray[index];
+					if (npc.definitionOverride.npcSizeInSquares == 1 && (npc.x & 0x7f) == 64 && (npc.y & 0x7f) == 64) {
+						for (int j2 = 0; j2 < npcCount; j2++) {
+							NPC npc2 = npcArray[npcIndices[j2]];
+							if (npc2 != null && npc2 != npc && npc2.definitionOverride.npcSizeInSquares == 1
+									&& npc2.x == npc.x && npc2.y == npc.y) {
+								buildAtNPCMenu(npc2.definitionOverride, npcIndices[j2], y, x);
+							}
+						}
+
+						for (int l2 = 0; l2 < playerCount; l2++) {
+							Player player = playerArray[playerIndices[l2]];
+
+							if (player != null && player.x == npc.x && player.y == npc.y) {
+								buildAtPlayerMenu(x, playerIndices[l2], player, y);
+							}
 						}
 					}
-
-					for (int l2 = 0; l2 < playerCount; l2++) {
-						Player player = playerArray[playerIndices[l2]];
-
-						if (player != null && player.x == npc.x && player.y == npc.y) {
-							buildAtPlayerMenu(x, playerIndices[l2], player, y);
-						}
-					}
-				}
-				buildAtNPCMenu(npc.definitionOverride, index, y, x);
+					buildAtNPCMenu(npc.definitionOverride, index, y, x);
+				} catch(Exception e) {}
 			}
 
 			/**
@@ -3355,7 +3366,6 @@ public class Client extends GameRenderer {
 		tabAreaIP = null;
 		leftFrame = null;
 		topFrame = null;
-		rightFrame = null;
 		mapAreaIP = null;
 		gameScreenIP = null;
 		chatAreaIP = null;
@@ -3722,116 +3732,27 @@ public class Client extends GameRenderer {
 			}
 		}
 		width += 8;
-		int menHeight = 15 * menuActionRow + 21;
-		if (GameFrame.getScreenMode() == ScreenMode.FIXED) {
-			if (super.saveClickX > 4 && super.saveClickY > 4 && super.saveClickX < 516 && super.saveClickY < 338) {
-				int offsetX = super.saveClickX - 4 - width / 2;
-				if (offsetX + width > 512) {
-					offsetX = 512 - width;
-				}
-				if (offsetX < 0) {
-					offsetX = 0;
-				}
-				int offsetY = super.saveClickY - 4;
-				if (offsetY + menHeight > 334) {
-					offsetY = 334 - menHeight;
-				}
-				if (offsetY < 0) {
-					offsetY = 0;
-				}
-				menuOpen = true;
-				menuScreenArea = 0;
-				menuOffsetX = offsetX;
-				menuOffsetY = offsetY;
-				menuWidth = width;
-				menuHeight = 15 * menuActionRow + 22;
+		int offset = 15 * menuActionRow + 21;
+		if(super.saveClickX > 0 && super.saveClickY > 0 && super.saveClickX < clientWidth && super.saveClickY < clientHeight) {
+			int xClick = super.saveClickX - width / 2;
+			if (xClick + width > clientWidth - 4) {
+				xClick = clientWidth - 4 - width;
 			}
-			if (super.saveClickX > 519 && super.saveClickY > 168 && super.saveClickX < 765 && super.saveClickY < 503) {
-				int offsetX = super.saveClickX - 519 - width / 2;
-				if (offsetX < 0) {
-					offsetX = 0;
-				} else if (offsetX + width > 245) {
-					offsetX = 245 - width;
-				}
-				int offsetY = super.saveClickY - 168;
-				if (offsetY < 0) {
-					offsetY = 0;
-				} else if (offsetY + menHeight > 333) {
-					offsetY = 333 - menHeight;
-				}
-				menuOpen = true;
-				menuScreenArea = 1;
-				menuOffsetX = offsetX;
-				menuOffsetY = offsetY;
-				menuWidth = width;
-				menuHeight = 15 * menuActionRow + 22;
+			if (xClick < 0) {
+				xClick = 0;
 			}
-			if (super.saveClickX > 0 && super.saveClickY > 338 && super.saveClickX < 516 && super.saveClickY < 503) {
-				int offsetX = super.saveClickX - 0 - width / 2;
-				if (offsetX < 0) {
-					offsetX = 0;
-				} else if (offsetX + width > 516) {
-					offsetX = 516 - width;
-				}
-				int offsetY = super.saveClickY - 338;
-				if (offsetY < 0) {
-					offsetY = 0;
-				} else if (offsetY + menHeight > 165) {
-					offsetY = 165 - menHeight;
-				}
-				menuOpen = true;
-				menuScreenArea = 2;
-				menuOffsetX = offsetX;
-				menuOffsetY = offsetY;
-				menuWidth = width;
-				menuHeight = 15 * menuActionRow + 22;
+			int yClick = super.saveClickY - 0;
+			if (yClick + offset > clientHeight - 6) {
+				yClick = clientHeight - 6 - offset;
 			}
-			// if(super.saveClickX > 0 && super.saveClickY > 338 &&
-			// super.saveClickX < 516 && super.saveClickY < 503) {
-			if (super.saveClickX > 519 && super.saveClickY > 0 && super.saveClickX < 765 && super.saveClickY < 168) {
-				int offsetX = super.saveClickX - 519 - width / 2;
-				if (offsetX < 0) {
-					offsetX = 0;
-				} else if (offsetX + width > 245) {
-					offsetX = 245 - width;
-				}
-				int offsetY = super.saveClickY - 0;
-				if (offsetY < 0) {
-					offsetY = 0;
-				} else if (offsetY + menHeight > 168) {
-					offsetY = 168 - menHeight;
-				}
-				menuOpen = true;
-				menuScreenArea = 3;
-				menuOffsetX = offsetX;
-				menuOffsetY = offsetY;
-				menuWidth = width;
-				menuHeight = 15 * menuActionRow + 22;
+			if (yClick < 0) {
+				yClick = 0;
 			}
-		} else {
-			if (super.saveClickX > 0 && super.saveClickY > 0 && super.saveClickX < getScreenWidth()
-					&& super.saveClickY < getScreenHeight()) {
-				int offsetX = super.saveClickX - 0 - width / 2;
-				if (offsetX + width > getScreenWidth()) {
-					offsetX = getScreenWidth() - width;
-				}
-				if (offsetX < 0) {
-					offsetX = 0;
-				}
-				int offsetY = super.saveClickY - 0;
-				if (offsetY + menHeight > getScreenHeight()) {
-					offsetY = getScreenHeight() - menHeight;
-				}
-				if (offsetY < 0) {
-					offsetY = 0;
-				}
-				menuOpen = true;
-				menuScreenArea = 0;
-				menuOffsetX = offsetX;
-				menuOffsetY = offsetY;
-				menuWidth = width;
-				menuHeight = 15 * menuActionRow + 22;
-			}
+			menuOpen = true;
+			menuOffsetX = xClick;
+			menuOffsetY = yClick;
+			menuWidth = width;
+			menuHeight = 15 * menuActionRow + 22;
 		}
 	}
 
@@ -3863,6 +3784,100 @@ public class Client extends GameRenderer {
 	}
 
 	private int currentActionMenu;
+	
+	 public Color maxCapeColor = null;
+	 public int maxCapeSlot = -1;
+	 public int maxCapeInterfaceId = -1;
+	 
+	 public static void hideTransparencyControls(JColorChooser cc) {
+	        AbstractColorChooserPanel[] colorPanels = cc.getChooserPanels();
+	        for (int i = 0; i < colorPanels.length; i++) {
+	            AbstractColorChooserPanel cp = colorPanels[i];
+	            try {
+	                Field f = cp.getClass().getDeclaredField("panel");
+	                f.setAccessible(true);
+	                Object colorPanel = f.get(cp);
+
+	                Field f2 = colorPanel.getClass().getDeclaredField("spinners");
+	                f2.setAccessible(true);
+	                Object sliders = f2.get(colorPanel);
+
+	                Object transparencySlider = java.lang.reflect.Array.get(sliders, 3);
+	                if (i == colorPanels.length - 1)
+	                    transparencySlider = java.lang.reflect.Array.get(sliders, 4);
+
+	                Method setVisible = transparencySlider.getClass().getDeclaredMethod(
+	                    "setVisible", boolean.class);
+	                setVisible.setAccessible(true);
+	                setVisible.invoke(transparencySlider, false);
+	            } catch (Throwable t) {}
+	        }
+	    }
+	 
+	private void selectColor(String title, int slot, int interfaceId) {
+		
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				
+				JColorChooser cc = new JColorChooser();
+            	AbstractColorChooserPanel[] panels=cc.getChooserPanels();
+            	
+                for(AbstractColorChooserPanel p:panels){
+                    switch (p.getDisplayName()) {
+                        case "Swatches":
+                        case "HSV":
+                        case "RGB":
+                        case "CMYK":
+                            cc.removeChooserPanel(p);
+                            break;
+                    }
+                }
+                
+                cc.setColor(RSInterface.interfaceCache[interfaceId].anInt219);
+                cc.setPreviewPanel(new JPanel());
+				cc.getSelectionModel().addChangeListener(new ChangeListener() {
+					public void stateChanged(ChangeEvent e) {
+						maxCapeColor = cc.getColor();
+						maxCapeSlot = slot;
+						maxCapeInterfaceId = interfaceId;
+					}
+				});
+				
+				hideTransparencyControls(cc);
+				
+                JOptionPane.showMessageDialog(null, cc, title, JOptionPane.DEFAULT_OPTION, new ImageIcon());
+                
+			}
+			
+		}).start();
+		
+	}
+	
+	public int[] maxCapeColors = { 65214, 65200, 65186, 62995 };
+	public int[] previousMaxCapeColors = { 65214, 65200, 65186, 62995 };
+	
+	public void updateMaxCapeColors(int[] colors) {
+		if(openInterfaceID != 60000) {
+			if(colors == null) {
+				maxCapeColors = new int[] { 65214, 65200, 65186, 62995 };
+				for(int i = 0; i < maxCapeColors.length; i++) {
+					previousMaxCapeColors[i] = maxCapeColors[i];
+				}
+			} else {
+				for(int i = 0; i < maxCapeColors.length; i++) {
+					previousMaxCapeColors[i] = maxCapeColors[i];
+					maxCapeColors[i] = colors[i];
+				}
+			}
+			System.out.println(Arrays.toString(maxCapeColors));
+			RSInterface.interfaceCache[60004].anInt219 = ColorUtil.toRGB(maxCapeColors[0]);
+			RSInterface.interfaceCache[60006].anInt219 = ColorUtil.toRGB(maxCapeColors[1]);
+			RSInterface.interfaceCache[60008].anInt219 = ColorUtil.toRGB(maxCapeColors[2]);
+			RSInterface.interfaceCache[60010].anInt219 = ColorUtil.toRGB(maxCapeColors[3]);
+		}
+	}
 
 	public void doAction(int actionId) {
 		if (actionId < 0) {
@@ -3884,6 +3899,34 @@ public class Client extends GameRenderer {
 		int x = slot;
 		int y = interfaceId;
 		int id = nodeId > 0x7fff ? fourthMenuAction : nodeId >> 14 & 0x7fff;
+		if(openInterfaceID == 60000) {
+			switch(interfaceId) {
+			case 60005:
+				selectColor("Edit detail (top) colour", 0, 60004);
+				break;
+			case 60007:
+				selectColor("Edit background (top) colour", 1, 60006);
+				break;
+			case 60009:
+				selectColor("Edit detail (bottom) colour", 2, 60008);
+				break;
+			case 60011:
+				selectColor("Edit background (bottom) colour", 3, 60010);
+				break;
+			case 60012:
+				getOut().putOpcode(186);
+				getOut().putShort(14019);
+				getOut().getByte(maxCapeColors.length);
+				for(int i1 = 0; i1 < maxCapeColors.length; i1++) {
+					getOut().putInt(maxCapeColors[i1]);
+				}
+				break;
+			case 60002:
+				closeGameInterfaces();
+				break;
+			}
+			return;
+		}
 		if (action == 1045) {// Toggle quick prayers / curses
 			if (openInterfaceID != -1)
 				pushMessage("Please close the open interface first.", 0, "");
@@ -5627,7 +5670,9 @@ public class Client extends GameRenderer {
 						-130);
 				
 			} else if ((getWalkableInterfaceId() == 25347) && GameFrame.getScreenMode() != ScreenMode.FIXED) {
-				drawInterface(0, getScreenWidth() - 750, RSInterface.interfaceCache[getWalkableInterfaceId()], 0);
+				int x = getScreenWidth() - 750;
+				int y = 0;
+				drawInterface(0, x, RSInterface.interfaceCache[getWalkableInterfaceId()], y);
 			} else if (getWalkableInterfaceId() == 37200 && GameFrame.getScreenMode() != ScreenMode.FIXED) {
 				drawInterface(0, getScreenWidth() - 765, RSInterface.interfaceCache[getWalkableInterfaceId()], -200);
 			} else if (getWalkableInterfaceId() == 21005 && GameFrame.getScreenMode() != ScreenMode.FIXED) {
@@ -5704,12 +5749,18 @@ public class Client extends GameRenderer {
 		if (openInterfaceID == 5292)
 			drawOnBankInterface();
 		method70();
+		if (loggedIn && Configuration.MONEY_POUCH_ENABLED) {
+			mapArea.displayMoneyPouch(this);
+		}
 
+		if (PlayerHandler.showXP && loggedIn) {
+			mapArea.displayXPCounter(this);
+		}
 		if (!menuOpen) {
 			processRightClick();
 			drawTooltip();
 		} else if (menuScreenArea == 0) {
-			drawMenu();
+			drawMenu(GameFrame.isFixed() ? 4 : 0, GameFrame.isFixed() ? 4 : 0);
 		}
 
 		if (drawMultiwayIcon == 1) {
@@ -5848,6 +5899,10 @@ public class Client extends GameRenderer {
 			Canvas3D.centerY = canvasCenterY;
 			Canvas3D.lineOffsets = canvasPixels;
 		}
+	}
+	
+	public void drawColorBox(int color, int xPos, int yPos, int width, int height) {
+		Canvas2D.fillRectangle(color, yPos, width, height, 256, xPos);
 	}
 
 	private void drawBlackBox(int x, int y) {
@@ -6313,12 +6368,6 @@ public class Client extends GameRenderer {
 				}
 				drawInterface(0, 0, rsInterface, 8);
 
-				if (!menuOpen) {
-					processRightClick();
-					drawTooltip();
-				} else {
-					drawMenu();
-				}
 			}
 			drawCount++;
 			super.fullGameScreen.drawGraphics(0, super.graphics, 0);
@@ -6344,6 +6393,13 @@ public class Client extends GameRenderer {
 				}
 				mapAreaIP.drawGraphics(mapArea.getyPos(), super.graphics, mapArea.getxPos());
 			}
+		}
+		
+		if (!menuOpen) {
+			processRightClick();
+			drawTooltip();
+		} else {
+			drawMenu(GameFrame.isFixed() ? 4 : 0, GameFrame.isFixed() ? 4 : 0);
 		}
 
 		drawTabArea();
@@ -6442,10 +6498,6 @@ public class Client extends GameRenderer {
 			tabAreaAltered = false;
 			aRSImageProducer_1125.initDrawingArea();
 			gameScreenIP.initDrawingArea();
-		}
-
-		if (menuOpen) {
-			drawMenu();
 		}
 
 		anInt945 = 0;
@@ -7320,6 +7372,8 @@ public class Client extends GameRenderer {
 						else
 							sprite.drawSprite(childX, childY);
 					}
+				} else if(childInterface.type == 14) {
+					drawColorBox(childInterface.anInt219, childX, childY, childInterface.width, childInterface.height);
 				}
 			}
 		}
@@ -11006,7 +11060,9 @@ public class Client extends GameRenderer {
 			worldController.clearObj5Cache();
 		}
 
-		if (Configuration.FOG_ENABLED) {
+		
+		boolean underground = !(getPlayerX() >= 270 && getPlayerX() <= 465 && getPlayerY() >= 335 && getPlayerY() <= 495);
+		if (Configuration.FOG_ENABLED && !underground) {
 			if (!switchColor) {
 				if (fog.rgb != fadeColors(new Color(fog.rgb), new Color(fadingToColor), fadeStep)) {
 					switchColor = true;
@@ -11140,14 +11196,6 @@ public class Client extends GameRenderer {
 			draw3dScreen();
 			drawConsoleArea();
 			drawConsole();
-		}
-		
-		if (loggedIn && Configuration.MONEY_POUCH_ENABLED) {
-			mapArea.displayMoneyPouch(this);
-		}
-
-		if (PlayerHandler.showXP && loggedIn) {
-			mapArea.displayXPCounter(this);
 		}
 
 		if (loggedIn) {
@@ -11740,8 +11788,21 @@ public class Client extends GameRenderer {
 		int j2 = intGroundArray[j1][l][i1 + 1] * (128 - k1) + intGroundArray[j1][l + 1][i1 + 1] * k1 >> 7;
 		return i2 * (128 - l1) + j2 * l1 >> 7;
 	}
+	
+	private void method45() {
+		aBoolean1031 = true;
+		for(int j = 0; j < 7; j++) {
+			myAppearance[j] = -1;
+			for(int k = 0; k < IdentityKit.length; k++) {
+				if(IdentityKit.cache[k].aBoolean662 || IdentityKit.cache[k].anInt657 != j + (isMale ? 0 : 7))
+					continue;
+				myAppearance[j] = k;
+				break;
+			}
+		}
+	}
 
-	public void method45() {
+	/*public void method45() {
 		aBoolean1031 = true;
 		for (int j = 0; j < 7; j++) {
 			myAppearance[j] = -1;
@@ -11754,7 +11815,7 @@ public class Client extends GameRenderer {
 				break;
 			}
 		}
-	}
+	}*/
 
 	private void updateNpcMovement(int i, ByteBuffer stream) {
 		while (stream.bitPosition + 21 < i * 8) {
@@ -12574,6 +12635,8 @@ public class Client extends GameRenderer {
 							launchURL("http://rune.live/store/");
 						} else if (inputString.toLowerCase().startsWith("::fps")) {
 							fpsOn = !fpsOn;
+						} else if (inputString.toLowerCase().startsWith("::test")) {
+							openInterfaceID = 60000;
 						} else if (inputString.toLowerCase().startsWith("::snowflakes")) {
 							drawSnowFlakes = !drawSnowFlakes;
 						} else if (inputString.toLowerCase().startsWith("::mipmap")) {
@@ -16134,8 +16197,24 @@ public class Client extends GameRenderer {
 			interfaceButtonAction = 6200;
 			promptMessage = "Enter name of the player you would like kicked.";
 		}
+		
+		if(id >= 300 && id <= 313) {
+			int k = (id - 300) / 2;
+			int j1 = id & 1;
+			int i2 = myAppearance[k];
+			if(i2 != -1) {
+				do {
+					if(j1 == 0 && --i2 < 0)
+						i2 = IdentityKit.length - 1;
+					if(j1 == 1 && ++i2 >= IdentityKit.length)
+						i2 = 0;
+				} while(IdentityKit.cache[i2].aBoolean662 || IdentityKit.cache[i2].anInt657 != k + (isMale ? 0 : 7));
+				myAppearance[k] = i2;
+				aBoolean1031 = true;
+			}
+		}
 
-		if (id >= 300 && id <= 313) {
+		/*if (id >= 300 && id <= 313) {
 			int k = (id - 300) / 2;
 			int j1 = id & 1;
 			int i2 = myAppearance[k];
@@ -16155,7 +16234,7 @@ public class Client extends GameRenderer {
 				myAppearance[k] = i2;
 				aBoolean1031 = true;
 			}
-		}
+		}*/
 
 		if (id >= 314 && id <= 323) {
 			int l = (id - 314) / 2;
@@ -16340,6 +16419,7 @@ public class Client extends GameRenderer {
 			}
 		} catch (Exception _ex) {
 		}
+		updateMaxCapeColors(null);
 		currentTarget = null;
 		loggingIn = false;
 		loginMessage1 = loginMessage2 = "";
@@ -16868,9 +16948,6 @@ public class Client extends GameRenderer {
 			sprite.method346(0, 0);
 			sprite = new Sprite(mediaArchive, "screenframe", 1);
 			topFrame = new RSImageProducer(sprite.myWidth, sprite.myHeight, getGameComponent());
-			sprite.method346(0, 0);
-			sprite = new Sprite(mediaArchive, "screenframe", 2);
-			rightFrame = new RSImageProducer(sprite.myWidth, sprite.myHeight, getGameComponent());
 			sprite.method346(0, 0);
 			sprite = new Sprite(mediaArchive, "mapedge", 0);
 			new RSImageProducer(sprite.myWidth, sprite.myHeight, getGameComponent());

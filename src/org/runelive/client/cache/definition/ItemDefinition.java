@@ -6548,7 +6548,7 @@ public final class ItemDefinition {
 	public int modelRotation1;
 	public int modelRotation2;
 	public int modelZoom;
-	int[] modifiedModelColors;
+	public int[] modifiedModelColors;
 	public String name;
 	int[] originalModelColors;
 	public boolean stackable;
@@ -6694,58 +6694,58 @@ public final class ItemDefinition {
 		return flag;
 	}
 
-	public Model method196(int i) {
-		int j = maleWearId;
-		int k = maleWearId2;
-		int l = maleWearId3;
+	public Model getEquippedModel(int gender) {
+		int primaryModel = maleWearId;
+		int secondaryModel = maleWearId2;
+		int emblem = maleWearId3;
 
-		if (i == 1) {
-			j = femaleWearId;
-			k = femaleWearId2;
-			l = femaleWearId3;
+		if (gender == 1) {
+			primaryModel = femaleWearId;
+			secondaryModel = femaleWearId2;
+			emblem = femaleWearId3;
 		}
 
-		if (j == -1) {
+		if (primaryModel == -1) {
 			return null;
 		}
 
-		Model model = Model.fetchModel(j);
+		Model model = Model.fetchModel(primaryModel);
 
-		if (k != -1) {
-			if (l != -1) {
-				Model model_1 = Model.fetchModel(k);
-				Model model_3 = Model.fetchModel(l);
+		if (secondaryModel != -1) {
+			if (emblem != -1) {
+				Model model_1 = Model.fetchModel(secondaryModel);
+				Model model_3 = Model.fetchModel(emblem);
 				Model model_1s[] = { model, model_1, model_3 };
 				model = new Model(3, model_1s);
 			} else {
-				Model model_2 = Model.fetchModel(k);
+				Model model_2 = Model.fetchModel(secondaryModel);
 				Model models[] = { model, model_2 };
 				model = new Model(2, models);
 			}
 		}
 
-		if (i == 0 && (maleWieldX != 0 || maleWieldY != 0 || maleWieldZ != 0)) {
+		if (gender == 0 && (maleWieldX != 0 || maleWieldY != 0 || maleWieldZ != 0)) {
 			model.method475(maleWieldX, maleWieldY, maleWieldZ);
 		}
 
-		if (i == 1 && (femaleWieldX != 0 || femaleWieldY != 0 || femaleWieldZ != 0)) {
+		if (gender == 1 && (femaleWieldX != 0 || femaleWieldY != 0 || femaleWieldZ != 0)) {
 			model.method475(femaleWieldX, femaleWieldY, femaleWieldZ);
 		}
 
 		//Cheap fix for the offsets of female wield models
-		/*if (i == 1) {
+		if (gender == 1) {
 			if (id == 11283 || id == 11284 || id == 11285) {
-				model.translate(-3, 0, 0);
+				model.method475(-3, 0, 0);
 			}
 			for (String itemActions : actions) {
 				if (itemActions == null || itemActions.length() == 0) {
 					continue;
 				}
 				if (itemActions.equalsIgnoreCase("Wield")) {
-					model.translate(3, femaleWieldY - 12, 5);
+					model.method475(3, femaleWieldY - 12, 5);
 				}
 			}
-		}*/
+		}
 
 		if (modifiedModelColors != null) {
 			for (int i1 = 0; i1 < modifiedModelColors.length; i1++) {

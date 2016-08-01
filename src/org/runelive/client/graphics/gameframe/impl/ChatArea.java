@@ -637,8 +637,8 @@ public class ChatArea extends GameFrame {
 						screenMode == ScreenMode.FIXED ? 0x807660 : 0xaea799, 150);
 			}
 
-			if (client.menuOpen && client.menuScreenArea == 2) {
-				client.drawMenu();
+			if (client.menuOpen) {
+				client.drawMenu(0, GameFrame.isFixed() ? 338 : 0);
 			}
 
 			if (screenMode == ScreenMode.FIXED) {

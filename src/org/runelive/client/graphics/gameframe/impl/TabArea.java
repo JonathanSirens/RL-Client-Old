@@ -30,13 +30,16 @@ public class TabArea extends GameFrame {
 				if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
 					for (int i = 0; i < 14; i++) {
 						int tabID = i;
-						if (i == 7) {
+						if (i == 13) {
+							tabID = 15;
+						}
+						/*if (i == 7) {
 							tabID = 13;
 						} else if (i == 10) {
 							// tabID = 7;
 						} else if (i == 13) {
 							tabID = 15;
-						}
+						}*/
 						if (Client.tabID == tabID) {
 							CacheSpriteLoader
 									.getCacheSprite(screenMode == ScreenMode.FIXED
@@ -457,8 +460,8 @@ public class TabArea extends GameFrame {
 							getOffSetY() + (screenMode == ScreenMode.FIXED ? 36
 									: Client.clientWidth <= GameFrameConstants.smallTabs ? -6 : 30));
 				}
-				if (client.menuOpen && client.menuScreenArea == 1) {
-					client.drawMenu();
+				if (client.menuOpen) {
+					client.drawMenu(GameFrame.isFixed() ? 516 : 0, GameFrame.isFixed() ? 168 : 0);
 				}
 			}
 			if (screenMode == ScreenMode.FIXED) {

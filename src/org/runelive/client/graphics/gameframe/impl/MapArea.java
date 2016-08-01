@@ -742,8 +742,8 @@ public class MapArea extends GameFrame {
 			Canvas2D.drawPixels(3, 76 + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 4 : 8) + getOffSetY(),
 					76 + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 9 : 31) + getOffSetX(), 0xffffff, 3);
 
-			if (client.menuOpen && client.menuScreenArea == 3) {
-				client.drawMenu();
+			if (client.menuOpen) {
+				client.drawMenu(GameFrame.isFixed() ? 516 : 0, 0);
 			}
 
 		}

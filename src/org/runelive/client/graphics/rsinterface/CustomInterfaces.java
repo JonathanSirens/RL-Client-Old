@@ -19,6 +19,41 @@ public class CustomInterfaces extends RSInterface {
 	public CustomInterfaces(TextDrawingArea tda[]) {
 		this.tda = tda;
 	}
+	
+	public static void customization(TextDrawingArea[] tda) {
+		RSInterface tab = addTabInterface(60000);
+		//addSprite(60001, 0, "Interfaces/customization/BG");
+		//addButton(60002, -1, "", 16, 16, "Close", 5);
+		addItemModel(60003, 75, 50, 420);
+		addColorBox(60004, 40, 40);
+		//addButton(60005, -1, "", 71, 59, "Edit detail (top) colour", 5);
+		addButtonWSpriteLoader(60005, 1005, "Edit detail (top) colour");
+		addColorBox(60006, 40, 40);
+		//addButton(60007, -1, "", 71, 59, "Edit background (top) colour", 5);
+		addButtonWSpriteLoader(60007, 1005, "Edit background (top) colour");
+		addColorBox(60008, 40, 40);
+		//addButton(60009, -1, "", 71, 59, "Edit detail (bottom) colour", 5);
+		addButtonWSpriteLoader(60009, 1005, "Edit detail (bottom) colour");
+		addColorBox(60010, 40, 40);
+		//addButton(60011, -1, "", 71, 59, "Edit background (bottom) colour", 5);
+		addButtonWSpriteLoader(60011, 1005, "Edit bottom (bottom) colour");
+		//addButton(60012, -1, "", 136, 24, "Done", 5);
+		addButtonWSpriteLoader(60012, 1005, "Done");
+		
+		tab.totalChildren(10);
+		//tab.child(0, 60001, 7, 15);
+		//tab.child(1, 60002, 484, 18);
+		tab.child(0, 60003, 388, 252);
+		tab.child(1, 60004, 90, 104);
+		tab.child(2, 60005, 81, 96);
+		tab.child(3, 60006, 242, 104);
+		tab.child(4, 60007, 233, 96);
+		tab.child(5, 60008, 90, 193);
+		tab.child(6, 60009, 81, 179);
+		tab.child(7, 60010, 242, 193);
+		tab.child(8, 60011, 233, 179);
+		tab.child(9, 60012, 148, 280);
+	}
 
 	public void loadCustoms() {
 		playersOnline();
@@ -49,6 +84,7 @@ public class CustomInterfaces extends RSInterface {
 		// redoSpellBooks();
 		quest_tab();
 		// vidOptions(tda);
+		customization(tda);
 		questTabInterface2();
 		questTabInterface3();
 		shopInterface();
@@ -1889,11 +1925,11 @@ public class CustomInterfaces extends RSInterface {
 		scroll.scrollMax = 220;
 		addSpriteLoader(17101, 697);
 		addCloseButton(16999, 17000, 17001);
-		addText(17103, "Items Kept on Death", tda, 2, 0xff981f, false, false);
-		addText(17104, "Items you will keep on death:", tda, 1, 0xff981f, false, false);
-		addText(17105, "Items you will lose on death:", tda, 1, 0xff981f, false, false);
-		addText(17106, "Info", tda, 1, 0xff981f, false, false);
-		addText(17107, "", tda, 1, 16711680, false, false);
+		addText(17103, "Items Kept on Death", tda, 2, 0xff981f, false, true);
+		addText(17104, "Items you will keep on death:", tda, 1, 0xff981f, false, true);
+		addText(17105, "Items you will lose on death:", tda, 1, 0xff981f, false, true);
+		addText(17106, "Info", tda, 1, 0xff981f, false, true);
+		addText(17107, "", tda, 1, 16711680, false, true);
 		String[] options = { null };
 		/*
 		 * Items on interface
@@ -1930,7 +1966,7 @@ public class CustomInterfaces extends RSInterface {
 		}
 
 		for (int info = 17143; info <= 17148; info++) {
-			addText(info, "" + info, tda, 1, 16776960, false, false);
+			addText(info, "" + info, tda, 1, 16776960, false, true);
 		}
 
 		setChildren(19, rsinterface);
