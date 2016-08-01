@@ -2481,7 +2481,7 @@ public final class ItemDefinition {
 				itemDef.femaleWearId = 363;
 				itemDef.maleDialogue = 39372;
 				itemDef.femaleDialogue = 39372;
-				itemDef.name = "Disco Hat";
+				itemDef.name = "Disco hat";
 				itemDef.description = "A colorful hat.".getBytes();
 				break;
 			case 21001:
@@ -6276,6 +6276,15 @@ public final class ItemDefinition {
 				itemDef.originalModelColors[0] = 1;
 				itemDef.modifiedModelColors[1] = 4540;
 				itemDef.originalModelColors[1] = 1;
+				break;
+
+			case 21148:
+				itemDef.setDefaults();
+				itemDef.imitate(get(15434));
+				itemDef.name = "Cape of darkness";
+				itemDef.description2 = "A cape made from a dark realm.";
+				itemDef.originalModelColors = new int[] {0, 12, 12, 7, 5, 2};
+				itemDef.modifiedModelColors = new int[] {42, 32, 39577, 39572, 39570, 39567};
 				break;
 
 

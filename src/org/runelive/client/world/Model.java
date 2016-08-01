@@ -415,7 +415,6 @@ public class Model extends Animable {
 					anIntArray1638[j] = 10;
 				}
 		}
-
 		if ((modelId >= 53347 && modelId <= 53370) || (modelId >= 76001 && modelId <= 76047)) {
 			// recolour(0, 255);
 			if (anIntArray1638 != null) { // rofl

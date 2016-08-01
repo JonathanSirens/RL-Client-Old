@@ -110,7 +110,6 @@ public final class SpotAnimDefinition {
 		cache[1228].changedModelColours = new int[] { 18626, 18626, 18626, 0, 0, 0 };
 		cache[1228].animation = Animation.cache[7084];
 
-		cache[1301] = new SpotAnimDefinition();
 		cache[1301].modelId = 31497;
 		cache[1301].animationId = -1;
 		cache[1301].sizeXY = 128;
@@ -118,6 +117,14 @@ public final class SpotAnimDefinition {
 		cache[1301].rotation = 0;
 		cache[1301].shadow = 0;
 		cache[1301].lightness = 0;
+
+		cache[1400].modelId = 31495;
+		cache[1400].animationId = -1;
+		cache[1400].sizeXY = 128;
+		cache[1400].sizeZ = 128;
+		cache[1400].rotation = 0;
+		cache[1400].shadow = 0;
+		cache[1400].lightness = 0;
 	}
 	/*
 	 * public static void load(Archive archive) { ByteBuffer buffer = new

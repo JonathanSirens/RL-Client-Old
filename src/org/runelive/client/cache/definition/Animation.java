@@ -75,16 +75,25 @@ public final class Animation {
                     cache[j].frameIDs = new int[]{141557848, 141557820, 141557797, 141557945, 141557977, 141558019, 141558000, 141557954, 141557929, 141557804, 141557849, 141558044, 141557980, 141558033, 141557848};
                     break;
                 case 7218:
-                    cache[j] = new Animation();
-                    cache[j].frameCount = 18;
-                    cache[j].priority = 2;
-                    cache[j].delays = new int[]{4,4,4,4,4,5,5,5,5,10,4,4,4,5,5,5,5,5};
-                    cache[j].frameIDs = new int[]{121110531,121110603,121110555,121110552,121110586,121110596,121110563,121110599,121110566,121110585,121110542,121110538,121110570,121110617,121110600,121110559,121110537,121110568};
+                    cache[7218].frameCount = 18;
+                    cache[7218].frameIDs = new int[]{121110531, 121110603, 121110555, 121110552, 121110586, 121110596, 121110563, 121110599, 121110566, 121110585, 121110542, 121110538, 121110570, 121110617, 121110600, 121110559, 121110537, 121110568};
+                    cache[7218].frameIDs2 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+                    cache[7218].delays = new int[]{4, 4, 4, 4, 4, 5, 5, 5, 5, 10, 4, 4, 4, 5, 5, 5, 5, 5};
+                    cache[7218].loopDelay = -1;
+                    cache[7218].animationFlowControl = null;
+                    cache[7218].oneSquareAnimation = false;
+                    cache[7218].forcedPriority = 5;
+                    cache[7218].leftHandItem = -1;
+                    cache[7218].rightHandItem = -1;
+                    cache[7218].frameStep = 99;
+                    cache[7218].resetWhenWalk = 0;
+                    cache[7218].priority = 2;
+                    cache[7218].delayType = 1;
                     break;
                 case 7219:
                     cache[7219].frameCount = 16;
-                    cache[7219].frameIDs = new int[]{121110539, 121110593, 121110571, 121110581, 121110619, 121110532, 121110573, 121110612, 121110604, 121110605, 121110572, 121110529, 121110549, 121110618, 121110616, 121110554};
-                    cache[7219].frameIDs2 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+                    cache[7219].frameIDs = new int[]{121110539, 121110593, 121110571, 121110619, 121110532, 121110573, 121110612, 121110604, 121110605, 121110572, 121110529, 121110549, 121110618, 121110616, 121110554};
+                    cache[7219].frameIDs2 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
                     cache[7219].delays = new int[]{4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5};
                     cache[7219].loopDelay = -1;
                     cache[7219].animationFlowControl = null;
@@ -106,12 +115,64 @@ public final class Animation {
                     cache[7220].animationFlowControl = null;
                     cache[7220].oneSquareAnimation = false;
                     cache[7220].forcedPriority = 5;
-                    cache[7220].leftHandItem = -1;
-                    cache[7220].rightHandItem = -1;
                     cache[7220].frameStep = 99;
                     cache[7220].resetWhenWalk = 0;
                     cache[7220].priority = 0;
                     cache[7220].delayType = 1;
+                    cache[7220].rightHandItem = -1;
+                    cache[7220].leftHandItem = -1;
+                    cache[7220].rightHandItem = -1;
+                    break;
+                case 7221:
+                    cache[7221].frameCount = 16;
+                    cache[7221].frameIDs = new int[]{121110564, 121110589, 121110623, 121110553, 121110541, 121110591, 121110615, 121110540, 121110622, 121110597, 121110625, 121110590, 121110577, 121110530, 121110592, 121110560};
+                    cache[7221].frameIDs2 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+                    cache[7221].delays = new int[]{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+                    cache[7221].loopDelay = -1;
+                    cache[7221].animationFlowControl = null;
+                    cache[7221].oneSquareAnimation = false;
+                    cache[7221].forcedPriority = 5;
+                    cache[7221].leftHandItem = -1;
+                    cache[7221].rightHandItem = -1;
+                    cache[7221].frameStep = 99;
+                    cache[7221].resetWhenWalk = 0;
+                    cache[7221].priority = 0;
+                    cache[7221].delayType = 1;
+                    break;
+
+                case 7222:
+                    cache[7222].frameCount = 15;
+                    cache[7222].frameIDs = new int[]{121110557, 121110574, 121110579, 121110547, 121110602, 121110544, 121110561, 121110621, 121110598, 121110609, 121110556, 121110594, 121110550, 121110562, 121110610};
+                    cache[7222].frameIDs2 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+                    cache[7222].delays = new int[]{4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 4, 4, 4};
+                    cache[7222].loopDelay = -1;
+                    cache[7222].animationFlowControl = null;
+                    cache[7222].oneSquareAnimation = false;
+                    cache[7222].forcedPriority = 5;
+                    cache[7222].leftHandItem = -1;
+                    cache[7222].rightHandItem = -1;
+                    cache[7222].frameStep = 99;
+                    cache[7222].resetWhenWalk = 0;
+                    cache[7222].priority = 1;
+                    cache[7222].delayType = 1;
+
+                    break;
+
+                case 7223:
+                    cache[7223].frameCount = 16;
+                    cache[7223].frameIDs = new int[]{121110578, 121110614, 121110606, 121110588, 121110613, 121110607, 121110608, 121110535, 121110595, 121110611, 121110548, 121110582, 121110565, 121110601, 121110545, 121110583};
+                    cache[7223].frameIDs2 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+                    cache[7223].delays = new int[]{3, 3, 3, 2, 3, 2, 2, 2, 3, 2, 3, 2, 3, 2, 3, 2};
+                    cache[7223].loopDelay = -1;
+                    cache[7223].animationFlowControl = null;
+                    cache[7223].oneSquareAnimation = false;
+                    cache[7223].forcedPriority = 5;
+                    cache[7223].leftHandItem = -1;
+                    cache[7223].rightHandItem = -1;
+                    cache[7223].frameStep = 99;
+                    cache[7223].resetWhenWalk = 0;
+                    cache[7223].priority = 0;
+                    cache[7223].delayType = 1;
                     break;
                 case 1005:
                     cache[j].frameCount = 21;
