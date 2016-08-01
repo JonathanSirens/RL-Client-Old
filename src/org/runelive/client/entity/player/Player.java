@@ -269,10 +269,10 @@ public final class Player extends Entity {
 				if(i3 >= 512) {
 					ItemDefinition def = ItemDefinition.get(i3 - 512);
 					Model model_4 = ItemDefinition.get(i3 - 512).getEquippedModel(myGender);
-					if(modifiedColors[l2] != null) {
+					/*if(modifiedColors[l2] != null) {
 						for (int i11 = 0; i11 < def.modifiedModelColors.length; i11++)
 							model_4.method476(def.modifiedModelColors[i11], modifiedColors[l2][i11]);
-					}
+					}*/
 					if(model_4 != null)
 						aclass30_sub2_sub4_sub6s[j2++] = model_4;
 				}

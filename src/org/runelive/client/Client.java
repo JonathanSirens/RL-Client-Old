@@ -1743,374 +1743,379 @@ public class Client extends GameRenderer {
 	}
 
 	private void build3dScreenMenu() {
-		if (itemSelected == 0 && spellSelected == 0) {
-			menuActionName[menuActionRow] = "Walk here";
-			menuActionID[menuActionRow] = 516;
-			menuActionCmd2[menuActionRow] = super.mouseX;
-			menuActionCmd3[menuActionRow] = super.mouseY;
-			menuActionRow++;
-		}
-		int j = -1;
-		for (int k = 0; k < Model.anInt1687; k++) {
-			int modelData = Model.anIntArray1688[k];// data
-			int x = modelData & 0x7f;// x
-			int y = modelData >> 7 & 0x7f;// y
-			int face = modelData >> 29 & 3;// face
-			int index = -1;// objId
-			if (face != 2) {
-				index = modelData >> 14 & 32767;
+		try {
+			if (itemSelected == 0 && spellSelected == 0) {
+				menuActionName[menuActionRow] = "Walk here";
+				menuActionID[menuActionRow] = 516;
+				menuActionCmd2[menuActionRow] = super.mouseX;
+				menuActionCmd3[menuActionRow] = super.mouseY;
+				menuActionRow++;
 			}
-			if (modelData == j) {
-				continue;
-			}
-			j = modelData;
-			int xx = baseX + x;
-			int yy = baseY + y;
-			// System.out.println(""+face);
-			// objects
-			if (face == 2 && worldController.fetchObjectIDTagForPosition(plane, x, y, modelData) >= 0) {
-
-				index = Model.mapObjIds[k];
-				ObjectDefinition class46 = ObjectDefinition.forID(index);
-
-				if (class46.configObjectIDs != null) {
-					class46 = class46.method580();
+			int j = -1;
+			for (int k = 0; k < Model.anInt1687; k++) {
+				int modelData = Model.anIntArray1688[k];// data
+				int x = modelData & 0x7f;// x
+				int y = modelData >> 7 & 0x7f;// y
+				int face = modelData >> 29 & 3;// face
+				int index = -1;// objId
+				if (face != 2) {
+					index = modelData >> 14 & 32767;
 				}
-
-				if (baseX + x == 3090 && baseY + y == 3956) {
-					menuActionName[menuActionRow] = "Pull @cya@Lever";
-					menuActionID[menuActionRow] = 502;
-					menuActionCmd1[menuActionRow] = modelData;
-					menuActionCmd2[menuActionRow] = x;
-					menuActionCmd3[menuActionRow] = y;
-					menuActionCmd4[menuActionRow] = 5959;
-					menuActionRow++;
-
-					menuActionName[menuActionRow] = "Examine @cya@ Lever";
-					menuActionID[menuActionRow] = 1226;
-					menuActionCmd1[menuActionRow] = 950;
-					menuActionCmd2[menuActionRow] = x;
-					menuActionCmd3[menuActionRow] = y;
-					menuActionCmd4[menuActionRow] = 5959;
-					menuActionRow++;
-					return;
-				}
-				if (baseX + x == 3067 && baseY + y == 10253) {
-					menuActionName[menuActionRow] = "Pull @cya@Lever";
-					menuActionID[menuActionRow] = 502;
-					menuActionCmd1[menuActionRow] = modelData;
-					menuActionCmd2[menuActionRow] = x;
-					menuActionCmd3[menuActionRow] = y;
-					menuActionCmd4[menuActionRow] = 5960;
-					menuActionRow++;
-
-					menuActionName[menuActionRow] = "Examine @cya@ Lever";
-					menuActionID[menuActionRow] = 1226;
-					menuActionCmd1[menuActionRow] = 950;
-					menuActionCmd2[menuActionRow] = x;
-					menuActionCmd3[menuActionRow] = y;
-					menuActionCmd4[menuActionRow] = 5960;
-					menuActionRow++;
-					return;
-				}
-				if (baseX + x == 2272 && baseY + y == 4680) {
-					menuActionName[menuActionRow] = "Pull @cya@Lever";
-					menuActionID[menuActionRow] = 502;
-					menuActionCmd1[menuActionRow] = modelData;
-					menuActionCmd2[menuActionRow] = x;
-					menuActionCmd3[menuActionRow] = y;
-					menuActionCmd4[menuActionRow] = 5960;
-					menuActionRow++;
-
-					menuActionName[menuActionRow] = "Examine @cya@ Lever";
-					menuActionID[menuActionRow] = 1226;
-					menuActionCmd1[menuActionRow] = 950;
-					menuActionCmd2[menuActionRow] = x;
-					menuActionCmd3[menuActionRow] = y;
-					menuActionCmd4[menuActionRow] = 5960;
-					menuActionRow++;
-					return;
-				}
-				if (baseX + x == 3153 && baseY + y == 3923) {
-					menuActionName[menuActionRow] = "Pull @cya@Lever";
-					menuActionID[menuActionRow] = 502;
-					menuActionCmd1[menuActionRow] = modelData;
-					menuActionCmd2[menuActionRow] = x;
-					menuActionCmd3[menuActionRow] = y;
-					menuActionCmd4[menuActionRow] = 5959;
-					menuActionRow++;
-
-					menuActionName[menuActionRow] = "Examine @cya@ Lever";
-					menuActionID[menuActionRow] = 1226;
-					menuActionCmd1[menuActionRow] = 950;
-					menuActionCmd2[menuActionRow] = x;
-					menuActionCmd3[menuActionRow] = y;
-					menuActionCmd4[menuActionRow] = 5959;
-					menuActionRow++;
-					return;
-				}
-				if (baseX + x == 2561 && baseY + y == 3311) {
-					menuActionName[menuActionRow] = "Pull @cya@Lever";
-					menuActionID[menuActionRow] = 502;
-					menuActionCmd1[menuActionRow] = modelData;
-					menuActionCmd2[menuActionRow] = x;
-					menuActionCmd3[menuActionRow] = y;
-					menuActionCmd4[menuActionRow] = 5959;
-					menuActionRow++;
-
-					menuActionName[menuActionRow] = "Examine @cya@ Lever";
-					menuActionID[menuActionRow] = 1226;
-					menuActionCmd1[menuActionRow] = 950;
-					menuActionCmd2[menuActionRow] = x;
-					menuActionCmd3[menuActionRow] = y;
-					menuActionCmd4[menuActionRow] = 5959;
-					menuActionRow++;
-					return;
-				}
-				if (baseX + x == 2539 && baseY + y == 4712) {
-					menuActionName[menuActionRow] = "Pull @cya@Lever";
-					menuActionID[menuActionRow] = 502;
-					menuActionCmd1[menuActionRow] = modelData;
-					menuActionCmd2[menuActionRow] = x;
-					menuActionCmd3[menuActionRow] = y;
-					menuActionCmd4[menuActionRow] = 5960;
-					menuActionRow++;
-
-					menuActionName[menuActionRow] = "Examine @cya@ Lever";
-					menuActionID[menuActionRow] = 1226;
-					menuActionCmd1[menuActionRow] = 950;
-					menuActionCmd2[menuActionRow] = x;
-					menuActionCmd3[menuActionRow] = y;
-					menuActionCmd4[menuActionRow] = 5960;
-					menuActionRow++;
-					return;
-				}
-				if (class46 == null) {
+				if (modelData == j) {
 					continue;
 				}
-				if (class46 != null) {
-					if (myRights != 3) {
-						if (class46.name == null) {
-							continue;
-						}
-						if (class46.name != null) {
-							if (class46.name.toLowerCase().equals("null") && myRights != 3) {
+				j = modelData;
+				int xx = baseX + x;
+				int yy = baseY + y;
+				// System.out.println(""+face);
+				// objects
+				if (face == 2 && worldController.fetchObjectIDTagForPosition(plane, x, y, modelData) >= 0) {
+
+					index = Model.mapObjIds[k];
+					ObjectDefinition class46 = ObjectDefinition.forID(index);
+
+					if (class46.configObjectIDs != null) {
+						class46 = class46.method580();
+					}
+
+					if (baseX + x == 3090 && baseY + y == 3956) {
+						menuActionName[menuActionRow] = "Pull @cya@Lever";
+						menuActionID[menuActionRow] = 502;
+						menuActionCmd1[menuActionRow] = modelData;
+						menuActionCmd2[menuActionRow] = x;
+						menuActionCmd3[menuActionRow] = y;
+						menuActionCmd4[menuActionRow] = 5959;
+						menuActionRow++;
+
+						menuActionName[menuActionRow] = "Examine @cya@ Lever";
+						menuActionID[menuActionRow] = 1226;
+						menuActionCmd1[menuActionRow] = 950;
+						menuActionCmd2[menuActionRow] = x;
+						menuActionCmd3[menuActionRow] = y;
+						menuActionCmd4[menuActionRow] = 5959;
+						menuActionRow++;
+						return;
+					}
+					if (baseX + x == 3067 && baseY + y == 10253) {
+						menuActionName[menuActionRow] = "Pull @cya@Lever";
+						menuActionID[menuActionRow] = 502;
+						menuActionCmd1[menuActionRow] = modelData;
+						menuActionCmd2[menuActionRow] = x;
+						menuActionCmd3[menuActionRow] = y;
+						menuActionCmd4[menuActionRow] = 5960;
+						menuActionRow++;
+
+						menuActionName[menuActionRow] = "Examine @cya@ Lever";
+						menuActionID[menuActionRow] = 1226;
+						menuActionCmd1[menuActionRow] = 950;
+						menuActionCmd2[menuActionRow] = x;
+						menuActionCmd3[menuActionRow] = y;
+						menuActionCmd4[menuActionRow] = 5960;
+						menuActionRow++;
+						return;
+					}
+					if (baseX + x == 2272 && baseY + y == 4680) {
+						menuActionName[menuActionRow] = "Pull @cya@Lever";
+						menuActionID[menuActionRow] = 502;
+						menuActionCmd1[menuActionRow] = modelData;
+						menuActionCmd2[menuActionRow] = x;
+						menuActionCmd3[menuActionRow] = y;
+						menuActionCmd4[menuActionRow] = 5960;
+						menuActionRow++;
+
+						menuActionName[menuActionRow] = "Examine @cya@ Lever";
+						menuActionID[menuActionRow] = 1226;
+						menuActionCmd1[menuActionRow] = 950;
+						menuActionCmd2[menuActionRow] = x;
+						menuActionCmd3[menuActionRow] = y;
+						menuActionCmd4[menuActionRow] = 5960;
+						menuActionRow++;
+						return;
+					}
+					if (baseX + x == 3153 && baseY + y == 3923) {
+						menuActionName[menuActionRow] = "Pull @cya@Lever";
+						menuActionID[menuActionRow] = 502;
+						menuActionCmd1[menuActionRow] = modelData;
+						menuActionCmd2[menuActionRow] = x;
+						menuActionCmd3[menuActionRow] = y;
+						menuActionCmd4[menuActionRow] = 5959;
+						menuActionRow++;
+
+						menuActionName[menuActionRow] = "Examine @cya@ Lever";
+						menuActionID[menuActionRow] = 1226;
+						menuActionCmd1[menuActionRow] = 950;
+						menuActionCmd2[menuActionRow] = x;
+						menuActionCmd3[menuActionRow] = y;
+						menuActionCmd4[menuActionRow] = 5959;
+						menuActionRow++;
+						return;
+					}
+					if (baseX + x == 2561 && baseY + y == 3311) {
+						menuActionName[menuActionRow] = "Pull @cya@Lever";
+						menuActionID[menuActionRow] = 502;
+						menuActionCmd1[menuActionRow] = modelData;
+						menuActionCmd2[menuActionRow] = x;
+						menuActionCmd3[menuActionRow] = y;
+						menuActionCmd4[menuActionRow] = 5959;
+						menuActionRow++;
+
+						menuActionName[menuActionRow] = "Examine @cya@ Lever";
+						menuActionID[menuActionRow] = 1226;
+						menuActionCmd1[menuActionRow] = 950;
+						menuActionCmd2[menuActionRow] = x;
+						menuActionCmd3[menuActionRow] = y;
+						menuActionCmd4[menuActionRow] = 5959;
+						menuActionRow++;
+						return;
+					}
+					if (baseX + x == 2539 && baseY + y == 4712) {
+						menuActionName[menuActionRow] = "Pull @cya@Lever";
+						menuActionID[menuActionRow] = 502;
+						menuActionCmd1[menuActionRow] = modelData;
+						menuActionCmd2[menuActionRow] = x;
+						menuActionCmd3[menuActionRow] = y;
+						menuActionCmd4[menuActionRow] = 5960;
+						menuActionRow++;
+
+						menuActionName[menuActionRow] = "Examine @cya@ Lever";
+						menuActionID[menuActionRow] = 1226;
+						menuActionCmd1[menuActionRow] = 950;
+						menuActionCmd2[menuActionRow] = x;
+						menuActionCmd3[menuActionRow] = y;
+						menuActionCmd4[menuActionRow] = 5960;
+						menuActionRow++;
+						return;
+					}
+					if (class46 == null) {
+						continue;
+					}
+					if (class46 != null) {
+						if (myRights != 3) {
+							if (class46.name == null) {
 								continue;
+							}
+							if (class46.name != null) {
+								if (class46.name.toLowerCase().equals("null") && myRights != 3) {
+									continue;
+								}
 							}
 						}
 					}
-				}
-				if (itemSelected == 1) {
-					menuActionName[menuActionRow] = "Use " + selectedItemName + " with @cya@" + class46.name;
-					menuActionID[menuActionRow] = 62;
-					menuActionCmd1[menuActionRow] = modelData;
-					menuActionCmd2[menuActionRow] = x;
-					menuActionCmd3[menuActionRow] = y;
-					menuActionCmd4[menuActionRow] = index;
-					menuActionRow++;
-				} else if (spellSelected == 1) {
-					if ((spellUsableOn & 4) == 4) {
-						menuActionName[menuActionRow] = spellTooltip + " @cya@" + class46.name;
-						menuActionID[menuActionRow] = 956;
+					if (itemSelected == 1) {
+						menuActionName[menuActionRow] = "Use " + selectedItemName + " with @cya@" + class46.name;
+						menuActionID[menuActionRow] = 62;
 						menuActionCmd1[menuActionRow] = modelData;
 						menuActionCmd2[menuActionRow] = x;
 						menuActionCmd3[menuActionRow] = y;
 						menuActionCmd4[menuActionRow] = index;
 						menuActionRow++;
-					}
-				} else {
-					if (class46 != null && class46.actions != null) {
-						for (int i2 = 4; i2 >= 0; i2--) {
-							if (class46.actions[i2] != null) {
-								menuActionName[menuActionRow] = class46.actions[i2] + " @cya@" + class46.name;
-
-								if (i2 == 0) {
-									menuActionID[menuActionRow] = 502;
-								}
-
-								if (i2 == 1) {
-									menuActionID[menuActionRow] = 900;
-								}
-
-								if (i2 == 2) {
-									menuActionID[menuActionRow] = 113;
-								}
-
-								if (i2 == 3) {
-									menuActionID[menuActionRow] = 872;
-								}
-
-								if (i2 == 4) {
-									menuActionID[menuActionRow] = 1062;
-								}
-
-								menuActionCmd1[menuActionRow] = modelData;
-								menuActionCmd2[menuActionRow] = x;
-								menuActionCmd3[menuActionRow] = y;
-								menuActionCmd4[menuActionRow] = index;
-								menuActionRow++;
-							}
-						}
-					}
-					if(class46.anIntArray776 != null && class46.anIntArray776.length >= 1) {
-						menuActionName[menuActionRow] = myRights == 3 ? "Examine @cya@" + class46.name + " @gre@(@whi@"
-								+ class46.id + " - " + class46.anIntArray776[0] + "@gre@) (@whi@" + (x + baseX) + "," + (y + baseY) + "@gre@)"
-								: "Examine @cya@" + class46.name;
-					} else {
-						menuActionName[menuActionRow] = myRights == 3 ? "Examine @cya@" + class46.name + " @gre@(@whi@"
-								+ class46.id + "@gre@) (@whi@" + (x + baseX) + "," + (y + baseY) + "@gre@)"
-								: "Examine @cya@" + class46.name;
-					}
-					menuActionID[menuActionRow] = 1226;
-					menuActionCmd1[menuActionRow] = class46 == null ? -1 : class46.id << 14;
-					menuActionCmd2[menuActionRow] = x;
-					menuActionCmd3[menuActionRow] = y;
-					menuActionCmd4[menuActionRow] = index;
-					menuActionRow++;
-				}
-			}
-
-			/**
-			 * npcs
-			 */
-			if (face == 1) {
-				try {
-					NPC npc = npcArray[index];
-					if (npc.definitionOverride.npcSizeInSquares == 1 && (npc.x & 0x7f) == 64 && (npc.y & 0x7f) == 64) {
-						for (int j2 = 0; j2 < npcCount; j2++) {
-							NPC npc2 = npcArray[npcIndices[j2]];
-							if (npc2 != null && npc2 != npc && npc2.definitionOverride.npcSizeInSquares == 1
-									&& npc2.x == npc.x && npc2.y == npc.y) {
-								buildAtNPCMenu(npc2.definitionOverride, npcIndices[j2], y, x);
-							}
-						}
-
-						for (int l2 = 0; l2 < playerCount; l2++) {
-							Player player = playerArray[playerIndices[l2]];
-
-							if (player != null && player.x == npc.x && player.y == npc.y) {
-								buildAtPlayerMenu(x, playerIndices[l2], player, y);
-							}
-						}
-					}
-					buildAtNPCMenu(npc.definitionOverride, index, y, x);
-				} catch(Exception e) {}
-			}
-
-			/**
-			 * Players
-			 */
-			if (face == 0) {
-				Player player = playerArray[index];
-
-				if ((player.x & 0x7f) == 64 && (player.y & 0x7f) == 64) {
-					for (int k2 = 0; k2 < npcCount; k2++) {
-						NPC class30_sub2_sub4_sub1_sub1_2 = npcArray[npcIndices[k2]];
-
-						try {
-							if (class30_sub2_sub4_sub1_sub1_2 != null
-									&& class30_sub2_sub4_sub1_sub1_2.definitionOverride.npcSizeInSquares == 1
-									&& class30_sub2_sub4_sub1_sub1_2.x == player.x
-									&& class30_sub2_sub4_sub1_sub1_2.y == player.y) {
-								buildAtNPCMenu(class30_sub2_sub4_sub1_sub1_2.definitionOverride, npcIndices[k2], y, x);
-							}
-						} catch (Exception _ex) {
-						}
-					}
-
-					for (int i3 = 0; i3 < playerCount; i3++) {
-						Player player1 = playerArray[playerIndices[i3]];
-
-						if (player1 != null && player1 != player && player1.x == player.x && player1.y == player.y) {
-							buildAtPlayerMenu(x, playerIndices[i3], player1, y);
-						}
-					}
-				}
-
-				buildAtPlayerMenu(x, index, player, y);
-			}
-
-			/**
-			 * i assume items
-			 */
-			if (face == 3) {
-				Deque class19 = groundArray[plane][x][y];
-
-				if (class19 != null) {
-					for (Item item = (Item) class19.getFirst(); item != null; item = (Item) class19.getNext()) {
-						ItemDefinition itemDef = ItemDefinition.get(item.id);
-
-						if (itemSelected == 1) {
-							menuActionName[menuActionRow] = "Use " + selectedItemName + " with @lre@" + itemDef.name;
-							menuActionID[menuActionRow] = 511;
-							menuActionCmd1[menuActionRow] = item.id;
+					} else if (spellSelected == 1) {
+						if ((spellUsableOn & 4) == 4) {
+							menuActionName[menuActionRow] = spellTooltip + " @cya@" + class46.name;
+							menuActionID[menuActionRow] = 956;
+							menuActionCmd1[menuActionRow] = modelData;
 							menuActionCmd2[menuActionRow] = x;
 							menuActionCmd3[menuActionRow] = y;
 							menuActionCmd4[menuActionRow] = index;
 							menuActionRow++;
-						} else if (spellSelected == 1) {
-							if ((spellUsableOn & 1) == 1) {
-								menuActionName[menuActionRow] = spellTooltip + " @lre@" + itemDef.name;
-								menuActionID[menuActionRow] = 94;
+						}
+					} else {
+						if (class46 != null && class46.actions != null) {
+							for (int i2 = 4; i2 >= 0; i2--) {
+								if (class46.actions[i2] != null) {
+									menuActionName[menuActionRow] = class46.actions[i2] + " @cya@" + class46.name;
+
+									if (i2 == 0) {
+										menuActionID[menuActionRow] = 502;
+									}
+
+									if (i2 == 1) {
+										menuActionID[menuActionRow] = 900;
+									}
+
+									if (i2 == 2) {
+										menuActionID[menuActionRow] = 113;
+									}
+
+									if (i2 == 3) {
+										menuActionID[menuActionRow] = 872;
+									}
+
+									if (i2 == 4) {
+										menuActionID[menuActionRow] = 1062;
+									}
+
+									menuActionCmd1[menuActionRow] = modelData;
+									menuActionCmd2[menuActionRow] = x;
+									menuActionCmd3[menuActionRow] = y;
+									menuActionCmd4[menuActionRow] = index;
+									menuActionRow++;
+								}
+							}
+						}
+						if(class46.anIntArray776 != null && class46.anIntArray776.length >= 1) {
+							menuActionName[menuActionRow] = myRights == 3 ? "Examine @cya@" + class46.name + " @gre@(@whi@"
+									+ class46.id + " - " + class46.anIntArray776[0] + "@gre@) (@whi@" + (x + baseX) + "," + (y + baseY) + "@gre@)"
+									: "Examine @cya@" + class46.name;
+						} else {
+							menuActionName[menuActionRow] = myRights == 3 ? "Examine @cya@" + class46.name + " @gre@(@whi@"
+									+ class46.id + "@gre@) (@whi@" + (x + baseX) + "," + (y + baseY) + "@gre@)"
+									: "Examine @cya@" + class46.name;
+						}
+						menuActionID[menuActionRow] = 1226;
+						menuActionCmd1[menuActionRow] = class46 == null ? -1 : class46.id << 14;
+						menuActionCmd2[menuActionRow] = x;
+						menuActionCmd3[menuActionRow] = y;
+						menuActionCmd4[menuActionRow] = index;
+						menuActionRow++;
+					}
+				}
+
+				/**
+				 * npcs
+				 */
+				if (face == 1) {
+					try {
+						NPC npc = npcArray[index];
+						if (npc.definitionOverride.npcSizeInSquares == 1 && (npc.x & 0x7f) == 64 && (npc.y & 0x7f) == 64) {
+							for (int j2 = 0; j2 < npcCount; j2++) {
+								NPC npc2 = npcArray[npcIndices[j2]];
+								if (npc2 != null && npc2 != npc && npc2.definitionOverride.npcSizeInSquares == 1
+										&& npc2.x == npc.x && npc2.y == npc.y) {
+									buildAtNPCMenu(npc2.definitionOverride, npcIndices[j2], y, x);
+								}
+							}
+
+							for (int l2 = 0; l2 < playerCount; l2++) {
+								Player player = playerArray[playerIndices[l2]];
+
+								if (player != null && player.x == npc.x && player.y == npc.y) {
+									buildAtPlayerMenu(x, playerIndices[l2], player, y);
+								}
+							}
+						}
+						buildAtNPCMenu(npc.definitionOverride, index, y, x);
+					} catch(Exception e) {}
+				}
+
+				/**
+				 * Players
+				 */
+				if (face == 0) {
+					Player player = playerArray[index];
+					try {
+					if ((player.x & 0x7f) == 64 && (player.y & 0x7f) == 64) {
+						for (int k2 = 0; k2 < npcCount; k2++) {
+							NPC class30_sub2_sub4_sub1_sub1_2 = npcArray[npcIndices[k2]];
+
+							
+								if (class30_sub2_sub4_sub1_sub1_2 != null
+										&& class30_sub2_sub4_sub1_sub1_2.definitionOverride.npcSizeInSquares == 1
+										&& class30_sub2_sub4_sub1_sub1_2.x == player.x
+										&& class30_sub2_sub4_sub1_sub1_2.y == player.y) {
+									buildAtNPCMenu(class30_sub2_sub4_sub1_sub1_2.definitionOverride, npcIndices[k2], y, x);
+								}
+						}
+
+						for (int i3 = 0; i3 < playerCount; i3++) {
+							Player player1 = playerArray[playerIndices[i3]];
+
+							if (player1 != null && player1 != player && player1.x == player.x && player1.y == player.y) {
+								buildAtPlayerMenu(x, playerIndices[i3], player1, y);
+							}
+						}
+					}
+
+					buildAtPlayerMenu(x, index, player, y);
+					} catch(Exception e) {
+						
+					}
+				}
+
+				/**
+				 * i assume items
+				 */
+				if (face == 3) {
+					Deque class19 = groundArray[plane][x][y];
+
+					if (class19 != null) {
+						for (Item item = (Item) class19.getFirst(); item != null; item = (Item) class19.getNext()) {
+							ItemDefinition itemDef = ItemDefinition.get(item.id);
+
+							if (itemSelected == 1) {
+								menuActionName[menuActionRow] = "Use " + selectedItemName + " with @lre@" + itemDef.name;
+								menuActionID[menuActionRow] = 511;
+								menuActionCmd1[menuActionRow] = item.id;
+								menuActionCmd2[menuActionRow] = x;
+								menuActionCmd3[menuActionRow] = y;
+								menuActionCmd4[menuActionRow] = index;
+								menuActionRow++;
+							} else if (spellSelected == 1) {
+								if ((spellUsableOn & 1) == 1) {
+									menuActionName[menuActionRow] = spellTooltip + " @lre@" + itemDef.name;
+									menuActionID[menuActionRow] = 94;
+									menuActionCmd1[menuActionRow] = item.id;
+									menuActionCmd2[menuActionRow] = x;
+									menuActionCmd3[menuActionRow] = y;
+									menuActionCmd4[menuActionRow] = index;
+									menuActionRow++;
+								}
+							} else {
+								for (int j3 = 4; j3 >= 0; j3--) {
+									if (itemDef.groundActions != null && itemDef.groundActions[j3] != null) {
+										menuActionName[menuActionRow] = itemDef.groundActions[j3] + " @lre@" + itemDef.name;
+
+										if (j3 == 0) {
+											menuActionID[menuActionRow] = 652;
+										}
+
+										if (j3 == 1) {
+											menuActionID[menuActionRow] = 567;
+										}
+
+										if (j3 == 2) {
+											menuActionID[menuActionRow] = 234;
+										}
+
+										if (j3 == 3) {
+											menuActionID[menuActionRow] = 244;
+										}
+
+										if (j3 == 4) {
+											menuActionID[menuActionRow] = 213;
+										}
+
+										menuActionCmd1[menuActionRow] = item.id;
+										menuActionCmd2[menuActionRow] = x;
+										menuActionCmd3[menuActionRow] = y;
+										menuActionCmd4[menuActionRow] = index;
+										menuActionRow++;
+									} else if (j3 == 2) {
+										menuActionName[menuActionRow] = "Take @lre@" + itemDef.name;
+										menuActionID[menuActionRow] = 234;
+										menuActionCmd1[menuActionRow] = item.id;
+										menuActionCmd2[menuActionRow] = x;
+										menuActionCmd3[menuActionRow] = y;
+										menuActionCmd4[menuActionRow] = index;
+										menuActionRow++;
+									}
+								}
+
+								menuActionName[menuActionRow] = "Examine @lre@" + itemDef.name
+										+ (myRights == 3 ? " (" + itemDef.id + ")" : "");
+								menuActionID[menuActionRow] = 1448;
 								menuActionCmd1[menuActionRow] = item.id;
 								menuActionCmd2[menuActionRow] = x;
 								menuActionCmd3[menuActionRow] = y;
 								menuActionCmd4[menuActionRow] = index;
 								menuActionRow++;
 							}
-						} else {
-							for (int j3 = 4; j3 >= 0; j3--) {
-								if (itemDef.groundActions != null && itemDef.groundActions[j3] != null) {
-									menuActionName[menuActionRow] = itemDef.groundActions[j3] + " @lre@" + itemDef.name;
-
-									if (j3 == 0) {
-										menuActionID[menuActionRow] = 652;
-									}
-
-									if (j3 == 1) {
-										menuActionID[menuActionRow] = 567;
-									}
-
-									if (j3 == 2) {
-										menuActionID[menuActionRow] = 234;
-									}
-
-									if (j3 == 3) {
-										menuActionID[menuActionRow] = 244;
-									}
-
-									if (j3 == 4) {
-										menuActionID[menuActionRow] = 213;
-									}
-
-									menuActionCmd1[menuActionRow] = item.id;
-									menuActionCmd2[menuActionRow] = x;
-									menuActionCmd3[menuActionRow] = y;
-									menuActionCmd4[menuActionRow] = index;
-									menuActionRow++;
-								} else if (j3 == 2) {
-									menuActionName[menuActionRow] = "Take @lre@" + itemDef.name;
-									menuActionID[menuActionRow] = 234;
-									menuActionCmd1[menuActionRow] = item.id;
-									menuActionCmd2[menuActionRow] = x;
-									menuActionCmd3[menuActionRow] = y;
-									menuActionCmd4[menuActionRow] = index;
-									menuActionRow++;
-								}
-							}
-
-							menuActionName[menuActionRow] = "Examine @lre@" + itemDef.name
-									+ (myRights == 3 ? " (" + itemDef.id + ")" : "");
-							menuActionID[menuActionRow] = 1448;
-							menuActionCmd1[menuActionRow] = item.id;
-							menuActionCmd2[menuActionRow] = x;
-							menuActionCmd3[menuActionRow] = y;
-							menuActionCmd4[menuActionRow] = index;
-							menuActionRow++;
 						}
 					}
 				}
 			}
+		} catch(Exception e) {
+			
 		}
 	}
 

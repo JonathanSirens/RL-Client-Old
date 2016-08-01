@@ -31,6 +31,50 @@ public class Model extends Animable {
 			}
 		}
 	}
+	
+	/*public void convertTexturesTo317(short[] textureIds, int[] texa, int[] texb, int[] texc) {
+		int set = 0;
+		int set2 = 0;
+		int max = Canvas3D.textureAmount;
+		if(textureIds != null) {
+			anIntArray1634 = new int[anInt1630];
+			anIntArray1635 = new int[anInt1630];
+			anIntArray1636 = new int[anInt1630];
+			
+			for(int i = 0; i < anInt1630; i++) {
+				if(textureIds[i] == -1 && anIntArray1637[i] == 2) {
+					anIntArray1640[i] = 65535;
+					anIntArray1637[i] = 0;
+				}
+				if(textureIds[i] >= max || textureIds[i] < 0 || textureIds[i] == 39) {
+					anIntArray1637[i] = 0;
+					continue;
+				}
+				anIntArray1637[i] = 2+set2;
+				set2 += 4;
+				int a = anIntArray1631[i];
+				int b = anIntArray1632[i];
+				int c = anIntArray1633[i];
+				anIntArray1640[i] = textureIds[i];
+				
+				int texture_type = -1;
+				if(texture_coordinates != null) {
+					texture_type = texture_coordinates[i] & 0xff;
+					if(texture_type != 0xff)
+						if(texa[texture_type] >= anIntArray1669.length || texb[texture_type] >= anIntArray1668.length || texc[texture_type] >= anIntArray1670.length)
+						texture_type = -1;
+				}
+                if(texture_type == 0xff)
+                        texture_type = -1;
+                
+                anIntArray1634[set] = texture_type == -1 ? a : texa[texture_type];
+                anIntArray1635[set] = texture_type == -1 ? b : texb[texture_type];
+                anIntArray1636[set++] = texture_type == -1 ? c : texc[texture_type];
+
+			}
+			numberOfTexturesFaces = set;
+		}
+	}*/
 
 	public static void nullLoader() {
 		aClass21Array1661 = null;
@@ -400,6 +444,7 @@ public class Model extends Animable {
 		anIntArray1631 = facePoint1;
 		anIntArray1632 = facePoint2;
 		anIntArray1633 = facePoint3;
+		//convertTexturesTo317(textureIds, texTrianglesPoint1, texTrianglesPoint2, texTrianglesPoint3);
 	}
 
 	public Model(int modelId) {
