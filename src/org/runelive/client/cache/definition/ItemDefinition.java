@@ -613,7 +613,7 @@ public final class ItemDefinition {
 				break;
 			case 10034:
 			case 10033:
-				itemDef.actions = new String[] { null, null, null, null, "Drop" };
+				itemDef.actions = new String[] { null, "Weild", null, null, "Drop" };
 				break;
 			case 13727:
 				itemDef.actions = new String[] { null, null, null, null, "Drop" };
@@ -6238,6 +6238,9 @@ public final class ItemDefinition {
 				itemDef.maleWieldX = 55; //char north/south
 				itemDef.maleWieldY = 0; // char to left/right
 				itemDef.maleWieldZ = 26; // char up/down
+				itemDef.femaleWieldX = 55; //char north/south
+				itemDef.femaleWieldY = 0; // char to left/right
+				itemDef.femaleWieldZ = 26; // char up/down
 				break;
 			case 21145:
 				itemDef.setDefaults();

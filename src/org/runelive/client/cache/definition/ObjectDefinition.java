@@ -2,6 +2,7 @@ package org.runelive.client.cache.definition;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 import org.runelive.client.Client;
 import org.runelive.client.FrameReader;
@@ -25,6 +26,8 @@ public final class ObjectDefinition {
 	private static final int[] removeObjects = { 23987, 4651, 4565, 52843, 23897, 23633, 307, 8985, 57264, 23983, 632, 4656,
 			24265, 24271, 24272, 24274, 24273, 24275, 24266, 24267, 24268, 24269, 24270 };
 
+	public static ArrayList<Integer> OBJECT_MODELS = new ArrayList<>();
+
 	public static ObjectDefinition forID(int id) {
 		for (int j = 0; j < 20; j++) {
 			if (cache[j].id == id) {
@@ -34,12 +37,10 @@ public final class ObjectDefinition {
 		if (id >= streamIndices.length) {
 			// return forID667(id);
 		}
-
 		// cacheIndex = (cacheIndex + 1) % 20;,
 
 		cacheIndex = (cacheIndex + 1) % 20;
 		ObjectDefinition definition = cache[cacheIndex];
-
 		boolean loadNew = (
 		/* id == 8550 || id == 8551 || id == 7847 || id == 8150 || */id == 32159 || id == 32157 || id == 36672
 				|| id == 36675 || id == 36692 || id == 34138 || id >= 39260 && id <= 39271 || id == 39229 || id == 39230
@@ -73,7 +74,16 @@ public final class ObjectDefinition {
 			}
 
 		}
-
+		/*
+		if(definition.objectModelIDs != null) {
+			for (int i2 = 0; i2 < definition.objectModelIDs.length; i2++) {
+				if (!OBJECT_MODELS.contains(definition.objectModelIDs[i2])) {
+					System.out.println("Object Model: " + definition.objectModelIDs[i2]);
+					OBJECT_MODELS.add(definition.objectModelIDs[i2]);
+				}
+			}
+		}
+		*/
 		/*if (id == 6189) {
 			System.out.println("X: "+definition.modelSizeX);
 			System.out.println("Y: "+definition.modelSizeY);

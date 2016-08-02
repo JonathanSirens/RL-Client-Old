@@ -17,7 +17,7 @@ public class Configuration {
 
 	/** FILE SERVER **/
 	public final static boolean FILE_SERVER_ENABLED = true;
-	public final static boolean DEVELOPER_FILE_SERVER = false;
+	public final static boolean DEVELOPER_FILE_SERVER = true;
 	public final static String JAGCACHED_HOST = "149.56.107.192";// "127.0.0.1";
 	public final static int JAGGRAB_PORT = DEVELOPER_FILE_SERVER ? 43596 : 43595;
 	public final static int ONDEMAND_PORT = DEVELOPER_FILE_SERVER ? 43592 : 43593;
@@ -48,7 +48,7 @@ public class Configuration {
 	public static boolean DISPLAY_USERNAMES_ABOVE_HEAD = false;
 	public static boolean TWEENING_ENABLED = true;
 
-	public static boolean NEW_HITMARKS = false;
+	public static boolean NEW_HITMARKS = true;
 	public static boolean PARTICLES = true;
 	public static boolean CONSTITUTION_ENABLED = true;
 	public static boolean NEW_HEALTH_BARS = true;

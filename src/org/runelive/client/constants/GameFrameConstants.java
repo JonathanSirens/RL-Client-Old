@@ -14,7 +14,7 @@ public class GameFrameConstants {
 
 	public static final int minHeight = 600;
 
-	public static GameFrameType gameframeType = GameFrameType.FRAME_525;
+	public static GameFrameType gameframeType = GameFrameType.FRAME_554;
 
 	public static int getMaxWidth() {
 		return (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
