@@ -7521,6 +7521,22 @@ public class Client extends GameRenderer {
 				hoveringWorldSwitcher = false;
 			}
 		}
+		if(!isLoading) {
+			/*
+			if (super.mouseX >= 312 && super.mouseX <= 342 && super.mouseY >= 458 && super.mouseY <= 489) {
+				ahover = true;
+			}
+			if (super.mouseX >= 346 && super.mouseX <= 378 && super.mouseY >= 458 && super.mouseY <= 489) {
+				bhover = true;
+			}
+			if (super.mouseX >= 380 && super.mouseX <= 413 && super.mouseY >= 458 && super.mouseY <= 489) {
+				chover = true;
+			}
+			if (super.mouseX >= 415 && super.mouseX <= 448 && super.mouseY >= 458 && super.mouseY <= 489) {
+				dhover = true;
+			}
+			*/
+		}
 		if (!isLoading && !(loginMessage1.length() > 0)) {
 			if (super.mouseX >= 300 && super.mouseX <= 300 + 167 && super.mouseY >= 328 && super.mouseY <= 328 + 34) {
 				loginButtonHover = handCursor = true;
@@ -7546,18 +7562,6 @@ public class Client extends GameRenderer {
 					&& super.mouseY <= 137 + 15) {
 				backButtonHover = handCursor = true;
 			}
-		}
-		if (super.mouseX >= 312 && super.mouseX <= 342 && super.mouseY >= 458 && super.mouseY <= 489) {
-			ahover = handCursor = true;
-		}
-		if (super.mouseX >= 346 && super.mouseX <= 378 && super.mouseY >= 458 && super.mouseY <= 489) {
-			bhover = handCursor = true;
-		}
-		if (super.mouseX >= 380 && super.mouseX <= 413 && super.mouseY >= 458 && super.mouseY <= 489) {
-			chover = handCursor = true;
-		}
-		if (super.mouseX >= 415 && super.mouseX <= 448 && super.mouseY >= 458 && super.mouseY <= 489) {
-			dhover = handCursor = true;
 		}
 		if (super.mouseX >= 264 && super.mouseX <= 340 && super.mouseY >= 372 && super.mouseY <= 446) {
 			if (!saved_characters_usernames[0].equals("Empty")) {
@@ -7620,7 +7624,23 @@ public class Client extends GameRenderer {
 				titleScreenIP.drawGraphics(0, super.graphics, 0);
 				return;
 			}
+			/*
+			if(ahover) {
+				CacheSpriteLoader.getCacheSprite2(28).drawAdvancedSprite(312, 458);
+			}
 
+			if(bhover) {
+				CacheSpriteLoader.getCacheSprite2(29).drawAdvancedSprite(347, 458);
+			}
+
+			if(chover) {
+				CacheSpriteLoader.getCacheSprite2(30).drawAdvancedSprite(382, 458);
+			}
+
+			if(dhover) {
+				CacheSpriteLoader.getCacheSprite2(31).drawAdvancedSprite(417, 458);
+			}
+			*/
 			if (loginMessage1.length() > 0) {
 
 				CacheSpriteLoader.getCacheSprite2(0).drawAdvancedSprite(0, 0);
@@ -7642,21 +7662,6 @@ public class Client extends GameRenderer {
 				if (loginMessage2 != null && loginMessage2.length() != 0) {
 					int y_2 = (clientHeight / 2) + (1 * 20) + 28;
 					boldText.drawCenteredText(0xefefef, 381, loginMessage2, y_2 - 30, true);
-				}
-				if (ahover) {
-					CacheSpriteLoader.getCacheSprite2(28).drawAdvancedSprite(312, 458);
-				}
-
-				if (bhover) {
-					CacheSpriteLoader.getCacheSprite2(29).drawAdvancedSprite(347, 458);
-				}
-
-				if (chover) {
-					CacheSpriteLoader.getCacheSprite2(30).drawAdvancedSprite(382, 458);
-				}
-
-				if (dhover) {
-					CacheSpriteLoader.getCacheSprite2(31).drawAdvancedSprite(417, 458);
 				}
 			} else {
 				/*
@@ -7686,21 +7691,7 @@ public class Client extends GameRenderer {
 				 * CacheSpriteLoader.getCacheSprite2(22].drawAdvancedSprite(259,
 				 * 203); }
 				 *
-				 * if(ahover) {
-				 * CacheSpriteLoader.getCacheSprite2(28].drawAdvancedSprite(312,
-				 * 458); }
 				 *
-				 * if(bhover) {
-				 * CacheSpriteLoader.getCacheSprite2(29].drawAdvancedSprite(347,
-				 * 458); }
-				 *
-				 * if(chover) {
-				 * CacheSpriteLoader.getCacheSprite2(30].drawAdvancedSprite(382,
-				 * 458); }
-				 *
-				 * if(dhover) {
-				 * CacheSpriteLoader.getCacheSprite2(31].drawAdvancedSprite(417,
-				 * 458); }
 				 *
 				 * if(rememberMeButtonHover) { if(rememberMe) {
 				 * CacheSpriteLoader.getCacheSprite2(35].drawAdvancedSprite(258,
@@ -14892,6 +14883,7 @@ public class Client extends GameRenderer {
 						loginMessage1 = "";
 						loginMessage2 = "";
 						backButtonHover = false;
+						/*
 					} else if (ahover) {
 						launchURL("http://rune.live");
 					} else if (bhover) {
@@ -14900,6 +14892,7 @@ public class Client extends GameRenderer {
 						launchURL("https://www.youtube.com/channel/UCaZsgSlOltAIGJNPnAD8h1Q/videos");
 					} else if (dhover) {
 						launchURL("http://google.com");
+						*/
 					} else if (profile1hover) {
 						if (profileclose1hover) {
 							saved_characters_usernames[0] = "Empty";
@@ -14950,6 +14943,7 @@ public class Client extends GameRenderer {
 					switchWorld();
 				} else if (worldButtonHover) {
 					// World interface display
+					/*
 				} else if (ahover) {
 					launchURL("http://rune.live");
 				} else if (bhover) {
@@ -14958,6 +14952,7 @@ public class Client extends GameRenderer {
 					launchURL("https://www.youtube.com/channel/UCaZsgSlOltAIGJNPnAD8h1Q/videos");
 				} else if (dhover) {
 					launchURL("http://google.com");
+					*/
 				} else if (profile1hover) {
 					if (profileclose1hover) {
 						saved_characters_usernames[0] = "Empty";
