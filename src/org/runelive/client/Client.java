@@ -16945,7 +16945,7 @@ public class Client extends GameRenderer {
 			onDemandFetcher = new CacheFileRequester();
 			onDemandFetcher.start(streamLoader_6, this);
 			Model.initialize(onDemandFetcher.getFileCount(0), onDemandFetcher);
-			preloadModels();
+			//preloadModels();
 			// SpriteCache.initialise(50000, onDemandFetcher);
 			setLoadingText(20, "Unpacked archives");
 			constructMusic();
