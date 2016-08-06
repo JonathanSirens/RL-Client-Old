@@ -21,6 +21,10 @@ public class RSInterface {
 	public static CustomInterfaces getCustomInterfaces() {
 		return customInterfaces;
 	}
+	
+	public void setSprite(Sprite sprite) {
+		sprite1 = sprite;
+	}
 
 	public int customOpacity = 0;
 	public boolean drawsTransparent;

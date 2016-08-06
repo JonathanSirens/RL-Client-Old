@@ -1,29 +1,8 @@
 package org.runelive.client.graphics.gameframe.impl;
 
-import java.awt.AWTException;
-import java.awt.KeyboardFocusManager;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.Window;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import javax.imageio.ImageIO;
-
 import org.runelive.client.Client;
 import org.runelive.client.RSInterface;
 import org.runelive.client.Settings;
-import org.runelive.client.Signlink;
 import org.runelive.client.graphics.CacheSpriteLoader;
 import org.runelive.client.graphics.Canvas2D;
 import org.runelive.client.graphics.fonts.RSFontSystem;
@@ -637,8 +616,8 @@ public class ChatArea extends GameFrame {
 						screenMode == ScreenMode.FIXED ? 0x807660 : 0xaea799, 150);
 			}
 
-			if (client.menuOpen) {
-				client.drawMenu(0, GameFrame.isFixed() ? 338 : 0);
+			if (client.menuOpen && client.menuScreenArea == 2) {
+				client.drawMenu();
 			}
 
 			if (screenMode == ScreenMode.FIXED) {

@@ -3743,27 +3743,116 @@ public class Client extends GameRenderer {
 			}
 		}
 		width += 8;
-		int offset = 15 * menuActionRow + 21;
-		if(super.saveClickX > 0 && super.saveClickY > 0 && super.saveClickX < clientWidth && super.saveClickY < clientHeight) {
-			int xClick = super.saveClickX - width / 2;
-			if (xClick + width > clientWidth - 4) {
-				xClick = clientWidth - 4 - width;
+		int menHeight = 15 * menuActionRow + 21;
+		if (GameFrame.getScreenMode() == ScreenMode.FIXED) {
+			if (super.saveClickX > 4 && super.saveClickY > 4 && super.saveClickX < 516 && super.saveClickY < 338) {
+				int offsetX = super.saveClickX - 4 - width / 2;
+				if (offsetX + width > 512) {
+					offsetX = 512 - width;
+				}
+				if (offsetX < 0) {
+					offsetX = 0;
+				}
+				int offsetY = super.saveClickY - 4;
+				if (offsetY + menHeight > 334) {
+					offsetY = 334 - menHeight;
+				}
+				if (offsetY < 0) {
+					offsetY = 0;
+				}
+				menuOpen = true;
+				menuScreenArea = 0;
+				menuOffsetX = offsetX;
+				menuOffsetY = offsetY;
+				menuWidth = width;
+				menuHeight = 15 * menuActionRow + 22;
 			}
-			if (xClick < 0) {
-				xClick = 0;
+			if (super.saveClickX > 519 && super.saveClickY > 168 && super.saveClickX < 765 && super.saveClickY < 503) {
+				int offsetX = super.saveClickX - 519 - width / 2;
+				if (offsetX < 0) {
+					offsetX = 0;
+				} else if (offsetX + width > 245) {
+					offsetX = 245 - width;
+				}
+				int offsetY = super.saveClickY - 168;
+				if (offsetY < 0) {
+					offsetY = 0;
+				} else if (offsetY + menHeight > 333) {
+					offsetY = 333 - menHeight;
+				}
+				menuOpen = true;
+				menuScreenArea = 1;
+				menuOffsetX = offsetX;
+				menuOffsetY = offsetY;
+				menuWidth = width;
+				menuHeight = 15 * menuActionRow + 22;
 			}
-			int yClick = super.saveClickY - 0;
-			if (yClick + offset > clientHeight - 6) {
-				yClick = clientHeight - 6 - offset;
+			if (super.saveClickX > 0 && super.saveClickY > 338 && super.saveClickX < 516 && super.saveClickY < 503) {
+				int offsetX = super.saveClickX - 0 - width / 2;
+				if (offsetX < 0) {
+					offsetX = 0;
+				} else if (offsetX + width > 516) {
+					offsetX = 516 - width;
+				}
+				int offsetY = super.saveClickY - 338;
+				if (offsetY < 0) {
+					offsetY = 0;
+				} else if (offsetY + menHeight > 165) {
+					offsetY = 165 - menHeight;
+				}
+				menuOpen = true;
+				menuScreenArea = 2;
+				menuOffsetX = offsetX;
+				menuOffsetY = offsetY;
+				menuWidth = width;
+				menuHeight = 15 * menuActionRow + 22;
 			}
-			if (yClick < 0) {
-				yClick = 0;
+			// if(super.saveClickX > 0 && super.saveClickY > 338 &&
+			// super.saveClickX < 516 && super.saveClickY < 503) {
+			if (super.saveClickX > 519 && super.saveClickY > 0 && super.saveClickX < 765 && super.saveClickY < 168) {
+				int offsetX = super.saveClickX - 519 - width / 2;
+				if (offsetX < 0) {
+					offsetX = 0;
+				} else if (offsetX + width > 245) {
+					offsetX = 245 - width;
+				}
+				int offsetY = super.saveClickY - 0;
+				if (offsetY < 0) {
+					offsetY = 0;
+				} else if (offsetY + menHeight > 168) {
+					offsetY = 168 - menHeight;
+				}
+				menuOpen = true;
+				menuScreenArea = 3;
+				menuOffsetX = offsetX;
+				menuOffsetY = offsetY;
+				menuWidth = width;
+				menuHeight = 15 * menuActionRow + 22;
 			}
-			menuOpen = true;
-			menuOffsetX = xClick;
-			menuOffsetY = yClick;
-			menuWidth = width;
-			menuHeight = 15 * menuActionRow + 22;
+		} else {
+			if (super.saveClickX > 0 && super.saveClickY > 0 && super.saveClickX < getScreenWidth()
+					&& super.saveClickY < getScreenHeight()) {
+				int offsetX = super.saveClickX - 0 - width / 2;
+				if (offsetX + width > getScreenWidth()) {
+					offsetX = getScreenWidth() - width;
+				}
+				if (offsetX < 0) {
+					offsetX = 0;
+				}
+				int offsetY = super.saveClickY - 0;
+				if (offsetY + menHeight > getScreenHeight()) {
+					offsetY = getScreenHeight() - menHeight;
+				}
+				if (offsetY < 0) {
+					offsetY = 0;
+				}
+				menuOpen = true;
+				menuScreenArea = 0;
+				menuOffsetX = offsetX;
+				menuOffsetY = offsetY;
+				menuWidth = width;
+				menuHeight = 15 * menuActionRow + 22;
+			}
 		}
 	}
 
@@ -5204,61 +5293,48 @@ public class Client extends GameRenderer {
 			switch (interfaceId) {
 			case 26026:
 				Configuration.DISPLAY_HP_ABOVE_HEAD = !Configuration.DISPLAY_HP_ABOVE_HEAD;
-				pushMessage(
-						"Displaying hp above head turned " + (Configuration.DISPLAY_HP_ABOVE_HEAD ? "on" : "off") + ".",
-						0, "");
 				Settings.save();
 				updateSetting(interfaceId, !Configuration.DISPLAY_HP_ABOVE_HEAD);
 				break;
 			case 26027:
 				Configuration.DISPLAY_USERNAMES_ABOVE_HEAD = !Configuration.DISPLAY_USERNAMES_ABOVE_HEAD;
-				pushMessage("Displaying usernames above head turned "
-						+ (Configuration.DISPLAY_USERNAMES_ABOVE_HEAD ? "on" : "off") + ".", 0, "");
 				Settings.save();
 				updateSetting(interfaceId, !Configuration.DISPLAY_USERNAMES_ABOVE_HEAD);
 				break;
 			case 26031:
 				GameFrameConstants.gameframeType = GameFrameConstants.gameframeType == GameFrameType.FRAME_525
 						? GameFrameType.FRAME_554 : GameFrameType.FRAME_525;
-				pushMessage("Gameframe toggled.", 0, "");
 				Settings.save();
 				updateSetting(interfaceId, GameFrameConstants.gameframeType == GameFrameType.FRAME_525);
 				break;
 			case 26035:
 				Configuration.FOG_ENABLED = !Configuration.FOG_ENABLED;
-				pushMessage("HD Fog toggled.", 0, "");
 				Settings.save();
 				updateSetting(interfaceId, !Configuration.FOG_ENABLED);
 				break;
 			case 26037:
 				Configuration.TOGGLE_ROOF_OFF = !Configuration.TOGGLE_ROOF_OFF;
-				pushMessage("Roofs have been toggled.", 0, "");
 				Settings.save();
 				updateSetting(interfaceId, !Configuration.TOGGLE_ROOF_OFF);
 				loadRegion();
 				break;
 			case 26014:
 				Configuration.NEW_HITMARKS = !Configuration.NEW_HITMARKS;
-				pushMessage("New hitmarks turned " + (Configuration.NEW_HITMARKS ? "on" : "off") + ".", 0, "");
 				Settings.save();
 				updateSetting(interfaceId, !Configuration.NEW_HITMARKS);
 				break;
 			case 26039:
 				changeMenuText = !changeMenuText;
-				pushMessage("Toggled menu text", 0, "");
 				Settings.save();
 				updateSetting(interfaceId, !changeMenuText);
 				break;
 			case 26007:
 				Configuration.NEW_FUNCTION_KEYS = !Configuration.NEW_FUNCTION_KEYS;
-				pushMessage("New function keys turned " + (Configuration.NEW_FUNCTION_KEYS ? "on" : "off") + ".", 0,
-						"");
 				Settings.save();
 				updateSetting(interfaceId, !Configuration.NEW_FUNCTION_KEYS);
 				break;
 			case 26010:
 				Configuration.NEW_CURSORS = !Configuration.NEW_CURSORS;
-				pushMessage("New cursors turned " + (Configuration.NEW_CURSORS ? "on" : "off") + ".", 0, "");
 				Settings.save();
 				updateSetting(interfaceId, !Configuration.NEW_CURSORS);
 				oldCursor = null;
@@ -5270,27 +5346,22 @@ public class Client extends GameRenderer {
 				break;
 			case 26008:
 				Configuration.NEW_HEALTH_BARS = !Configuration.NEW_HEALTH_BARS;
-				pushMessage("New health bars turned " + (Configuration.NEW_HEALTH_BARS ? "on" : "off") + ".", 0, "");
 				Settings.save();
 				updateSetting(interfaceId, !Configuration.NEW_HEALTH_BARS);
 				break;
 			case 26029:
 				Configuration.CONSTITUTION_ENABLED = !Configuration.CONSTITUTION_ENABLED;
-				pushMessage("Constitution turned " + (Configuration.CONSTITUTION_ENABLED ? "on" : "off") + ".", 0, "");
 				Settings.save();
 				updateSetting(interfaceId, !Configuration.CONSTITUTION_ENABLED);
 				break;
 			case 26033:
 				Configuration.NOTIFICATIONS_ENABLED = !Configuration.NOTIFICATIONS_ENABLED;
-				pushMessage("Push notifications turned " + (Configuration.NOTIFICATIONS_ENABLED ? "on" : "off") + ".",
-						0, "");
 				Settings.save();
 				updateSetting(interfaceId, !Configuration.NOTIFICATIONS_ENABLED);
 				break;
 			case 26054:
 				setLowDetail();
 				loadRegion();
-				pushMessage("Set to low detail.", 0, "");
 				Settings.save();
 				updateSetting(interfaceId, false);
 				updateSetting(26058, false);
@@ -5298,7 +5369,6 @@ public class Client extends GameRenderer {
 			case 26058:
 				setHighDetail();
 				loadRegion();
-				pushMessage("Set to high detail.", 0, "");
 				Settings.save();
 				updateSetting(interfaceId, false);
 				updateSetting(26054, false);
@@ -5771,7 +5841,7 @@ public class Client extends GameRenderer {
 			processRightClick();
 			drawTooltip();
 		} else if (menuScreenArea == 0) {
-			drawMenu(GameFrame.isFixed() ? 4 : 0, GameFrame.isFixed() ? 4 : 0);
+			drawMenu();
 		}
 
 		if (drawMultiwayIcon == 1) {
@@ -6410,7 +6480,7 @@ public class Client extends GameRenderer {
 			processRightClick();
 			drawTooltip();
 		} else {
-			drawMenu(GameFrame.isFixed() ? 4 : 0, GameFrame.isFixed() ? 4 : 0);
+			drawMenu();
 		}
 
 		drawTabArea();
@@ -6543,8 +6613,20 @@ public class Client extends GameRenderer {
 			yPos += 16;
 		}
 	}
+	
+
+	private void refreshScreenOptions() {
+		int childIds[] = { 40043, 40046, 40049 };
+		int enabledIds[] = { 487, 489, 491 };
+		int disabledIds[] = { 486, 488, 490 };
+		ScreenMode modes[] = { ScreenMode.FIXED, ScreenMode.RESIZABLE, ScreenMode.FULLSCREEN };
+		for (int index = 0; index < modes.length; index++) {
+			RSInterface.interfaceCache[childIds[index]].setSprite(CacheSpriteLoader.getCacheSprite(GameFrame.getScreenMode() == modes[index] ? enabledIds[index] : disabledIds[index]));
+		}
+	}
 
 	public void drawInterface(int scrollOffset, int interfaceX, RSInterface class9, int interfaceY) {
+		
 		if (class9 == null)
 			return;
 
@@ -16863,7 +16945,7 @@ public class Client extends GameRenderer {
 			onDemandFetcher = new CacheFileRequester();
 			onDemandFetcher.start(streamLoader_6, this);
 			Model.initialize(onDemandFetcher.getFileCount(0), onDemandFetcher);
-			//preloadModels();
+			preloadModels();
 			// SpriteCache.initialise(50000, onDemandFetcher);
 			setLoadingText(20, "Unpacked archives");
 			constructMusic();

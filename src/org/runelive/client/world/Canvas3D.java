@@ -332,7 +332,7 @@ public final class Canvas3D extends Canvas2D {
 			}
 			return;
 		}
-		if (tex == 17 || tex == 34) {
+		if (tex == 17 || tex == 34 || tex == 40) {
 			mipMapLevel = 0;
 			return;
 		}

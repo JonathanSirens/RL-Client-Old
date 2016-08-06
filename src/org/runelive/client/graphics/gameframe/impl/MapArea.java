@@ -535,7 +535,7 @@ public class MapArea extends GameFrame {
 			 */
 			client.miniMapRegions.rotate(152, i, client.mapImagePixelCutRight, 256 + client.minimapZoom,
 					client.mapImagePixelCutLeft, playerPosY, getOffSetY() + (screenMode == ScreenMode.FIXED ? 10 : 5),
-					getOffSetX() + (screenMode == ScreenMode.FIXED ? 34 : 11), 152, playerPosX);
+					getOffSetX() + (screenMode == ScreenMode.FIXED ? 35 : 11), 152, playerPosX);
 			client.compass.rotate(33, client.viewRotation, client.compassArray2, 256, client.compassArray1, 25,
 					getOffSetY() + (screenMode == ScreenMode.FIXED ? 8 : 5),
 					getOffSetX() + (screenMode == ScreenMode.FIXED ? 10 : 5), 33, 25);
@@ -646,9 +646,14 @@ public class MapArea extends GameFrame {
 			client.compass.rotate(33, client.viewRotation, client.compassArray2, 256, client.compassArray1, 25,
 					getOffSetY() + (screenMode == ScreenMode.FIXED ? 8 : 4),
 					getOffSetX() + (screenMode == ScreenMode.FIXED ? 10 : 5), 33, 25);
-			CacheSpriteLoader.getCacheSprite(screenMode == ScreenMode.FIXED ? 1200 : 13).drawSprite(
-					getOffSetX() - (screenMode == ScreenMode.FIXED ? 1 : 0),
-					getOffSetY() - (screenMode == ScreenMode.FIXED ? 0 : 1));
+			if (screenMode == ScreenMode.FIXED) {
+				CacheSpriteLoader.getCacheSprite(1200).drawSprite(0, 0);
+			} else {
+				CacheSpriteLoader.getCacheSprite(13).drawSprite(
+					getOffSetX() - (0),
+					getOffSetY() - (1));
+			}
+			
 
 			/*
 			 * Spec Orb
@@ -740,10 +745,10 @@ public class MapArea extends GameFrame {
 			}
 
 			Canvas2D.drawPixels(3, 76 + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 4 : 8) + getOffSetY(),
-					76 + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 9 : 31) + getOffSetX(), 0xffffff, 3);
+					76 + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 9 : 33) + getOffSetX(), 0xffffff, 3);
 
-			if (client.menuOpen) {
-				client.drawMenu(GameFrame.isFixed() ? 516 : 0, 0);
+			if (client.menuOpen && client.menuScreenArea == 3) {
+				client.drawMenu();
 			}
 
 		}

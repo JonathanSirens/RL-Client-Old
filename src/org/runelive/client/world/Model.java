@@ -32,15 +32,45 @@ public class Model extends Animable {
 		}
 	}
 	
-	/*public void convertTexturesTo317(short[] textureIds, int[] texa, int[] texb, int[] texc) {
+	private void filterTriangles() {
+	    for (int id = 0; id < anInt1630; id++) {
+	        int triA = anIntArray1631[id];
+	        int triB = anIntArray1632[id];
+	        int triC = anIntArray1633[id];
+	        boolean filter = true;
+	        label2: for (int id2 = 0; id2 < anInt1630; id2++) {
+	        	if (id2 == id) {
+                    continue label2;
+                }
+                if (anIntArray1631[id2] == triA) {
+                	filter = false;
+                    break label2;
+                }
+                if (anIntArray1632[id2] == triB) {
+                	filter = false;
+                    break label2;
+                }
+                if (anIntArray1633[id2] == triC) {
+                	filter = false;
+                    break label2;
+                }
+	        }
+	        if (filter) {
+	            if (anIntArray1637 != null) {
+	                anIntArray1639[id] = 255;
+	            }
+	        }
+	    }
+	}
+	
+	public void convertTexturesTo317(short[] textureIds, int[] texa, int[] texb, int[] texc) {
 		int set = 0;
 		int set2 = 0;
-		int max = Canvas3D.textureAmount;
+		int max = 51;
 		if(textureIds != null) {
-			anIntArray1634 = new int[anInt1630];
-			anIntArray1635 = new int[anInt1630];
-			anIntArray1636 = new int[anInt1630];
-			
+			anIntArray1643 = new int[anInt1630];
+			anIntArray1644 = new int[anInt1630];
+			anIntArray1645 = new int[anInt1630];
 			for(int i = 0; i < anInt1630; i++) {
 				if(textureIds[i] == -1 && anIntArray1637[i] == 2) {
 					anIntArray1640[i] = 65535;
@@ -56,25 +86,25 @@ public class Model extends Animable {
 				int b = anIntArray1632[i];
 				int c = anIntArray1633[i];
 				anIntArray1640[i] = textureIds[i];
-				
 				int texture_type = -1;
 				if(texture_coordinates != null) {
 					texture_type = texture_coordinates[i] & 0xff;
-					if(texture_type != 0xff)
-						if(texa[texture_type] >= anIntArray1669.length || texb[texture_type] >= anIntArray1668.length || texc[texture_type] >= anIntArray1670.length)
-						texture_type = -1;
+					if(texture_type != 0xff) {
+						if(texa[texture_type] >= anIntArray1669.length || texb[texture_type] >= anIntArray1668.length || texc[texture_type] >= anIntArray1670.length) {
+							texture_type = -1;
+						}
+					}		
 				}
-                if(texture_type == 0xff)
-                        texture_type = -1;
-                
-                anIntArray1634[set] = texture_type == -1 ? a : texa[texture_type];
-                anIntArray1635[set] = texture_type == -1 ? b : texb[texture_type];
-                anIntArray1636[set++] = texture_type == -1 ? c : texc[texture_type];
-
+				if(texture_type == 0xff) {
+					texture_type = -1;
+				}
+				anIntArray1643[set] = texture_type == -1 ? a : texa[texture_type];
+				anIntArray1644[set] = texture_type == -1 ? b : texb[texture_type];
+				anIntArray1645[set++] = texture_type == -1 ? c : texc[texture_type];
 			}
-			numberOfTexturesFaces = set;
+			anInt1642 = set;
 		}
-	}*/
+	}
 
 	public static void nullLoader() {
 		aClass21Array1661 = null;
@@ -98,7 +128,6 @@ public class Model extends Animable {
 		modelIntArray4 = null;
 	}
 
-	@SuppressWarnings("unused")
 	public void read525Model(byte abyte0[], int modelID) {
 		ByteBuffer nc1 = new ByteBuffer(abyte0);
 		ByteBuffer nc2 = new ByteBuffer(abyte0);
@@ -131,22 +160,17 @@ public class Model extends Animable {
 		int k4 = 0;
 		int l4 = 0;
 		int i5 = 0;
-		int v = 0;
-		int hb = 0;
-		int P = 0;
-		byte G = 0;
-		byte[] x = null;
+		byte[] textureCoordinates = null;
 		byte[] O = null;
 		byte[] J = null;
 		byte[] F = null;
 		byte[] cb = null;
 		byte[] gb = null;
 		byte[] lb = null;
-		int[] ab = null;
 		int[] kb = null;
 		int[] y = null;
 		int[] N = null;
-		short[] D = null;
+		short[] textureIds = null;
 		int[] triangleColours2 = new int[numTriangles];
 		if (numTexTriangles > 0) {
 			O = new byte[numTexTriangles];
@@ -208,9 +232,6 @@ public class Model extends Animable {
 		k5 += l4;
 		int k10 = k5;
 		k5 += l4 + i5 * 2;
-		v = numVertices;
-		hb = numTriangles;
-		P = numTexTriangles;
 		int[] vertexX = new int[numVertices];
 		int[] vertexY = new int[numVertices];
 		int[] vertexZ = new int[numVertices];
@@ -229,18 +250,15 @@ public class Model extends Animable {
 			anIntArray1637 = new int[numTriangles];
 		if (i2 == 255)
 			anIntArray1638 = new int[numTriangles];
-		else
-			G = (byte) i2;
 		if (j2 == 1)
 			anIntArray1639 = new int[numTriangles];
 		if (k2 == 1)
 			anIntArray1656 = new int[numTriangles];
 		if (l2 == 1)
-			D = new short[numTriangles];
+			textureIds = new short[numTriangles];
 		if (l2 == 1 && numTexTriangles > 0)
-			x = new byte[numTriangles];
+			textureCoordinates = texture_coordinates = new byte[numTriangles];
 		triangleColours2 = new int[numTriangles];
-		int i_115_ = k5;
 		int[] texTrianglesPoint1 = null;
 		int[] texTrianglesPoint2 = null;
 		int[] texTrianglesPoint3 = null;
@@ -300,9 +318,12 @@ public class Model extends Animable {
 			triangleColours2[i12] = nc1.getUnsignedShort();
 			if (l1 == 1) {
 				anIntArray1637[i12] = nc2.getSignedByte();
-				if (anIntArray1637[i12] == 2)
+				if (anIntArray1637[i12] >= 2 && textureIds != null) {
 					triangleColours2[i12] = 65535;
-				anIntArray1637[i12] = 0;
+				} else {
+					anIntArray1637[i12] = 0;
+				}
+				
 			}
 			if (i2 == 255) {
 				anIntArray1638[i12] = nc3.getSignedByte();
@@ -315,27 +336,16 @@ public class Model extends Animable {
 			if (k2 == 1)
 				anIntArray1656[i12] = nc5.getUnsignedByte();
 			if (l2 == 1)
-				D[i12] = (short) (nc6.getUnsignedShort() - 1);
-			if (x != null)
-				if (D[i12] != -1)
-					x[i12] = (byte) (nc7.getUnsignedByte() - 1);
-				else
-					x[i12] = -1;
+				textureIds[i12] = (short) (nc6.getUnsignedShort() - 1);
+			
+			if (textureCoordinates != null) {
+				if (textureIds[i12] != -1) {
+					textureCoordinates[i12] = texture_coordinates[i12] = (byte) (nc7.getUnsignedByte() - 1);
+				} else {
+					textureCoordinates[i12] = texture_coordinates[i12] = -1;
+				}
+			}
 		}
-		// /fix's triangle issue, but fucked up - no need, loading all 474-
-		// models
-		/*
-		 * try { for(int i12 = 0; i12 < numTriangles; i12++) {
-		 * triangleColours2[i12] = nc1.getUnsignedShort(); if(l1 == 1){
-		 * anIntArray1637[i12] = nc2.getSignedByte(); } if(i2 == 255){
-		 * anIntArray1638[i12] = nc3.getSignedByte(); } if(j2 == 1){
-		 * anIntArray1639[i12] = nc4.getSignedByte(); if(anIntArray1639[i12] <
-		 * 0) anIntArray1639[i12] = (256+anIntArray1639[i12]); } if(k2 == 1)
-		 * anIntArray1656[i12] = nc5.getUnsignedByte(); if(l2 == 1) D[i12] =
-		 * (short)(nc6.getUnsignedShort() - 1); if(x != null) if(D[i12] != -1)
-		 * x[i12] = (byte)(nc7.getUnsignedByte() -1); else x[i12] = -1; } }
-		 * catch (Exception ex) { }
-		 */
 		nc1.position = k7;
 		nc2.position = j6;
 		int k12 = 0;
@@ -444,7 +454,8 @@ public class Model extends Animable {
 		anIntArray1631 = facePoint1;
 		anIntArray1632 = facePoint2;
 		anIntArray1633 = facePoint3;
-		//convertTexturesTo317(textureIds, texTrianglesPoint1, texTrianglesPoint2, texTrianglesPoint3);
+		convertTexturesTo317(textureIds, texTrianglesPoint1, texTrianglesPoint2, texTrianglesPoint3);
+		filterTriangles();
 	}
 
 	public Model(int modelId) {
@@ -453,7 +464,16 @@ public class Model extends Animable {
 			read622Model(is, modelId);
 		else
 			readOldModel(modelId);
-		int[] newBoots = new int[] {29249, 29254, 29250, 29255, 29252, 29253};
+		
+		if (newmodel[modelId]) {
+			if (anIntArray1638 != null) {
+				for (int index = 0; index < anIntArray1638.length; index++) {
+					anIntArray1638[index] = 10;
+				}
+			}
+		}
+		
+		/*int[] newBoots = new int[] {29249, 29254, 29250, 29255, 29252, 29253};
 		for(int i : newBoots) {
 			if (modelId == i)
 				for (int j = 0; j < anIntArray1638.length; j++) {
@@ -466,7 +486,7 @@ public class Model extends Animable {
 				for (int j = 0; j < anIntArray1638.length; j++)
 					anIntArray1638[j] = 10;
 			}
-		}
+		}*/
 
 		int[][] particleConfiguration = ParticleConfiguration.getParticlesForModel(modelId);
 		int var4;
@@ -664,7 +684,6 @@ public class Model extends Animable {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	public void read622Model(byte abyte0[], int modelID) {
 		ByteBuffer nc1 = new ByteBuffer(abyte0);
 		ByteBuffer nc2 = new ByteBuffer(abyte0);
@@ -684,8 +703,6 @@ public class Model extends Animable {
 		ModelDef_1.anInt371 = numTexTriangles;
 		int l1 = nc1.getUnsignedByte();
 		boolean bool = (0x1 & l1 ^ 0xffffffff) == -2;
-		boolean bool_78_ = (l1 & 0x2 ^ 0xffffffff) == -3;
-		boolean bool_25_ = (0x4 & l1) == 4;
 		boolean bool_26_ = (0x8 & l1) == 8;
 		if (!bool_26_) {
 			read525Model(abyte0, modelID);
@@ -712,22 +729,17 @@ public class Model extends Animable {
 		int k4 = 0;
 		int l4 = 0;
 		int i5 = 0;
-		int v = 0;
-		int hb = 0;
-		int P = 0;
-		byte G = 0;
-		byte[] x = null;
+		byte[] textureCoordinates = null;
 		byte[] O = null;
 		byte[] J = null;
 		byte[] F = null;
 		byte[] cb = null;
 		byte[] gb = null;
 		byte[] lb = null;
-		int[] ab = null;
 		int[] kb = null;
 		int[] y = null;
 		int[] N = null;
-		short[] D = null;
+		short[] textureIds = null;
 		int[] triangleColours2 = new int[numTriangles];
 		if (numTexTriangles > 0) {
 			O = new byte[numTexTriangles];
@@ -797,9 +809,6 @@ public class Model extends Animable {
 		k5 += l4;
 		int k10 = k5;
 		k5 += l4 + i5 * 2;
-		v = numVertices;
-		hb = numTriangles;
-		P = numTexTriangles;
 		int[] vertexX = new int[numVertices];
 		int[] vertexY = new int[numVertices];
 		int[] vertexZ = new int[numVertices];
@@ -818,18 +827,15 @@ public class Model extends Animable {
 			anIntArray1637 = new int[numTriangles];
 		if (i2 == 255)
 			anIntArray1638 = new int[numTriangles];
-		else
-			G = (byte) i2;
 		if (j2 == 1)
 			anIntArray1639 = new int[numTriangles];
 		if (k2 == 1)
 			anIntArray1656 = new int[numTriangles];
 		if (l2 == 1)
-			D = new short[numTriangles];
+			textureIds = new short[numTriangles];
 		if (l2 == 1 && numTexTriangles > 0)
-			x = new byte[numTriangles];
+			textureCoordinates = texture_coordinates = new byte[numTriangles];
 		triangleColours2 = new int[numTriangles];
-		int i_115_ = k5;
 		int[] texTrianglesPoint1 = null;
 		int[] texTrianglesPoint2 = null;
 		int[] texTrianglesPoint3 = null;
@@ -889,9 +895,11 @@ public class Model extends Animable {
 			triangleColours2[i12] = nc1.getUnsignedShort();
 			if (l1 == 1) {
 				anIntArray1637[i12] = nc2.getSignedByte();
-				if (anIntArray1637[i12] == 2)
+				if (anIntArray1637[i12] >= 2 && textureIds != null) {
 					triangleColours2[i12] = 65535;
-				anIntArray1637[i12] = 0;
+				} else {
+					anIntArray1637[i12] = 0;
+				}
 			}
 			if (i2 == 255) {
 				anIntArray1638[i12] = nc3.getSignedByte();
@@ -904,12 +912,12 @@ public class Model extends Animable {
 			if (k2 == 1)
 				anIntArray1656[i12] = nc5.getUnsignedByte();
 			if (l2 == 1)
-				D[i12] = (short) (nc6.getUnsignedShort() - 1);
-			if (x != null)
-				if (D[i12] != -1)
-					x[i12] = (byte) (nc7.getUnsignedByte() - 1);
+				textureIds[i12] = (short) (nc6.getUnsignedShort() - 1);
+			if (textureCoordinates != null)
+				if (textureIds[i12] != -1)
+					textureCoordinates[i12] = texture_coordinates[i12] = (byte) (nc7.getUnsignedByte() - 1);
 				else
-					x[i12] = -1;
+					textureCoordinates[i12] = texture_coordinates[i12] = -1;
 		}
 		nc1.position = k7;
 		nc2.position = j6;
@@ -1049,11 +1057,8 @@ public class Model extends Animable {
 		anIntArray1633 = facePoint3;
 		upscale(1);
 		downscale();
-		if (anIntArray1638 != null) {
-			for (int j = 0; j < anIntArray1638.length; j++) {
-				anIntArray1638[j] = 10;
-			}
-		}
+		convertTexturesTo317(textureIds, texTrianglesPoint1, texTrianglesPoint2, texTrianglesPoint3);
+		filterTriangles();
 	}
 
 	private void readOldModel(int i) {
@@ -2180,13 +2185,7 @@ public class Model extends Animable {
 		}
 		for (int i2 = 0; i2 < anInt1630; i2++) {
 			if (anIntArray1640 != null && anIntArray1639 != null)
-				if (anIntArray1640[i2] == 65535 // Most triangles
-						// || anIntArray1640[i2] == 0 // Black Triangles 633
-						// Models
-						|| anIntArray1640[i2] == 16705 // Nezzy Green
-					// Triangles//GWD White
-					// Triangles
-						)
+				if (anIntArray1640[i2] == 65535 || anIntArray1640[i2] == 16705)
 					anIntArray1639[i2] = 255;
 			int j2 = anIntArray1631[i2];
 			int l2 = anIntArray1632[i2];
@@ -2998,6 +2997,7 @@ public class Model extends Animable {
 		return i <= j1 || i <= k1 || i <= l1;
 	}
 
+	private byte[] texture_coordinates;
 	public static boolean aBoolean1684;
 	private static boolean aBooleanArray1663[] = new boolean[8000];
 	private static boolean aBooleanArray1664[] = new boolean[8000];
