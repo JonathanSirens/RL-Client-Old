@@ -226,10 +226,10 @@ public final class ItemDefinition {
 				itemDef.name = "Drygore rapier";
 				itemDef.description2 = "A powerful rapier made from the chitlin of the Kalphite King.";
 				itemDef.modelZoom = 1053;
-				itemDef.modelRotation2 = 458;
-				itemDef.modelRotation1 = 228;
-				itemDef.modelOffset1 = -1;
-				itemDef.modelOffsetY = -47;
+				itemDef.modelRotation1 = 500;
+				itemDef.modelRotation2 = 484;
+				itemDef.modelOffset1 = 3;
+				itemDef.modelOffsetY = 1;
 				itemDef.maleWearId = 67001;
 				itemDef.femaleWearId = 67002;
 				itemDef.groundActions = new String[5];
@@ -382,6 +382,12 @@ public final class ItemDefinition {
 				itemDef.actions[4] = "Drop";
 				break;
 
+			/*
+			case 13889:
+				itemDef.actions[2] = "Check";
+				break;
+			*/
+
 			case 21101:
 				itemDef.modelID = 67011;
 				itemDef.name = "Off-hand drygore mace";
@@ -402,7 +408,7 @@ public final class ItemDefinition {
 			case 21102:
 				itemDef.imitate(get(6570));
 				itemDef.name = "Water cape";
-				itemDef.originalModelColors = new int[] { 1 };
+				itemDef.originalModelColors = new int[] { 52 };
 				itemDef.modifiedModelColors = new int[] { 40 };
 				break;
 			case 7887:

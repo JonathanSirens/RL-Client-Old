@@ -890,6 +890,63 @@ public final class CacheFileRequester implements Runnable {
 		mapIndices2[151] = 1984;
 		mapIndices3[151] = 1985;
 
+		// Abyssal Sire
+		mapIndices1[886] = 11595;
+		mapIndices2[886] = 8;
+		mapIndices3[886] = 9;
+
+		mapIndices1[935] = 11850;
+		mapIndices2[935] = 1994;
+		mapIndices3[935] = 1995;
+
+		mapIndices1[936] = 11851;
+		mapIndices2[936] = 490;
+		mapIndices3[936] = 491;
+
+		mapIndices1[978] = 12106;
+		mapIndices2[978] = 1992;
+		mapIndices3[978] = 1993;
+
+		mapIndices1[979] = 12107;
+		mapIndices2[979] = 160;
+		mapIndices3[979] = 161;
+
+		mapIndices1[980] = 12108;
+		mapIndices2[980] = 1408;
+		mapIndices3[980] = 1409;
+
+		mapIndices1[840] = 11339;
+		mapIndices2[840] = 330;
+		mapIndices3[840] = 331;
+
+		mapIndices1[841] = 11341;
+		mapIndices2[841] = 1174;
+		mapIndices3[841] = 1175;
+
+		mapIndices1[885] = 11593;
+		mapIndices2[885] = 2;
+		mapIndices3[885] = 3;
+
+		mapIndices1[887] = 11597;
+		mapIndices2[887] = 1176;
+		mapIndices3[887] = 1177;
+
+		mapIndices1[977] = 12105;
+		mapIndices2[977] = 1300;
+		mapIndices3[977] = 1301;
+
+		mapIndices1[981] = 12109;
+		mapIndices2[981] = 1220;
+		mapIndices3[981] = 1221;
+
+		mapIndices1[1016] = 12362;
+		mapIndices2[1016] = 1998;
+		mapIndices3[1016] = 1999;
+
+		mapIndices1[1017] = 12363;
+		mapIndices2[1017] = 1996;
+		mapIndices3[1017] = 1997;
+
 		data = archive.get("midi_index");
 		stream2 = new ByteBuffer(data);
 		j1 = data.length;

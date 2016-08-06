@@ -2130,7 +2130,7 @@ public final class ObjectDefinition {
 
 	public static void loadEvilTree(ObjectDefinition definition) {
 		switch (definition.id) {
-
+/*
 		case 11391:
 			definition.objectModelIDs = new int[] { 45733, 45735 };
 			definition.anIntArray776 = null;
@@ -2953,7 +2953,7 @@ public final class ObjectDefinition {
 			definition.configID = -1;
 			definition.configObjectIDs = null;
 			break;
-
+*/
 		}
 	}
 
