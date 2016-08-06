@@ -423,6 +423,15 @@ public class MapArea extends GameFrame {
 			client.menuActionID[2] = 1050;
 			client.menuActionRow = 3;
 		}
+		
+		if (client.mouseX >= Client.clientWidth - CacheSpriteLoader.getCacheSprite(342).myWidth
+				&& client.mouseX < Client.clientWidth && client.mouseY >= 0
+				&& client.mouseY <= CacheSpriteLoader.getCacheSprite(342).myHeight) {
+			client.menuActionName[1] = "Logout";
+			client.menuActionID[1] = 1004;
+			client.menuActionRow = 2;
+		}
+		
 		if (prayer.isHovering(client, prayer.getDrawX(), prayer.getDrawY())) {
 			String prayerType = (client.prayerInterfaceType == 5608) ? "prayers" : "curses";
 			boolean inProcess = (Client.tabInterfaceIDs[5] == 17200 || Client.tabInterfaceIDs[5] == 17234);
@@ -436,15 +445,15 @@ public class MapArea extends GameFrame {
 			client.menuActionRow++;
 		}
 
-		if (client.getClickMode2() == 1
+		/*if (client.getClickMode2() == 1
 				&& client.mouseX >= Client.clientWidth - CacheSpriteLoader.getCacheSprite(342).myWidth
 				&& client.mouseX < Client.clientWidth && client.mouseY >= 0
 				&& client.mouseY <= CacheSpriteLoader.getCacheSprite(342).myHeight) {
 			if (client.tabArea.componentHidden()) {
 				client.tabArea.setHideComponent(false);
 			}
-			Client.setTab(14);
-		}
+			Client.setTab(13);
+		}*/
 
 		if (client.inSprite(false, CacheSpriteLoader.getCacheSprite(566),
 				getxPos() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 100 : -2),

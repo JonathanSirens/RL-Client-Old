@@ -20,6 +20,34 @@ public class CustomInterfaces extends RSInterface {
 		this.tda = tda;
 	}
 	
+	public static void noteInterface(TextDrawingArea[] tda) {
+		RSInterface tab = addTabInterface(59999);
+		addSpriteLoader(59998, 1204);
+		addHoverButtonWSpriteLoader(59997, 1205, 18, 18, "Add Note", -1, 59996, 1);
+		addHoveredImageWSpriteLoader(59996, 1206, 18, 18, 59995);
+		addHoverButtonWSpriteLoader(59994, 1207, 18, 18, "Delete All", -1, 59993, 1);
+		addHoveredImageWSpriteLoader(59993, 1208, 18, 18, 59992);
+		addText(59992, "No notes", tda, 0, 0xffffff, false, true);
+		for(int index = 59990; index <= 59959; index++) {
+			addText(index, "TEST", tda, 1, 0xffffff, false, true);
+		}
+		tab.totalChildren(6);
+		tab.child(0, 59998, 0, 0);
+		tab.child(1, 59997, 8, 2);
+		tab.child(2, 59996, 8, 2);
+		tab.child(3, 59994, 165, 237);
+		tab.child(4, 59993, 165, 237);
+		tab.child(5, 59992, 68, 78);
+		int id = 6;
+		int y = 5;
+		for(int index = 59990; index <= 59959; index++) {
+			tab.child(id, index, 248, y);
+			id++;
+			System.out.println(id);
+			y += 13;
+		}
+	}
+	
 	public static void customization(TextDrawingArea[] tda) {
 		RSInterface tab = addTabInterface(60000);
 		//addSprite(60001, 0, "Interfaces/customization/BG");
@@ -56,6 +84,7 @@ public class CustomInterfaces extends RSInterface {
 	}
 
 	public void loadCustoms() {
+		noteInterface(tda);
 		playersOnline();
 		editClan();
 		capeColor(tda);

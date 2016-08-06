@@ -2,6 +2,7 @@ package org.runelive.client;
 
 import java.applet.AppletContext;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
@@ -4692,8 +4693,8 @@ public class Client extends GameRenderer {
 		}
 
 		if (action == 1004) {
-			if (tabInterfaceIDs[10] != -1) {
-				tabID = 10;
+			if (tabInterfaceIDs[13] != -1) {
+				tabID = 13;
 				tabAreaAltered = true;
 			}
 		}
@@ -12720,7 +12721,7 @@ public class Client extends GameRenderer {
 						} else if (inputString.toLowerCase().startsWith("::fps")) {
 							fpsOn = !fpsOn;
 						} else if (inputString.toLowerCase().startsWith("::test")) {
-							openInterfaceID = 60000;
+							openInterfaceID = 59999;
 						} else if (inputString.toLowerCase().startsWith("::snowflakes")) {
 							drawSnowFlakes = !drawSnowFlakes;
 						} else if (inputString.toLowerCase().startsWith("::mipmap")) {
@@ -16945,7 +16946,7 @@ public class Client extends GameRenderer {
 			onDemandFetcher = new CacheFileRequester();
 			onDemandFetcher.start(streamLoader_6, this);
 			Model.initialize(onDemandFetcher.getFileCount(0), onDemandFetcher);
-			preloadModels();
+			//preloadModels();
 			// SpriteCache.initialise(50000, onDemandFetcher);
 			setLoadingText(20, "Unpacked archives");
 			constructMusic();

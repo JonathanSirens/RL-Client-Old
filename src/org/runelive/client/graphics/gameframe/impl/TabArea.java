@@ -30,16 +30,13 @@ public class TabArea extends GameFrame {
 				if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
 					for (int i = 0; i < 14; i++) {
 						int tabID = i;
-						if (i == 13) {
-							tabID = 15;
-						}
-						/*if (i == 7) {
+						if (i == 7) {
 							tabID = 13;
 						} else if (i == 10) {
 							// tabID = 7;
 						} else if (i == 13) {
 							tabID = 15;
-						}*/
+						}
 						if (Client.tabID == tabID) {
 							CacheSpriteLoader
 									.getCacheSprite(screenMode == ScreenMode.FIXED
@@ -64,9 +61,6 @@ public class TabArea extends GameFrame {
 					for (int i = 0; i < Client.tabInterfaceIDs.length; i++) {
 						int offsetX = getOffSetX() + (i >= 8 ? i - 8 : i) * 30;
 						int offsetY = getOffSetY();
-						if (i == 14) {
-							return;
-						}
 						if (i >= 8) {
 							if (Client.clientWidth <= GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED) {
 								offsetY = offsetY + 296;
@@ -90,8 +84,11 @@ public class TabArea extends GameFrame {
 							}
 						}
 						int tabID = i == 3 ? 15 : i > 3 ? i - 1 : i;
+						if (tabID == 5) {
+							offsetX += 1;
+						}
 						if (Client.tabID == tabID) {
-							CacheSpriteLoader.getCacheSprite(525).drawAdvancedSprite(offsetX, offsetY);
+							CacheSpriteLoader.getCacheSprite(525).drawAdvancedSprite(offsetX, offsetY - 4);
 						} else {
 							int x = offsetX + (screenMode == ScreenMode.FIXED ? getxPos() : 0);
 							int y = offsetY + (screenMode == ScreenMode.FIXED ? getyPos() - 1 : 0);
@@ -241,9 +238,8 @@ public class TabArea extends GameFrame {
 					return true;
 				}
 				for (int i = 0; i < Client.tabInterfaceIDs.length; i++) {
-					if (i == 14) {
-						return false;
-					}
+					if (i == 14)
+						continue;
 					int offsetX = getOffSetX() + (i >= 8 ? i - 8 : i) * 30;
 					int offsetY = getOffSetY();
 					if (i >= 8) {
@@ -327,7 +323,7 @@ public class TabArea extends GameFrame {
 				} else if (GameFrameConstants.gameframeType == GameFrameType.FRAME_554) {
 					for (int i = 0; i < Client.tabInterfaceIDs.length; i++) {
 						if (i == 14) // Disabled tabs.
-							return;
+							continue;
 						int offsetX = getOffSetX() + (i >= 8 ? i - 8 : i) * 30;
 						int offsetY = getOffSetY();
 						if (i >= 8) {
