@@ -14324,7 +14324,7 @@ public class Client extends GameRenderer {
 			case 126:
 				String text = getInputBuffer().getString();
 				int frame = getInputBuffer().getShort();
-				if (text.startsWith("http://") || text.startsWith("www.")) {
+				if (text.startsWith("https://") || text.startsWith("http://") || text.startsWith("www.")) {
 					launchURL(text);
 					pktType = -1;
 					return true;
