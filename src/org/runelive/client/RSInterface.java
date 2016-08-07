@@ -99,6 +99,24 @@ public class RSInterface {
 		setBoundry(2, id + 3, BASEX + 430, BASEY + 4, tab);
 		setBoundry(3, id + 4, BASEX + 430, BASEY + 4, tab);
 	}
+	
+	public static void addNoteOptions(int id, String text,
+			TextDrawingArea tda[], int idx, int color, int width, int height) {
+		RSInterface Tab = addTabInterface(id);
+		Tab.parentID = id;
+		Tab.id = id;
+		Tab.type = 4;
+		Tab.atActionType = 1;
+		Tab.width = width;
+		Tab.height = height;
+		Tab.contentType = 0;
+		Tab.hoverType = 0;
+		Tab.centerText = false;
+		Tab.textDrawingAreas = tda[idx];
+		Tab.message = text;
+		Tab.textColor = color;
+		Tab.actions = new String[] { "Edit", "Colour", "Delete" };
+	}
 
 	public static void addClanChatListTextWithOptions(int id, String text, String ignore, boolean owner,
 			TextDrawingArea tda[], int idx, int color, int width, int height) {

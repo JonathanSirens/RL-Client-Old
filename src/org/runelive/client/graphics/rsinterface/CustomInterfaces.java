@@ -26,26 +26,33 @@ public class CustomInterfaces extends RSInterface {
 		addHoverButtonWSpriteLoader(59997, 1205, 18, 18, "Add Note", -1, 59996, 1);
 		addHoveredImageWSpriteLoader(59996, 1206, 18, 18, 59995);
 		addHoverButtonWSpriteLoader(59994, 1207, 18, 18, "Delete All", -1, 59993, 1);
-		addHoveredImageWSpriteLoader(59993, 1208, 18, 18, 59992);
-		addText(59992, "No notes", tda, 0, 0xffffff, false, true);
-		for(int index = 59990; index <= 59959; index++) {
-			addText(index, "TEST", tda, 1, 0xffffff, false, true);
-		}
-		tab.totalChildren(6);
+		addHoveredImageWSpriteLoader(59993, 1208, 18, 18, 59982);
+		addText(59992, "No notes", tda, 1, 0xFFFFFF, false, true);
+		tab.totalChildren(7);
 		tab.child(0, 59998, 0, 0);
 		tab.child(1, 59997, 8, 2);
 		tab.child(2, 59996, 8, 2);
 		tab.child(3, 59994, 165, 237);
 		tab.child(4, 59993, 165, 237);
 		tab.child(5, 59992, 68, 78);
-		int id = 6;
-		int y = 5;
-		for(int index = 59990; index <= 59959; index++) {
-			tab.child(id, index, 248, y);
-			id++;
-			System.out.println(id);
-			y += 13;
+		tab.child(6, 59991, 0, 27);
+		
+		//Edit, Colour, Delete
+		RSInterface scroll = addTabInterface(59991);
+		scroll.scrollPosition = 0;
+		scroll.contentType = 0;
+		scroll.width = 174;
+		scroll.height = 200;
+		scroll.scrollMax = 300;
+		int x = 5, y = 6;
+		scroll.totalChildren(30);
+		for (int index = 0; index < 30; index++) {
+			addText(59990 - index, "", tda, 0, 0xFFFFFF, false, true);
+			//addNoteOptions(59990 - index, "", tda, 0, 0xFFFFFF, 180, 11);
+			scroll.child(index, 59990 - index, x, y);
+			y += 18;
 		}
+		
 	}
 	
 	public static void customization(TextDrawingArea[] tda) {
