@@ -275,8 +275,11 @@ public class MapArea extends GameFrame {
 			CacheSpriteLoader.getCacheSprite(561).drawSprite(x, fixed ? 85 : 43 + y);
 		}
 		x -= 6;
-		value = "" + client.getMoneyInPouch() + "";
-		client.newSmallFont.drawRightAlignedString("" + client.getMoneyInPouch(), (fixed ? 500 : x + 61), (fixed ? 101 : 59) + y, color, 0);
+		value = client.getMoneyInPouch();
+		if (value.equalsIgnoreCase("Too high!")) {
+			x += 5;
+		}
+		client.newSmallFont.drawRightAlignedString(value, (fixed ? x + 62 : x + 61), (fixed ? 101 : 59) + y, color, 0);
 	}
 
 	public void displayXPCounter(Client client) {

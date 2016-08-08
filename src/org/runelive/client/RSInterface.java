@@ -501,6 +501,21 @@ public class RSInterface {
 		rsi.height = height;
 		rsi.width = width;
 	}
+	
+	public static void addButton(int id, int sid, String tooltip, String message, int w, int h) {
+		RSInterface tab = interfaceCache[id] = new RSInterface();
+		tab.id = id;
+		tab.parentID = id;
+		tab.type = 5;
+		tab.atActionType = 1;
+		tab.contentType = 0;
+		tab.opacity = (byte) 0;
+		tab.hoverType = 52;
+		tab.sprite1 = CacheSpriteLoader.getCacheSprite(sid);
+		tab.width = w;
+		tab.height = h;
+		tab.tooltip = tooltip;
+	}
 
 	public static void addButton(int id, int sid, String tooltip, int w, int h) {
 		RSInterface tab = interfaceCache[id] = new RSInterface();

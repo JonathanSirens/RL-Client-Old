@@ -80,7 +80,7 @@ public class Model extends Animable {
 					anIntArray1637[i] = 0;
 					continue;
 				}
-				anIntArray1637[i] = 2+set2;
+				anIntArray1637[i] = 2 + set2;
 				set2 += 4;
 				int a = anIntArray1631[i];
 				int b = anIntArray1632[i];
@@ -465,15 +465,15 @@ public class Model extends Animable {
 		else
 			readOldModel(modelId);
 		
-		if (newmodel[modelId]) {
+		/*if (newmodel[modelId]) {
 			if (anIntArray1638 != null) {
 				for (int index = 0; index < anIntArray1638.length; index++) {
 					anIntArray1638[index] = 10;
 				}
 			}
-		}
+		}*/
 		
-		/*int[] newBoots = new int[] {29249, 29254, 29250, 29255, 29252, 29253};
+		int[] newBoots = new int[] {29249, 29254, 29250, 29255, 29252, 29253};
 		for(int i : newBoots) {
 			if (modelId == i)
 				for (int j = 0; j < anIntArray1638.length; j++) {
@@ -486,7 +486,7 @@ public class Model extends Animable {
 				for (int j = 0; j < anIntArray1638.length; j++)
 					anIntArray1638[j] = 10;
 			}
-		}*/
+		}
 
 		int[][] particleConfiguration = ParticleConfiguration.getParticlesForModel(modelId);
 		int var4;
@@ -1059,6 +1059,11 @@ public class Model extends Animable {
 		downscale();
 		convertTexturesTo317(textureIds, texTrianglesPoint1, texTrianglesPoint2, texTrianglesPoint3);
 		filterTriangles();
+		if (anIntArray1638 != null) {
+			for (int j = 0; j < anIntArray1638.length; j++) {
+				anIntArray1638[j] = 10;
+			}
+		}
 	}
 
 	private void readOldModel(int i) {

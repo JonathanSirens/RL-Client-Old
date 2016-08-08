@@ -169,24 +169,13 @@ public class TabArea extends GameFrame {
 						}
 						int spriteIndex = gameFrameData[i][0];
 						if (spriteIndex != -1) {
-
 							if (i == 3 && spriteIndex == 530) {
 								if (Client.getClient().doingDungeoneering) {
-									spriteIndex = 1031;
+									spriteIndex = 377;
+									offsetX--;
 								}
 							}
-							if (spriteIndex == 529) {
-								offsetX--;
-							}
-							/*if (spriteIndex == 530) {
-								CacheSpriteLoader.getCacheSprite2(48).drawSprite(offsetX, offsetY + 3);
-							} else */if (spriteIndex == 781) {
-								CacheSpriteLoader.getCacheSprite2(56).drawSprite(offsetX - 1, offsetY + 1);
-							} else if (spriteIndex == 1000) {
-								CacheSpriteLoader.getCacheSprite2(57).drawSprite(offsetX - 2, offsetY - 1);
-							} else {
-								CacheSpriteLoader.getCacheSprite(spriteIndex).drawSprite(offsetX, offsetY);
-							}
+							CacheSpriteLoader.getCacheSprite(spriteIndex).drawSprite(offsetX, offsetY);
 						}
 					}
 				}
@@ -265,7 +254,7 @@ public class TabArea extends GameFrame {
 						}
 					}
 					if (client.mouseX >= offsetX && client.mouseX <= offsetX + 30 && client.mouseY >= offsetY
-							&& client.mouseY <= offsetY + 34) {
+							&& client.mouseY <= offsetY + 80) {
 						return true;
 					}
 				}
