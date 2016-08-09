@@ -8,7 +8,7 @@ package org.runelive;
 public class Configuration {
 
 	/** CONNECTION **/
-	public final static boolean LOCAL = false;
+	public final static boolean LOCAL = true;
 	public static String SERVER_HOST = LOCAL ? "127.0.0.1" : "158.69.125.71"; // 158.69.125.71
 	public final static int SERVER_PORT = 59018;
 
