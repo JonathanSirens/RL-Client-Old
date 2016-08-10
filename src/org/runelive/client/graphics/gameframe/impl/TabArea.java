@@ -30,11 +30,7 @@ public class TabArea extends GameFrame {
 				if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
 					for (int i = 0; i < 14; i++) {
 						int tabID = i;
-						if (i == 7) {
-							tabID = 13;
-						} else if (i == 10) {
-							// tabID = 7;
-						} else if (i == 13) {
+						if (i == 13) {
 							tabID = 15;
 						}
 						if (Client.tabID == tabID) {
@@ -88,10 +84,16 @@ public class TabArea extends GameFrame {
 							offsetX += 1;
 						}
 						if (Client.tabID == tabID) {
+							if (tabID == 13) {
+								return;
+							}
 							CacheSpriteLoader.getCacheSprite(525).drawAdvancedSprite(offsetX, offsetY - 4);
 						} else {
 							int x = offsetX + (screenMode == ScreenMode.FIXED ? getxPos() : 0);
 							int y = offsetY + (screenMode == ScreenMode.FIXED ? getyPos() - 1 : 0);
+							if (tabID == 13) {
+								continue;
+							}
 							if (Client.tabInterfaceIDs[tabID] != -1
 									&& client.mouseX >= x + (screenMode == ScreenMode.FIXED ? 5 : 5)
 									&& client.mouseX <= x + 30 + 4 && client.mouseY >= y && client.mouseY <= y + 34) {
@@ -115,7 +117,7 @@ public class TabArea extends GameFrame {
 		if (isVisible()) {
 			if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
 				for (int i = 0; i < 14; i++) {
-					if (client.invOverlayInterfaceID == -1 && Client.tabInterfaceIDs[i] != -1) {
+					if (client.invOverlayInterfaceID == -1 && Client.tabInterfaceIDs[i] != -1 && i != 13) {
 						client.sideIcons[i].drawSprite(getOffSetX() + (screenMode == ScreenMode.FIXED ? 13 : 8) + (i > 6 ? i - 7 : screenMode != ScreenMode.FIXED && Client.clientWidth > GameFrameConstants.smallTabs ? i - 7 : i) * CacheSpriteLoader.getCacheSprite(12).myWidth, getOffSetY() + (i > 6 || screenMode != ScreenMode.FIXED ? getHeight() - client.sideIcons[i < 7 ? 0 : i].myHeight - (screenMode != ScreenMode.FIXED && Client.clientWidth <= GameFrameConstants.smallTabs && i < 7 ? 53 : screenMode != ScreenMode.FIXED && Client.clientWidth > GameFrameConstants.smallTabs && i < 7 ? 17 : 9) : 0) + 2);
 						int x = screenMode == ScreenMode.FIXED ? 215 : Client.clientWidth - 29;
 						int y = screenMode == ScreenMode.FIXED ? 305 : Client.clientHeight - 30;
@@ -228,9 +230,10 @@ public class TabArea extends GameFrame {
 				}
 				for (int i = 0; i < Client.tabInterfaceIDs.length; i++) {
 					if (i == 14)
-						continue;
+						return false;
 					int offsetX = getOffSetX() + (i >= 8 ? i - 8 : i) * 30;
 					int offsetY = getOffSetY();
+					
 					if (i >= 8) {
 						if (Client.clientWidth <= GameFrameConstants.smallTabs && screenMode != ScreenMode.FIXED) {
 							offsetY = offsetY + 297;
@@ -262,6 +265,14 @@ public class TabArea extends GameFrame {
 		}
 		return false;
 	}
+	
+	private void tabTooltips(Client client, int id) {
+		String[] tooltips = { "Combat Styles", "Achievements", "Stats", "Quest Journals", "Inventory", "Worn Equipment",
+				"Prayer List", "Magic Spellbook", "Summoning", "Friends List", "Ignore List", "Clan Chat", "Options", "Emotes", "Music", "Notes" };
+		client.menuActionName[1] = tooltips[id];
+		client.menuActionID[1] = 1076;
+		client.menuActionRow = 2;
+	}
 
 	/**
 	 * Processes the tab click
@@ -275,12 +286,8 @@ public class TabArea extends GameFrame {
 				if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
 					for (int i = 0; i < 14; i++) {
 						int tabID = i;
-						if (i == 7) {
-							// tabID = 13;
-						} else if (i == 13) {
-							tabID = 15;
-						}
-						// System.out.println(""+tabID);
+						
+						//System.out.println(Client.tabID);
 						if (client.inSprite(true,
 								CacheSpriteLoader
 										.getCacheSprite(screenMode == ScreenMode.FIXED && (i == 0 || i == 7) ? 8 : 12),

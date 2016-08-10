@@ -20,39 +20,97 @@ public class CustomInterfaces extends RSInterface {
 		this.tda = tda;
 	}
 	
-	public static void noteInterface(TextDrawingArea[] tda) {
-		RSInterface tab = addTabInterface(59999);
-		addSpriteLoader(59998, 1204);
-		addHoverButtonWSpriteLoader(59997, 1205, 18, 18, "Add Note", -1, 59996, 1);
-		addHoveredImageWSpriteLoader(59996, 1206, 18, 18, 59995);
-		addHoverButtonWSpriteLoader(59994, 1207, 18, 18, "Delete All", -1, 59993, 1);
-		addHoveredImageWSpriteLoader(59993, 1208, 18, 18, 59982);
-		addText(59992, "No notes", tda, 1, 0xFFFFFF, false, true);
-		tab.totalChildren(7);
-		tab.child(0, 59998, 0, 0);
-		tab.child(1, 59997, 8, 2);
-		tab.child(2, 59996, 8, 2);
-		tab.child(3, 59994, 165, 237);
-		tab.child(4, 59993, 165, 237);
-		tab.child(5, 59992, 68, 78);
-		tab.child(6, 59991, 0, 27);
+	public void notesTabInterface() {
+		RSInterface rsi = addTabInterface(59999);
+
+		addSpriteLoader(65201, 367);
+		RSInterface.interfaceCache[65201].sprite1.myHeight = 201;
+		addSpriteLoader(65202, 368);
+		addText(65203, "Notes (0/30)", tda, 1, 16750899, true, true);
+		addText(65204, "Delete", tda, 1, 16750899, true, true);
 		
-		//Edit, Colour, Delete
-		RSInterface scroll = addTabInterface(59991);
-		scroll.scrollPosition = 0;
-		scroll.contentType = 0;
+		addText(65200, "No notes", tda, 1, 0xFFFFFF, false, true);
+		
+		addHoverButton(65205, 936, 18, 18, "Add note", 1324, 65206, 1);
+		addHoveredButton(65206, 937, 18, 18, 55207);
+
+		addHoverButton(65208, 939, 18, 18, "Delete", -1, 65209, 1);
+		addHoveredButton(65209, 940, 18, 18, 55210);
+
+		addHoverButton(65321, 939, 18, 18, "Delete all", -1, 65322, 1);
+		addHoveredButton(65322, 940, 18, 18, 65323);
+
+
+		RSInterface colour = addTabInterface(65211);
+		colour.interfaceShown = true;
+		addRectangle(65212, 50, 0x000000, true, 190, 261);
+		addRectangle(65213, 0, 3682339, true, 110, 75);
+		addRectangle(65214, 256, 5919301, false, 108, 73);
+		addRectangle(65215, 256, 3748393, true, 106, 71);
+		
+
+		addHoverButton(65216, 68, 16, 16, "Close", -1, 65217, 1);
+		addHoveredButton(65217, 69, 16, 16, 55218);
+
+		addText(65219, "Select a colour", tda, 1, 16750899, true, true);
+		addRectangle(65220, 256, 16777215, true, 19, 19);//White
+		addButton(65221, 4, -1, 934, 935, 19, 20, "Select", 1150, 1);
+		addRectangle(65222, 256, 65280, true, 19, 19);//Green
+		addButton(65223, 4, -1, 934, 935, 19, 20, "Select", 1151, 1);
+		addRectangle(65224, 256, 16727871, true, 19, 19);//Red
+		addButton(65225, 4, -1, 934, 935, 19, 20, "Select", 1152, 1);
+		addRectangle(65226, 256, 14064640, true, 19, 19);//Orange
+		addButton(65227, 4, -1, 934, 935, 19, 20, "Select", 1153, 1);
+		
+		setChildren(14, rsi);
+		setBounds(65201, 0, 31, 0, rsi);
+		setBounds(65202, 0, 28, 1, rsi);
+		setBounds(65202, 0, 232, 2, rsi);
+		setBounds(65203, 95, 8, 3, rsi);
+		setBounds(65204, 92, 240, 4, rsi);
+		setBounds(65205, 9, 5, 5, rsi);
+		setBounds(65206, 9, 5, 6, rsi);
+		setBounds(65321, 166, 240, 7, rsi);
+		setBounds(65322, 166, 240, 8, rsi);
+		setBounds(65228, 0, 31, 9, rsi);	
+		setBounds(65211, 0, 0, 10, rsi);
+		setBounds(65208, 166, 240, 11, rsi);
+		setBounds(65209, 166, 240, 12, rsi);
+		setBounds(65200, 62, 78, 13, rsi);
+
+		setChildren(15, colour);
+		setBounds(65212, 0, 0, 0, colour);
+		setBounds(65213, 40, 80, 1, colour);
+		setBounds(65214, 41, 81, 2, colour);
+		setBounds(65215, 42, 82, 3, colour);
+		setBounds(65216, 130, 84, 4, colour);
+		setBounds(65217, 130, 84, 5, colour);
+		setBounds(65219, 84, 84, 6, colour);
+		setBounds(65220, 73, 103, 7, colour);
+		setBounds(65221, 73, 103, 8, colour);
+		setBounds(65222, 73 + 27, 103, 9, colour);
+		setBounds(65223, 73 + 27, 103, 10, colour);
+		setBounds(65224, 73, 102 + 26, 11, colour);
+		setBounds(65225, 73, 102 + 26, 12, colour);
+		setBounds(65226, 73 + 27, 102 + 26, 13, colour);
+		setBounds(65227, 73 + 27, 102 + 26, 14, colour);
+		
+		RSInterface scroll = addTabInterface(65228);
+		scroll.height = 201;
 		scroll.width = 174;
-		scroll.height = 200;
-		scroll.scrollMax = 300;
-		int x = 5, y = 6;
-		scroll.totalChildren(30);
-		for (int index = 0; index < 30; index++) {
-			addText(59990 - index, "", tda, 0, 0xFFFFFF, false, true);
-			//addNoteOptions(59990 - index, "", tda, 0, 0xFFFFFF, 180, 11);
-			scroll.child(index, 59990 - index, x, y);
-			y += 18;
-		}
+		scroll.scrollMax = 1356;
+		setChildren((NotesTab.maxNotes * 3) + 2, scroll);
+
+		//Select bar
+		addRectangle(65229, 204, 16776960, true, 160, 0);
+		setBounds(65229, 9, 5, 0, scroll);
 		
+		//Lines
+		int id = 65230, count = 1;
+		for(int i = 0; i <= (NotesTab.maxNotes * 3); i++) {
+			addNote(id + i, "", tda, 0, 14064640, 190, 15);
+			setBounds(id + i, 10, 6 + (15 * i), count++, scroll);
+		}
 	}
 	
 	public static void customization(TextDrawingArea[] tda) {
@@ -91,7 +149,7 @@ public class CustomInterfaces extends RSInterface {
 	}
 
 	public void loadCustoms() {
-		noteInterface(tda);
+		notesTabInterface();
 		playersOnline();
 		editClan();
 		capeColor(tda);

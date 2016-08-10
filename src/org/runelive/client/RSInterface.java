@@ -100,8 +100,8 @@ public class RSInterface {
 		setBoundry(3, id + 4, BASEX + 430, BASEY + 4, tab);
 	}
 	
-	public static void addNoteOptions(int id, String text,
-			TextDrawingArea tda[], int idx, int color, int width, int height) {
+	public static void addNote(int id, String text, TextDrawingArea tda[], int idx, int color, int width, int height)
+	{
 		RSInterface Tab = addTabInterface(id);
 		Tab.parentID = id;
 		Tab.id = id;
@@ -111,11 +111,28 @@ public class RSInterface {
 		Tab.height = height;
 		Tab.contentType = 0;
 		Tab.hoverType = 0;
+		// Tab.mOverInterToTrigger = -1;
 		Tab.centerText = false;
+		// Tab.enabledText = true;
 		Tab.textDrawingAreas = tda[idx];
 		Tab.message = text;
+		Tab.textShadow = true;
+		//Tab.aString228 = "";
 		Tab.textColor = color;
-		Tab.actions = new String[] { "Edit", "Colour", "Delete" };
+		String s = Tab.message;
+		if(s.contains("<img")) {
+			int prefix = s.indexOf("<img=");
+			int suffix = s.indexOf(">");
+			s = s.replaceAll(s.substring(prefix + 5, suffix), "");
+			s = s.replaceAll("</img>", "");
+			s = s.replaceAll("<img=>", "");
+		}
+		Tab.actions = new String[] {
+			"Select", 
+			"Edit", 
+			"Colour", 
+			"Delete"
+		};
 	}
 
 	public static void addClanChatListTextWithOptions(int id, String text, String ignore, boolean owner,

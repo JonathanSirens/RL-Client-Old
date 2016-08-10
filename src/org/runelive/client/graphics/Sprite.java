@@ -870,7 +870,7 @@ public class Sprite extends Canvas2D {
 			try {
 				block_copy_trans(Canvas2D.pixels, myPixels, i1, l, k1, j1, l1, i2);
 			} catch (Exception e) {
-				e.printStackTrace();
+				
 			}
 		}
 	}

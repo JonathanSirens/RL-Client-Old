@@ -72,14 +72,17 @@ public class Model extends Animable {
 			anIntArray1644 = new int[anInt1630];
 			anIntArray1645 = new int[anInt1630];
 			for(int i = 0; i < anInt1630; i++) {
+				
 				if(textureIds[i] == -1 && anIntArray1637[i] == 2) {
 					anIntArray1640[i] = 65535;
 					anIntArray1637[i] = 0;
 				}
+				
 				if(textureIds[i] >= max || textureIds[i] < 0 || textureIds[i] == 39) {
 					anIntArray1637[i] = 0;
 					continue;
 				}
+				
 				anIntArray1637[i] = 2 + set2;
 				set2 += 4;
 				int a = anIntArray1631[i];
@@ -87,6 +90,7 @@ public class Model extends Animable {
 				int c = anIntArray1633[i];
 				anIntArray1640[i] = textureIds[i];
 				int texture_type = -1;
+				
 				if(texture_coordinates != null) {
 					texture_type = texture_coordinates[i] & 0xff;
 					if(texture_type != 0xff) {
@@ -95,9 +99,11 @@ public class Model extends Animable {
 						}
 					}		
 				}
+				
 				if(texture_type == 0xff) {
 					texture_type = -1;
 				}
+				
 				anIntArray1643[set] = texture_type == -1 ? a : texa[texture_type];
 				anIntArray1644[set] = texture_type == -1 ? b : texb[texture_type];
 				anIntArray1645[set++] = texture_type == -1 ? c : texc[texture_type];

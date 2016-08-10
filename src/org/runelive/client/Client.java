@@ -83,6 +83,7 @@ import org.runelive.client.graphics.gameframe.impl.TabArea;
 import org.runelive.client.graphics.rsinterface.DamageDealer;
 import org.runelive.client.graphics.rsinterface.GrandExchange;
 import org.runelive.client.graphics.rsinterface.MagicInterfaceData;
+import org.runelive.client.graphics.rsinterface.NotesTab;
 import org.runelive.client.graphics.rsinterface.PetSystem;
 import org.runelive.client.io.ByteBuffer;
 import org.runelive.client.io.ISAACCipher;
@@ -133,6 +134,8 @@ import org.runelive.task.Task;
 import org.runelive.task.TaskManager;
 
 public class Client extends GameRenderer {
+	
+	private NotesTab notesTab = new NotesTab();
 
 	private void displayEntityFeed(String name, int currentHP, int maxHP) {
 		if (name == null) {
@@ -4252,12 +4255,25 @@ public class Client extends GameRenderer {
 			}
 		}
 		if (action == 222) {
+			if(interfaceId >= NotesTab.NOTE_INTERFACE_ID && interfaceId <= NotesTab.NOTE_INTERFACE_ID + (NotesTab.maxNotes * 3)) {
+				notesTab.handleButtons(this, interfaceId, currentActionMenu);
+				return;
+			}
 			getOut().putOpcode(222);
 			getOut().putShort(interfaceId);
 			getOut().putByte(currentActionMenu);
 		}
 		if (action == 315) {
 			switch (interfaceId) {
+			case 55216:
+				notesTab.colourNote(-1);
+				break;
+			case 55208:
+				notesTab.deleteNote();
+				break;
+			case 55321:
+				notesTab.deleteNotes();
+				break;
 			case 24654:
 				amountOrNameInput = "";
 				getGrandExchange().totalItemResults = 0;
@@ -5292,6 +5308,16 @@ public class Client extends GameRenderer {
 		}
 		if (action == 169) {
 			switch (interfaceId) {
+			case 55221:
+			case 55223:
+			case 55225:
+			case 55227:
+				notesTab.colourNote(interfaceId);
+				variousSettings[1150] = 0;updateConfig(1150);
+				variousSettings[1151] = 0;updateConfig(1151);
+				variousSettings[1152] = 0;updateConfig(1152);
+				variousSettings[1153] = 0;updateConfig(1153);
+				break;
 			case 26026:
 				Configuration.DISPLAY_HP_ABOVE_HEAD = !Configuration.DISPLAY_HP_ABOVE_HEAD;
 				Settings.save();
@@ -6839,70 +6865,30 @@ public class Client extends GameRenderer {
 						flag = true;
 					}
 					boolean enabled = (interfaceIsSelected(childInterface)) || (hovered(childInterface));
-					int opacity;
 					int j3;
 					if (enabled) {
 						j3 = childInterface.anInt219;
 						if ((flag) && (childInterface.anInt239 != 0)) {
 							j3 = childInterface.anInt239;
 						}
-						opacity = childInterface.enabledOpacity;
 					} else {
 						j3 = childInterface.textColor;
 						if ((flag) && (childInterface.anInt216 != 0)) {
 							j3 = childInterface.anInt216;
 						}
-						opacity = childInterface.opacity;
 					}
-
-					if (opacity != 256) {
-						if (opacity == 0) {
-							if (childInterface.filled) {
-								Canvas2D.drawPixels(childInterface.height, childY, childX, j3, childInterface.width);
-							} else {
-								Canvas2D.fillPixels(childX, childInterface.width, childInterface.height, j3, childY);
-							}
-						} else if (childInterface.filled) {
-							Canvas2D.fillRect(j3, childY, childInterface.width, childInterface.height,
-									256 - (opacity & 0xFF), childX);
+					
+					if (childInterface.opacity == 0) {
+						if (childInterface.filled) {
+							Canvas2D.drawPixels(childInterface.height, childY, childX, j3, childInterface.width);
 						} else {
-							Canvas2D.method338(childY, childInterface.height, 256 - (opacity & 0xFF), j3,
-									childInterface.width, childX);
+							Canvas2D.fillPixels(childX, childInterface.width, childInterface.height, j3, childY);
 						}
+					} else if (childInterface.filled) {
+						Canvas2D.method335(j3, childY, childInterface.width, childInterface.height, 256 - (childInterface.opacity & 0xff), childX);
+					} else {
+						Canvas2D.method338(childY, childInterface.height, 256 - (childInterface.opacity & 0xff), j3, childInterface.width, childX);
 					}
-
-					/*
-					 * boolean flag = false;
-					 * 
-					 * if (anInt1039 == childInterface.id || anInt1048 ==
-					 * childInterface.id || anInt1026 == childInterface.id) {
-					 * flag = true; }
-					 * 
-					 * int j3;
-					 * 
-					 * if (interfaceIsSelected(childInterface)) { j3 =
-					 * childInterface.anInt219;
-					 * 
-					 * if (flag && childInterface.anInt239 != 0) { j3 =
-					 * childInterface.anInt239; } } else { j3 =
-					 * childInterface.textColor;
-					 * 
-					 * if (flag && childInterface.anInt216 != 0) { j3 =
-					 * childInterface.anInt216; } }
-					 * 
-					 * if (childInterface.opacity == 0) { if
-					 * (childInterface.filled) {
-					 * Canvas2D.drawPixels(childInterface.height, childY,
-					 * childX, j3, childInterface.width); } else {
-					 * Canvas2D.fillPixels(childX, childInterface.width,
-					 * childInterface.height, j3, childY); } } else if
-					 * (childInterface.filled) { Canvas2D.method335(j3, childY,
-					 * childInterface.width, childInterface.height, 256 -
-					 * (childInterface.opacity & 0xff), childX); } else {
-					 * Canvas2D.method338(childY, childInterface.height, 256 -
-					 * (childInterface.opacity & 0xff), j3,
-					 * childInterface.width, childX); }
-					 */
 
 				} else if (childInterface.type == 4) {
 					TextDrawingArea textDrawingArea = childInterface.textDrawingAreas;
@@ -12449,6 +12435,11 @@ public class Client extends GameRenderer {
 						promptInput += (char)key;
 						inputTaken = true;
 					}
+				} else if (friendsListAction == 14 || friendsListAction == 15) {//NOTES
+					if (promptInput.length() < 50) {
+						promptInput += (char)key;
+						inputTaken = true;
+					}
 				} else {
 					if(key >= 32 && key <= 122 && promptInput.length() < 80) {
 						promptInput += (char)key;
@@ -12546,6 +12537,13 @@ public class Client extends GameRenderer {
 					if (friendsListAction == 5 && ignoreCount > 0) {
 						long l3 = TextClass.longForName(promptInput);
 						delIgnore(l3);
+					}
+					
+					if (friendsListAction == 14 && promptInput.length() > 0) {
+						notesTab.addNote(this, promptInput);
+					}
+					if (friendsListAction == 15 && promptInput.length() > 0) {
+						notesTab.setEdittedNote(promptInput);
 					}
 
 					if (friendsListAction == 6) {
@@ -13863,6 +13861,29 @@ public class Client extends GameRenderer {
 				announcement = textie;
 				pktType = -1;
 				return true;
+				
+			case 93://TODO:
+				int size = getInputBuffer().getShort();
+				if(size == 0) {
+					//Reset
+					for(int i = 0; i < NotesTab.maxNotes * 3; i++) {
+						RSInterface.interfaceCache[NotesTab.NOTE_INTERFACE_ID + i].message = "";
+						RSInterface.interfaceCache[NotesTab.NOTE_INTERFACE_ID + i].textColor = 14064640;
+					}
+					NotesTab.deselectNotes();
+					notesTab = new NotesTab();
+					notesTab.updateNoteAmounts();
+				} else {
+					int[] colours = new int[] { 14064640, 14064640, 16727871, 65280, 16777215};
+					for(int i = 0; i < size; i++) {
+						int colour = getInputBuffer().getShort();
+						String note = getInputBuffer().getString();
+						//Add Note
+						notesTab.addNote(this, note, colours[colour], false);
+					}
+				}
+				pktType = -1;
+				return true;	
 
 			case 60:
 				anInt1269 = getInputBuffer().getUnsignedByte();
@@ -14845,6 +14866,61 @@ public class Client extends GameRenderer {
 
 		pktType = -1;
 		return true;
+	}
+	
+	public void editNote(String input) {
+		inputTaken = true;
+		inputDialogState = 0;
+		messagePromptRaised = true;
+		promptInput = "";//input == null ? "" : input
+		friendsListAction = 15;
+		promptMessage = "Edit note:";
+	}
+	
+	public static void saveNote(int noteId, String text) {
+		getOut().putOpcode(104);
+		getOut().putByte(text.length() + 1);
+		getOut().putString(text);
+
+		getOut().putOpcode(105);
+		getOut().putShort(0);
+		getOut().putShort(noteId);
+	}
+	
+	public static void saveNoteDelete(int noteId) {
+		getOut().putOpcode(105);
+		getOut().putShort(1);
+		getOut().putShort(noteId);
+	}
+
+    public static void saveNoteDeleteAll() {
+        getOut().putOpcode(105);
+        getOut().putShort(6);
+        getOut().putShort(1);//Doesn't matter; not used.
+    }
+	
+	public static void saveNoteColour(int noteId, int colour) {
+		int colourId = -1;
+		switch(colour) {
+		case 14064640://Orange
+		default:
+			colourId = 1;
+			break;
+		case 16727871://Red
+			colourId = 2;
+			break;
+		case 65280://Green
+			colourId = 3;
+			break;
+		case 16777215://White
+			colourId = 4;
+			break;
+		}
+		if(colourId != -1) {
+			getOut().putOpcode(105);
+			getOut().putShort(colourId + 1);
+			getOut().putShort(noteId);
+		}
 	}
 
 	public void drawLoadingMessages(String s) {
@@ -16251,6 +16327,15 @@ public class Client extends GameRenderer {
 			index = id - 5000;
 			getOut().putShort(index);
 			return true;
+		}
+		
+		if (id == 1324) {
+			inputTaken = true;
+			inputDialogState = 0;
+			messagePromptRaised = true;
+			promptInput = "";
+			friendsListAction = 14;
+			promptMessage = "Add note:";
 		}
 
 		if (id == 550) {

@@ -742,7 +742,7 @@ public class MapArea extends GameFrame {
 				CacheSpriteLoader.getCacheSprite(456).drawSprite(GameFrame.getScreenMode() == ScreenMode.FIXED ? 10 : Client.clientWidth - 40, GameFrame.getScreenMode() == ScreenMode.FIXED ? 124 : 133);
 			}
 			
-			if (Client.tabID == 14) {
+			if (Client.tabID == 13) {
 				CacheSpriteLoader.getCacheSprite(343)
 						.drawSprite(getOffSetX() + (GameFrame.getScreenMode() != ScreenMode.FIXED ? 149 : 225), 0);
 			}
