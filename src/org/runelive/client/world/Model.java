@@ -466,7 +466,7 @@ public class Model extends Animable {
 
 	public Model(int modelId) {
 		byte[] is = aClass21Array1661[modelId].aByteArray368;
-		if (is[is.length - 1] == -1 && is[is.length - 2] == -1 && modelId != 71641)
+		if (is[is.length - 1] == -1 && is[is.length - 2] == -1)
 			read622Model(is, modelId);
 		else
 			readOldModel(modelId);
@@ -689,451 +689,6 @@ public class Model extends Animable {
 			applyTransform(firstFrame);
 		}
 	}
-	
-	/*public void read800Model(byte[] is) {
-		try {
-			anInt1652 = 0;
-			trianglePriority = (byte) 0;
-			anInt1642 = 0;
-
-			ByteBuffer[] buffers = new ByteBuffer[7];
-			for (int i = 0; i < buffers.length; i++) {
-				buffers[i] = new ByteBuffer(is);
-			}
-			int identifier = buffers[0].getUnsignedByte();
-			if (identifier != 1) {
-				System.out.println("Invalid model identifier: " + identifier);
-			} else {
-				buffers[0].getByte();
-				version = buffers[0].getUnsignedByte();
-				buffers[0].position = is.length - 26;
-				anInt1626 = buffers[0].getUnsignedShort();
-				anInt1652 = buffers[0].getUnsignedShort();
-				anInt1642 = buffers[0].getUnsignedShort();
-				int footerFlags = buffers[0].getUnsignedByte();
-				boolean hasFillAttributes = (footerFlags & 0x1) == 1;
-				boolean hasSurfaceEffects = (footerFlags & 0x2) == 2;
-				boolean hasVertexs = (footerFlags & 0x4) == 4;
-				boolean hasManyVertices = (footerFlags & 0x10) == 16;
-				boolean hasManyTriangles = (footerFlags & 0x20) == 32;
-				boolean hasManyVertexs = (footerFlags & 0x40) == 64;
-				boolean hasUVCoordinates = (footerFlags & 0x80) == 128;
-				int modelPriority = buffers[0].getUnsignedByte();
-				int modelAlpha = buffers[0].getUnsignedByte();
-				int modelTriangleSkinValue = buffers[0].getUnsignedByte();
-				int modelTexture = buffers[0].getUnsignedByte();
-				int modelVertexSkins = buffers[0].getUnsignedByte();
-				int modelVerticesX = buffers[0].getUnsignedShort();
-				int modelVerticesY = buffers[0].getUnsignedShort();
-				int modelVerticesZ = buffers[0].getUnsignedShort();
-				int modelVertexPoint = buffers[0].getUnsignedShort();
-				int modelTextureCoords = buffers[0].getUnsignedShort();
-				int vertices = buffers[0].getUnsignedShort();
-				int triangles = buffers[0].getUnsignedShort();
-				if (!hasManyVertices) {
-					if (modelVertexSkins == 1) {
-						vertices = anInt1626;
-					} else {
-						vertices = 0;
-					}
-				}
-				if (!hasManyTriangles) {
-					if (modelTriangleSkinValue == 1) {
-						triangles = anInt1652;
-					} else {
-						triangles = 0;
-					}
-				}
-				int textureAmount = 0;
-				int particleAmount = 0;
-				int particleColor = 0;
-				if (anInt1642 > 0) {
-					textureRenderTypes = new byte[anInt1642];
-					buffers[0].position = 3;
-					for (int tri = 0; tri < anInt1642; tri++) {
-						byte renderType = textureRenderTypes[tri] = buffers[0].getByte();
-						if (renderType == 0) {
-							textureAmount++;
-						}
-						if (renderType >= 1 && renderType <= 3) {
-							particleAmount++;
-						}
-						if (renderType == 2) {
-							particleColor++;
-						}
-					}
-				}
-				int pos = 3 + anInt1642;
-				int vertexFlagsPos = pos;
-				pos += anInt1626;
-				int renderTypePos = pos;
-				if (hasFillAttributes) {
-					pos += anInt1652;
-				}
-				int depthTriTypeOffset = pos;
-				pos += anInt1652;
-				int priorityPos = pos;
-				if (modelPriority == 255) {
-					pos += anInt1652;
-				}
-				int triangleSkinPos = pos;
-				pos += triangles;
-				int vertexSkinsPos = pos;
-				pos += vertices;
-				int alphaPos = pos;
-				if (modelAlpha == 1) {
-					pos += anInt1652;
-				}
-				int depthTriViewspaceOffset = pos;
-				pos += modelVertexPoint;
-				int texturePos = pos;
-				if (modelTexture == 1) {
-					pos += anInt1652 * 2;
-				}
-				int textureCoordPos = pos;
-				pos += modelTextureCoords;
-				int colorPos = pos;
-				pos += anInt1652 * 2;
-				int vertexXOffsetPos = pos;
-				pos += modelVerticesX;
-				int vertexYOffsetPos = pos;
-				pos += modelVerticesY;
-				int vertexZOffsetPos = pos;
-				pos += modelVerticesZ;
-				int texturedTriangleType0Offset = pos;
-				pos += textureAmount * 6;
-				int texturedTriangleOffset = pos;
-				pos += particleAmount * 6;
-				int particleVersion = 6;
-				if (version == 14) {
-					particleVersion = 7;
-				} else if (version >= 15) {
-					particleVersion = 9;
-				}
-				int particleDirectionOffset = pos;
-				pos += particleAmount * particleVersion;
-				int particleXLifespanOffset = pos;
-				pos += particleAmount;
-				int particleYLifespanOffset = pos;
-				pos += particleAmount;
-				int particleZLifespanAndTextureColorOffset = pos;
-				pos += particleAmount + particleColor * 2;
-				int surfaceEffectsOffset = pos;
-				int uvCoordPos = is.length;
-				int uvCoordModPos2 = is.length;
-				int texCoordUPos = is.length;
-				int texCoordVPos = is.length;
-				if (hasUVCoordinates) {
-					ByteBuffer uvBuffer = new ByteBuffer(is);
-					uvBuffer.position = is.length - 26;
-					uvBuffer.position -= is[uvBuffer.position - 1];
-					numUVCoords = uvBuffer.getUnsignedShort();
-					int unknown1 = uvBuffer.getUnsignedShort();
-					int unknown2 = uvBuffer.getUnsignedShort();
-					uvCoordPos = surfaceEffectsOffset + unknown1;
-					uvCoordModPos2 = uvCoordPos + unknown2;
-					texCoordUPos = uvCoordModPos2 + anInt1626;
-					texCoordVPos = texCoordUPos + numUVCoords * 2;
-				}
-				G = new int[anInt1626];
-				verticesX = new int[anInt1626];
-				verticesY = new int[anInt1626];
-				verticesZ = new int[anInt1626];
-				triangleViewspaceX = new short[anInt1652];
-				triangleViewspaceY = new short[anInt1652];
-				triangleViewspaceZ = new short[anInt1652];
-				if (modelVertexSkins == 1) {
-					vertexSkins = new int[anInt1626];
-				}
-				if (hasFillAttributes) {
-					faceRenderType = new byte[anInt1652];
-				}
-				if (modelPriority == 255) {
-					trianglePriorities = new byte[anInt1652];
-				} else {
-					trianglePriority = (byte) modelPriority;
-				}
-				if (modelAlpha == 1) {
-					faceAlpha = new byte[anInt1652];
-				}
-				if (modelTriangleSkinValue == 1) {
-					triangleSkinValues = new int[anInt1652];
-				}
-				if (modelTexture == 1) {
-					faceTexture = new short[anInt1652];
-				}
-				if (modelTexture == 1 && (anInt1642 > 0 || numUVCoords > 0)) {
-					textureCoords = new short[anInt1652];
-				}
-				anIntArray1640 = new short[anInt1652];
-				if (anInt1642 > 0) {
-					textureTrianglePointsX = new short[anInt1642];
-					textureTrianglePointsY = new short[anInt1642];
-					textureTrianglePointsZ = new short[anInt1642];
-					if (particleAmount > 0) {
-						particleDirectionX = new int[particleAmount];
-						particleDirectionY = new int[particleAmount];
-						particleDirectionZ = new int[particleAmount];
-						particleLifespanX = new byte[particleAmount];
-						particleLifespanY = new byte[particleAmount];
-						particleLifespanZ = new int[particleAmount];
-					}
-					if (particleColor > 0) {
-						texturePrimaryColor = new int[particleColor];
-						textureSecondaryColor = new int[particleColor];
-					}
-				}
-				buffers[0].position = vertexFlagsPos;
-				buffers[1].position = vertexXOffsetPos;
-				buffers[2].position = vertexYOffsetPos;
-				buffers[3].position = vertexZOffsetPos;
-				buffers[4].position = vertexSkinsPos;
-				int vX = 0;
-				int vY = 0;
-				int vZ = 0;
-				for (int point = 0; point < anInt1626; point++) {
-					int vertexFlags = buffers[0].getUnsignedByte();
-					int vertexXOffset = 0;
-					if ((vertexFlags & 0x1) != 0) {
-						vertexXOffset = buffers[1].getSignedSmart();
-					}
-					int vertexYOffset = 0;
-					if ((vertexFlags & 0x2) != 0) {
-						vertexYOffset = buffers[2].getSignedSmart();
-					}
-					int vertexZOffset = 0;
-					if ((vertexFlags & 0x4) != 0) {
-						vertexZOffset = buffers[3].getSignedSmart();
-					}
-					verticesX[point] = vX + vertexXOffset;
-					verticesY[point] = vY + vertexYOffset;
-					verticesZ[point] = vZ + vertexZOffset;
-					vX = verticesX[point];
-					vY = verticesY[point];
-					vZ = verticesZ[point];
-					if (modelVertexSkins == 1) {
-						if (hasManyVertices) {
-							vertexSkins[point] = buffers[4].getSmartShortMinusOne();
-						} else {
-							vertexSkins[point] = buffers[4].getUnsignedByte();
-							if (vertexSkins[point] == 255) {
-								vertexSkins[point] = -1;
-							}
-						}
-					}
-				}
-				if (numUVCoords > 0) {
-					buffers[0].position = uvCoordModPos2;
-					buffers[1].position = texCoordUPos;
-					buffers[2].position = texCoordVPos;
-					anIntArray1669 = new int[anInt1626];
-					int coord = 0;
-					int size = 0;
-					for (; coord < anInt1626; coord++) {
-						anIntArray1669[coord] = size;
-						size += buffers[0].getUnsignedByte();
-					}
-					uvCoordVertexA = new byte[anInt1652];
-					uvCoordVertexB = new byte[anInt1652];
-					uvCoordVertexC = new byte[anInt1652];
-					textureCoordU = new float[numUVCoords];
-					textureCoordV = new float[numUVCoords];
-					for (coord = 0; coord < numUVCoords; coord++) {
-						textureCoordU[coord] = buffers[1].getSignedShort() / 4096.0F;
-						textureCoordV[coord] = buffers[2].getSignedShort() / 4096.0F;
-					}
-				}
-				buffers[0].position = colorPos;
-				buffers[1].position = renderTypePos;
-				buffers[2].position = priorityPos;
-				buffers[3].position = alphaPos;
-				buffers[4].position = triangleSkinPos;
-				buffers[5].position = texturePos;
-				buffers[6].position = textureCoordPos;
-				for (int tri = 0; tri < numTriangles; tri++) {
-					anIntArray1640[tri] = (short) buffers[0].getUnsignedShort();
-					if (hasFillAttributes) {
-						faceRenderType[tri] = buffers[1].getByte();
-					}
-					if (modelPriority == 255) {
-						trianglePriorities[tri] = buffers[2].getByte();
-					}
-					if (modelAlpha == 1) {
-						faceAlpha[tri] = buffers[3].getByte();
-					}
-					if (modelTriangleSkinValue == 1) {
-						if (hasManyTriangles) {
-							triangleSkinValues[tri] = buffers[4].getSmartShortMinusOne();
-						} else {
-							triangleSkinValues[tri] = buffers[4].getUnsignedByte();
-							if (triangleSkinValues[tri] == 255) {
-								triangleSkinValues[tri] = -1;
-							}
-						}
-					}
-					if (modelTexture == 1) {
-						faceTexture[tri] = (short) (buffers[5].getUnsignedShort() - 1);
-					}
-					if (textureCoords != null) {
-						if (faceTexture[tri] != -1) {
-							if (version >= 16) {
-								textureCoords[tri] = (short) (buffers[6].getSmartShort() - 1);
-							} else {
-								textureCoords[tri] = (short) (buffers[6].getUnsignedByte() - 1);
-							}
-						} else {
-							textureCoords[tri] = (short) -1;
-						}
-					}
-				}
-				maxDepth = -1;
-				buffers[0].position = depthTriViewspaceOffset;
-				buffers[1].position = depthTriTypeOffset;
-				buffers[2].position = uvCoordPos;
-				calculateMaxDepth(buffers[0], buffers[1], buffers[2]);
-				buffers[0].position = texturedTriangleType0Offset;
-				buffers[1].position = texturedTriangleOffset;
-				buffers[2].position = particleDirectionOffset;
-				buffers[3].position = particleXLifespanOffset;
-				buffers[4].position = particleYLifespanOffset;
-				buffers[5].position = particleZLifespanAndTextureColorOffset;
-				decodeTexturedTriangles(buffers[0], buffers[1], buffers[2], buffers[3], buffers[4], buffers[5]);
-				buffers[0].position = surfaceEffectsOffset;
-				if (hasSurfaceEffects) {
-					int numFaces = buffers[0].getUnsignedByte();
-					if (numFaces > 0) {
-						surfaces = new Surface[numFaces];
-						for (int face = 0; face < numFaces; face++) {
-							int faceId = buffers[0].getUnsignedShort();
-							int point = buffers[0].getUnsignedShort();
-							byte pri;
-							if (modelPriority == 255) {
-								pri = trianglePriorities[point];
-							} else {
-								pri = (byte) modelPriority;
-							}
-							surfaces[face] = new Surface(faceId, point, triangleViewspaceX[point],
-									triangleViewspaceY[point], triangleViewspaceZ[point], pri);
-						}
-					}
-					int numSkins = buffers[0].getUnsignedByte();
-					if (numSkins > 0) {
-						surfaceSkins = new SurfaceSkin[numSkins];
-						for (int face = 0; face < numSkins; face++) {
-							int skin = buffers[0].getUnsignedShort();
-							int point = buffers[0].getUnsignedShort();
-							surfaceSkins[face] = new SurfaceSkin(skin, point);
-						}
-					}
-				}
-				if (hasVertexs) {
-					int numVertexs = buffers[0].getUnsignedByte();
-					if (numVertexs > 0) {
-						isolatedVertexs = new Vertex[numVertexs];
-						for (int vertex = 0; vertex < numVertexs; vertex++) {
-							int x = buffers[0].getUnsignedShort();
-							int y = buffers[0].getUnsignedShort();
-							int z;
-							if (hasManyVertexs) {
-								z = buffers[0].getSmartShortMinusOne();
-							} else {
-								z = buffers[0].getUnsignedByte();
-								if (z == 255) {
-									z = -1;
-								}
-							}
-							byte w = buffers[0].getByte();
-							isolatedVertexs[vertex] = new Vertex(x, y, z, w);
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Exception with model id : " + modelId);
-		}
-	}*/
-	
-	public int version = 0;
-	private int maxDepth;
-	
-	/*void calculateMaxDepth(ByteBuffer class219_sub41, ByteBuffer class219_sub41_122_) {
-		short functionX = 0;
-		short functionY = 0;
-		short functionZ = 0;
-		int previousZView = 0;
-
-		for (int tri = 0; tri < numTriangles; tri++) {
-			int i_127_ = class219_sub41_122_.getUnsignedByte();
-
-			if (i_127_ == 1) {
-				functionX = (short) (class219_sub41.getSignedSmart() + previousZView);
-				previousZView = functionX;
-				functionY = (short) (class219_sub41.getSignedSmart() + previousZView);
-				previousZView = functionY;
-				functionZ = (short) (class219_sub41.getSignedSmart() + previousZView);
-				previousZView = functionZ;
-				triangleViewspaceX[tri] = functionX;
-				triangleViewspaceY[tri] = functionY;
-				triangleViewspaceZ[tri] = functionZ;
-
-				if (functionX > maxDepth) {
-					maxDepth = functionX;
-				}
-
-				if (functionY > maxDepth) {
-					maxDepth = functionY;
-				}
-
-				if (functionZ > maxDepth) {
-					maxDepth = functionZ;
-				}
-			}
-
-			if (i_127_ == 2) {
-				functionY = functionZ;
-				functionZ = (short) (class219_sub41.getSignedSmart() + previousZView);
-				previousZView = functionZ;
-				triangleViewspaceX[tri] = functionX;
-				triangleViewspaceY[tri] = functionY;
-				triangleViewspaceZ[tri] = functionZ;
-
-				if (functionZ > maxDepth) {
-					maxDepth = functionZ;
-				}
-			}
-
-			if (i_127_ == 3) {
-				functionX = functionZ;
-				functionZ = (short) (class219_sub41.getSignedSmart() + previousZView);
-				previousZView = functionZ;
-				triangleViewspaceX[tri] = functionX;
-				triangleViewspaceY[tri] = functionY;
-				triangleViewspaceZ[tri] = functionZ;
-
-				if (functionZ > maxDepth) {
-					maxDepth = functionZ;
-				}
-			}
-
-			if (i_127_ == 4) {
-				short i_128_ = functionX;
-				functionX = functionY;
-				functionY = i_128_;
-				functionZ = (short) (class219_sub41.getSignedSmart() + previousZView);
-				previousZView = functionZ;
-				triangleViewspaceX[tri] = functionX;
-				triangleViewspaceY[tri] = functionY;
-				triangleViewspaceZ[tri] = functionZ;
-
-				if (functionZ > maxDepth) {
-					maxDepth = functionZ;
-				}
-			}
-		}
-
-		maxDepth++;
-	}*/
 
 	public void read622Model(byte abyte0[], int modelID) {
 		ByteBuffer nc1 = new ByteBuffer(abyte0);
@@ -3149,7 +2704,7 @@ public class Model extends Animable {
 						int timepassed = ms % mspercolor;
 						int[] colora = rainbow[currentcolor % rainbow.length];
 						int[] colorb = rainbow[(currentcolor+1) % rainbow.length];
-						int[] colorc = new int[] { 
+						int[] colorc = new int[] {
 							colora[0] + ((colorb[0] - colora[0]) * timepassed / mspercolor),
 							colora[1] + ((colorb[1] - colora[1]) * timepassed / mspercolor),
 							colora[2] + ((colorb[2] - colora[2]) * timepassed / mspercolor),
@@ -3352,85 +2907,96 @@ public class Model extends Animable {
 		int i7 = anIntArray1679[0];
 		int j7 = anIntArray1679[1];
 		int k7 = anIntArray1679[2];
-		if((j3 - j4) * (k7 - j7) - (i7 - j7) * (j5 - j4) > 0)
-        {
+		if ((j3 - j4) * (k7 - j7) - (i7 - j7) * (j5 - j4) > 0) {
 			Canvas3D.restrict_edges = false;
-            if(l == 3)
-            {
-                if(j3 < 0 || j4 < 0 || j5 < 0 || j3 > Canvas2D.centerX || j4 > Canvas2D.centerX || j5 > Canvas2D.centerX)
-                	Canvas3D.restrict_edges = true;
-                int l7;
-                if(anIntArray1637 == null)
-                    l7 = 0;
-                else
-                    l7 = anIntArray1637[i] & 3;
-                if(l7 == 0)
-                	Canvas3D.method374(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1], anIntArray1680[2], -1F, -1F, -1F);
-                else
-                if(l7 == 1)
-                	Canvas3D.method376(i7, j7, k7, j3, j4, j5, modelIntArray3[anIntArray1634[i]], -1F, -1F, -1F);
-                else
-                if(l7 == 2)
-                {
-                    int j8 = anIntArray1637[i] >> 2;
-                    int k9 = anIntArray1643[j8];
-                    int k10 = anIntArray1644[j8];
-                    int k11 = anIntArray1645[j8];
-                    Canvas3D.method378(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1], anIntArray1680[2], anIntArray1668[k9], anIntArray1668[k10], anIntArray1668[k11], anIntArray1669[k9], anIntArray1669[k10], anIntArray1669[k11], anIntArray1670[k9], anIntArray1670[k10], anIntArray1670[k11], anIntArray1640[i], anIntArray1670[i1], anIntArray1670[j1], anIntArray1670[k1]);
-                } else
-                if(l7 == 3)
-                {
-                    int k8 = anIntArray1637[i] >> 2;
-                    int l9 = anIntArray1643[k8];
-                    int l10 = anIntArray1644[k8];
-                    int l11 = anIntArray1645[k8];
-                    Canvas3D.method378(i7, j7, k7, j3, j4, j5, anIntArray1634[i], anIntArray1634[i], anIntArray1634[i], anIntArray1668[l9], anIntArray1668[l10], anIntArray1668[l11], anIntArray1669[l9], anIntArray1669[l10], anIntArray1669[l11], anIntArray1670[l9], anIntArray1670[l10], anIntArray1670[l11], anIntArray1640[i], anIntArray1670[i1], anIntArray1670[j1], anIntArray1670[k1]);
-                }
-            }
-            if(l == 4)
-            {
-                if(j3 < 0 || j4 < 0 || j5 < 0 || j3 > Canvas2D.centerX || j4 > Canvas2D.centerX || j5 > Canvas2D.centerX || anIntArray1678[3] < 0 || anIntArray1678[3] > Canvas2D.centerX)
-                	Canvas3D.restrict_edges = true;
-                int i8;
-                if(anIntArray1637 == null)
-                    i8 = 0;
-                else
-                    i8 = anIntArray1637[i] & 3;
-                if(i8 == 0)
-                {
-                	Canvas3D.method374(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1], anIntArray1680[2], -1F, -1F, -1F);
-                    Canvas3D.method374(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1680[0], anIntArray1680[2], anIntArray1680[3], anIntArray1670[i1], anIntArray1670[j1], anIntArray1670[k1]);
-                    return;
-                }
-                if(i8 == 1)
-                {
-                    int l8 = modelIntArray3[anIntArray1634[i]];
-                    Canvas3D.method376(i7, j7, k7, j3, j4, j5, l8, -1F, -1F, -1F);
-                    Canvas3D.method376(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], l8, anIntArray1670[i1], anIntArray1670[j1], anIntArray1670[k1]);
-                    return;
-                }
-                if(i8 == 2)
-                {
-                    int i9 = anIntArray1637[i] >> 2;
-                    int i10 = anIntArray1643[i9];
-                    int i11 = anIntArray1644[i9];
-                    int i12 = anIntArray1645[i9];
-                    Canvas3D.method378(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1], anIntArray1680[2], anIntArray1668[i10], anIntArray1668[i11], anIntArray1668[i12], anIntArray1669[i10], anIntArray1669[i11], anIntArray1669[i12], anIntArray1670[i10], anIntArray1670[i11], anIntArray1670[i12], anIntArray1640[i], anIntArray1670[i1], anIntArray1670[j1], anIntArray1670[k1]);
-                    Canvas3D.method378(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1680[0], anIntArray1680[2], anIntArray1680[3], anIntArray1668[i10], anIntArray1668[i11], anIntArray1668[i12], anIntArray1669[i10], anIntArray1669[i11], anIntArray1669[i12], anIntArray1670[i10], anIntArray1670[i11], anIntArray1670[i12], anIntArray1640[i], anIntArray1670[i1], anIntArray1670[j1], anIntArray1670[k1]);
-                    return;
-                }
-                if(i8 == 3)
-                {
-                    int j9 = anIntArray1637[i] >> 2;
-                    int j10 = anIntArray1643[j9];
-                    int j11 = anIntArray1644[j9];
-                    int j12 = anIntArray1645[j9];
-                    Canvas3D.method378(i7, j7, k7, j3, j4, j5, anIntArray1634[i], anIntArray1634[i], anIntArray1634[i], anIntArray1668[j10], anIntArray1668[j11], anIntArray1668[j12], anIntArray1669[j10], anIntArray1669[j11], anIntArray1669[j12], anIntArray1670[j10], anIntArray1670[j11], anIntArray1670[j12], anIntArray1640[i], anIntArray1670[i1], anIntArray1670[j1], anIntArray1670[k1]);
-                    Canvas3D.method378(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1634[i], anIntArray1634[i], anIntArray1634[i], anIntArray1668[j10], anIntArray1668[j11], anIntArray1668[j12], anIntArray1669[j10], anIntArray1669[j11], anIntArray1669[j12], anIntArray1670[j10], anIntArray1670[j11], anIntArray1670[j12], anIntArray1640[i], anIntArray1670[i1], anIntArray1670[j1], anIntArray1670[k1]);
-                }
-            }
-        }
-    }
+			if (l == 3) {
+				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Canvas2D.centerX || j4 > Canvas2D.centerX
+						|| j5 > Canvas2D.centerX)
+					Canvas3D.restrict_edges = true;
+				int l7;
+				if (anIntArray1637 == null)
+					l7 = 0;
+				else
+					l7 = anIntArray1637[i] & 3;
+				if (l7 == 0)
+					Canvas3D.method374(i7, j7, k7, j3, j4, j5, 0, 0, 0, anIntArray1680[0], anIntArray1680[1],
+							anIntArray1680[2]);
+				else if (l7 == 1)
+					Canvas3D.method376(i7, j7, k7, j3, j4, j5, 0, 0, 0, modelIntArray3[anIntArray1634[i]]);
+				else if (l7 == 2) {
+					int j8 = anIntArray1637[i] >> 2;
+					int k9 = anIntArray1643[j8];
+					int k10 = anIntArray1644[j8];
+					int k11 = anIntArray1645[j8];
+					Canvas3D.method378(i7, j7, k7, j3, j4, j5, 0, 0, 0, anIntArray1680[0], anIntArray1680[1],
+							anIntArray1680[2], anIntArray1668[k9], anIntArray1668[k10], anIntArray1668[k11],
+							anIntArray1669[k9], anIntArray1669[k10], anIntArray1669[k11], anIntArray1670[k9],
+							anIntArray1670[k10], anIntArray1670[k11], anIntArray1640[i]);
+				} else if (l7 == 3) {
+					int k8 = anIntArray1637[i] >> 2;
+					int l9 = anIntArray1643[k8];
+					int l10 = anIntArray1644[k8];
+					int l11 = anIntArray1645[k8];
+					Canvas3D.method378(i7, j7, k7, j3, j4, j5, 0, 0, 0, anIntArray1634[i], anIntArray1634[i],
+							anIntArray1634[i], anIntArray1668[l9], anIntArray1668[l10], anIntArray1668[l11],
+							anIntArray1669[l9], anIntArray1669[l10], anIntArray1669[l11], anIntArray1670[l9],
+							anIntArray1670[l10], anIntArray1670[l11], anIntArray1640[i]);
+				}
+			}
+			if (l == 4) {
+				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Canvas2D.centerX || j4 > Canvas2D.centerX
+						|| j5 > Canvas2D.centerX || anIntArray1678[3] < 0 || anIntArray1678[3] > Canvas2D.centerX)
+					Canvas3D.restrict_edges = true;
+				int i8;
+				if (anIntArray1637 == null)
+					i8 = 0;
+				else
+					i8 = anIntArray1637[i] & 3;
+				if (i8 == 0) {
+					Canvas3D.method374(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
+							anIntArray1680[2], -1F, -1F, -1F);
+					Canvas3D.method374(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1680[0],
+							anIntArray1680[2], anIntArray1680[3], -1F, -1F, -1F);
+					return;
+				}
+				if (i8 == 1) {
+					int l8 = modelIntArray3[anIntArray1634[i]];
+					Canvas3D.method376(i7, j7, k7, j3, j4, j5, l8, -1F, -1F, -1F);
+					Canvas3D.method376(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], l8, -1F, -1F, -1F);
+					return;
+				}
+				if (i8 == 2) {
+					int i9 = anIntArray1637[i] >> 2;
+					int i10 = anIntArray1643[i9];
+					int i11 = anIntArray1644[i9];
+					int i12 = anIntArray1645[i9];
+					Canvas3D.method378(i7, j7, k7, j3, j4, j5, anIntArray1680[0], anIntArray1680[1],
+							anIntArray1680[2], anIntArray1668[i10], anIntArray1668[i11], anIntArray1668[i12],
+							anIntArray1669[i10], anIntArray1669[i11], anIntArray1669[i12], anIntArray1670[i10],
+							anIntArray1670[i11], anIntArray1670[i12], anIntArray1640[i], -1F, -1F, -1F);
+					Canvas3D.method378(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1680[0],
+							anIntArray1680[2], anIntArray1680[3], anIntArray1668[i10], anIntArray1668[i11],
+							anIntArray1668[i12], anIntArray1669[i10], anIntArray1669[i11], anIntArray1669[i12],
+							anIntArray1670[i10], anIntArray1670[i11], anIntArray1670[i12], anIntArray1640[i], -1F, -1F, -1F);
+					return;
+				}
+				if (i8 == 3) {
+					int j9 = anIntArray1637[i] >> 2;
+					int j10 = anIntArray1643[j9];
+					int j11 = anIntArray1644[j9];
+					int j12 = anIntArray1645[j9];
+					Canvas3D.method378(i7, j7, k7, j3, j4, j5, anIntArray1634[i], anIntArray1634[i],
+							anIntArray1634[i], anIntArray1668[j10], anIntArray1668[j11], anIntArray1668[j12],
+							anIntArray1669[j10], anIntArray1669[j11], anIntArray1669[j12], anIntArray1670[j10],
+							anIntArray1670[j11], anIntArray1670[j12], anIntArray1640[i], -1F, -1F, -1F);
+					Canvas3D.method378(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], anIntArray1634[i],
+							anIntArray1634[i], anIntArray1634[i], anIntArray1668[j10], anIntArray1668[j11],
+							anIntArray1668[j12], anIntArray1669[j10], anIntArray1669[j11], anIntArray1669[j12],
+							anIntArray1670[j10], anIntArray1670[j11], anIntArray1670[j12], anIntArray1640[i], -1F, -1F, -1F);
+				}
+			}
+		}
+	}
 
 	private final boolean method486(int i, int j, int k, int l, int i1, int j1, int k1, int l1) {
 		if (j < k && j < l && j < i1)

@@ -13735,7 +13735,6 @@ public class Client extends GameRenderer {
 
 			case 208:
 				int i3 = getInputBuffer().getUnsignedShort();
-				System.out.println("" + i3);
 				if (i3 == 65535)
 					i3 = -1;
 				if (i3 >= 0)

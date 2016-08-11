@@ -30,6 +30,13 @@ public class TabArea extends GameFrame {
 				if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
 					for (int i = 0; i < 14; i++) {
 						int tabID = i;
+						if(tabID == 1) {
+							tabID = 2;
+						} else if(tabID == 2) {
+							tabID = 15;
+						} else if(tabID == 13) {
+							tabID = 1;
+						}
 						if (Client.tabID == tabID) {
 							CacheSpriteLoader
 									.getCacheSprite(screenMode == ScreenMode.FIXED
@@ -283,8 +290,6 @@ public class TabArea extends GameFrame {
 				if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
 					for (int i = 0; i < 14; i++) {
 						int tabID = i;
-						System.out.println(""+tabID);
-						//System.out.println(Client.tabID);
 						if (client.inSprite(true,
 								CacheSpriteLoader
 										.getCacheSprite(screenMode == ScreenMode.FIXED && (i == 0 || i == 7) ? 8 : 12),
@@ -303,12 +308,20 @@ public class TabArea extends GameFrame {
 																&& screenMode != ScreenMode.FIXED ? 2 : 1)
 												- 1
 										: getyPos())) {
-							if (screenMode != ScreenMode.FIXED) {
-								setHideComponent(Client.tabID != i ? false : componentHidden() ? false : true);
-							}
 							if (componentHidden()) {
 								tabID = -1;
 							}
+							if(tabID == 1) {
+								tabID = 2;
+							} else if(tabID == 2) {
+								tabID = 15;
+							} else if(tabID == 13) {
+								tabID = 1;
+							}
+							if (screenMode != ScreenMode.FIXED) {
+								setHideComponent(Client.tabID != i ? false : componentHidden() ? false : true);
+							}
+							System.out.println(""+tabID);
 							Client.setTab(tabID);
 							break;
 						}
