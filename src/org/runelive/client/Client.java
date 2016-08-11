@@ -17063,13 +17063,13 @@ public class Client extends GameRenderer {
 			constructMusic();
 
 			setLoadingText(30, "Unpacking media..");
-			FileUtilities.WriteFile(Signlink.getCacheDirectory() + "sprites.dat", spritesArchive.get("sprites.dat"));
-			byte[] idx = spritesArchive.get("sprites.idx");
-			CacheSpriteLoader.loadCachedSpriteDefinitions(idx);
+			FileUtilities.WriteFile(Signlink.getCacheDirectory() + "sprites.data", spritesArchive.get("sprites.data"));
+//			byte[] idx = spritesArchive.get("sprites.idx");
+			CacheSpriteLoader.loadCachedSpriteDefinitions();
 
-			FileUtilities.WriteFile(Signlink.getCacheDirectory() + "sprites2.dat", spritesArchive.get("sprites2.dat"));
-			byte[] idx2 = spritesArchive.get("sprites2.idx");
-			CacheSpriteLoader.loadCachedSpriteDefinitions2(idx2);
+			FileUtilities.WriteFile(Signlink.getCacheDirectory() + "sprites2.data", spritesArchive.get("sprites2.data"));
+			//byte[] idx2 = spritesArchive.get("sprites2.idx");
+			CacheSpriteLoader.loadCachedSpriteDefinitions2();
 
 			setLoadingText(40, "Unpacked media");
 			mapBack = new Background(mediaArchive, "mapback", 0);
