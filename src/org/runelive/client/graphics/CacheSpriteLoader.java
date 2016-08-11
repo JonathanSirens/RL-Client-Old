@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.runelive.client.Signlink;
+import org.runelive.client.cache.Archive;
 import org.runelive.client.io.ByteBuffer;
+import org.runelive.client.util.FileUtilities;
 
 public final class CacheSpriteLoader {
 
@@ -57,19 +59,32 @@ public final class CacheSpriteLoader {
         return cachedSprites2[index];
     }
 
-    public static void loadCachedSpriteDefinitions() {
+    public static void loadCachedSpriteDefinitions(Archive archive) {
+        final String fileName = "mainsprites.data";
+        byte[] data = archive.get(fileName);
+        StringBuilder sb = new StringBuilder();
+        for (int index = 0; index < 10; index++) {
+            sb.append(data[index] + ", ");
+        }
+        System.out.println("length: " + data.length + ", bytes: " + sb.toString());
         try {
-            dataFile = new RandomAccessFile(Signlink.getCacheDirectory() + "sprites.data", "r");
+            dataFile = new RandomAccessFile(Signlink.getCacheDirectory() + fileName, "rw");
+
+            dataFile.setLength(0);
+            dataFile.seek(0);
+            dataFile.write(data);
+            dataFile.seek(0);
 
             int spriteCount = dataFile.readShort();
 
             int idxSize = dataFile.readShort();
-            dataFileOffset = 4 + idxSize;
             byte[] idx = new byte[idxSize];
             dataFile.read(idx);
+            dataFileOffset = 4 + idxSize;
 
             ByteBuffer index = new ByteBuffer(idx);
             int totalSprites = index.getShort();
+//            System.out.println("Total sprites: " + totalSprites);
 
             cachedSprites = new Sprite[totalSprites];
             cachedSpritePositions = new int[totalSprites];
@@ -84,9 +99,16 @@ public final class CacheSpriteLoader {
         }
     }
 
-    public static void loadCachedSpriteDefinitions2() {
+    public static void loadCachedSpriteDefinitions2(Archive archive) {
+        final String fileName = "secondarysprites.data";
+        byte[] data = archive.get(fileName);
         try {
-            dataFile2 = new RandomAccessFile(Signlink.getCacheDirectory() + "sprites2.data", "r");
+            dataFile2 = new RandomAccessFile(Signlink.getCacheDirectory() + fileName, "rw");
+
+            dataFile2.setLength(0);
+            dataFile2.seek(0);
+            dataFile2.write(data);
+            dataFile2.seek(0);
 
             int spriteCount = dataFile2.readShort();
 
