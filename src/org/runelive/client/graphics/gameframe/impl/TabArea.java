@@ -30,9 +30,6 @@ public class TabArea extends GameFrame {
 				if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
 					for (int i = 0; i < 14; i++) {
 						int tabID = i;
-						if (i == 13) {
-							tabID = 15;
-						}
 						if (Client.tabID == tabID) {
 							CacheSpriteLoader
 									.getCacheSprite(screenMode == ScreenMode.FIXED
@@ -286,7 +283,7 @@ public class TabArea extends GameFrame {
 				if (GameFrameConstants.gameframeType == GameFrameType.FRAME_525) {
 					for (int i = 0; i < 14; i++) {
 						int tabID = i;
-						
+						System.out.println(""+tabID);
 						//System.out.println(Client.tabID);
 						if (client.inSprite(true,
 								CacheSpriteLoader

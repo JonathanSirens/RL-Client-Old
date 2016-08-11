@@ -5242,7 +5242,7 @@ public final class ItemDefinition {
 				break;
 			case 19111:
 				itemDef.name = "TokHaar-Kal";
-				itemDef.maleWearId = 62575;
+				itemDef.maleWearId = 71641;
 				itemDef.femaleWearId = 62582;
 				itemDef.groundActions = new String[5];
 				itemDef.groundActions[2] = "Take";

@@ -466,7 +466,7 @@ public class Model extends Animable {
 
 	public Model(int modelId) {
 		byte[] is = aClass21Array1661[modelId].aByteArray368;
-		if (is[is.length - 1] == -1 && is[is.length - 2] == -1)
+		if (is[is.length - 1] == -1 && is[is.length - 2] == -1 && modelId != 71641)
 			read622Model(is, modelId);
 		else
 			readOldModel(modelId);
