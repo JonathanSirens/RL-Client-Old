@@ -890,6 +890,8 @@ public final class CacheFileRequester implements Runnable {
 		mapIndices2[151] = 1984;
 		mapIndices3[151] = 1985;
 
+
+		/*
 		// Abyssal Sire
 		mapIndices1[886] = 11595;
 		mapIndices2[886] = 8;
@@ -946,6 +948,8 @@ public final class CacheFileRequester implements Runnable {
 		mapIndices1[1017] = 12363;
 		mapIndices2[1017] = 1996;
 		mapIndices3[1017] = 1997;
+
+*/
 
 		data = archive.get("midi_index");
 		stream2 = new ByteBuffer(data);
