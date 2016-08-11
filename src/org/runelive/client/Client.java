@@ -3887,6 +3887,26 @@ public class Client extends GameRenderer {
 		return format;
 	}
 
+	public static final String formatAmountStatic(long amount) {
+		String format = "Too high!";
+		if (amount >= 0 && amount < 100000) {
+			format = String.valueOf(amount);
+		} else if (amount >= 100000 && amount < 1000000) {
+			format = amount / 1000 + "K";
+		} else if (amount >= 1000000 && amount < 10000000000L) {
+			format = amount / 1000000 + "M";
+		} else if (amount >= 10000000000L && amount < 1000000000000L) {
+			format = amount / 1000000000 + "B";
+		} else if (amount >= 10000000000000L && amount < 10000000000000000L) {
+			format = amount / 1000000000000L + "T";
+		} else if (amount >= 10000000000000000L && amount < 1000000000000000000L) {
+			format = amount / 1000000000000000L + "QD";
+		} else if (amount >= 1000000000000000000L && amount < Long.MAX_VALUE) {
+			format = amount / 1000000000000000000L + "QT";
+		}
+		return format;
+	}
+
 	private int currentActionMenu;
 	
 	 public Color maxCapeColor = null;
@@ -14370,6 +14390,12 @@ public class Client extends GameRenderer {
 
 					pktType = -1;
 					return true;
+				} else if (frame == 1 && text.contains("[WITHDRAWX]")) {
+					String[] withdrawXArgs = text.split("-");
+					withdrawX = Integer.parseInt(withdrawXArgs[1]);
+					RSInterface.interfaceCache[5382].actions = new String[] { "Withdraw-1", "Withdraw-5", "Withdraw-10", "Withdraw-All", getWithdrawX(), "Withdraw-X" };
+					pktType = -1;
+					return true;
 				} else if (frame == 1 && text.contains("[REMOVE]")) {
 					String[] clan_name = text.split("-");
 					clanMembers.remove(clan_name[1]);
@@ -18284,6 +18310,7 @@ public class Client extends GameRenderer {
 	private int moneyPouchHoverTrans;
 	private boolean moneyPouchHoverDir = true;
 	private long moneyPouchEarning;
+	private static int withdrawX = -1;
 	private boolean earnOrLoss = false;
 	private int moneyPouchEarningTimer;
 	public Sprite coinOrb;
@@ -18292,6 +18319,14 @@ public class Client extends GameRenderer {
 
 	int[] quickPrayers = new int[28];
 	int[] quickCurses = new int[20];
+
+	public static String getWithdrawX() {
+		if(withdrawX == -1) {
+			return "Withdraw-All but one";
+		} else {
+			return "Withdraw-"+formatAmountStatic(Math.abs(withdrawX));
+		}
+	}
 
 	private int[] getCurseTypeForIndex(int index) {
 		int[] types = null;

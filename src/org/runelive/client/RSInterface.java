@@ -2580,8 +2580,7 @@ public class RSInterface {
 						rsInterface.hideExamine = true;
 					}
 					if (rsInterface.parentID == 5292) {
-						rsInterface.actions = new String[] { "Withdraw-1", "Withdraw-5", "Withdraw-10", "Withdraw-All",
-								"Withdraw-All but one", "Withdraw-X" };
+						rsInterface.actions = new String[] { "Withdraw-1", "Withdraw-5", "Withdraw-10", "Withdraw-All", "Withdraw-All but one", "Withdraw-X" };
 						rsInterface.hideExamine = true;
 					}
 				}
