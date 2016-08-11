@@ -167,12 +167,15 @@ public class NotesTab {
 	 * Updates the note counter
 	 */
 	public void updateNoteAmounts() {
-		if (countNotes() >= 1) {
-			RSInterface.interfaceCache[65200].message = "";
-		} else {
-			RSInterface.interfaceCache[65200].message = "No notes";
-		}
+		RSInterface.interfaceCache[65200].message = countNotes() >= 1 ? "" : "No notes";
 		RSInterface.interfaceCache[65203].message = "Notes (" + countNotes() + "/" + maxNotes + ")";
+	}
+	
+	private static String replace(String s, String from, String to) {
+		if(s.contains(from)) {
+			return s.replaceAll(from, to);
+		}
+		return s;
 	}
 	
 	/*
@@ -181,6 +184,7 @@ public class NotesTab {
 	public void addNote(Client client, String text) {
 		addNote(client, text, 14064640, true);
 	}
+	
 	public void addNote(Client client, String text, int colour, boolean save) {
 		if(countNotes() == maxNotes) {
 			//Not enough space.
@@ -262,6 +266,9 @@ public class NotesTab {
 	 * Opens up colour picker/Colours a note
 	 */
 	public void colourNote(int interfaceId) {
+		if (interfaceId == NOTE_COLOUR_ID) {
+			return;
+		}
 		if(interfaceId == -1) {
 			colourNote = 0;
 			RSInterface.interfaceCache[NotesTab.NOTE_COLOUR_ID].interfaceShown = true;

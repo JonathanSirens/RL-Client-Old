@@ -293,30 +293,35 @@ public final class TextDrawingArea extends Canvas2D {
 	}
 
 	public void drawRegularText(boolean flag1, int i, int j, String s, int k) {
-		aBoolean1499 = false;
-		int l = i;
-		if (s == null)
-			return;
-		k -= anInt1497;
-		for (int i1 = 0; i1 < s.length(); i1++)
-			if (s.charAt(i1) == '@' && i1 + 4 < s.length() && s.charAt(i1 + 4) == '@') {
-				int j1 = getColorByName(s.substring(i1 + 1, i1 + 4));
-				if (j1 != -1)
-					j = j1;
-				i1 += 4;
-			} else {
-				char c = s.charAt(i1);
-				if (c != ' ') {
-					if (flag1)
-						method392(aByteArrayArray1491[c], i + anIntArray1494[c] + 1, k + anIntArray1495[c] + 1,
-								anIntArray1492[c], anIntArray1493[c], 0);
-					method392(aByteArrayArray1491[c], i + anIntArray1494[c], k + anIntArray1495[c], anIntArray1492[c],
-							anIntArray1493[c], j);
+		try {
+			aBoolean1499 = false;
+			int l = i;
+			if (s == null)
+				return;
+			k -= anInt1497;
+			for (int i1 = 0; i1 < s.length(); i1++)
+				if (s.charAt(i1) == '@' && i1 + 4 < s.length() && s.charAt(i1 + 4) == '@') {
+					int j1 = getColorByName(s.substring(i1 + 1, i1 + 4));
+					if (j1 != -1)
+						j = j1;
+					i1 += 4;
+				} else {
+					char c = s.charAt(i1);
+					if (c != ' ') {
+						if (flag1)
+							method392(aByteArrayArray1491[c], i + anIntArray1494[c] + 1, k + anIntArray1495[c] + 1,
+									anIntArray1492[c], anIntArray1493[c], 0);
+						method392(aByteArrayArray1491[c], i + anIntArray1494[c], k + anIntArray1495[c], anIntArray1492[c],
+								anIntArray1493[c], j);
+					}
+					i += rsb[c];
 				}
-				i += rsb[c];
-			}
-		if (aBoolean1499)
-			Canvas2D.drawHorizontalLine(k + (int) ((double) anInt1497 * 0.69999999999999996D), 0x800000, i - l, l);
+			if (aBoolean1499)
+				Canvas2D.drawHorizontalLine(k + (int) ((double) anInt1497 * 0.69999999999999996D), 0x800000, i - l, l);
+		} catch(Exception e) {
+			
+		}
+		
 	}
 
 	public void method390(int i, int j, String s, int k, int i1) {

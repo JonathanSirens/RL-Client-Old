@@ -2675,6 +2675,8 @@ public class Client extends GameRenderer {
 						if (children.actions != null) {
 							for (int i = children.actions.length - 1; i >= 0; i--) {
 								String s = children.actions[i];
+								 if(rsInterface.id == NotesTab.NOTE_TAB_ID && children.message.equals(""))
+                                     continue;
 								if (s != null) {
 									menuActionName[menuActionRow] = s;
 									menuActionID[menuActionRow] = 222;
@@ -3888,100 +3890,6 @@ public class Client extends GameRenderer {
 	}
 
 	private int currentActionMenu;
-	
-	 public Color maxCapeColor = null;
-	 public int maxCapeSlot = -1;
-	 public int maxCapeInterfaceId = -1;
-	 
-	 public static void hideTransparencyControls(JColorChooser cc) {
-	        AbstractColorChooserPanel[] colorPanels = cc.getChooserPanels();
-	        for (int i = 0; i < colorPanels.length; i++) {
-	            AbstractColorChooserPanel cp = colorPanels[i];
-	            try {
-	                Field f = cp.getClass().getDeclaredField("panel");
-	                f.setAccessible(true);
-	                Object colorPanel = f.get(cp);
-
-	                Field f2 = colorPanel.getClass().getDeclaredField("spinners");
-	                f2.setAccessible(true);
-	                Object sliders = f2.get(colorPanel);
-
-	                Object transparencySlider = java.lang.reflect.Array.get(sliders, 3);
-	                if (i == colorPanels.length - 1)
-	                    transparencySlider = java.lang.reflect.Array.get(sliders, 4);
-
-	                Method setVisible = transparencySlider.getClass().getDeclaredMethod(
-	                    "setVisible", boolean.class);
-	                setVisible.setAccessible(true);
-	                setVisible.invoke(transparencySlider, false);
-	            } catch (Throwable t) {}
-	        }
-	    }
-	 
-	private void selectColor(String title, int slot, int interfaceId) {
-		
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				
-				JColorChooser cc = new JColorChooser();
-            	AbstractColorChooserPanel[] panels=cc.getChooserPanels();
-            	
-                for(AbstractColorChooserPanel p:panels){
-                    switch (p.getDisplayName()) {
-                        case "Swatches":
-                        case "HSV":
-                        case "RGB":
-                        case "CMYK":
-                            cc.removeChooserPanel(p);
-                            break;
-                    }
-                }
-                
-                cc.setColor(RSInterface.interfaceCache[interfaceId].anInt219);
-                cc.setPreviewPanel(new JPanel());
-				cc.getSelectionModel().addChangeListener(new ChangeListener() {
-					public void stateChanged(ChangeEvent e) {
-						maxCapeColor = cc.getColor();
-						maxCapeSlot = slot;
-						maxCapeInterfaceId = interfaceId;
-					}
-				});
-				
-				hideTransparencyControls(cc);
-				
-                JOptionPane.showMessageDialog(null, cc, title, JOptionPane.DEFAULT_OPTION, new ImageIcon());
-                
-			}
-			
-		}).start();
-		
-	}
-	
-	public int[] maxCapeColors = { 65214, 65200, 65186, 62995 };
-	public int[] previousMaxCapeColors = { 65214, 65200, 65186, 62995 };
-	
-	public void updateMaxCapeColors(int[] colors) {
-		if(openInterfaceID != 60000) {
-			if(colors == null) {
-				maxCapeColors = new int[] { 65214, 65200, 65186, 62995 };
-				for(int i = 0; i < maxCapeColors.length; i++) {
-					previousMaxCapeColors[i] = maxCapeColors[i];
-				}
-			} else {
-				for(int i = 0; i < maxCapeColors.length; i++) {
-					previousMaxCapeColors[i] = maxCapeColors[i];
-					maxCapeColors[i] = colors[i];
-				}
-			}
-			System.out.println(Arrays.toString(maxCapeColors));
-			RSInterface.interfaceCache[60004].anInt219 = ColorUtil.toRGB(maxCapeColors[0]);
-			RSInterface.interfaceCache[60006].anInt219 = ColorUtil.toRGB(maxCapeColors[1]);
-			RSInterface.interfaceCache[60008].anInt219 = ColorUtil.toRGB(maxCapeColors[2]);
-			RSInterface.interfaceCache[60010].anInt219 = ColorUtil.toRGB(maxCapeColors[3]);
-		}
-	}
 
 	public void doAction(int actionId) {
 		if (actionId < 0) {
@@ -4003,34 +3911,6 @@ public class Client extends GameRenderer {
 		int x = slot;
 		int y = interfaceId;
 		int id = nodeId > 0x7fff ? fourthMenuAction : nodeId >> 14 & 0x7fff;
-		if(openInterfaceID == 60000) {
-			switch(interfaceId) {
-			case 60005:
-				selectColor("Edit detail (top) colour", 0, 60004);
-				break;
-			case 60007:
-				selectColor("Edit background (top) colour", 1, 60006);
-				break;
-			case 60009:
-				selectColor("Edit detail (bottom) colour", 2, 60008);
-				break;
-			case 60011:
-				selectColor("Edit background (bottom) colour", 3, 60010);
-				break;
-			case 60012:
-				getOut().putOpcode(186);
-				getOut().putShort(14019);
-				getOut().getByte(maxCapeColors.length);
-				for(int i1 = 0; i1 < maxCapeColors.length; i1++) {
-					getOut().putInt(maxCapeColors[i1]);
-				}
-				break;
-			case 60002:
-				closeGameInterfaces();
-				break;
-			}
-			return;
-		}
 		if (action == 1045) {// Toggle quick prayers / curses
 			if (openInterfaceID != -1)
 				pushMessage("Please close the open interface first.", 0, "");
@@ -4265,15 +4145,18 @@ public class Client extends GameRenderer {
 		}
 		if (action == 315) {
 			switch (interfaceId) {
-			case 55216:
+			
+			case 65216:
+				RSInterface.interfaceCache[65200].message = "";
 				notesTab.colourNote(-1);
 				break;
-			case 55208:
+			case 65208:
 				notesTab.deleteNote();
 				break;
-			case 55321:
+			case 65321:
 				notesTab.deleteNotes();
 				break;
+			
 			case 24654:
 				amountOrNameInput = "";
 				getGrandExchange().totalItemResults = 0;
@@ -5308,10 +5191,10 @@ public class Client extends GameRenderer {
 		}
 		if (action == 169) {
 			switch (interfaceId) {
-			case 55221:
-			case 55223:
-			case 55225:
-			case 55227:
+			case 65221:
+			case 65223:
+			case 65225:
+			case 65227:
 				notesTab.colourNote(interfaceId);
 				variousSettings[1150] = 0;updateConfig(1150);
 				variousSettings[1151] = 0;updateConfig(1151);
@@ -10317,6 +10200,9 @@ public class Client extends GameRenderer {
 	}
 
 	private int method120() {
+		if (Configuration.TOGGLE_ROOF_OFF) {
+			return plane;
+		}
 		int j = 3;
 		if (yCameraCurve < 310) {
 			int x = xCameraPos >> 7;
@@ -10399,6 +10285,9 @@ public class Client extends GameRenderer {
 	}
 
 	private int method121() {
+		if (Configuration.TOGGLE_ROOF_OFF) {
+			return plane;
+		}
 		int j = method42(plane, yCameraPos, xCameraPos);
 		if (j - zCameraPos < 800 && (byteGroundArray[plane][xCameraPos >> 7][yCameraPos >> 7] & 4) != 0) {
 			return plane;
@@ -11132,8 +11021,7 @@ public class Client extends GameRenderer {
 		}
 
 		
-		boolean underground = !(getPlayerX() >= 270 && getPlayerX() <= 465 && getPlayerY() >= 335 && getPlayerY() <= 495);
-		if (Configuration.FOG_ENABLED && !underground) {
+		if (Configuration.FOG_ENABLED) {
 			if (!switchColor) {
 				if (fog.rgb != fadeColors(new Color(fog.rgb), new Color(fadingToColor), fadeStep)) {
 					switchColor = true;
@@ -11528,7 +11416,8 @@ public class Client extends GameRenderer {
 			}
 			
 			objectManager.method171(clippingPlanes, worldController);
-			fadingToColor = getNextInteger(objectManager.colors).getKey();
+			boolean underground = !(getPlayerX() >= 270 && getPlayerX() <= 465 && getPlayerY() >= 335 && getPlayerY() <= 495);
+			fadingToColor = underground ? 0 : getNextInteger(objectManager.colors).getKey();
 			if (loggedIn) {
 
 				gameScreenIP.initDrawingArea();
@@ -12435,7 +12324,11 @@ public class Client extends GameRenderer {
 						promptInput += (char)key;
 						inputTaken = true;
 					}
-				} else if (friendsListAction == 14 || friendsListAction == 15) {//NOTES
+				} else if ((friendsListAction == 14 || friendsListAction == 15) && promptInput.length() != 0) {//NOTES
+					if (key == 8 && promptInput.length() > 0) {
+						promptInput = promptInput.substring(0, promptInput.length() - 1);
+						inputTaken = true;
+					}
 					if (promptInput.length() < 50) {
 						promptInput += (char)key;
 						inputTaken = true;
@@ -16593,7 +16486,6 @@ public class Client extends GameRenderer {
 			}
 		} catch (Exception _ex) {
 		}
-		updateMaxCapeColors(null);
 		currentTarget = null;
 		loggingIn = false;
 		loginMessage1 = loginMessage2 = "";

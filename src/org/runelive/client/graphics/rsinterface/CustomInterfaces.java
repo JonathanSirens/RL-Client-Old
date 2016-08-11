@@ -32,10 +32,10 @@ public class CustomInterfaces extends RSInterface {
 		addText(65200, "No notes", tda, 1, 0xFFFFFF, false, true);
 		
 		addHoverButton(65205, 936, 18, 18, "Add note", 1324, 65206, 1);
-		addHoveredButton(65206, 937, 18, 18, 55207);
+		addHoveredButton(65206, 937, 18, 18, 65207);
 
 		addHoverButton(65208, 939, 18, 18, "Delete", -1, 65209, 1);
-		addHoveredButton(65209, 940, 18, 18, 55210);
+		addHoveredButton(65209, 940, 18, 18, 65210);
 
 		addHoverButton(65321, 939, 18, 18, "Delete all", -1, 65322, 1);
 		addHoveredButton(65322, 940, 18, 18, 65323);
@@ -49,8 +49,8 @@ public class CustomInterfaces extends RSInterface {
 		addRectangle(65215, 256, 3748393, true, 106, 71);
 		
 
-		addHoverButton(65216, 68, 16, 16, "Close", -1, 65217, 1);
-		addHoveredButton(65217, 69, 16, 16, 55218);
+		addHoverButton(65216, 661, 16, 16, "Close", -1, 65217, 1);
+		addHoveredButton(65217, 662, 16, 16, 65218);
 
 		addText(65219, "Select a colour", tda, 1, 16750899, true, true);
 		addRectangle(65220, 256, 16777215, true, 19, 19);//White
@@ -70,13 +70,15 @@ public class CustomInterfaces extends RSInterface {
 		setBounds(65204, 92, 240, 4, rsi);
 		setBounds(65205, 9, 5, 5, rsi);
 		setBounds(65206, 9, 5, 6, rsi);
-		setBounds(65321, 166, 240, 7, rsi);
-		setBounds(65322, 166, 240, 8, rsi);
-		setBounds(65228, 0, 31, 9, rsi);	
-		setBounds(65211, 0, 0, 10, rsi);
 		setBounds(65208, 166, 240, 11, rsi);
 		setBounds(65209, 166, 240, 12, rsi);
+		setBounds(65228, 0, 31, 9, rsi);
 		setBounds(65200, 62, 78, 13, rsi);
+		
+		setBounds(65211, 0, 0, 10, rsi);
+
+		setBounds(65321, 166, 240, 7, rsi);
+		setBounds(65322, 166, 240, 8, rsi);
 
 		setChildren(15, colour);
 		setBounds(65212, 0, 0, 0, colour);
@@ -112,41 +114,6 @@ public class CustomInterfaces extends RSInterface {
 			setBounds(id + i, 10, 6 + (15 * i), count++, scroll);
 		}
 	}
-	
-	public static void customization(TextDrawingArea[] tda) {
-		RSInterface tab = addTabInterface(60000);
-		//addSprite(60001, 0, "Interfaces/customization/BG");
-		//addButton(60002, -1, "", 16, 16, "Close", 5);
-		addItemModel(60003, 75, 50, 420);
-		addColorBox(60004, 40, 40);
-		//addButton(60005, -1, "", 71, 59, "Edit detail (top) colour", 5);
-		addButtonWSpriteLoader(60005, 1005, "Edit detail (top) colour");
-		addColorBox(60006, 40, 40);
-		//addButton(60007, -1, "", 71, 59, "Edit background (top) colour", 5);
-		addButtonWSpriteLoader(60007, 1005, "Edit background (top) colour");
-		addColorBox(60008, 40, 40);
-		//addButton(60009, -1, "", 71, 59, "Edit detail (bottom) colour", 5);
-		addButtonWSpriteLoader(60009, 1005, "Edit detail (bottom) colour");
-		addColorBox(60010, 40, 40);
-		//addButton(60011, -1, "", 71, 59, "Edit background (bottom) colour", 5);
-		addButtonWSpriteLoader(60011, 1005, "Edit bottom (bottom) colour");
-		//addButton(60012, -1, "", 136, 24, "Done", 5);
-		addButtonWSpriteLoader(60012, 1005, "Done");
-		
-		tab.totalChildren(10);
-		//tab.child(0, 60001, 7, 15);
-		//tab.child(1, 60002, 484, 18);
-		tab.child(0, 60003, 388, 252);
-		tab.child(1, 60004, 90, 104);
-		tab.child(2, 60005, 81, 96);
-		tab.child(3, 60006, 242, 104);
-		tab.child(4, 60007, 233, 96);
-		tab.child(5, 60008, 90, 193);
-		tab.child(6, 60009, 81, 179);
-		tab.child(7, 60010, 242, 193);
-		tab.child(8, 60011, 233, 179);
-		tab.child(9, 60012, 148, 280);
-	}
 
 	public void loadCustoms() {
 		notesTabInterface();
@@ -178,7 +145,6 @@ public class CustomInterfaces extends RSInterface {
 		// redoSpellBooks();
 		quest_tab();
 		// vidOptions(tda);
-		customization(tda);
 		questTabInterface2();
 		questTabInterface3();
 		shopInterface();
@@ -630,12 +596,12 @@ public class CustomInterfaces extends RSInterface {
 		RSInterface rsi = addTabInterface(42000);
 		final String[] options = { "Remove 1", "Remove 5", "Remove 10", "Remove All", "Remove X" };
 		addSpriteLoader(18245, 654);
-		addCloseButton(18247, 18535, 18536);
+		addCloseButton2(18247, 18535, 18536);
 		addItemOnInterface(18246, 4393, options);
 		rsi.totalChildren(88);
 		rsi.child(0, 18245, 10, 20);// was 10 so + 10
 		rsi.child(1, 18246, 100, 50);
-		rsi.child(2, 18247, 472, 21);
+		rsi.child(2, 18247, 472, 23);
 		addText(18248, "", tda, 0, 0xFFFFFF, true, true);
 		rsi.child(3, 18248, 472, 23);
 		addText(18350, "Total value:", tda, 0, 0xFFFFFF, false, true);
@@ -4808,7 +4774,6 @@ public class CustomInterfaces extends RSInterface {
 			setBounds(interId, x - 20, y - 10, frame, rsi);
 			frame++;
 			interId++;
-
 			x += 50;// Configuration.CHARACTERS_SEPARATOR_WIDTH;
 		}
 	}

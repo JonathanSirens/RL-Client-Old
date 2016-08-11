@@ -2,7 +2,9 @@ package org.runelive.client.cache.definition;
 
 import java.nio.ByteBuffer;
 
+import org.runelive.client.Signlink;
 import org.runelive.client.cache.Archive;
+import org.runelive.client.util.FileUtilities;
 
 /**
  *

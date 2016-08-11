@@ -2091,6 +2091,11 @@ public class RSInterface {
 		rsi.height = rsi.sprite1.myHeight - 2;
 		// rsi.isFalseTooltip = true;
 	}
+	
+	public static void addCloseButton2(int child, int hoverChild, int hoverImageChild) {
+		addHoverButtonWSpriteLoader(child, 661, 16, 16, "Close", 250, hoverChild, 3);
+		addHoveredImageWSpriteLoader(hoverChild, 662, 16, 16, hoverImageChild);
+	}
 
 	public static void addCloseButton(int child, int hoverChild, int hoverImageChild) {
 		addHoverButtonWSpriteLoader(child, 652, 21, 21, "Close", 250, hoverChild, 3);

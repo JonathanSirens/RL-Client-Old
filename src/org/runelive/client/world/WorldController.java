@@ -304,10 +304,13 @@ public final class WorldController {
 		}
 	}
 
-	void method279(int i, int j, int k, int l, int i1, int overlaytex, int underlaytex, int k1, int l1, int i2, int j2,
-			int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int k4, int l4, boolean tex) {
+	void method279(int i, int j, int k, int l, int i1, int overlaytex,
+			int underlaytex, int k1, int l1, int i2, int j2, int k2, int l2,
+			int i3, int j3, int k3, int l3, int i4, int j4, int k4, int l4,
+			boolean tex) {
 		if (l == 0) {
-			Class43 class43 = new Class43(k2, l2, i3, j3, underlaytex, k4, false, tex);
+			Class43 class43 = new Class43(k2, l2, i3, j3, underlaytex, k4,
+					false, tex);
 
 			for (int i5 = i; i5 >= 0; i5--) {
 				if (groundArray[i5][j][k] == null) {
@@ -320,7 +323,8 @@ public final class WorldController {
 		}
 
 		if (l == 1) {
-			Class43 class43_1 = new Class43(k3, l3, i4, j4, overlaytex, l4, k1 == l1 && k1 == i2 && k1 == j2, tex);
+			Class43 class43_1 = new Class43(k3, l3, i4, j4, overlaytex, l4,
+					k1 == l1 && k1 == i2 && k1 == j2, tex);
 
 			for (int j5 = i; j5 >= 0; j5--) {
 				if (groundArray[j5][j][k] == null) {
@@ -332,8 +336,8 @@ public final class WorldController {
 			return;
 		}
 
-		Class40 class40 = new Class40(k, k3, j3, i2, overlaytex, underlaytex, i4, i1, k2, k4, i3, j2, l1, k1, l, j4, l3,
-				l2, j, l4, tex);
+		Class40 class40 = new Class40(k, k3, j3, i2, overlaytex, underlaytex,
+				i4, i1, k2, k4, i3, j2, l1, k1, l, j4, l3, l2, j, l4, tex);
 
 		for (int k5 = i; k5 >= 0; k5--) {
 			if (groundArray[k5][j][k] == null) {

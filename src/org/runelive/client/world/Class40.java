@@ -17,12 +17,12 @@ public final class Class40 {
 	public final int anInt685;
 	public final int anInt686;
 	public final int anInt687;
-	public static final int[] depthPoint = new int[6];
 	public static final int[] anIntArray688 = new int[6];
 	public static final int[] anIntArray689 = new int[6];
 	public static final int[] anIntArray690 = new int[6];
 	public static final int[] anIntArray691 = new int[6];
 	public static final int[] anIntArray692 = new int[6];
+	public static final int[] depthPoint = new int[6];
 	public int color61;
 	public int color71;
 	public int color81;
@@ -33,21 +33,33 @@ public final class Class40 {
 	public int color92;
 	public boolean textured;
 
-	private static final int[][] anIntArrayArray696 = { { 1, 3, 5, 7 }, { 1, 3, 5, 7 }, { 1, 3, 5, 7 },
-			{ 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 2, 6 },
-			{ 1, 3, 5, 7, 2, 8 }, { 1, 3, 5, 7, 2, 8 }, { 1, 3, 5, 7, 11, 12 }, { 1, 3, 5, 7, 11, 12 },
+	private static final int[][] anIntArrayArray696 = { { 1, 3, 5, 7 },
+			{ 1, 3, 5, 7 }, { 1, 3, 5, 7 }, { 1, 3, 5, 7, 6 },
+			{ 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 },
+			{ 1, 3, 5, 7, 2, 6 }, { 1, 3, 5, 7, 2, 8 }, { 1, 3, 5, 7, 2, 8 },
+			{ 1, 3, 5, 7, 11, 12 }, { 1, 3, 5, 7, 11, 12 },
 			{ 1, 3, 5, 7, 13, 14 } };
-	private static final int[][] anIntArrayArray697 = { { 0, 1, 2, 3, 0, 0, 1, 3 }, { 1, 1, 2, 3, 1, 0, 1, 3 },
-			{ 0, 1, 2, 3, 1, 0, 1, 3 }, { 0, 0, 1, 2, 0, 0, 2, 4, 1, 0, 4, 3 }, { 0, 0, 1, 4, 0, 0, 4, 3, 1, 1, 2, 4 },
-			{ 0, 0, 4, 3, 1, 0, 1, 2, 1, 0, 2, 4 }, { 0, 1, 2, 4, 1, 0, 1, 4, 1, 0, 4, 3 },
-			{ 0, 4, 1, 2, 0, 4, 2, 5, 1, 0, 4, 5, 1, 0, 5, 3 }, { 0, 4, 1, 2, 0, 4, 2, 3, 0, 4, 3, 5, 1, 0, 4, 5 },
+	private static final int[][] anIntArrayArray697 = {
+			{ 0, 1, 2, 3, 0, 0, 1, 3 },
+			{ 1, 1, 2, 3, 1, 0, 1, 3 },
+			{ 0, 1, 2, 3, 1, 0, 1, 3 },
+			{ 0, 0, 1, 2, 0, 0, 2, 4, 1, 0, 4, 3 },
+			{ 0, 0, 1, 4, 0, 0, 4, 3, 1, 1, 2, 4 },
+			{ 0, 0, 4, 3, 1, 0, 1, 2, 1, 0, 2, 4 },
+			{ 0, 1, 2, 4, 1, 0, 1, 4, 1, 0, 4, 3 },
+			{ 0, 4, 1, 2, 0, 4, 2, 5, 1, 0, 4, 5, 1, 0, 5, 3 },
+			{ 0, 4, 1, 2, 0, 4, 2, 3, 0, 4, 3, 5, 1, 0, 4, 5 },
 			{ 0, 0, 4, 5, 1, 4, 1, 2, 1, 4, 2, 3, 1, 4, 3, 5 },
-			{ 0, 0, 1, 5, 0, 1, 4, 5, 0, 1, 2, 4, 1, 0, 5, 3, 1, 5, 4, 3, 1, 4, 2, 3 },
-			{ 1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3 },
-			{ 1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5 } };
+			{ 0, 0, 1, 5, 0, 1, 4, 5, 0, 1, 2, 4, 1, 0, 5, 3, 1, 5, 4, 3, 1, 4,
+					2, 3 },
+			{ 1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4,
+					2, 3 },
+			{ 1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1,
+					2, 5 } };
 
-	public Class40(int i, int j, int k, int l, int overlaytex, int underlaytex, int j1, int k1, int l1, int i2, int j2,
-			int k2, int l2, int i3, int j3, int k3, int l3, int i4, int k4, int l4, boolean tex) {
+	public Class40(int i, int j, int k, int l, int overlaytex, int underlaytex,
+			int j1, int k1, int l1, int i2, int j2, int k2, int l2, int i3,
+			int j3, int k3, int l3, int i4, int k4, int l4, boolean tex) {
 		color61 = l1;
 		color71 = i4;
 		color81 = j2;
@@ -265,5 +277,4 @@ public final class Class40 {
 		i9 /= 14;
 		l9 /= 14;
 	}
-
 }

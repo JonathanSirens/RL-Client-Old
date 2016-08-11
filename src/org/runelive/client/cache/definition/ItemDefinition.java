@@ -5246,7 +5246,6 @@ public final class ItemDefinition {
 				itemDef.femaleWearId = 62582;
 				itemDef.groundActions = new String[5];
 				itemDef.groundActions[2] = "Take";
-				itemDef.modelOffset1 = -4;
 				itemDef.modelID = 62592;
 				itemDef.stackable = false;
 				itemDef.description2 = "A cape made of ancient, enchanted rocks.";
