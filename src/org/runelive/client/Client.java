@@ -5735,7 +5735,7 @@ public class Client extends GameRenderer {
 					}
 				}
 			}
-			getGrandExchange().drawGrandExchange();
+			//getGrandExchange().drawGrandExchange();
 		} else if (openInterfaceID != -1 && openInterfaceID != 5292) {
 			processInterfaceAnimation(anInt945, openInterfaceID);
 			int w = 512, h = 334;
@@ -9333,9 +9333,7 @@ public class Client extends GameRenderer {
 							doAction(menuActionRow - 1);
 						}
 					}
-
-					if (lastActiveInvInterface == anInt1084 && mouseInvInterfaceIndex != anInt1085) {
-
+					if ((lastActiveInvInterface == anInt1084 && mouseInvInterfaceIndex != anInt1085)) {
 						RSInterface class9 = RSInterface.interfaceCache[anInt1084];
 						int j1 = 0;
 
@@ -9369,7 +9367,6 @@ public class Client extends GameRenderer {
 						} else {
 							class9.swapInventoryItems(anInt1085, mouseInvInterfaceIndex);
 						}
-
 						getOut().putOpcode(214);
 						getOut().writeSignedBigEndian(anInt1084);
 						getOut().method424(j1);
@@ -13276,7 +13273,6 @@ public class Client extends GameRenderer {
 				if (getConnectionCipher() != null) {
 					pktType = pktType - getConnectionCipher().next() & 0xff;
 				}
-
 				pktSize = SizeConstants.PACKET_SIZES[pktType];
 				available--;
 			}
@@ -18207,7 +18203,7 @@ public class Client extends GameRenderer {
 	private int moneyPouchHoverTrans;
 	private boolean moneyPouchHoverDir = true;
 	private long moneyPouchEarning;
-	private static int withdrawX = -1;
+	private static int withdrawX = 0;
 	private boolean earnOrLoss = false;
 	private int moneyPouchEarningTimer;
 	public Sprite coinOrb;
@@ -18218,7 +18214,7 @@ public class Client extends GameRenderer {
 	int[] quickCurses = new int[20];
 
 	public static String getWithdrawX() {
-		if(withdrawX == -1) {
+		if(withdrawX == 0) {
 			return "Withdraw-All but one";
 		} else {
 			return "Withdraw-"+formatAmountStatic(Math.abs(withdrawX));

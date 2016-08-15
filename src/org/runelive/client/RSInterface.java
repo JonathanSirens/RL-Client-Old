@@ -1890,7 +1890,7 @@ public class RSInterface {
 		rsi.height = 5;
 		rsi.width = 6;
 		rsi.parentID = 5292;
-		rsi.id = index;
+		rsi.id = 5382;
 		rsi.type = 2;
 		rsi.hideStackSize = true;
 		rsi.hideExamine = hasOption;

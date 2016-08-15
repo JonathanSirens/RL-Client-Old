@@ -27,9 +27,9 @@ public class CustomInterfaces extends RSInterface {
 		addSpriteLoader(65202, 1212);
 		addText(65203, "Notes (0/30)", tda, 1, 16750899, true, true);
 		addText(65204, "Delete", tda, 1, 16750899, true, true);
-		
+
 		addText(65200, "No notes", tda, 1, 0xFFFFFF, false, true);
-		
+
 		addHoverButton(65205, 1215, 18, 18, "Add note", 1324, 65206, 1);
 		addHoveredButton(65206, 1216, 18, 18, 65207);
 
@@ -46,7 +46,7 @@ public class CustomInterfaces extends RSInterface {
 		addRectangle(65213, 0, 3682339, true, 110, 75);
 		addRectangle(65214, 256, 5919301, false, 108, 73);
 		addRectangle(65215, 256, 3748393, true, 106, 71);
-		
+
 
 		addHoverButton(65216, 661, 16, 16, "Close", -1, 65217, 1);
 		addHoveredButton(65217, 662, 16, 16, 65218);
@@ -60,7 +60,7 @@ public class CustomInterfaces extends RSInterface {
 		addButton(65225, 4, -1, 1213, 1214, 19, 20, "Select", 1152, 1);
 		addRectangle(65226, 256, 14064640, true, 19, 19);//Orange
 		addButton(65227, 4, -1, 1213, 1214, 19, 20, "Select", 1153, 1);
-		
+
 		setChildren(14, rsi);
 		setBounds(65201, 0, 31, 0, rsi);
 		setBounds(65202, 0, 28, 1, rsi);
@@ -73,7 +73,7 @@ public class CustomInterfaces extends RSInterface {
 		setBounds(65209, 166, 240, 12, rsi);
 		setBounds(65228, 0, 31, 9, rsi);
 		setBounds(65200, 62, 78, 13, rsi);
-		
+
 		setBounds(65211, 0, 0, 10, rsi);
 
 		setBounds(65321, 166, 240, 7, rsi);
@@ -95,7 +95,7 @@ public class CustomInterfaces extends RSInterface {
 		setBounds(65225, 73, 102 + 26, 12, colour);
 		setBounds(65226, 73 + 27, 102 + 26, 13, colour);
 		setBounds(65227, 73 + 27, 102 + 26, 14, colour);
-		
+
 		RSInterface scroll = addTabInterface(65228);
 		scroll.height = 201;
 		scroll.width = 174;
@@ -105,7 +105,7 @@ public class CustomInterfaces extends RSInterface {
 		//Select bar
 		addRectangle(65229, 204, 16776960, true, 160, 0);
 		setBounds(65229, 9, 5, 0, scroll);
-		
+
 		//Lines
 		int id = 65230, count = 1;
 		for(int i = 0; i <= (NotesTab.maxNotes * 3); i++) {
@@ -2701,21 +2701,22 @@ public class CustomInterfaces extends RSInterface {
 		setBounds(22033, 473, 42, 27, rsinterface);
 		addText(22034, "496", tda, 0, 0xb4965a, true, false);
 		setBounds(22034, 473, 57, 28, rsinterface);
-		addBankItem(22035, Boolean.valueOf(true));
+		System.out.println(""+interfaceCache[5292].children.length);
+		addBankItem(22035);
 		setBounds(22035, 77, 39, 29, rsinterface);
-		addBankItem(22036, Boolean.valueOf(true));
+		addBankItem(22036);
 		setBounds(22036, 125, 39, 30, rsinterface);
-		addBankItem(22037, Boolean.valueOf(true));
+		addBankItem(22037);
 		setBounds(22037, 173, 39, 31, rsinterface);
-		addBankItem(22038, Boolean.valueOf(true));
+		addBankItem(22038);
 		setBounds(22038, 221, 39, 32, rsinterface);
-		addBankItem(22039, Boolean.valueOf(true));
+		addBankItem(22039);
 		setBounds(22039, 269, 39, 33, rsinterface);
-		addBankItem(22040, Boolean.valueOf(true));
+		addBankItem(22040);
 		setBounds(22040, 317, 39, 34, rsinterface);
-		addBankItem(22041, Boolean.valueOf(true));
+		addBankItem(22041);
 		setBounds(22041, 365, 39, 35, rsinterface);
-		addBankItem(22042, Boolean.valueOf(true));
+		addBankItem(22042);
 		setBounds(22042, 413, 39, 36, rsinterface);
 		addBankHover(21000, 4, 21001, 431, 432, 35, 25, 304, 1, "Toggle Insert/Swap", 21002, 174, 173, 21003,
 				"Switch to insert items \nmode", "Switch to swap items \nmode.", 12, 20);
