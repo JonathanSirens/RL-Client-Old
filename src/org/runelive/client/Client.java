@@ -13269,7 +13269,6 @@ public class Client extends GameRenderer {
 				if (getConnectionCipher() != null) {
 					pktType = pktType - getConnectionCipher().next() & 0xff;
 				}
-
 				pktSize = SizeConstants.PACKET_SIZES[pktType];
 				available--;
 			}
