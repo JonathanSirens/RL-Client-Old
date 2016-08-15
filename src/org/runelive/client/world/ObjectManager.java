@@ -689,10 +689,9 @@ public final class ObjectManager {
 										mapTexture = Canvas3D.method369(25);
 										j23 = -1;
 										textureId = 25;
-									} else if (j23 == 6813) {
-										mapTexture = overlay_flo.rgb = 5719328;
-										j23 = 6802;
-										textureId = 154;
+									} else if (j23 == 6813) {//Castle wars road
+										mapTexture = overlay_flo.rgb = 7757611;
+										textureId = 154;//154
 									}
 									if (textureId == 137) {
 										mapTexture = Canvas3D.method369(25);

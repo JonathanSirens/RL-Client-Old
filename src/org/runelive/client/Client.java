@@ -2675,8 +2675,8 @@ public class Client extends GameRenderer {
 						if (children.actions != null) {
 							for (int i = children.actions.length - 1; i >= 0; i--) {
 								String s = children.actions[i];
-								 if(rsInterface.id == NotesTab.NOTE_TAB_ID && children.message.equals(""))
-                                     continue;
+								if(rsInterface.id == NotesTab.NOTE_TAB_ID && (children.message.equals("") || !RSInterface.interfaceCache[NotesTab.NOTE_COLOUR_ID].interfaceShown))
+									continue;
 								if (s != null) {
 									menuActionName[menuActionRow] = s;
 									menuActionID[menuActionRow] = 222;
@@ -4171,9 +4171,13 @@ public class Client extends GameRenderer {
 				notesTab.colourNote(-1);
 				break;
 			case 65208:
+				if(!RSInterface.interfaceCache[NotesTab.NOTE_COLOUR_ID].interfaceShown)
+					return;
 				notesTab.deleteNote();
 				break;
 			case 65321:
+				if(!RSInterface.interfaceCache[NotesTab.NOTE_COLOUR_ID].interfaceShown)
+					return;
 				notesTab.deleteNotes();
 				break;
 			
@@ -16248,6 +16252,8 @@ public class Client extends GameRenderer {
 		}
 		
 		if (id == 1324) {
+			if(!RSInterface.interfaceCache[NotesTab.NOTE_COLOUR_ID].interfaceShown)
+				return false;
 			inputTaken = true;
 			inputDialogState = 0;
 			messagePromptRaised = true;

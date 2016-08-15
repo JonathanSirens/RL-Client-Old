@@ -171,13 +171,6 @@ public class NotesTab {
 		RSInterface.interfaceCache[65203].message = "Notes (" + countNotes() + "/" + maxNotes + ")";
 	}
 	
-	private static String replace(String s, String from, String to) {
-		if(s.contains(from)) {
-			return s.replaceAll(from, to);
-		}
-		return s;
-	}
-	
 	/*
 	 * Adds a note to the end of the list.
 	 */

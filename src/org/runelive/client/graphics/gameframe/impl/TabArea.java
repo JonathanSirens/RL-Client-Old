@@ -321,7 +321,7 @@ public class TabArea extends GameFrame {
 							if (screenMode != ScreenMode.FIXED) {
 								setHideComponent(Client.tabID != i ? false : componentHidden() ? false : true);
 							}
-							System.out.println(""+tabID);
+							//System.out.println(""+tabID);
 							Client.setTab(tabID);
 							break;
 						}

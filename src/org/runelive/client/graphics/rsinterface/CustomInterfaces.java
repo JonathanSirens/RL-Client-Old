@@ -23,22 +23,21 @@ public class CustomInterfaces extends RSInterface {
 	public void notesTabInterface() {
 		RSInterface rsi = addTabInterface(59999);
 
-		addSpriteLoader(65201, 367);
-		RSInterface.interfaceCache[65201].sprite1.myHeight = 201;
-		addSpriteLoader(65202, 368);
+		addSpriteLoader(65201, 1211);
+		addSpriteLoader(65202, 1212);
 		addText(65203, "Notes (0/30)", tda, 1, 16750899, true, true);
 		addText(65204, "Delete", tda, 1, 16750899, true, true);
 		
 		addText(65200, "No notes", tda, 1, 0xFFFFFF, false, true);
 		
-		addHoverButton(65205, 936, 18, 18, "Add note", 1324, 65206, 1);
-		addHoveredButton(65206, 937, 18, 18, 65207);
+		addHoverButton(65205, 1215, 18, 18, "Add note", 1324, 65206, 1);
+		addHoveredButton(65206, 1216, 18, 18, 65207);
 
-		addHoverButton(65208, 939, 18, 18, "Delete", -1, 65209, 1);
-		addHoveredButton(65209, 940, 18, 18, 65210);
+		addHoverButton(65208, 1218, 18, 18, "Delete", -1, 65209, 1);
+		addHoveredButton(65209, 1219, 18, 18, 65210);
 
-		addHoverButton(65321, 939, 18, 18, "Delete all", -1, 65322, 1);
-		addHoveredButton(65322, 940, 18, 18, 65323);
+		addHoverButton(65321, 1218, 18, 18, "Delete all", -1, 65322, 1);
+		addHoveredButton(65322, 1219, 18, 18, 65323);
 
 
 		RSInterface colour = addTabInterface(65211);
@@ -54,13 +53,13 @@ public class CustomInterfaces extends RSInterface {
 
 		addText(65219, "Select a colour", tda, 1, 16750899, true, true);
 		addRectangle(65220, 256, 16777215, true, 19, 19);//White
-		addButton(65221, 4, -1, 934, 935, 19, 20, "Select", 1150, 1);
+		addButton(65221, 4, -1, 1213, 1214, 19, 20, "Select", 1150, 1);
 		addRectangle(65222, 256, 65280, true, 19, 19);//Green
-		addButton(65223, 4, -1, 934, 935, 19, 20, "Select", 1151, 1);
+		addButton(65223, 4, -1, 1213, 1214, 19, 20, "Select", 1151, 1);
 		addRectangle(65224, 256, 16727871, true, 19, 19);//Red
-		addButton(65225, 4, -1, 934, 935, 19, 20, "Select", 1152, 1);
+		addButton(65225, 4, -1, 1213, 1214, 19, 20, "Select", 1152, 1);
 		addRectangle(65226, 256, 14064640, true, 19, 19);//Orange
-		addButton(65227, 4, -1, 934, 935, 19, 20, "Select", 1153, 1);
+		addButton(65227, 4, -1, 1213, 1214, 19, 20, "Select", 1153, 1);
 		
 		setChildren(14, rsi);
 		setBounds(65201, 0, 31, 0, rsi);
