@@ -704,6 +704,7 @@ public final class ObjectManager {
 										floorTexture = 25;
 										j23 = -1;
 									}
+									colors.add(mapTexture);
 									worldController.method279(l, l6, k17, k22, byte4, floorTexture, 154, j19, k19, l19,
 											i20, method187(j21, j20), method187(j21, k20), method187(j21, l20),
 											method187(j21, i21), method185(j23, j20), method185(j23, k20),
