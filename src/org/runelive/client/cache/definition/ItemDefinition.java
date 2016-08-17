@@ -55,7 +55,7 @@ public final class ItemDefinition {
 	private static final String[] GLOVE_NAME = {
 		"Bronze", "Iron", "Steel", "Black",
 		"Mithril", "Adamant", "Rune", "Dragon",
-		"Barrow"
+		"Barrows"
 	};
 	
 	public static ItemDefinition get(int id) {
