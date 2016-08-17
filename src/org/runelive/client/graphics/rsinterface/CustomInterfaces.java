@@ -19,7 +19,7 @@ public class CustomInterfaces extends RSInterface {
 	public CustomInterfaces(TextDrawingArea tda[]) {
 		this.tda = tda;
 	}
-	
+
 	public void notesTabInterface() {
 		RSInterface rsi = addTabInterface(59999);
 
