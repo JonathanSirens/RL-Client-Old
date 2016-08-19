@@ -4763,21 +4763,6 @@ public class CustomInterfaces extends RSInterface {
 		rsinterface.child(23, 53801, 345 + x, 250 + 23);
 	}
 
-	public void buildPlayerMenu(ArrayList<Account> accountList) {
-		RSInterface rsi = addTabInterface(31000);
-		setChildren(accountList.size(), rsi);
-		int interId = 31001;
-		int frame = 0;
-		int x = 157, y = 306;
-		for (Account a_ : accountList) {
-			addAPlayerHead(interId, a_);
-			setBounds(interId, x - 20, y - 10, frame, rsi);
-			frame++;
-			interId++;
-			x += 50;// Configuration.CHARACTERS_SEPARATOR_WIDTH;
-		}
-	}
-
 	private void quickPrayersInterface() {
 		int frame = 0;
 		RSInterface tab = addTabInterface(17200);

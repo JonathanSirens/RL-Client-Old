@@ -538,7 +538,7 @@ public final class ObjectManager {
 							k16 -= anIntArray128[k18];
 						}
 						if (k17 >= 1 && k17 < anInt147 - 1
-								&& (!(!Configuration.TOGGLE_ROOF_OFF) || (aByteArrayArrayArray149[0][l6][k17] & 2) != 0
+								&& (!lowDetail || (aByteArrayArrayArray149[0][l6][k17] & 2) != 0
 								|| (aByteArrayArrayArray149[l][l6][k17] & 0x10) == 0
 								&& method182(k17, l, l6) == anInt131)) {
 							if (l < anInt145) {
@@ -704,6 +704,7 @@ public final class ObjectManager {
 										floorTexture = 25;
 										j23 = -1;
 									}
+									colors.add(mapTexture);
 									worldController.method279(l, l6, k17, k22, byte4, floorTexture, 154, j19, k19, l19,
 											i20, method187(j21, j20), method187(j21, k20), method187(j21, l20),
 											method187(j21, i21), method185(j23, j20), method185(j23, k20),

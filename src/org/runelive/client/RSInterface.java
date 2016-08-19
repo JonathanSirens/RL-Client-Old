@@ -1,5 +1,8 @@
 package org.runelive.client;
 
+import java.util.ArrayList;
+
+import org.runelive.Configuration;
 import org.runelive.client.accounts.Account;
 import org.runelive.client.cache.Archive;
 import org.runelive.client.cache.definition.ItemDefinition;
@@ -16,6 +19,62 @@ import org.runelive.client.world.Model;
 
 public class RSInterface {
 
+	
+	public static void buildPlayerMenu(ArrayList<Account> a) {
+		RSInterface rsi = addTabInterface(31000);
+		if (a.size() == 0)
+			return;
+		setChildren(a.size() * 4, rsi);
+		int interId = 31001;
+		int frame = 0;
+		int x = 157, y = 306;
+		for (Account a_ : a) {
+			//addRectangle(interId, 100, 0x000000, true, 100, 100);
+			addHDSprite(interId, 782, 782);
+			setBounds(interId, x, y, frame, rsi);
+			frame++;
+			interId++;
+
+			addAPlayerHead(interId, a_);
+			setBounds(interId, x - 25, y - 16, frame, rsi);
+			frame++;
+			interId++;
+			addText(interId, a_.getUsername(), fonts, 0, 0xFFFFFF, true, false);
+			setBounds(interId, x + 45, y - 10, frame, rsi);
+			frame++;
+			interId++;
+			addHDSprite(interId, 762, 762);
+			setBounds(interId, x + 74, y - 5, frame, rsi);
+			frame++;
+			interId++;
+
+			x += 110;
+
+		}
+	}
+
+	private final static int[] headAnims = new int[] { 9846, 9742, 9827, 9841,
+			9851, 9745, 9785, 9805, 9810, 9815, 9820, 9860, 9835, 9845, 9850,
+			9855, 9864, 9851 };
+
+	private static void addAPlayerHead(int interfaceID, Account a) {
+		RSInterface rsi = addTabInterface(interfaceID);
+		rsi.type = 6;
+		rsi.mediaType = (a.getIDKHead() <= 0 ? 11 : 10);
+		int anim = headAnims[Client.getRandom(headAnims.length - 1, false)];
+		rsi.enabledAnimationId = rsi.disabledAnimationId = anim;
+		rsi.mediaID = (a.getIDKHead() <= 0 ? a.getHelmet() : a.getIDKHead());
+		rsi.plrJaw = a.getJaw();
+		if (a.getGender() == 1)
+			rsi.plrJaw = -1;
+		rsi.gender = a.getGender();
+		rsi.modelZoom = 4000;//3200
+		rsi.modelRotation1 = 40;
+		rsi.modelRotation2 = 1800;
+		rsi.height = 150;
+		rsi.width = 150;
+	}
+	
 	private static CustomInterfaces customInterfaces;
 
 	public static CustomInterfaces getCustomInterfaces() {
@@ -795,26 +854,6 @@ public class RSInterface {
 		rsi.type = 5;
 	}
 
-	public static void addAPlayerHead(int interfaceID, Account a) {
-		RSInterface rsi = addTabInterface(interfaceID);
-		rsi.type = 6;
-		rsi.mediaType = (a.getIDKHead() <= 0 ? 11 : 10);
-		int anim = headAnims[Client.getRandom(headAnims.length - 1, false)];
-		rsi.enabledAnimationId = rsi.disabledAnimationId = anim;
-		rsi.mediaID = (a.getIDKHead() <= 0 ? a.getHelmet() : a.getIDKHead());
-		rsi.plrJaw = a.getJaw();
-		if (a.getGender() == 1)
-			rsi.plrJaw = -1;
-		rsi.gender = a.getGender();
-		rsi.modelZoom = 2000;
-		rsi.modelRotation1 = 40;
-		rsi.modelRotation2 = 1800;
-		rsi.height = 150;
-		rsi.width = 150;
-	}
-
-	private final static int[] headAnims = new int[] { 9846, 9742, 9827, 9841, 9851, 9745, 9785, 9805, 9810, 9815, 9820,
-			9860, 9835, 9845, 9850, 9855, 9864, 9851 };
 	public int plrJaw, gender;
 
 	public static void addChar(int ID) {
