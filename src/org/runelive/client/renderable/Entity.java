@@ -198,7 +198,7 @@ public class Entity extends Animable {
 				soakDamage[i1] = soak;
 				hitArray[i1] = damage;
 				hitMarkTypes[i1] = markType;
-				hitsLoopCycle[i1] = l + 70;
+				hitsLoopCycle[i1] = l + 55;
 				hitMarkPos[i1] = 0;
 				return;
 			}
