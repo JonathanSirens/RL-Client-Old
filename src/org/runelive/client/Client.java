@@ -1771,7 +1771,6 @@ public class Client extends GameRenderer {
 				j = modelData;
 				int xx = baseX + x;
 				int yy = baseY + y;
-				// System.out.println(""+face);
 				// objects
 				if (face == 2 && worldController.fetchObjectIDTagForPosition(plane, x, y, modelData) >= 0) {
 
@@ -1893,7 +1892,6 @@ public class Client extends GameRenderer {
 					if (class46 == null) {
 						continue;
 					}
-					System.out.println(""+class46.id);
 					if (class46 != null) {
 						if (myRights != 3) {
 							if (class46.name == null) {
