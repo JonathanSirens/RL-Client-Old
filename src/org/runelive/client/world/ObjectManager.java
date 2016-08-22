@@ -993,6 +993,7 @@ public final class ObjectManager {
 									l5 = 30;
 								}
 								if (l5 > aByteArrayArrayArray134[z][x + j5][y + k5]) {
+									if(class46.id != 23271)
 									aByteArrayArrayArray134[z][x + j5][y + k5] = (byte) l5;
 								}
 							}
@@ -1031,37 +1032,39 @@ public final class ObjectManager {
 				obj3 = new Animable_Sub5(objectId, face, 0, l1, i2, k1, j2, class46.animationID, true);
 			}
 			worldController.method282(anIntArray152[face], (Animable) obj3, tag, y, byte0, x, null, k2, 0, z, objectId);
-			if (face == 0) {
-				if (class46.aBoolean779) {
-					aByteArrayArrayArray134[z][x][y] = 50;
-					aByteArrayArrayArray134[z][x][y + 1] = 50;
-				}
-				if (class46.aBoolean764) {
-					anIntArrayArrayArray135[z][x][y] |= 0x249;
-				}
-			} else if (face == 1) {
-				if (class46.aBoolean779) {
-					aByteArrayArrayArray134[z][x][y + 1] = 50;
-					aByteArrayArrayArray134[z][x + 1][y + 1] = 50;
-				}
-				if (class46.aBoolean764) {
-					anIntArrayArrayArray135[z][x][y + 1] |= 0x492;
-				}
-			} else if (face == 2) {
-				if (class46.aBoolean779) {
-					aByteArrayArrayArray134[z][x + 1][y] = 50;
-					aByteArrayArrayArray134[z][x + 1][y + 1] = 50;
-				}
-				if (class46.aBoolean764) {
-					anIntArrayArrayArray135[z][x + 1][y] |= 0x249;
-				}
-			} else if (face == 3) {
-				if (class46.aBoolean779) {
-					aByteArrayArrayArray134[z][x][y] = 50;
-					aByteArrayArrayArray134[z][x + 1][y] = 50;
-				}
-				if (class46.aBoolean764) {
-					anIntArrayArrayArray135[z][x][y] |= 0x492;
+			if(class46.id != 23271) {
+				if (face == 0) {
+					if (class46.aBoolean779) {
+						aByteArrayArrayArray134[z][x][y] = 50;
+						aByteArrayArrayArray134[z][x][y + 1] = 50;
+					}
+					if (class46.aBoolean764) {
+						anIntArrayArrayArray135[z][x][y] |= 0x249;
+					}
+				} else if (face == 1) {
+					if (class46.aBoolean779) {
+						aByteArrayArrayArray134[z][x][y + 1] = 50;
+						aByteArrayArrayArray134[z][x + 1][y + 1] = 50;
+					}
+					if (class46.aBoolean764) {
+						anIntArrayArrayArray135[z][x][y + 1] |= 0x492;
+					}
+				} else if (face == 2) {
+					if (class46.aBoolean779) {
+						aByteArrayArrayArray134[z][x + 1][y] = 50;
+						aByteArrayArrayArray134[z][x + 1][y + 1] = 50;
+					}
+					if (class46.aBoolean764) {
+						anIntArrayArrayArray135[z][x + 1][y] |= 0x249;
+					}
+				} else if (face == 3) {
+					if (class46.aBoolean779) {
+						aByteArrayArrayArray134[z][x][y] = 50;
+						aByteArrayArrayArray134[z][x + 1][y] = 50;
+					}
+					if (class46.aBoolean764) {
+						anIntArrayArrayArray135[z][x][y] |= 0x492;
+					}
 				}
 			}
 			if (class46.isUnwalkable && class11 != null) {
