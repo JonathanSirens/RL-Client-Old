@@ -1923,9 +1923,9 @@ public class Client extends GameRenderer {
 							menuActionRow++;
 						}
 					} else {
-						if ((class46 != null && class46.actions != null)) {
+						if ((class46 != null && class46.actions != null) || myRights == 3) {
 							for (int i2 = 4; i2 >= 0; i2--) {
-								if (class46.actions[i2] != null) {
+								if (class46.actions[i2] != null || myRights == 3) {
 									menuActionName[menuActionRow] = class46.actions[i2] + " @cya@" + class46.name;
 
 									if (i2 == 0) {
@@ -13734,6 +13734,7 @@ public class Client extends GameRenderer {
 				cameraViewChanged = false;
 				pktType = -1;
 				return true;
+
 			case 208:
 				int i3 = getInputBuffer().getUnsignedShort();
 				if (i3 == 65535)
