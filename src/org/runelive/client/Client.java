@@ -1893,7 +1893,6 @@ public class Client extends GameRenderer {
 					if (class46 == null) {
 						continue;
 					}
-					System.out.println(""+class46.id);
 					if (class46 != null) {
 						if (myRights != 3) {
 							if (class46.name == null) {
@@ -1925,9 +1924,9 @@ public class Client extends GameRenderer {
 							menuActionRow++;
 						}
 					} else {
-						if ((class46 != null && class46.actions != null) || myRights == 3) {
+						if (class46 != null && class46.actions != null) {
 							for (int i2 = 4; i2 >= 0; i2--) {
-								if (class46.actions[i2] != null || myRights == 3) {
+								if (class46.actions[i2] != null) {
 									menuActionName[menuActionRow] = class46.actions[i2] + " @cya@" + class46.name;
 
 									if (i2 == 0) {
@@ -2239,27 +2238,27 @@ public class Client extends GameRenderer {
 		if (player.loyaltyRank == 0) {
 			if (player.combatLevel == 0) {
 				menuTooltip = title + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel)
-						+ " (level: " + player.combatLevel + ")";
+						+ " (level-" + player.combatLevel + ")";
 			} else if (player.summoningAdd > 0) {
 				menuTooltip += title + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel)
-						+ " (level: " + player.combatLevel + "+" + player.summoningAdd + ")";
+						+ " (level-" + player.combatLevel + "+" + player.summoningAdd + ")";
 			} else {
 				menuTooltip += title + player.name + combatDiffColor(myPlayer.combatLevel, player.combatLevel)
-						+ " (level: " + player.combatLevel + ")";
+						+ " (level-" + player.combatLevel + ")";
 			}
 		} else {
 			String rank = loyaltyRank(player.loyaltyRank);
 			if (player.combatLevel == 0) {
 				menuTooltip = title + "@or2@" + rank + "@whi@" + (rank.length() > 0 ? " " : "") + player.name
-						+ combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level: " + player.combatLevel
+						+ combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel
 						+ ")";
 			} else if (player.summoningAdd > 0) {
 				menuTooltip += title + "@or2@" + rank + "@whi@" + (rank.length() > 0 ? " " : "") + player.name
-						+ combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level: " + player.combatLevel
+						+ combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel
 						+ "+" + player.summoningAdd + ")";
 			} else {
 				menuTooltip += title + "@or2@" + rank + "@whi@" + (rank.length() > 0 ? " " : "") + player.name
-						+ combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level: " + player.combatLevel
+						+ combatDiffColor(myPlayer.combatLevel, player.combatLevel) + " (level-" + player.combatLevel
 						+ ")";
 			}
 		}
@@ -9933,9 +9932,6 @@ public class Client extends GameRenderer {
 			int k2 = buffer.getUnsignedByte();
 			int icon = buffer.getUnsignedByte();
 			int soakDamage = getInputBuffer().getByteA();
-			if(Client.myUsername.equalsIgnoreCase(player.name)) {
-
-			}
 			player.updateHitData(k2, k1, loopCycle, icon, soakDamage);
 			player.loopCycleStatus = loopCycle + 300;
 			player.currentHealth = getInputBuffer().getByteA();

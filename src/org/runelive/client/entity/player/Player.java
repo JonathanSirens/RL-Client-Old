@@ -235,9 +235,9 @@ public final class Player extends Entity {
 					k2 = k1;
 				if(j1 >= 0 && i2 == 5)
 					k2 = j1;
-				if(k2 >= 256 && k2 < 925 && !IdentityKit.cache[k2 - 256].isBodyModelLoaded())
+				if(k2 >= 256 && k2 < 512 && !IdentityKit.cache[k2 - 256].isBodyModelLoaded())
 					flag = true;
-				if(k2 >= 925 && !ItemDefinition.get(k2 - 925).method195(myGender))
+				if(k2 >= 512 && !ItemDefinition.get(k2 - 512).method195(myGender))
 					flag = true;
 			}
 
@@ -260,14 +260,13 @@ public final class Player extends Entity {
 					i3 = k1;
 				if(j1 >= 0 && l2 == 5)
 					i3 = j1;
-
-				if(i3 >= 256 && i3 <= 925)
+				if(i3 >= 256 && i3 < 512)
 				{
 					Model model_3 = IdentityKit.cache[i3 - 256].getBodyModel();
 					if(model_3 != null)
 						aclass30_sub2_sub4_sub6s[j2++] = model_3;
 				}
-				if(i3 >= 925) {
+				if(i3 >= 512) {
 					ItemDefinition def = ItemDefinition.get(i3 - 512);
 					Model model_4 = ItemDefinition.get(i3 - 512).getEquippedModel(myGender);
 					/*if(modifiedColors[l2] != null) {
@@ -320,10 +319,10 @@ public final class Player extends Entity {
 		boolean flag = false;
 		for (int i = 0; i < 12; i++) {
 			int j = equipment[i];
-			if (j >= 256 && j < 925 && !IdentityKit.cache[j - 256].isDialogModelsLoaded()) {
+			if (j >= 256 && j < 512 && !IdentityKit.cache[j - 256].isDialogModelsLoaded()) {
 				flag = true;
 			}
-			if (j >= 925 && !ItemDefinition.get(j - 925).dialogueModelFetched(myGender)) {
+			if (j >= 512 && !ItemDefinition.get(j - 512).dialogueModelFetched(myGender)) {
 				flag = true;
 			}
 		}
@@ -335,14 +334,14 @@ public final class Player extends Entity {
 		int k = 0;
 		for (int l = 0; l < 12; l++) {
 			int i1 = equipment[l];
-			if (i1 >= 256 && i1 < 925) {
+			if (i1 >= 256 && i1 < 512) {
 				Model model_1 = IdentityKit.cache[i1 - 256].getDialogModel();
 				if (model_1 != null) {
 					models[k++] = model_1;
 				}
 			}
-			if (i1 >= 925) {
-				Model model_2 = ItemDefinition.get(i1 - 925).method194(myGender);
+			if (i1 >= 512) {
+				Model model_2 = ItemDefinition.get(i1 - 512).method194(myGender);
 				if (model_2 != null) {
 					models[k++] = model_2;
 				}
@@ -404,8 +403,8 @@ public final class Player extends Entity {
 				Client.myHeadAndJaw[0] = equipment[partId] - 256;
 			if (partId == 11)
 				Client.myHeadAndJaw[1] = equipment[partId] - 256;
-			if (equipment[partId] >= 925 && equipment[partId] - 925 < ItemDefinition.totalItems) {
-				int l1 = ItemDefinition.get(equipment[partId] - 925).team;
+			if (equipment[partId] >= 512 && equipment[partId] - 512 < ItemDefinition.totalItems) {
+				int l1 = ItemDefinition.get(equipment[partId] - 512).team;
 				if (l1 != 0) {
 					team = l1;
 				}
